@@ -13,31 +13,29 @@ interface Wrapper {
   children: ReactNode
 }
 
-const ButtonWrapper = ({ to, children }: Wrapper) => {
+const LinkedBtn = ({ to, children }: Wrapper) => {
   return (
-    <Box as={ReactRouterLink} to={to} w='100%' h='100%' display='flex' alignItems='center' justifyContent='center' padding='0px 16px'>
-      {children}
-    </Box>
+    <Button padding='0 0'>
+      <Box as={ReactRouterLink} to={to} w='100%' h='100%' display='flex' alignItems='center' justifyContent='center' padding='0px 16px'>
+        {children}
+      </Box>
+    </Button>
   )
-}
-
-const Btn: React.CSSProperties = {
-  padding: '0 0',
 }
 
 const Pagination = ({path, currentPageNum, maxPageNum}: PaginationProps) => {
   return (
     <Flex justifyContent={'flex-end'}>
       <ButtonGroup size={'md'} isAttached variant={'outline'}>
-        {currentPageNum > 1 ? <Button style={Btn}><ButtonWrapper to={path+'/'+(currentPageNum-1)}>Previous</ButtonWrapper></Button> : null}
-        {currentPageNum > 2 ? <Button style={Btn}><ButtonWrapper to={path+'/'+(currentPageNum-2)}>{currentPageNum-2}</ButtonWrapper></Button> : null}
-        {currentPageNum > 1 ? <Button style={Btn}><ButtonWrapper to={path+'/'+(currentPageNum-1)}>{currentPageNum-1}</ButtonWrapper></Button> : null}
-        <Button disabled style={{cursor: 'not-allowed'}}>{currentPageNum}</Button>
-        {maxPageNum >= currentPageNum+1 ? <Button style={Btn}><ButtonWrapper to={path+'/'+(currentPageNum+1)}>{currentPageNum+1}</ButtonWrapper></Button> : null}
-        {maxPageNum >= currentPageNum+2 ? <Button style={Btn}><ButtonWrapper to={path+'/'+(currentPageNum+2)}>{currentPageNum+2}</ButtonWrapper></Button> : null}
-        {maxPageNum > currentPageNum+3 ? <Button disabled style={{cursor: 'not-allowed'}}>...</Button> : null}
-        {maxPageNum >= currentPageNum+3 ? <Button style={Btn}><ButtonWrapper to={path+'/'+maxPageNum}>{maxPageNum}</ButtonWrapper></Button> : null}
-        {currentPageNum < maxPageNum ? <Button style={Btn}><ButtonWrapper to={path+'/'+((currentPageNum || 1)+1)}>Next</ButtonWrapper></Button> : null}
+        {currentPageNum > 1 ? <LinkedBtn to={path+'/'+(currentPageNum-1)}>Previous</LinkedBtn> : null}
+        {currentPageNum > 2 ? <LinkedBtn to={path+'/'+(currentPageNum-2)}>{currentPageNum-2}</LinkedBtn> : null}
+        {currentPageNum > 1 ? <LinkedBtn to={path+'/'+(currentPageNum-1)}>{currentPageNum-1}</LinkedBtn> : null}
+        <Button disabled cursor='not-allowed'>{currentPageNum}</Button>
+        {maxPageNum >= currentPageNum+1 ? <LinkedBtn to={path+'/'+(currentPageNum+1)}>{currentPageNum+1}</LinkedBtn> : null}
+        {maxPageNum >= currentPageNum+2 ? <LinkedBtn to={path+'/'+(currentPageNum+2)}>{currentPageNum+2}</LinkedBtn> : null}
+        {maxPageNum > currentPageNum+3 ? <Button disabled cursor='not-allowed'>...</Button> : null}
+        {maxPageNum >= currentPageNum+3 ? <LinkedBtn to={path+'/'+maxPageNum}>{maxPageNum}</LinkedBtn> : null}
+        {currentPageNum < maxPageNum ? <LinkedBtn to={path+'/'+((currentPageNum || 1)+1)}>Next</LinkedBtn> : null}
       </ButtonGroup>
     </Flex>
   )
