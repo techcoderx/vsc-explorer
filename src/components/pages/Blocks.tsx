@@ -1,5 +1,5 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
@@ -57,7 +57,7 @@ const Blocks = () => {
             ) : ( isBlocksSuccess ?
               blocks.map((item, i) => (
                 <Tr key={i}>
-                  <Td>{item.id}</Td>
+                  <Td><Link as={ReactRouterLink} to={'/block/'+item.id}>{item.id}</Link></Td>
                   <Td sx={{whiteSpace: 'nowrap'}}>
                     <Tooltip label={item.ts} placement='top'>
                       {timeAgo(item.ts)}

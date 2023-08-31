@@ -7,6 +7,7 @@ import NewTxs from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
 import MultisigRefs from './components/pages/MultisigRefs'
 import PageNotFound from './components/pages/404'
+import Block from './components/pages/Block'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: '/blocks/:page?',
         element: <Blocks/>
+      },
+      {
+        path: '/block/:blockNum',
+        element: <Block/>
       },
       {
         path: '/transactions',

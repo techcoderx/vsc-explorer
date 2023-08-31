@@ -92,7 +92,7 @@ const DesktopNav = () => {
                 as={ReactRouterLink}
                 to={navItem.href ?? '#'}
                 p={2}
-                fontSize={'sm'}
+                fontSize={'md'}
                 fontWeight={500}
                 color={linkColor}
                 _hover={{

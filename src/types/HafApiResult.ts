@@ -14,7 +14,9 @@ export interface Block {
   l1_tx: string
   l1_block: number
   announcer: string
+  prev_block_hash?: string
   block_hash: string
+  error?: string
 }
 
 export interface Witness {
