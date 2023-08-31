@@ -15,7 +15,7 @@ export const timeAgo = (date: string | Date): string => {
   return `${seconds} secs ago`
 }
 
-export const thousandSeperator = (num: number): string => {
+export const thousandSeperator = (num: number | bigint): string => {
   let num_parts = num.toString().split(".")
   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   return num_parts.join(".")

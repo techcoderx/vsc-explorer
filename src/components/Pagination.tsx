@@ -1,6 +1,7 @@
 import { Flex, ButtonGroup, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { Link as ReactRouterLink, To } from 'react-router-dom'
+import { themeColor, themeColorULight } from '../settings'
 
 interface PaginationProps {
   path: string
@@ -30,7 +31,7 @@ const Pagination = ({path, currentPageNum, maxPageNum}: PaginationProps) => {
         {currentPageNum > 1 ? <LinkedBtn to={path+'/'+(currentPageNum-1)}>Previous</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={path+'/'+(currentPageNum-2)}>{currentPageNum-2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={path+'/'+(currentPageNum-1)}>{currentPageNum-1}</LinkedBtn> : null}
-        <Button disabled cursor='not-allowed'>{currentPageNum}</Button>
+        <Button disabled cursor='not-allowed' zIndex='2' bg={themeColor} _hover={{bg: themeColor}} _light={{borderColor: themeColor, bg: themeColorULight, _hover: {bg: themeColorULight}}}>{currentPageNum}</Button>
         {maxPageNum >= currentPageNum+1 ? <LinkedBtn to={path+'/'+(currentPageNum+1)}>{currentPageNum+1}</LinkedBtn> : null}
         {maxPageNum >= currentPageNum+2 ? <LinkedBtn to={path+'/'+(currentPageNum+2)}>{currentPageNum+2}</LinkedBtn> : null}
         {maxPageNum > currentPageNum+3 ? <Button disabled cursor='not-allowed'>...</Button> : null}
