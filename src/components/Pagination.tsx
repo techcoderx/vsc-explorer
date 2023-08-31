@@ -42,4 +42,20 @@ const Pagination = ({path, currentPageNum, maxPageNum}: PaginationProps) => {
   )
 }
 
+interface prevNextBtnProps {
+  toPrev?: string
+  toNext?: string
+}
+
+export const PrevNextBtns = ({toPrev, toNext}: prevNextBtnProps) => {
+  return (
+    <Box margin='10px 0px'>
+      <ButtonGroup size='md' isAttached variant={'outline'} float='right'>
+        {toPrev ? <LinkedBtn to={toPrev}>Previous</LinkedBtn>: null}
+        {toNext ? <LinkedBtn to={toNext}>Next</LinkedBtn>: null}
+      </ButtonGroup>
+    </Box>
+  )
+}
+
 export default Pagination

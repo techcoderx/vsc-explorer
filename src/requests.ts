@@ -36,3 +36,9 @@ export const fetchMultisigTxRefs = async (last_id: number, count: number = 100):
   const refs: MultisigTxRef[] = await res.json()
   return refs
 }
+
+export const fetchBlock = async (block_id: number): Promise<Block> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_block_by_id?blk_id=${block_id}`)
+  const blk: Block = await res.json()
+  return blk
+}
