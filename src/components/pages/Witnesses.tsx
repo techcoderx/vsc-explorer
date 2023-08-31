@@ -1,0 +1,62 @@
+import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge } from '@chakra-ui/react'
+import { useQuery } from '@tanstack/react-query'
+import { fetchProps, fetchWitnesses } from '../../requests'
+
+const Witnesses = () => {
+  const { data: prop, isSuccess: isPropSuccess } = useQuery({
+    cacheTime: 30000,
+    queryKey: ['vsc-props'],
+    queryFn: fetchProps
+  })
+  const { data: witnesses, isLoading: isWitnessLoading, isSuccess: isWitnessSuccess } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-witnesses', 0],
+    queryFn: async () => fetchWitnesses(0)
+  })
+  return (
+    <>
+      <Text fontSize={'5xl'}>Witnesses</Text>
+      <hr/><br/>
+      <Text>Total {isPropSuccess ? prop.witnesses : 0} witnesses</Text>
+      <Box overflowX="auto" marginTop={'15px'}>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Id</Th>
+              <Th>Username</Th>
+              <Th>DID Key</Th>
+              <Th>Enabled</Th>
+              <Th>Last Block</Th>
+              <Th>Produced</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {isWitnessLoading ? (
+              <Tr>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+              </Tr>
+            ) : ( isWitnessSuccess ?
+              witnesses.map((item, i) => (
+                <Tr key={i}>
+                  <Td>{item.id}</Td>
+                  <Td>{item.username}</Td>
+                  <Td sx={{whiteSpace: 'nowrap'}} isTruncated>{item.did}</Td>
+                  <Td>{item.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}</Td>
+                  <Td>{item.last_block ?? 'N/A'}</Td>
+                  <Td>{item.produced}</Td>
+                </Tr>
+              )) : <Tr></Tr>
+            )}
+          </Tbody>
+        </Table>
+      </Box>
+    </>
+  )
+}
+
+export default Witnesses
