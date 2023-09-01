@@ -2,11 +2,14 @@ import { Text, Flex, Heading, Card, CardHeader, CardBody, HStack, StackDivider, 
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import PageNotFound from './404'
-import { fetchAccHistory, fetchL1, fetchWitness } from '../../requests'
+import { fetchAccHistory, fetchAccInfo, fetchL1, fetchWitness } from '../../requests'
 import { l1Explorer } from '../../settings'
 import { describeL1Tx, thousandSeperator } from '../../helpers'
 import { ReactNode } from 'react'
 import TxCard from '../TxCard'
+import Pagination from '../Pagination'
+
+const count = 50
 
 interface CardTableRowProps {
   title: string
@@ -26,8 +29,9 @@ const CardTableRow = ({ title, children, isLoading }: CardTableRowProps) => {
 }
 
 const L1User = () => {
-  const { username } = useParams()
-  if (!username || !username.startsWith('@'))
+  const { username, page } = useParams()
+  const pageNumber = parseInt(page || '1')
+  if (!username || !username.startsWith('@') || isNaN(pageNumber) || pageNumber < 1)
     return <PageNotFound/>
   const user = username.replace('@','')
   const { data: l1Acc, isLoading: isL1AccLoading, isSuccess: isL1AccSuccess } = useQuery({
@@ -45,10 +49,17 @@ const L1User = () => {
     queryKey: ['vsc-witness', username],
     queryFn: async () => fetchWitness(user)
   })
+  const { data: l1Accv, isLoading: isL1AccvLoading, isSuccess: isL1AccvSuccess } = useQuery({
+    cacheTime: 15000,
+    queryKey: ['vsc-account', username],
+    queryFn: async () => fetchAccInfo(user)
+  })
+  const last_nonce = l1Accv ? Math.max(l1Accv.tx_count-((pageNumber-1)*50)-1,0) : null
   const { data: history, isLoading: isHistLoading, isSuccess: isHistSuccess, isError: isHistError } = useQuery({
     cacheTime: 15000,
-    queryKey: ['vsc-l1-acc-history', username],
-    queryFn: async () => fetchAccHistory(user,50,null)
+    queryKey: ['vsc-l1-acc-history', username, last_nonce],
+    queryFn: async () => fetchAccHistory(user,count,last_nonce),
+    enabled: !!l1Accv
   })
   return (
     <>
@@ -136,12 +147,13 @@ const L1User = () => {
             </Card>
           </VStack>
           <VStack spacing={'3'} flexGrow={'1'}>
-            { isHistLoading ? <Card width='100%'><CardBody>Loading VSC L1 transaction tistory...</CardBody></Card> : null }
+            { isL1AccvLoading || isHistLoading ? <Card width='100%'><CardBody>Loading VSC L1 transaction tistory...</CardBody></Card> : null }
             { isHistError ? <Card width='100%'><CardBody>Failed to load VSC L1 transaction gistory</CardBody></Card> : null }
             { isHistSuccess ? (
               history.length === 0 ? <Card width='100%'><CardBody>There are no VSC L1 transactions for this account.</CardBody></Card> :
-              history.map((itm) => <TxCard width='100%' id={itm.id} ts={itm.ts}>{describeL1Tx(itm)}</TxCard>)
+              history.map((itm, i) => <TxCard key={i} width='100%' id={itm.id} ts={itm.ts}>{describeL1Tx(itm)}</TxCard>)
             ) : null }
+            { isHistSuccess && history.length > count && isL1AccvSuccess ? <Pagination path={'/'+username} currentPageNum={pageNumber} maxPageNum={Math.ceil(l1Accv.tx_count/count)}/> : null }
           </VStack>
         </Flex>
       }

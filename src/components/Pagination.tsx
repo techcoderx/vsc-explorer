@@ -26,7 +26,7 @@ const LinkedBtn = ({ to, children }: Wrapper) => {
 
 const Pagination = ({path, currentPageNum, maxPageNum}: PaginationProps) => {
   return (
-    <Flex justifyContent={'flex-end'}>
+    <Flex justifyContent={'center'}>
       <ButtonGroup size={'md'} isAttached variant={'outline'}>
         {currentPageNum > 1 ? <LinkedBtn to={path+'/'+(currentPageNum-1)}>Previous</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={path+'/'+(currentPageNum-2)}>{currentPageNum-2}</LinkedBtn> : null}

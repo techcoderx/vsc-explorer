@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <MultisigRefs/>
       },
       {
-        path: '/:username',
+        path: '/:username/:page?',
         element: <L1User/>
       },
       {

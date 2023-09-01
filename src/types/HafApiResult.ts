@@ -48,6 +48,7 @@ type TxTypes = typeof txTypes[number]
 
 export interface L1Transaction {
   id: number
+  nonce: number
   ts: string
   type: TxTypes
   l1_tx: string
@@ -72,4 +73,10 @@ export interface MultisigTxRef {
   l1_tx: string
   l1_block: number
   ref_id: string
+}
+
+export interface L1Acc {
+  name: string
+  tx_count: number
+  last_activity: string
 }
