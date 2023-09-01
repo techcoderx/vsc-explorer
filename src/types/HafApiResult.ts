@@ -22,6 +22,7 @@ export interface Block {
 export interface Witness {
   id: number
   did: string
+  trusted: boolean
   enabled: boolean
   username: string
   enabled_at?: string

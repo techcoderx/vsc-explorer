@@ -2,6 +2,7 @@ export const themeColor = 'pink.400'
 export const themeColorULight = 'pink.50'
 export const themeColorLight = 'pink.300'
 
+export const hiveApi = 'https://techcoderx.com'
 export const hafVscApi = 'https://vsc-haf.techcoderx.com'
 export const l1Explorer = 'https://hivehub.dev'
 export const ipfsGw = 'https://ipfs.io'

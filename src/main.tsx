@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 
 const theme = extendTheme({
+  sizes: {
+    ss: '22em'
+  },
   config: {
     useSystemColorMode: true,
     initialColorMode: "dark"

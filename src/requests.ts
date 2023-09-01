@@ -1,5 +1,5 @@
 import { Props, Block, Witness, L1Transaction, Contract, MultisigTxRef } from './types/HafApiResult'
-import { hafVscApi } from './settings'
+import { hafVscApi, hiveApi } from './settings'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -41,4 +41,40 @@ export const fetchBlock = async (block_id: number): Promise<Block> => {
   const res = await fetch(`${hafVscApi}/rpc/get_block_by_id?blk_id=${block_id}`)
   const blk: Block = await res.json()
   return blk
+}
+
+export const fetchWitness = async (username: string): Promise<Witness> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_witness?username=${username}`)
+  const wit: Witness = await res.json()
+  return wit
+}
+
+export const fetchAccHistory = async (username: string, count: number = 50, last_id: number|null = null): Promise<L1Transaction[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_op_history_by_l1_user?username=${username}&count=${count}${last_id?'&last_id='+last_id:''}`)
+  const hist: L1Transaction[] = await res.json()
+  return hist
+}
+
+interface HiveRPCResponse {
+  id: number
+  jsonrpc: string
+  result: any
+  error?: any
+}
+
+export const fetchL1 = async (method: string, params: object): Promise<HiveRPCResponse> => {
+  const res = await fetch(`${hiveApi}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: 1,
+      jsonrpc: '2.0',
+      method: method,
+      params: params
+    })
+  })
+  const result = await res.json()
+  return result
 }

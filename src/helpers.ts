@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { L1Transaction } from './types/HafApiResult'
 
 export const timeAgo = (date: string | Date): string => {
@@ -15,14 +16,14 @@ export const timeAgo = (date: string | Date): string => {
   return `${seconds} secs ago`
 }
 
-export const thousandSeperator = (num: number | bigint): string => {
+export const thousandSeperator = (num: number | bigint | string): string => {
   let num_parts = num.toString().split(".")
   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   return num_parts.join(".")
 }
 
-export const describeL1Tx = (tx: L1Transaction): string => {
-  let result: string = tx.username+' '
+export const describeL1Tx = (tx: L1Transaction): ReactNode => {
+  let result: ReactNode = tx.username+' '
   switch (tx.type) {
     case 'announce_node':
       result += 'announced node'
