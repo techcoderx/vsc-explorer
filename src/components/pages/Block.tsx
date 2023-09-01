@@ -1,25 +1,12 @@
-import { Text, Skeleton, Table, Tbody, Tr, Td, Link, Stack } from '@chakra-ui/react'
+import { Text, Table, Tbody, Stack } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { fetchBlock } from '../../requests'
 import PageNotFound from './404'
+import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
 import { timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
-
-type TableRowProps = {
-  label: string
-  value?: string | number | undefined
-  isLoading: boolean
-  link?: string
-}
-
-const TableRow = ({label, value, link, isLoading}: TableRowProps) => (
-  <Tr>
-    <Td fontWeight='bold'>{label}</Td>
-    <Td>{isLoading ? <Skeleton height='20px'/> : (link ? <Link href={link} target='_blank'>{value}</Link> : value)}</Td>
-  </Tr>
-)
 
 const Block = () => {
   const {blockNum} = useParams()

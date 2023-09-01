@@ -8,6 +8,7 @@ import NewContracts from './components/pages/NewContracts'
 import MultisigRefs from './components/pages/MultisigRefs'
 import PageNotFound from './components/pages/404'
 import Block from './components/pages/Block'
+import L1User from './components/pages/L1User'
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: '/txrefs',
         element: <MultisigRefs/>
+      },
+      {
+        path: '/:username',
+        element: <L1User/>
       },
       {
         path: '*',

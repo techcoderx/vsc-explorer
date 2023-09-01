@@ -7,11 +7,12 @@ type Attr = {
   id: number
   ts: string | Date
   children?: ReactNode
+  width?: any
 }
 
-const TxCard = ({children, ts}: Attr) => {
+const TxCard = ({children, ts, width}: Attr) => {
   return (
-    <Card>
+    <Card width={width}>
       <CardBody margin={'-5px'}>
         <Text style={{display: 'inline', marginRight: '5px'}}>{children}</Text>
         <Badge color={themeColorLight} style={{}}>{timeAgo(ts)}</Badge>
