@@ -153,7 +153,7 @@ const L1User = () => {
               history.length === 0 ? <Card width='100%'><CardBody>There are no VSC L1 transactions for this account.</CardBody></Card> :
               history.map((itm, i) => <TxCard key={i} width='100%' id={itm.id} ts={itm.ts}>{describeL1Tx(itm)}</TxCard>)
             ) : null }
-            { isHistSuccess && history.length > count && isL1AccvSuccess ? <Pagination path={'/'+username} currentPageNum={pageNumber} maxPageNum={Math.ceil(l1Accv.tx_count/count)}/> : null }
+            { isHistSuccess && isL1AccvSuccess ? <Pagination path={'/'+username} currentPageNum={pageNumber} maxPageNum={Math.ceil(l1Accv.tx_count/count)}/> : null }
           </VStack>
         </Flex>
       }
