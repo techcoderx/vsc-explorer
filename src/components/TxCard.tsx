@@ -9,12 +9,11 @@ type Attr = {
   ts: string
   txid: string
   children?: ReactNode
-  width?: any
 }
 
-const TxCard = ({children, ts, txid, width}: Attr) => {
+const TxCard = ({children, ts, txid}: Attr) => {
   return (
-    <Card as={Link} to={'/tx/'+txid} width={width} _hover={{borderColor: themeColor, borderWidth: '0.5px'}} _light={{_hover: { borderWidth: '1px' }}}>
+    <Card as={Link} to={'/tx/'+txid} width='100%' _hover={{borderColor: themeColor, borderWidth: '0.5px'}} _light={{_hover: { borderWidth: '1px' }}}>
       <CardBody margin={'-5px'}>
         <Text style={{display: 'inline', marginRight: '5px'}}>{children}</Text>
         <Tooltip label={ts} placement='top'>

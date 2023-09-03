@@ -12,24 +12,26 @@ const count = 50
 const Blocks = () => {
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
-  if (page && isNaN(pageNumber) || pageNumber < 1)
-    return <PageNotFound/>
+  const invalidPage = page && isNaN(pageNumber) || pageNumber < 1
   const paginate = page ? pageNumber*count : count
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
-    queryFn: fetchProps
+    queryFn: fetchProps,
+    enabled: !invalidPage
   })
   const height = prop?.l2_block_height
   const { data: blocks, isLoading: isBlocksLoading, isSuccess: isBlocksSuccess } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-blocks', height, page],
     queryFn: async () => {
-      let d = await fetchBlocks(Math.max(1,height!-paginate+1),count)
+      const d = await fetchBlocks(Math.max(1,height!-paginate+1),count)
       return d.reverse()
     },
-    enabled: !!height
+    enabled: !!height && !invalidPage
   })
+  if (invalidPage)
+    return <PageNotFound/>
 
   return (
     <>
