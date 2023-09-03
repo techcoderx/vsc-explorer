@@ -54,9 +54,9 @@ export const JsonToTableRecursive = ({json, isInCard = false}: JTR): ReactNode =
       <Tbody>
         {Object.entries(json).map(([key, value]) => {
           if (typeof value === 'object')
-            return <TableRow isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}>{JsonToTableRecursive({ json: value, isInCard })}</TableRow>
+            return <TableRow key={key} isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}>{JsonToTableRecursive({ json: value, isInCard })}</TableRow>
           else
-            return <TableRow isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}><Text wordBreak='break-all'>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
+            return <TableRow key={key} isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}><Text wordBreak='break-all'>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
         })}
       </Tbody>
     </Table>

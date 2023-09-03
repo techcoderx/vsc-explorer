@@ -15,8 +15,8 @@ const NewTxs = () => {
       <Text fontSize={'5xl'}>Latest Transactions (L1)</Text>
       <hr/>
       <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
-        {!isTxsLoading && isTxsSuccess ? txs.map((tx) => (
-          <TxCard id={tx.id} ts={tx.ts} txid={tx.l1_tx}>{describeL1TxBriefly(tx)}</TxCard>
+        {!isTxsLoading && isTxsSuccess ? txs.map((tx, i) => (
+          <TxCard key={i} id={tx.id} ts={tx.ts} txid={tx.l1_tx}>{describeL1TxBriefly(tx)}</TxCard>
         )):<></>}
       </Flex>
     </>
