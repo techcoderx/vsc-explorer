@@ -34,7 +34,7 @@ const L1Tx = () => {
                 <Tbody>
                   <TableRow isInCard={true} label='ID' isLoading={isLoading} value={trx.id}/>
                   <TableRow isInCard={true} label='Timestamp' isLoading={isLoading} value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
-                  <TableRow isInCard={true} label='Username' isLoading={isLoading} value={trx.username}/>
+                  <TableRow isInCard={true} label='Username' isLoading={isLoading} value={trx.username} link={'/@'+trx.username}/>
                   <TableRow isInCard={true} label='Operation Type' isLoading={isLoading}><Badge color={themeColor}>{trx.type}</Badge></TableRow>
                   <TableRow isInCard={true} label='Nonce' isLoading={isLoading} value={trx.nonce}/>
                   <TableRow isInCard={true} label='Payload' isLoading={isLoading}><JsonToTableRecursive isInCard={true} json={trx.payload}/></TableRow>
