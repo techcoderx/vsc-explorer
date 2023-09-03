@@ -1,4 +1,5 @@
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge } from '@chakra-ui/react'
+import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge, Link } from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchWitnesses } from '../../requests'
 
@@ -44,7 +45,7 @@ const Witnesses = () => {
               witnesses.map((item, i) => (
                 <Tr key={i}>
                   <Td>{item.id}</Td>
-                  <Td>{item.username}</Td>
+                  <Td><Link as={ReactRouterLink} to={'/@'+item.username}>{item.username}</Link></Td>
                   <Td sx={{whiteSpace: 'nowrap'}} isTruncated>{item.did}</Td>
                   <Td>{item.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}</Td>
                   <Td>{item.last_block ?? 'N/A'}</Td>
