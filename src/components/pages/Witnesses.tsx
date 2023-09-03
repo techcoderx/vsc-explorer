@@ -50,7 +50,7 @@ const Witnesses = () => {
                   <Td>{item.last_block ?? 'N/A'}</Td>
                   <Td>{item.produced}</Td>
                 </Tr>
-              )) : <Tr></Tr>
+              )) : null
             )}
           </Tbody>
         </Table>

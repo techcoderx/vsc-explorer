@@ -18,19 +18,19 @@ const L1Tx = () => {
       <Box marginBottom={'15px'}>
         <Text fontSize={'5xl'}>Hive L1 Transaction</Text>
         <Text fontSize={'3xl'} opacity={'0.7'}>{txid}</Text>
-        <Text fontSize={'xl'} marginTop={'10px'}>
-          Included in L1 block {isSuccess && data.length > 0 ?
-          <Link href={l1Explorer+'/b/'+data[0].l1_block} target='_blank'>{'#'+thousandSeperator(data[0].l1_block)}</Link> : isLoading ? <Skeleton height='20px'/> : 'Errored'}
-        </Text>
+        <Text fontSize={'xl'} marginTop={'10px'} display={'inline'}>Included in L1 block </Text>
+        {isSuccess && data.length > 0 ?
+          <Link href={l1Explorer+'/b/'+data[0].l1_block} target='_blank' fontSize={'xl'} marginTop={'10px'}>{'#'+thousandSeperator(data[0].l1_block)}</Link> :
+          isLoading ? <Skeleton height='20px'/> : <Text fontSize={'xl'} marginTop={'10px'}>Errored</Text>}
       </Box>
       <hr/>
       <Button as={ReactRouterLink} margin={'20px 0px'} colorScheme={themeColorScheme} variant={'outline'} to={l1Explorer+'/tx/'+txid} target='_blank'>View in {l1ExplorerName}</Button>
       { isSuccess ?
         data.map((trx, i) => 
-          <Card>
+          <Card key={i}>
             <CardHeader><Heading fontSize={'2xl'}>Operation #{i}</Heading></CardHeader>
             <CardBody>
-              <Table margin={'-20px 0 0'} variant={'unstyled'} frame={false}>
+              <Table margin={'-20px 0 0'} variant={'unstyled'}>
                 <Tbody>
                   <TableRow isInCard={true} label='ID' isLoading={isLoading} value={trx.id}/>
                   <TableRow isInCard={true} label='Timestamp' isLoading={isLoading} value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
