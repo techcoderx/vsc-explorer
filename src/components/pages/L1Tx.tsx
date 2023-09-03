@@ -32,14 +32,17 @@ const L1Tx = () => {
             <CardBody>
               <Table margin={'-20px 0 0'} variant={'unstyled'}>
                 <Tbody>
-                  <TableRow isInCard={true} label='ID' isLoading={isLoading} value={trx.id}/>
-                  <TableRow isInCard={true} label='Timestamp' isLoading={isLoading} value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
-                  <TableRow isInCard={true} label='Username' isLoading={isLoading} value={trx.username} link={'/@'+trx.username}/>
-                  <TableRow isInCard={true} label='Operation Type' isLoading={isLoading}><Badge color={themeColor}>{trx.type}</Badge></TableRow>
-                  <TableRow isInCard={true} label='Nonce' isLoading={isLoading} value={trx.nonce}/>
-                  <TableRow isInCard={true} label='Payload' isLoading={isLoading}><JsonToTableRecursive isInCard={true} json={trx.payload}/></TableRow>
+                  <TableRow isInCard label='ID' isLoading={isLoading} value={trx.id}/>
+                  <TableRow isInCard label='Timestamp' isLoading={isLoading} value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
+                  <TableRow isInCard label='Username' isLoading={isLoading} value={trx.username} link={'/@'+trx.username}/>
+                  <TableRow isInCard label='Operation Type' isLoading={isLoading}><Badge color={themeColor}>{trx.type}</Badge></TableRow>
+                  <TableRow isInCard label='Nonce' isLoading={isLoading} value={trx.nonce}/>
                 </Tbody>
               </Table>
+            </CardBody>
+            <CardHeader><Heading fontSize={'xl'}>Payload</Heading></CardHeader>
+            <CardBody marginTop={'-25px'}>
+              <JsonToTableRecursive isInCard minimalSpace json={trx.payload}/>
             </CardBody>
           </Card>)
       : null}
