@@ -2,7 +2,7 @@ import { Tr, Td, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { ReactNode } from 'react'
 
-const cardBorder = '0.75px solid grey'
+const cardBorder = '1px solid rgb(255,255,255,0.16)'
 
 type TableRowProps = {
   label: string
