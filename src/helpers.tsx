@@ -1,5 +1,7 @@
+import { Table, Tbody, Text } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { L1Transaction } from './types/HafApiResult'
+import TableRow from './components/TableRow'
 
 export const timeAgo = (date: string | Date): string => {
   const now = new Date().getTime()
@@ -22,7 +24,7 @@ export const thousandSeperator = (num: number | bigint | string): string => {
   return num_parts.join(".")
 }
 
-export const describeL1Tx = (tx: L1Transaction): ReactNode => {
+export const describeL1TxBriefly = (tx: L1Transaction): ReactNode => {
   let result: ReactNode = tx.username+' '
   switch (tx.type) {
     case 'announce_node':
@@ -39,4 +41,24 @@ export const describeL1Tx = (tx: L1Transaction): ReactNode => {
       break
   }
   return result
+}
+
+interface JTR {
+  json: object
+  isInCard?: boolean
+}
+
+export const JsonToTableRecursive = ({json, isInCard = false}: JTR): ReactNode => {
+  return (
+    <Table variant={'unstyled'}>
+      <Tbody>
+        {Object.entries(json).map(([key, value]) => {
+          if (typeof value === 'object')
+            return <TableRow isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}>{JsonToTableRecursive({ json: value, isInCard })}</TableRow>
+          else
+            return <TableRow isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}><Text wordBreak='break-all'>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
+        })}
+      </Tbody>
+    </Table>
+  )
 }

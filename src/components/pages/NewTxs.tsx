@@ -2,7 +2,7 @@ import { Text, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import TxCard from '../TxCard'
 import { fetchLatestTxs } from '../../requests'
-import { describeL1Tx } from '../../helpers'
+import { describeL1TxBriefly } from '../../helpers'
 
 const NewTxs = () => {
   const { data: txs, isLoading: isTxsLoading, isSuccess: isTxsSuccess } = useQuery({
@@ -16,7 +16,7 @@ const NewTxs = () => {
       <hr/>
       <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
         {!isTxsLoading && isTxsSuccess ? txs.map((tx) => (
-          <TxCard id={tx.id} ts={tx.ts}>{describeL1Tx(tx)}</TxCard>
+          <TxCard id={tx.id} ts={tx.ts} txid={tx.l1_tx}>{describeL1TxBriefly(tx)}</TxCard>
         )):<></>}
       </Flex>
     </>
