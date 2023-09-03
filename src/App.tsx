@@ -9,6 +9,7 @@ import MultisigRefs from './components/pages/MultisigRefs'
 import PageNotFound from './components/pages/404'
 import Block from './components/pages/Block'
 import L1User from './components/pages/L1User'
+import L1Tx from './components/pages/L1Tx'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: '/:username/:page?',
         element: <L1User/>
+      },
+      {
+        path: '/tx/:txid',
+        element: <L1Tx/>
       },
       {
         path: '*',

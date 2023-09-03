@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1, fetchWitness } from '../../requests'
 import { l1Explorer } from '../../settings'
-import { describeL1Tx, thousandSeperator } from '../../helpers'
+import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
 import { ReactNode } from 'react'
 import TxCard from '../TxCard'
 import Pagination from '../Pagination'
@@ -151,7 +151,7 @@ const L1User = () => {
             { isHistError ? <Card width='100%'><CardBody>Failed to load VSC L1 transaction gistory</CardBody></Card> : null }
             { isHistSuccess ? (
               history.length === 0 ? <Card width='100%'><CardBody>There are no VSC L1 transactions for this account.</CardBody></Card> :
-              history.map((itm, i) => <TxCard key={i} width='100%' id={itm.id} ts={itm.ts}>{describeL1Tx(itm)}</TxCard>)
+              history.map((itm, i) => <TxCard key={i} width='100%' id={itm.id} ts={itm.ts} txid={itm.l1_tx}>{describeL1TxBriefly(itm)}</TxCard>)
             ) : null }
             { isHistSuccess && isL1AccvSuccess ? <Pagination path={'/'+username} currentPageNum={pageNumber} maxPageNum={Math.ceil(l1Accv.tx_count/count)}/> : null }
           </VStack>

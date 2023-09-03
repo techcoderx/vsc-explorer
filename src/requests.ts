@@ -61,6 +61,12 @@ export const fetchAccInfo = async (username: string): Promise<L1Acc> => {
   return acc
 }
 
+export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_ops_by_l1_tx?trx_id=${trx_id}`)
+  const trx: L1Transaction[] = await res.json()
+  return trx
+}
+
 interface HiveRPCResponse {
   id: number
   jsonrpc: string
