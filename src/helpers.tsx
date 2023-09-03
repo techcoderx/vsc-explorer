@@ -46,17 +46,18 @@ export const describeL1TxBriefly = (tx: L1Transaction): ReactNode => {
 interface JTR {
   json: object
   isInCard?: boolean
+  minimalSpace?: boolean
 }
 
-export const JsonToTableRecursive = ({json, isInCard = false}: JTR): ReactNode => {
+export const JsonToTableRecursive = ({json, isInCard = false, minimalSpace = false}: JTR): ReactNode => {
   return (
     <Table variant={'unstyled'}>
       <Tbody>
         {Object.entries(json).map(([key, value]) => {
           if (typeof value === 'object')
-            return <TableRow key={key} isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}>{JsonToTableRecursive({ json: value, isInCard })}</TableRow>
+            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>{JsonToTableRecursive({ json: value, isInCard, minimalSpace })}</TableRow>
           else
-            return <TableRow key={key} isInCard={isInCard} allCardBorders={true} label={key} isLoading={false}><Text wordBreak='break-all'>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
+            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}><Text wordBreak='break-all'>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
         })}
       </Tbody>
     </Table>
