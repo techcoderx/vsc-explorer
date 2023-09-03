@@ -1,8 +1,9 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchMultisigTxRefs } from '../../requests'
 import { timeAgo } from '../../helpers'
-import { ipfsSubGw, l1Explorer } from '../../settings'
+import { ipfsSubGw } from '../../settings'
 
 const MultisigRefs = () => {
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
@@ -50,7 +51,7 @@ const MultisigRefs = () => {
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td isTruncated><Link href={l1Explorer+'/tx/'+item.l1_tx} target='_blank'>{item.l1_tx}</Link></Td>
+                  <Td isTruncated><Link as={ReactRouterLink} to={'/tx/'+item.l1_tx}>{item.l1_tx}</Link></Td>
                   <Td isTruncated><Link href={ipfsSubGw(item.ref_id)} target='_blank'>{item.ref_id}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>
