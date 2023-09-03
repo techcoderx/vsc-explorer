@@ -1,3 +1,12 @@
+import {
+  DIDPayload,
+  BlockPayload,
+  NewContractPayload,
+  ContractCommitmentPayload,
+  NodeAnnouncePayload,
+  MultisigTxRefPayload
+} from './Payloads'
+
 export interface Props {
   txrefs: number
   contracts: number
@@ -54,7 +63,7 @@ export interface L1Transaction {
   l1_tx: string
   l1_block: number
   username: string
-  payload?: any
+  payload?: DIDPayload | BlockPayload | NewContractPayload | ContractCommitmentPayload | NodeAnnouncePayload | MultisigTxRefPayload | object
 }
 
 export interface Contract {

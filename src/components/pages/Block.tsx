@@ -11,13 +11,15 @@ import { ipfsSubGw, l1Explorer } from '../../settings'
 const Block = () => {
   const {blockNum} = useParams()
   const blkNum = parseInt(blockNum!)
-  if (isNaN(blkNum) || blkNum < 1)
-    return <PageNotFound/>
+  const invalidBlkNum = isNaN(blkNum) || blkNum < 1
   const { data: block, isLoading: isBlockLoading, isError: isBlockError} = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-block', blkNum],
-    queryFn: async () => fetchBlock(blkNum)
+    queryFn: async () => fetchBlock(blkNum),
+    enabled: !invalidBlkNum
   })
+  if (invalidBlkNum)
+    return <PageNotFound/>
   return (
     <>
       <Stack direction={{base: 'column', md: 'row'}} justifyContent='space-between'>

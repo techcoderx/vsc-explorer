@@ -1,4 +1,5 @@
 import { Props, Block, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc } from './types/HafApiResult'
+import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi } from './settings'
 
 export const fetchProps = async (): Promise<Props> => {
@@ -70,8 +71,14 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
 interface HiveRPCResponse {
   id: number
   jsonrpc: string
-  result: any
-  error?: any
+  result: L1Account[] | L1Dgp
+  error?: HiveRPCError
+}
+
+interface HiveRPCError {
+  code: number
+  message: string
+  data?: string
 }
 
 export const fetchL1 = async (method: string, params: object): Promise<HiveRPCResponse> => {

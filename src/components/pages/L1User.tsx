@@ -7,6 +7,7 @@ import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
 import { ReactNode } from 'react'
 import TxCard from '../TxCard'
 import Pagination from '../Pagination'
+import { L1Account, L1Dgp } from '../../types/L1ApiResult'
 
 const count = 50
 
@@ -30,41 +31,48 @@ const CardTableRow = ({ title, children, isLoading }: CardTableRowProps) => {
 const L1User = () => {
   const { username, page } = useParams()
   const pageNumber = parseInt(page || '1')
-  if (!username || !username.startsWith('@') || isNaN(pageNumber) || pageNumber < 1)
-    return <PageNotFound/>
-  const user = username.replace('@','')
+  const invalidParams = !username || !username.startsWith('@') || isNaN(pageNumber) || pageNumber < 1
+  const user = !invalidParams ? username.replace('@','') : ''
   const { data: l1Acc, isLoading: isL1AccLoading, isSuccess: isL1AccSuccess } = useQuery({
     cacheTime: 15000,
     queryKey: ['hive-account', username],
-    queryFn: async () => fetchL1('condenser_api.get_accounts', [[user]])
+    queryFn: async () => fetchL1('condenser_api.get_accounts', [[user]]),
+    enabled: !invalidParams
   })
   const { data: l1Dgp, isLoading: isL1DgpLoading, isSuccess: isL1DgpSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['hive-dgp'],
-    queryFn: async () => fetchL1('database_api.get_dynamic_global_properties', {})
+    queryFn: async () => fetchL1('condenser_api.get_dynamic_global_properties', []),
+    enabled: !invalidParams
   })
   const { data: witness, isLoading: isWitLoading, isSuccess: isWitSuccess } = useQuery({
     cacheTime: 60000,
     queryKey: ['vsc-witness', username],
-    queryFn: async () => fetchWitness(user)
+    queryFn: async () => fetchWitness(user),
+    enabled: !invalidParams
   })
   const { data: l1Accv, isLoading: isL1AccvLoading, isSuccess: isL1AccvSuccess } = useQuery({
     cacheTime: 15000,
     queryKey: ['vsc-account', username],
-    queryFn: async () => fetchAccInfo(user)
+    queryFn: async () => fetchAccInfo(user),
+    enabled: !invalidParams
   })
   const last_nonce = l1Accv ? Math.max(l1Accv.tx_count-((pageNumber-1)*50)-1,0) : null
   const { data: history, isLoading: isHistLoading, isSuccess: isHistSuccess, isError: isHistError } = useQuery({
     cacheTime: 15000,
     queryKey: ['vsc-l1-acc-history', username, last_nonce],
     queryFn: async () => fetchAccHistory(user,count,last_nonce),
-    enabled: !!l1Accv
+    enabled: !!l1Accv && !invalidParams
   })
+  const l1AccResult = l1Acc?.result as L1Account[]
+  const l1DgpResult = l1Dgp?.result as L1Dgp
+  if (invalidParams)
+    return <PageNotFound/>
   return (
     <>
       <Text fontSize={'5xl'} marginBottom='10px'>{username}</Text>
       <hr/>
-      { isL1AccSuccess && !l1Acc.error && l1Acc.result.length === 0 ?
+      { isL1AccSuccess && !l1Acc.error && l1AccResult.length === 0 ?
         <Text fontSize={'xl'} margin={'10px 0px'}>Account does not exist</Text> :
 
         isL1AccSuccess && l1Acc.error ?
@@ -127,15 +135,15 @@ const L1User = () => {
               <CardBody>
                 <VStack divider={<StackDivider/>}>
                   <CardTableRow title='HIVE Balance' isLoading={isL1AccLoading}>
-                    <Text>{isL1AccSuccess && !l1Acc.error && l1Acc.result.length > 0 ? thousandSeperator(parseFloat(l1Acc?.result[0].balance)+parseFloat(l1Acc?.result[0].savings_balance))+' HIVE' : 'Error'}</Text>
+                    <Text>{isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ? thousandSeperator(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance))+' HIVE' : 'Error'}</Text>
                   </CardTableRow>
                   <CardTableRow title='HBD Balance' isLoading={isL1AccLoading}>
-                    <Text>{isL1AccSuccess && !l1Acc.error && l1Acc.result.length > 0 ? thousandSeperator(parseFloat(l1Acc?.result[0].hbd_balance)+parseFloat(l1Acc?.result[0].savings_hbd_balance))+' HBD' : 'Error'}</Text>
+                    <Text>{isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ? thousandSeperator(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance))+' HBD' : 'Error'}</Text>
                   </CardTableRow>
                   <CardTableRow title='Staked HIVE' isLoading={isL1AccLoading || isL1DgpLoading}>
-                    { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error && l1Acc.result.length > 0 ?
-                      <Tooltip label={thousandSeperator(parseFloat(l1Acc?.result[0].vesting_shares))+' VESTS'} placement='top'>{
-                          thousandSeperator((1000*parseFloat(l1Dgp?.result.total_vesting_fund_hive.amount)*parseFloat(l1Acc?.result[0].vesting_shares)/parseFloat(l1Dgp?.result.total_vesting_shares.amount)).toFixed(3))+' HP'
+                    { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ?
+                      <Tooltip label={thousandSeperator(parseFloat(l1AccResult[0].vesting_shares))+' VESTS'} placement='top'>{
+                          thousandSeperator((parseFloat(l1DgpResult.total_vesting_fund_hive)*parseFloat(l1AccResult[0].vesting_shares)/parseFloat(l1DgpResult.total_vesting_shares)).toFixed(3))+' HP'
                         }
                       </Tooltip>
                       : 'Error'
@@ -150,7 +158,7 @@ const L1User = () => {
             { isHistError ? <Card width='100%'><CardBody>Failed to load VSC L1 transaction gistory</CardBody></Card> : null }
             { isHistSuccess ? (
               history.length === 0 ? <Card width='100%'><CardBody>There are no VSC L1 transactions for this account.</CardBody></Card> :
-              history.map((itm, i) => <TxCard key={i} width='100%' id={itm.id} ts={itm.ts} txid={itm.l1_tx}>{describeL1TxBriefly(itm)}</TxCard>)
+              history.map((itm, i) => <TxCard key={i} id={itm.id} ts={itm.ts} txid={itm.l1_tx}>{describeL1TxBriefly(itm)}</TxCard>)
             ) : null }
             { isHistSuccess && isL1AccvSuccess ? <Pagination path={'/'+username} currentPageNum={pageNumber} maxPageNum={Math.ceil(l1Accv.tx_count/count)}/> : null }
           </VStack>

@@ -2,8 +2,9 @@ import { Text, Box, Table, Tbody, Skeleton, Link, Button, Heading, Card, CardHea
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
+import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchTxByL1Id } from '../../requests'
-import { JsonToTableRecursive, thousandSeperator, timeAgo } from '../../helpers'
+import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
 
 const L1Tx = () => {
@@ -42,7 +43,7 @@ const L1Tx = () => {
             </CardBody>
             <CardHeader><Heading fontSize={'xl'}>Payload</Heading></CardHeader>
             <CardBody marginTop={'-25px'}>
-              <JsonToTableRecursive isInCard minimalSpace json={trx.payload}/>
+              <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object}/>
             </CardBody>
           </Card>)
       : null}
