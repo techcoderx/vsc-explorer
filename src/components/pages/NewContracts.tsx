@@ -1,8 +1,9 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { timeAgo } from '../../helpers'
 import { fetchLatestContracts } from '../../requests'
-import { l1Explorer, ipfsGw } from '../../settings'
+import { ipfsGw } from '../../settings'
 
 const NewContracts = () => {
   const { data: contracts, isLoading: isContractsLoading, isSuccess: isContractsSuccess } = useQuery({
@@ -44,7 +45,7 @@ const NewContracts = () => {
                       {timeAgo(item.created_at)}
                     </Tooltip>
                   </Td>
-                  <Td><Link href={l1Explorer+'/tx/'+item.created_in_op} target='_blank'>{item.created_in_op}</Link></Td>
+                  <Td><Link as={ReactRouterLink} to={'/tx/'+item.created_in_op}>{item.created_in_op}</Link></Td>
                   <Td>
                     <Tooltip label={item.manifest_id} placement='top'>
                       <Link href={ipfsGw+'/ipfs/'+item.manifest_id} target='_blank'>{item.manifest_id.substring(0,15)+'...'}</Link>

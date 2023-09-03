@@ -30,7 +30,7 @@ const Block = () => {
           <Tbody>
             <TableRow label="Block ID" value={block?.id} isLoading={isBlockLoading}/>
             <TableRow label="Timestamp" value={block ? block.ts+' ('+timeAgo(block.ts)+')' : ''} isLoading={isBlockLoading}/>
-            <TableRow label="L1 Tx" value={block?.l1_tx} isLoading={isBlockLoading} link={l1Explorer+'/tx/'+block?.l1_tx}/>
+            <TableRow label="L1 Tx" value={block?.l1_tx} isLoading={isBlockLoading} link={'/tx/'+block?.l1_tx}/>
             <TableRow label="L1 Block" value={block?.l1_block} isLoading={isBlockLoading} link={l1Explorer+'/b/'+block?.l1_block}/>
             <TableRow label="Announcer" value={block?.announcer} isLoading={isBlockLoading}/>
             <TableRow label="Previous Block Hash" value={block?.prev_block_hash ?? 'NULL'} isLoading={isBlockLoading} link={block?.prev_block_hash ? ipfsSubGw(block?.prev_block_hash) : undefined}/>

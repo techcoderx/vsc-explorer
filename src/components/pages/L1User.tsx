@@ -1,9 +1,8 @@
 import { Text, Flex, Heading, Card, CardHeader, CardBody, HStack, StackDivider, VStack, Skeleton, Tooltip, Box, Badge, Link } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1, fetchWitness } from '../../requests'
-import { l1Explorer } from '../../settings'
 import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
 import { ReactNode } from 'react'
 import TxCard from '../TxCard'
@@ -101,14 +100,14 @@ const L1User = () => {
                   { isWitSuccess && witness.enabled ?
                     <CardTableRow title='Last Update' isLoading={isWitLoading}>
                       {isWitSuccess ? ( witness.enabled_at ?
-                        <Link wordBreak={'break-all'} href={l1Explorer+'/tx/'+witness.enabled_at} target='_blank'>{witness.enabled_at}</Link> : 'N/A') : 'Error'
+                        <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.enabled_at}>{witness.enabled_at}</Link> : 'N/A') : 'Error'
                       }
                     </CardTableRow> : null
                   }
                   { isWitSuccess && !witness.enabled && witness.disabled_at ?
                     <CardTableRow title='Last Update' isLoading={isWitLoading}>
                       {isWitSuccess ? ( witness.disabled_at ?
-                        <Link wordBreak={'break-all'} href={l1Explorer+'/tx/'+witness.disabled_at} target='_blank'>{witness.disabled_at}</Link> : 'N/A') : 'Error'
+                        <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.disabled_at}>{witness.disabled_at}</Link> : 'N/A') : 'Error'
                       }
                     </CardTableRow> : null 
                   }
