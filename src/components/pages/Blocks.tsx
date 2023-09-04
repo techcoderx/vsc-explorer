@@ -65,7 +65,7 @@ const Blocks = () => {
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td>{item.announcer}</Td>
+                  <Td><Link as={ReactRouterLink} to={'/@'+item.announcer}>{item.announcer}</Link></Td>
                   <Td isTruncated><Link href={ipfsSubGw(item.block_hash)} target='_blank'>{item.block_hash}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>
