@@ -1,32 +1,15 @@
-import { Text, Flex, Heading, Card, CardHeader, CardBody, HStack, StackDivider, VStack, Skeleton, Tooltip, Box, Badge, Link } from '@chakra-ui/react'
+import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge, Link, Table, Tbody } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1, fetchWitness } from '../../requests'
 import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
-import { ReactNode } from 'react'
 import TxCard from '../TxCard'
+import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Account, L1Dgp } from '../../types/L1ApiResult'
 
 const count = 50
-
-interface CardTableRowProps {
-  title: string
-  children: ReactNode
-  isLoading: boolean
-}
-
-const CardTableRow = ({ title, children, isLoading }: CardTableRowProps) => {
-  return (
-    <HStack divider={<StackDivider/>} w='100%' spacing='4'>
-      <Box minW='105px'>
-        <Text fontWeight={'bold'} minW='105px'>{title}</Text>
-      </Box>
-      {isLoading ? <Skeleton height='20px'/> : children}
-    </HStack>
-  )
-}
 
 const L1User = () => {
   const { username, page } = useParams()
@@ -80,52 +63,45 @@ const L1User = () => {
         <Flex direction={{base: 'column', lg: 'row'}} marginTop='20px' gap='6'>
           <VStack width={{base: '100%', lg: 'ss'}} spacing={'6'}>
             <Card width={'100%'}>
-              <CardHeader>
+              <CardHeader marginBottom={'-15px'}>
                 <Heading size={'md'} textAlign={'center'}>VSC Witness</Heading>
               </CardHeader>
               <CardBody>
-                <VStack divider={<StackDivider/>}>
-                  <CardTableRow title='ID' isLoading={isWitLoading}>
-                    <Text>{isWitSuccess ? witness.id : 'Error'}</Text>
-                  </CardTableRow>
-                  <CardTableRow title='DID Key' isLoading={isWitLoading}>
-                    <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did : 'Error'}</Text>
-                  </CardTableRow>
-                  <CardTableRow title='DID Trusted' isLoading={isWitLoading}>
-                    <Text wordBreak={'break-all'}>{
-                      isWitSuccess ? (
-                        witness.trusted ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
+                <Table variant={'unstyled'}>
+                  <Tbody>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='ID' isLoading={isWitLoading} value={isWitSuccess ? witness.id : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='DID Key' isLoading={isWitLoading}>
+                      <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did : 'Error'}</Text>
+                    </TableRow>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='DID Trusted' isLoading={isWitLoading}>
+                      { isWitSuccess ? ( witness.trusted ?
+                        <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
                       ) : 'Error'}
-                    </Text>
-                  </CardTableRow>
-                  <CardTableRow title='Enabled' isLoading={isWitLoading}>
-                    <Text wordBreak={'break-all'}>{
-                      isWitSuccess ? (
-                        witness.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
+                    </TableRow>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Enabled' isLoading={isWitLoading}>
+                      { isWitSuccess ? ( witness.enabled ?
+                        <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
                       ) : 'Error'}
-                    </Text>
-                  </CardTableRow>
-                  { isWitSuccess && witness.enabled ?
-                    <CardTableRow title='Last Update' isLoading={isWitLoading}>
-                      {isWitSuccess ? ( witness.enabled_at ?
-                        <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.enabled_at}>{witness.enabled_at}</Link> : 'N/A') : 'Error'
-                      }
-                    </CardTableRow> : null
-                  }
-                  { isWitSuccess && !witness.enabled && witness.disabled_at ?
-                    <CardTableRow title='Last Update' isLoading={isWitLoading}>
-                      {isWitSuccess ? ( witness.disabled_at ?
-                        <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.disabled_at}>{witness.disabled_at}</Link> : 'N/A') : 'Error'
-                      }
-                    </CardTableRow> : null 
-                  }
-                  <CardTableRow title='Last Block' isLoading={isWitLoading}>
-                    <Text wordBreak={'break-all'}>{isWitSuccess ? (witness.last_block ? thousandSeperator(witness.last_block) : 'NULL') : 'Error'}</Text>
-                  </CardTableRow>
-                  <CardTableRow title='Produced' isLoading={isWitLoading}>
-                    <Text wordBreak={'break-all'}>{isWitSuccess ? (witness.produced ? thousandSeperator(witness.produced) : 0) : 'Error'}</Text>
-                  </CardTableRow>
-                </VStack>
+                    </TableRow>
+                    { isWitSuccess && witness.enabled ?
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Update' isLoading={isWitLoading}>
+                        { witness.enabled_at ?
+                          <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.enabled_at}>{witness.enabled_at}</Link> : 'N/A'}
+                      </TableRow> : null
+                    }
+                    { isWitSuccess && !witness.enabled && witness.disabled_at ?
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Update' isLoading={isWitLoading}>
+                        <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.disabled_at}>{witness.disabled_at}</Link>
+                      </TableRow> : null
+                    }
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Block' isLoading={isWitLoading}>
+                      <Text>{isWitSuccess ? (witness.last_block ? thousandSeperator(witness.last_block) : 'NULL') : 'Error'}</Text>
+                    </TableRow>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Produced' isLoading={isWitLoading}>
+                      <Text>{isWitSuccess ? (witness.produced ? thousandSeperator(witness.produced) : 'NULL') : 'Error'}</Text>
+                    </TableRow>
+                  </Tbody>
+                </Table>
               </CardBody>
             </Card>
             <Card width={'100%'}>
@@ -133,23 +109,21 @@ const L1User = () => {
                 <Heading size={'md'} textAlign={'center'}>L1 Balances</Heading>
               </CardHeader>
               <CardBody>
-                <VStack divider={<StackDivider/>}>
-                  <CardTableRow title='HIVE Balance' isLoading={isL1AccLoading}>
-                    <Text>{isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ? thousandSeperator(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance))+' HIVE' : 'Error'}</Text>
-                  </CardTableRow>
-                  <CardTableRow title='HBD Balance' isLoading={isL1AccLoading}>
-                    <Text>{isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ? thousandSeperator(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance))+' HBD' : 'Error'}</Text>
-                  </CardTableRow>
-                  <CardTableRow title='Staked HIVE' isLoading={isL1AccLoading || isL1DgpLoading}>
-                    { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error && l1AccResult.length > 0 ?
-                      <Tooltip label={thousandSeperator(parseFloat(l1AccResult[0].vesting_shares))+' VESTS'} placement='top'>{
-                          thousandSeperator((parseFloat(l1DgpResult.total_vesting_fund_hive)*parseFloat(l1AccResult[0].vesting_shares)/parseFloat(l1DgpResult.total_vesting_shares)).toFixed(3))+' HP'
-                        }
-                      </Tooltip>
-                      : 'Error'
-                    }
-                  </CardTableRow>
-                </VStack>
+                <Table variant={'unstyled'}>
+                  <Tbody>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance))+' HIVE' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance))+' HBD' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Staked HIVE' isLoading={isL1AccLoading || isL1DgpLoading}>
+                      { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error ?
+                        <Tooltip label={thousandSeperator(parseFloat(l1AccResult[0].vesting_shares))+' VESTS'} placement='top'>{
+                            thousandSeperator((parseFloat(l1DgpResult.total_vesting_fund_hive)*parseFloat(l1AccResult[0].vesting_shares)/parseFloat(l1DgpResult.total_vesting_shares)).toFixed(3))+' HP'
+                          }
+                        </Tooltip>
+                        : 'Error'
+                      }
+                    </TableRow>
+                  </Tbody>
+                </Table>
               </CardBody>
             </Card>
           </VStack>
