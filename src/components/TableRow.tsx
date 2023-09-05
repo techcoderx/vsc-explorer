@@ -14,9 +14,10 @@ type TableRowProps = {
   isInCard?: boolean
   allCardBorders?: boolean
   minimalSpace?: boolean
+  minWidthLabel?: string
 }
 
-const TableRow = ({label, value, link, isLoading, children, isInCard = false, allCardBorders = false, minimalSpace = false}: TableRowProps) => (
+const TableRow = ({label, value, link, isLoading, children, minWidthLabel, isInCard = false, allCardBorders = false, minimalSpace = false}: TableRowProps) => (
   <Tr _dark={{
     borderTop: isInCard ? cardBorder : 'unset',
     borderBottom: isInCard ? cardBorder : 'unset',
@@ -28,7 +29,7 @@ const TableRow = ({label, value, link, isLoading, children, isInCard = false, al
     borderLeft: allCardBorders ? cardBorderLight : 'unset',
     borderRight: allCardBorders ? cardBorderLight : 'unset'
   }}>
-    <Td fontWeight='bold' padding={minimalSpace ? '10px 10px' : undefined}>{label}</Td>
+    <Td fontWeight='bold' padding={minimalSpace ? '10px 10px' : undefined} minW={minWidthLabel ?? undefined}>{label}</Td>
     <Td padding={minimalSpace ? '10px 10px' : undefined}>{isLoading ? <Skeleton height='20px'/> : (children ? children : (link ? <Link as={ReactRouterLink} to={link} target={!link.startsWith('/')?'_blank':'_self'}>{value}</Link> : value))}</Td>
   </Tr>
 )
