@@ -11,7 +11,7 @@ interface InfoBoxProps {
 }
 
 const InfoBox = ({ title, prop, isLoading, isSuccess }: InfoBoxProps) => (
-  <Box flex='1' padding='15px 0px'>
+  <Box flex='1' padding={{base: '15px 0px', md: '25px 0px'}}>
     <Heading size={'md'}>{title}</Heading>
     <Text fontSize={'23px'}>
       {isLoading ? <Skeleton height='20px' /> : (isSuccess ? thousandSeperator(prop!) : 'Error')}
@@ -31,7 +31,7 @@ const Home = () => {
       <Center>
         <Card alignItems={'center'}>
           <CardBody textAlign='center' w='3xl' padding='15px 20px'>
-            <VStack divider={<StackDivider/>} spacing={'4'}>
+            <VStack divider={<StackDivider/>} spacing={{base: '4', md: '0'}}>
               <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
                 <InfoBox title="Hive L1 Block Height" prop={prop?.last_processed_block} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="VSC Block Height" prop={prop?.l2_block_height} isLoading={isPropLoading} isSuccess={isPropSuccess} />
