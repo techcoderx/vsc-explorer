@@ -9,7 +9,7 @@ type TableRowProps = {
   label: string
   value?: string | number | undefined
   children?: ReactNode
-  isLoading: boolean
+  isLoading?: boolean
   link?: string
   isInCard?: boolean
   allCardBorders?: boolean

@@ -30,18 +30,24 @@ const L1Tx = () => {
       </Box>
       <hr/>
       <Button as={ReactRouterLink} margin={'20px 0px'} colorScheme={themeColorScheme} variant={'outline'} to={l1Explorer+'/tx/'+txid} target='_blank'>View in {l1ExplorerName}</Button>
-      { isSuccess ?
+      { isLoading ?
+        <Card w='100%'>
+          <CardBody>
+            Loading VSC Operations...
+          </CardBody>
+        </Card>
+      : isSuccess ?
         data.map((trx, i) => 
           <Card key={i}>
             <CardHeader><Heading fontSize={'2xl'}>Operation #{i}</Heading></CardHeader>
             <CardBody>
               <Table margin={'-20px 0 0'} variant={'unstyled'}>
                 <Tbody>
-                  <TableRow isInCard label='ID' isLoading={isLoading} value={trx.id}/>
-                  <TableRow isInCard label='Timestamp' isLoading={isLoading} value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
-                  <TableRow isInCard label='Username' isLoading={isLoading} value={trx.username} link={'/@'+trx.username}/>
-                  <TableRow isInCard label='Operation Type' isLoading={isLoading}><Badge color={themeColor}>{trx.type}</Badge></TableRow>
-                  <TableRow isInCard label='Nonce' isLoading={isLoading} value={trx.nonce}/>
+                  <TableRow isInCard label='ID' value={trx.id}/>
+                  <TableRow isInCard label='Timestamp' value={trx.ts+' ('+timeAgo(trx.ts)+')'}/>
+                  <TableRow isInCard label='Username' value={trx.username} link={'/@'+trx.username}/>
+                  <TableRow isInCard label='Operation Type'><Badge color={themeColor}>{trx.type}</Badge></TableRow>
+                  <TableRow isInCard label='Nonce' value={trx.nonce}/>
                 </Tbody>
               </Table>
             </CardBody>
