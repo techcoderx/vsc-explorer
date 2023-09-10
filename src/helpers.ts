@@ -1,9 +1,9 @@
 import { L1Transaction } from './types/HafApiResult'
 import { BlockPayload, NewContractPayload } from './types/Payloads'
 
-export const timeAgo = (date: string | Date): string => {
+export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
-  const diffInSeconds = Math.abs(now - new Date(date).getTime()) / 1000
+  const diffInSeconds = Math.abs(now - new Date(date+'Z').getTime()) / 1000
   
   const days = Math.floor(diffInSeconds / 86400)
   const hours = Math.floor(diffInSeconds / 3600) % 24
