@@ -1,4 +1,4 @@
-import { Text, Box, Table, Tbody, Skeleton, Link, Button, Heading, Card, CardHeader, CardBody, Badge } from '@chakra-ui/react'
+import { Text, Box, Table, Tbody, Skeleton, Link, Button, Heading, Card, CardHeader, CardBody, Badge, Flex } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
@@ -37,7 +37,7 @@ const L1Tx = () => {
           </CardBody>
         </Card>
       : isSuccess ?
-        data.map((trx, i) => 
+        <Flex gap='6' direction='column'>{ data.map((trx, i) => 
           <Card key={i}>
             <CardHeader><Heading fontSize={'2xl'}>Operation #{i}</Heading></CardHeader>
             <CardBody>
@@ -55,7 +55,8 @@ const L1Tx = () => {
             <CardBody marginTop={'-25px'}>
               <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object}/>
             </CardBody>
-          </Card>)
+          </Card>)}
+        </Flex>
       : null}
     </>
   )
