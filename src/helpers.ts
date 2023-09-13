@@ -22,6 +22,31 @@ export const thousandSeperator = (num: number | bigint | string): string => {
   return num_parts.join(".")
 }
 
+export const validateHiveUsername = (value: string): string | null => {
+  let suffix = 'Hive username must '
+  if (!value)
+      return suffix + 'not be empty.'
+  let length = value.length
+  if (length < 3 || length > 16)
+      return suffix + 'be between 3 and 16 characters.'
+  if (/\./.test(value))
+      suffix = 'Each account segment much '
+  let ref = value.split('.')
+  let label
+  for (let i = 0, len = ref.length; i < len; i++) {
+      label = ref[i]
+      if (!/^[a-z]/.test(label))
+          return suffix + 'start with a letter.'
+      if (!/^[a-z0-9-]*$/.test(label))
+          return suffix + 'have only letters, digits, or dashes.'
+      if (!/[a-z0-9]$/.test(label))
+          return suffix + 'end with a letter or digit.'
+      if (!(label.length >= 3))
+          return suffix + 'be longer'
+  }
+  return null
+}
+
 export const describeL1TxBriefly = (tx: L1Transaction): string => {
   let result: string = tx.username+' '
   switch (tx.type) {
