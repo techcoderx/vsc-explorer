@@ -1,6 +1,8 @@
 export const themeColor = 'pink.400'
 export const themeColorULight = 'pink.50'
+export const themeColorSLight = 'pink.100'
 export const themeColorLight = 'pink.300'
+export const themeColorDark = 'pink.500'
 export const themeColorScheme = 'pink'
 
 export const hiveApi = 'https://techcoderx.com'
