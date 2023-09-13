@@ -3,7 +3,7 @@ import {
   Button,
   Input,
   InputGroup,
-  InputRightElement,
+  InputLeftElement,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,7 +11,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { themeColor, themeColorScheme } from '../settings'
+import { themeColorLight, themeColorScheme } from '../settings'
 
 interface SearchBarProps {
   miniBtn?: boolean
@@ -49,14 +49,10 @@ const SearchBar = ({miniBtn}: SearchBarProps) => {
         <ModalContent maxW='700px'>
           <ModalBody padding={'10px 10px'}>
             <InputGroup>
-              <Input placeholder='Search account, block, transaction...' focusBorderColor={themeColor} onChange={event => {
+              <InputLeftElement children={<SearchIcon />}/>
+              <Input placeholder='Search account, block, transaction...' focusBorderColor={themeColorLight} onChange={event => {
                 // event.target.value
               }} />
-              <InputRightElement
-                children={
-                  <SearchIcon />
-                }
-              />
             </InputGroup>
           </ModalBody>
         </ModalContent>
