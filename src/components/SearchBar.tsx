@@ -11,13 +11,17 @@ import {
   ModalBody,
   Stack,
   useDisclosure,
-  useColorModeValue
+  useColorModeValue,
+  Skeleton
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
+import { fetchL1, fetchTxByL1Id, fetchBlock } from '../requests'
 import { validateHiveUsername } from '../helpers'
+import { L1Account } from '../types/L1ApiResult'
 
 interface SearchBarProps {
   miniBtn?: boolean
@@ -39,33 +43,68 @@ enum SearchResultType {
   L1Transaction = 'L1 Transaction'
 }
 
+const useQueryType = (): [SearchResultType | undefined, (v: SearchResultType) => void] => {
+  const [queryType, setQueryType] = useState<SearchResultType>()
+
+  return [
+    queryType, (val: SearchResultType) => {
+      if (queryType !== val)
+        setQueryType(val)
+    }
+  ]
+}
+
 const useSearchResults = (query: string): SearchResultHook => {
+  const [queryType, setQueryType] = useQueryType()
+  const { data: l1Tx, isLoading: isL1TxLoading, isError: isL1TxErr } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-l1-tx', query],
+    queryFn: async () => fetchTxByL1Id(query),
+    enabled: queryType === SearchResultType.L1Transaction
+  })
+  const { data: l1Acc, isLoading: isL1AccLoading, isError: isL1AccErr } = useQuery({
+    cacheTime: 15000,
+    queryKey: ['hive-account', query],
+    queryFn: async () => fetchL1('condenser_api.get_accounts', [[query]]),
+    enabled: queryType === SearchResultType.L1Account
+  })
+  const { data: block, isLoading: isBlockLoading, isError: isBlockError } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-block', query],
+    queryFn: async () => fetchBlock(parseInt(query)),
+    enabled: queryType === SearchResultType.Block
+  })
+
   const result: SearchResult[] = []
   if (query.length > 0) {
-    if (new RegExp(/^[a-fA-F0-9]{40}$/).test(query))
+    if (new RegExp(/^[a-fA-F0-9]{40}$/).test(query)) {
+      setQueryType(SearchResultType.L1Transaction)
       return {
-        searchResult: [{
+        searchResult: [...(!isL1TxErr && l1Tx && l1Tx.length > 0 ? [{
           type: SearchResultType.L1Transaction,
           href: '/tx/'+query
-        }],
-        isLoading: false
+        }] : [])],
+        isLoading: isL1TxLoading
       }
-    else if (validateHiveUsername(query) === null)
+    } else if (validateHiveUsername(query) === null) {
+      setQueryType(SearchResultType.L1Account)
       return {
-        searchResult: [{
+        searchResult: [...(!isL1AccErr && l1Acc && !l1Acc.error && (l1Acc.result as L1Account[]).length > 0 ? [{
           type: SearchResultType.L1Account,
           href: '/@'+query
-        }],
-        isLoading: false
+        }] : [])],
+        isLoading: isL1AccLoading
       }
-    else if (!isNaN(parseInt(query)) && parseInt(query) > 0)
+    } else if (!isNaN(parseInt(query)) && parseInt(query) > 0) {
+      setQueryType(SearchResultType.Block)
       return {
-        searchResult: [{
+        searchResult: [...(!isBlockError && block && !block.error ? [{
           type: SearchResultType.Block,
           href: '/block/'+query
-        }],
-        isLoading: false
+        }] : [])],
+        isLoading: isBlockLoading
       }
+    }
   }
 
   return {
@@ -147,6 +186,7 @@ const SearchBar = ({miniBtn}: SearchBarProps) => {
                 </Box>
               ))}</Stack> : null
             }
+            { isLoading ? <Skeleton h='50px' mt='2.5'/> : null }
           </ModalBody>
         </ModalContent>
       </Modal>
