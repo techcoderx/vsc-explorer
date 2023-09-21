@@ -13,10 +13,11 @@ interface InfoBoxProps {
 const InfoBox = ({ title, prop, isLoading, isSuccess }: InfoBoxProps) => (
   <Box flex='1' padding={{base: '15px 0px', md: '25px 0px'}}>
     <Heading size={'md'}>{title}</Heading>
-    <Text fontSize={'23px'}>
-      {isSuccess ? thousandSeperator(prop!) : 'Error'}
-    </Text>
-    {isLoading ? <Skeleton height='20px' /> : null }
+    {isLoading ? <Skeleton height='20px' /> :
+      <Text fontSize={'23px'}>
+        {isSuccess ? thousandSeperator(prop!) : 'Error'}
+      </Text>
+    }
   </Box>
 )
 
