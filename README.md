@@ -18,7 +18,7 @@ pnpm i
 
 #### Start development server
 ```
-pnpm run dev
+pnpm start
 ```
 
 ## Build
