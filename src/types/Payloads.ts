@@ -25,3 +25,15 @@ export type NodeAnnouncePayload = {
 export type MultisigTxRefPayload = {
   ref_id: string
 }
+
+export type DepositPayload = {
+  to: string
+  from: string
+  amount: NAI
+}
+
+export type NAI = {
+  nai: '@@000000021' | '@@000000013',
+  amount: string
+  precision: number
+}
