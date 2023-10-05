@@ -1,5 +1,5 @@
 import { L1Transaction } from './types/HafApiResult'
-import { BlockPayload, NewContractPayload } from './types/Payloads'
+import { BlockPayload, DepositPayload, NAI, NewContractPayload } from './types/Payloads'
 
 export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
@@ -47,6 +47,15 @@ export const validateHiveUsername = (value: string): string | null => {
   return null
 }
 
+export const naiToString = (nai: NAI) => {
+  let result = (parseInt(nai.amount) / Math.pow(10,nai.precision)).toString() + ' '
+  if (nai.nai === '@@000000021')
+    result += 'HIVE'
+  else if (nai.nai === '@@000000013')
+    result += 'HBD'
+  return result
+}
+
 export const describeL1TxBriefly = (tx: L1Transaction): string => {
   let result: string = tx.username+' '
   switch (tx.type) {
@@ -58,6 +67,12 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       break
     case 'create_contract':
       result += 'created contract '+(tx.payload as NewContractPayload).code
+      break
+    case 'deposit':
+      result += 'deposited '+naiToString((tx.payload as DepositPayload).amount)
+      break
+    case 'withdrawal':
+      result += 'withdrawn '+naiToString((tx.payload as DepositPayload).amount)
       break
     default:
       result += tx.type.replace(/_/g,' ')

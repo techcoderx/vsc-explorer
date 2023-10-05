@@ -51,7 +51,9 @@ const txTypes = [
   'join_contract',
   'leave_contract',
   'multisig_txref',
-  'custom_json'
+  'custom_json',
+  'deposit',
+  'withdrawal'
 ]  as const
 type TxTypes = typeof txTypes[number]
 
