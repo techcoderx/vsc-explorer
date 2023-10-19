@@ -52,7 +52,7 @@ const Block = () => {
             {l2Block.findCID.data.txs.map((tx, i) => {
               if (!tx.id || typeof tx.id['/'] !== 'string' || typeof tx.op !== 'string')
                 return null
-              return (<L2TxCard id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)
+              return (<L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)
             })}
           </Flex>
         </Box>
