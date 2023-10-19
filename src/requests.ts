@@ -1,6 +1,9 @@
+import { useQuery } from '@tanstack/react-query'
+import { request as gqlRequest, gql } from 'graphql-request'
 import { Props, Block, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
-import { hafVscApi, hiveApi } from './settings'
+import { hafVscApi, hiveApi, vscNodeApi } from './settings'
+import { L2BlockCID } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -96,4 +99,23 @@ export const fetchL1 = async (method: string, params: object): Promise<HiveRPCRe
   })
   const result = await res.json()
   return result
+}
+
+export const useFindCID = (id?: string, includeData: boolean = true, includeSignatures: boolean = false, enabled: boolean = false) => {
+  const query = gql`
+  {
+    findCID(id: "${id}") {
+      type,
+      ${includeData ? 'data,' : ''}
+      ${includeSignatures ? 'payload,\nsignatures' : ''}
+    }
+  }
+  `
+  const usedQuery = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['find-cid', id],
+    queryFn: (): Promise<L2BlockCID> => gqlRequest(vscNodeApi, query),
+    enabled: enabled
+  })
+  return usedQuery
 }

@@ -1,12 +1,13 @@
-import { Text, Table, Tbody, Stack } from '@chakra-ui/react'
+import { Text, Table, Tbody, Stack, Box, Heading, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import { fetchBlock } from '../../requests'
+import { fetchBlock, useFindCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { timeAgo } from '../../helpers'
+import { isPuralArr, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
+import { L2TxCard } from '../TxCard'
 
 const Block = () => {
   const {blockNum} = useParams()
@@ -18,6 +19,9 @@ const Block = () => {
     queryFn: async () => fetchBlock(blkNum),
     enabled: !invalidBlkNum
   })
+  const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
+  const { data: l2Block, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
+  console.log(l2Block)
   if (invalidBlkNum)
     return <PageNotFound/>
   return (
@@ -40,6 +44,15 @@ const Block = () => {
           </Tbody>
         </Table>
       )}
+      {isL2BlockLoading ? <Text mt={'9'}>Loading L2 Block...</Text> : null}
+      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && l2Block.findCID.type === 'vsc-block' ? (
+        <Box mt={'9'}>
+          <Heading fontSize={'2xl'}>{l2Block.findCID.data.txs.length} transaction{isPuralArr(l2Block.findCID.data.txs) ? 's' : ''} in this block</Heading>
+          <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
+            {l2Block.findCID.data.txs.map((tx, i) => <L2TxCard id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)}
+          </Flex>
+        </Box>
+      ): null}
     </>
   )
 }
