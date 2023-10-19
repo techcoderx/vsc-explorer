@@ -21,7 +21,7 @@ const Block = () => {
   })
   const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
   const { data: l2Block, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
-  console.log(l2Block)
+  const isValidL2Block = !isL2BlockLoading && !isL2BlockError && l2Block.findCID.type === 'vsc-block' && l2Block.findCID.data && Array.isArray(l2Block.findCID.data.txs)
   if (invalidBlkNum)
     return <PageNotFound/>
   return (
@@ -45,14 +45,18 @@ const Block = () => {
         </Table>
       )}
       {isL2BlockLoading ? <Text mt={'9'}>Loading L2 Block...</Text> : null}
-      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && l2Block.findCID.type === 'vsc-block' ? (
+      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError ? (isValidL2Block ? (
         <Box mt={'9'}>
           <Heading fontSize={'2xl'}>{l2Block.findCID.data.txs.length} transaction{isPuralArr(l2Block.findCID.data.txs) ? 's' : ''} in this block</Heading>
           <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
-            {l2Block.findCID.data.txs.map((tx, i) => <L2TxCard id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)}
+            {l2Block.findCID.data.txs.map((tx, i) => {
+              if (!tx.id || typeof tx.id['/'] !== 'string' || typeof tx.op !== 'string')
+                return null
+              return (<L2TxCard id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)
+            })}
           </Flex>
         </Box>
-      ): null}
+      ): <Text>Invalid or malformed L2 block data</Text>) : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
     </>
   )
 }
