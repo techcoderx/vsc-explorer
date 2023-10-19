@@ -11,7 +11,6 @@ const NewContracts = () => {
     queryKey: ['vsc-latest-contracts'],
     queryFn: fetchLatestContracts
   })
-  console.log(contracts)
   return (
     <>
       <Text fontSize={'5xl'}>Latest Contracts</Text>

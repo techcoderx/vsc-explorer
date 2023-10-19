@@ -10,6 +10,7 @@ import PageNotFound from './components/pages/404'
 import Block from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
+import L2Tx from './components/pages/L2Tx'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: '/tx/:txid',
         element: <L1Tx/>
+      },
+      {
+        path: '/vsc-tx/:txid',
+        element: <L2Tx/>
       },
       {
         path: '*',
