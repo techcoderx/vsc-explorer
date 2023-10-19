@@ -1,6 +1,6 @@
 import { Text, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import TxCard from '../TxCard'
+import { TxCard } from '../TxCard'
 import { fetchLatestTxs } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 

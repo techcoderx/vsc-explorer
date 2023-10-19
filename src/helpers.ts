@@ -22,6 +22,8 @@ export const thousandSeperator = (num: number | bigint | string): string => {
   return num_parts.join(".")
 }
 
+export const isPuralArr = (arr: Array<any>) => arr.length > 1
+
 export const validateHiveUsername = (value: string): string | null => {
   let suffix = 'Hive username must '
   if (!value)
