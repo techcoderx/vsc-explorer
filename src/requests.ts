@@ -3,7 +3,7 @@ import { request as gqlRequest, gql } from 'graphql-request'
 import { Props, Block, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { L2BlockCID } from './types/L2ApiResult'
+import { L2BlockCID, L2TxCID } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -114,7 +114,7 @@ export const useFindCID = (id?: string, includeData: boolean = true, includeSign
   const usedQuery = useQuery({
     cacheTime: Infinity,
     queryKey: ['find-cid', id],
-    queryFn: (): Promise<L2BlockCID> => gqlRequest(vscNodeApi, query),
+    queryFn: (): Promise<L2BlockCID|L2TxCID> => gqlRequest(vscNodeApi, query),
     enabled: enabled
   })
   return usedQuery

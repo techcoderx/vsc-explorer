@@ -8,6 +8,7 @@ import { PrevNextBtns } from '../Pagination'
 import { isPuralArr, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
 import { L2TxCard } from '../TxCard'
+import { L2BlockCID } from '../../types/L2ApiResult'
 
 const Block = () => {
   const {blockNum} = useParams()
@@ -20,7 +21,8 @@ const Block = () => {
     enabled: !invalidBlkNum
   })
   const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
-  const { data: l2Block, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
+  const { data, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
+  const l2Block = data as L2BlockCID
   const isValidL2Block = !isL2BlockLoading && !isL2BlockError && l2Block.findCID.type === 'vsc-block' && l2Block.findCID.data && Array.isArray(l2Block.findCID.data.txs)
   if (invalidBlkNum)
     return <PageNotFound/>
