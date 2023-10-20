@@ -7,7 +7,7 @@ import { fetchBlock, fetchBlockByHash, useFindCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { isPuralArr, timeAgo } from '../../helpers'
+import { isPuralArr, thousandSeperator, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
 import { L2TxCard } from '../TxCard'
 import { L2BlockCID } from '../../types/L2ApiResult'
@@ -23,7 +23,7 @@ export const BlockByID = () => {
     queryFn: async () => fetchBlock(blkNum),
     enabled: !invalidBlkNum
   })
-  return Block(data!, isLoading, isError, invalidBlkNum, blkNum, blockNum!)
+  return Block(data!, isLoading, isError, invalidBlkNum, blkNum)
 }
 
 export const BlockByHash = () => {
@@ -36,10 +36,10 @@ export const BlockByHash = () => {
     enabled: !invalidBlkId
   })
   const blkNum = !isLoading && !isError && !data.error ? data.id : 0
-  return Block(data!, isLoading, isError, invalidBlkId, blkNum, blkNum.toString())
+  return Block(data!, isLoading, isError, invalidBlkId, blkNum)
 }
 
-const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number, blockNum: string) => {
+const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number) => {
   const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
   const { data, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
   const l2Block = data as L2BlockCID
@@ -49,7 +49,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   return (
     <>
       <Stack direction={{base: 'column', md: 'row'}} justifyContent='space-between'>
-        <Text fontSize='5xl'>Block #{blockNum}</Text>
+        <Text fontSize='5xl'>Block #{thousandSeperator(blkNum)}</Text>
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/'+(blkNum!-1) : undefined} toNext={'/block/'+(blkNum!+1)}/>
       </Stack>
       <hr/>

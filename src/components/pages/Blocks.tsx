@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
 import { fetchProps, fetchBlocks } from '../../requests'
-import { timeAgo } from '../../helpers'
+import { thousandSeperator, timeAgo } from '../../helpers'
 import { ipfsSubGw } from '../../settings'
 
 const count = 50
@@ -37,7 +37,7 @@ const Blocks = () => {
     <>
       <Text fontSize={'5xl'}>Latest Blocks</Text>
       <hr/><br/>
-      <Text>Total {isPropSuccess ? prop.l2_block_height : 0} blocks</Text>
+      <Text>Total {isPropSuccess ? thousandSeperator(prop.l2_block_height) : 0} blocks</Text>
       <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
           <Thead>
