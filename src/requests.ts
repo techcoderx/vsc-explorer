@@ -47,6 +47,12 @@ export const fetchBlock = async (block_id: number): Promise<Block> => {
   return blk
 }
 
+export const fetchBlockByHash = async (block_hash: string): Promise<Block> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_block_by_hash?blk_hash=${block_hash}`)
+  const blk: Block = await res.json()
+  return blk
+}
+
 export const fetchWitness = async (username: string): Promise<Witness> => {
   const res = await fetch(`${hafVscApi}/rpc/get_witness?username=${username}`)
   const wit: Witness = await res.json()
