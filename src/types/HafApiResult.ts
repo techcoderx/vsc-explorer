@@ -18,7 +18,7 @@ export interface Props {
 }
 
 export interface Block {
-  id: string
+  id: number
   ts: string
   l1_tx: string
   l1_block: number

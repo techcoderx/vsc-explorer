@@ -34,7 +34,7 @@ const L2Tx = () => {
                 <Badge color={themeColorLight}>{l2Tx.findCID.data.tx.op}</Badge>
               </TableRow>
               <TableRow label='Contract' value={l2Tx.findCID.data.tx.contract_id} link={'/tx/'+l2Tx.findCID.data.tx.contract_id}/>
-              <TableRow label='Lock Block' value={l2Tx.findCID.data.lock_block}/>
+              <TableRow label='Lock Block' value={l2Tx.findCID.data.lock_block} link={'/block-by-hash/'+l2Tx.findCID.data.lock_block}/>
               <TableRow label='Sender' isLoading={!proof}>{proof ? proof.kid.split('#')[0] : <Skeleton h={'20px'}/>}</TableRow>
               {l2Tx.findCID.data.tx.op === 'call_contract' ? <TableRow label='Salt' value={l2Tx.findCID.data.tx.salt}/> : null}
               {l2Tx.findCID.data.tx.op === 'call_contract' ? <TableRow label='Action' value={l2Tx.findCID.data.tx.action}/> : null}

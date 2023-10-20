@@ -1,7 +1,9 @@
 import { Text, Table, Tbody, Stack, Box, Heading, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import { fetchBlock, useFindCID } from '../../requests'
+import { cid as isCID } from 'is-ipfs'
+import { CID } from 'multiformats/cid'
+import { fetchBlock, fetchBlockByHash, useFindCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
@@ -9,17 +11,35 @@ import { isPuralArr, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
 import { L2TxCard } from '../TxCard'
 import { L2BlockCID } from '../../types/L2ApiResult'
+import { Block as BlockResult } from '../../types/HafApiResult'
 
-const Block = () => {
+export const BlockByID = () => {
   const {blockNum} = useParams()
   const blkNum = parseInt(blockNum!)
   const invalidBlkNum = isNaN(blkNum) || blkNum < 1
-  const { data: block, isLoading: isBlockLoading, isError: isBlockError} = useQuery({
+  const { data, isLoading, isError} = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-block', blkNum],
     queryFn: async () => fetchBlock(blkNum),
     enabled: !invalidBlkNum
   })
+  return Block(data!, isLoading, isError, invalidBlkNum, blkNum, blockNum!)
+}
+
+export const BlockByHash = () => {
+  const {blockId} = useParams()
+  const invalidBlkId = !blockId || !isCID(blockId) || CID.parse(blockId).code !== 0x71
+  const { data, isLoading, isError} = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-block', blockId],
+    queryFn: async () => fetchBlockByHash(blockId!),
+    enabled: !invalidBlkId
+  })
+  const blkNum = !isLoading && !isError && !data.error ? data.id : 0
+  return Block(data!, isLoading, isError, invalidBlkId, blkNum, blkNum.toString())
+}
+
+const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number, blockNum: string) => {
   const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
   const { data, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
   const l2Block = data as L2BlockCID
@@ -62,5 +82,3 @@ const Block = () => {
     </>
   )
 }
-
-export default Block

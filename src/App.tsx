@@ -7,7 +7,7 @@ import NewTxs from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
 import MultisigRefs from './components/pages/MultisigRefs'
 import PageNotFound from './components/pages/404'
-import Block from './components/pages/Block'
+import { BlockByID, BlockByHash } from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
 import L2Tx from './components/pages/L2Tx'
@@ -31,7 +31,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/block/:blockNum',
-        element: <Block/>
+        element: <BlockByID/>
+      },
+      {
+        path: '/block-by-hash/:blockId',
+        element: <BlockByHash/>
       },
       {
         path: '/transactions',
