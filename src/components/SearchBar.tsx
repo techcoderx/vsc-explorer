@@ -18,8 +18,10 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { cid as isCID } from 'is-ipfs'
+import { CID } from 'multiformats/cid'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
-import { fetchL1, fetchTxByL1Id, fetchBlock } from '../requests'
+import { fetchL1, fetchTxByL1Id, fetchBlock, useFindCID } from '../requests'
 import { validateHiveUsername } from '../helpers'
 import { L1Account } from '../types/L1ApiResult'
 
@@ -39,8 +41,10 @@ interface SearchResultHook {
 
 enum SearchResultType {
   Block = 'Block',
+  L2Block = 'L2 Block',
   L1Account = 'L1 Account',
-  L1Transaction = 'L1 Transaction'
+  L1Transaction = 'L1 Transaction',
+  L2Transaction = 'L2 Transaction'
 }
 
 const useQueryType = (): [SearchResultType | undefined, (v: SearchResultType) => void] => {
@@ -74,6 +78,8 @@ const useSearchResults = (query: string): SearchResultHook => {
     queryFn: async () => fetchBlock(parseInt(query)),
     enabled: queryType === SearchResultType.Block
   })
+  const validCID = isCID(query) && CID.parse(query).code === 0x71
+  const { data: cidRes, isLoading: isCIDLoading, isError: isCIDError } = useFindCID(query, false, false, validCID)
 
   const result: SearchResult[] = []
   if (query.length > 0) {
@@ -94,6 +100,18 @@ const useSearchResults = (query: string): SearchResultHook => {
           href: '/@'+query
         }] : [])],
         isLoading: isL1AccLoading
+      }
+    } else if (validCID) {
+      setQueryType(SearchResultType.L2Block)
+      return {
+        searchResult: [...(!isCIDError && cidRes && cidRes.findCID ? (cidRes.findCID.type === 'vsc-block' ? [{
+          type: SearchResultType.L2Block,
+          href: '/block-by-hash/'+query
+        }]: (cidRes.findCID.type === 'vsc-tx' ? [{
+          type: SearchResultType.L2Transaction,
+          href: '/vsc-tx/'+query
+        }] : [])) : [])],
+        isLoading: isCIDLoading
       }
     } else if (!isNaN(parseInt(query)) && parseInt(query) > 0) {
       setQueryType(SearchResultType.Block)

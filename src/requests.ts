@@ -119,7 +119,7 @@ export const useFindCID = (id?: string, includeData: boolean = true, includeSign
   `
   const usedQuery = useQuery({
     cacheTime: Infinity,
-    queryKey: ['find-cid', id],
+    queryKey: ['find-cid', id, includeData, includeSignatures],
     queryFn: (): Promise<L2BlockCID|L2TxCID> => gqlRequest(vscNodeApi, query),
     enabled: enabled
   })
