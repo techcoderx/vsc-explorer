@@ -7,7 +7,9 @@ import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
+import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1Account, L1Dgp } from '../../types/L1ApiResult'
+import { themeColorLight } from '../../settings'
 
 const count = 50
 
@@ -53,7 +55,7 @@ const L1User = () => {
     return <PageNotFound/>
   return (
     <>
-      <Text fontSize={'5xl'} marginBottom='10px'>{username}</Text>
+      <Text fontSize={'5xl'} marginBottom='10px'>{username} {L1AccFlairs[user] ? <Badge color={themeColorLight} fontSize={'2xl'}>{L1AccFlairs[user]}</Badge> : null}</Text>
       <hr/>
       { isL1AccSuccess && !l1Acc.error && l1AccResult.length === 0 ?
         <Text fontSize={'xl'} margin={'10px 0px'}>Account does not exist</Text> :
