@@ -75,11 +75,6 @@ const L1User = () => {
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='DID Key' isLoading={isWitLoading}>
                       <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did : 'Error'}</Text>
                     </TableRow>
-                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='DID Trusted' isLoading={isWitLoading}>
-                      { isWitSuccess ? ( witness.trusted ?
-                        <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
-                      ) : 'Error'}
-                    </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Enabled' isLoading={isWitLoading}>
                       { isWitSuccess ? ( witness.enabled ?
                         <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
