@@ -92,11 +92,11 @@ const L1User = () => {
                       </TableRow> : null
                     }
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Git Commit' isLoading={isWitLoading}>
-                      <Link as={ReactRouterLink} wordBreak={'break-all'} target={'_blank'} to={'https://github.com/vsc-eco/vsc-node/commit/'+(witness?.git_commit ?? '')}>{witness?.git_commit.slice(0,8) ?? ''}</Link>
+                      <Link as={ReactRouterLink} wordBreak={'break-all'} target={'_blank'} to={'https://github.com/vsc-eco/vsc-node/commit/'+(witness?.git_commit ?? '')}>{(witness?.git_commit ?? '').slice(0,8)}</Link>
                     </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Up To Date' isLoading={isWitLoading}>
                       { isWitSuccess ? ( witness.is_up_to_date ?
-                        <Badge colorScheme='green'>True</Badge> : <Tooltip label={'Latest: '+witness.latest_git_commit.slice(0,8)} placement={'top'}><Link as={ReactRouterLink} target={'_blank'} to={'https://github.com/vsc-eco/vsc-node/commit/'+(witness?.latest_git_commit ?? '')}><Badge colorScheme='red'>False</Badge></Link></Tooltip>
+                        <Badge colorScheme='green'>True</Badge> : <Tooltip label={'Latest: '+(witness.latest_git_commit ?? '').slice(0,8)} placement={'top'}><Link as={ReactRouterLink} target={'_blank'} to={'https://github.com/vsc-eco/vsc-node/commit/'+(witness?.latest_git_commit ?? '')}><Badge colorScheme='red'>False</Badge></Link></Tooltip>
                       ) : 'Error'}
                     </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Block' isLoading={isWitLoading}>
