@@ -91,6 +91,14 @@ const L1User = () => {
                         <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/'+witness.disabled_at}>{witness.disabled_at}</Link>
                       </TableRow> : null
                     }
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Git Commit' isLoading={isWitLoading}>
+                      <Link as={ReactRouterLink} wordBreak={'break-all'} target={'_blank'} to={'https://github.com/vsc-eco/vsc-node/commit/'+(witness?.git_commit ?? '')}>{witness?.git_commit ?? ''}</Link>
+                    </TableRow>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='Up To Date' isLoading={isWitLoading}>
+                      { isWitSuccess ? ( witness.is_up_to_date ?
+                        <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>
+                      ) : 'Error'}
+                    </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Block' isLoading={isWitLoading}>
                       <Text>{isWitSuccess ? (witness.last_block ? thousandSeperator(witness.last_block) : 'NULL') : 'Error'}</Text>
                     </TableRow>
