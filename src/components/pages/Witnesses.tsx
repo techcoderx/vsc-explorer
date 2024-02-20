@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge, Link } from '@chakra-ui/react'
+import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchWitnesses } from '../../requests'
@@ -27,6 +27,7 @@ const Witnesses = () => {
               <Th>Username</Th>
               <Th>DID Key</Th>
               <Th>Enabled</Th>
+              <Th>Up To Date</Th>
               <Th>Last Block</Th>
               <Th>Produced</Th>
             </Tr>
@@ -34,6 +35,7 @@ const Witnesses = () => {
           <Tbody>
             {isWitnessLoading ? (
               <Tr>
+                <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
@@ -48,6 +50,11 @@ const Witnesses = () => {
                   <Td><Link as={ReactRouterLink} to={'/@'+item.username}>{item.username}</Link></Td>
                   <Td sx={{whiteSpace: 'nowrap'}} isTruncated>{item.did}</Td>
                   <Td>{item.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}</Td>
+                  <Td>
+                    <Tooltip label={item.git_commit}>
+                      {item.is_up_to_date ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}
+                    </Tooltip>
+                  </Td>
                   <Td>{item.last_block ?? 'N/A'}</Td>
                   <Td>{item.produced}</Td>
                 </Tr>

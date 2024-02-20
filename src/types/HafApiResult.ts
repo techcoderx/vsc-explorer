@@ -35,6 +35,8 @@ export interface Witness {
   username: string
   enabled_at?: string
   disabled_at?: string
+  git_commit: string
+  is_up_to_date: boolean
   last_block?: number
   produced: number
 }
