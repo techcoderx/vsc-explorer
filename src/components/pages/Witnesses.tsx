@@ -51,7 +51,7 @@ const Witnesses = () => {
                   <Td sx={{whiteSpace: 'nowrap'}} isTruncated>{item.did}</Td>
                   <Td>{item.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}</Td>
                   <Td>
-                    <Tooltip label={item.git_commit}>
+                    <Tooltip label={item.git_commit.slice(0,8)}>
                       {item.is_up_to_date ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}
                     </Tooltip>
                   </Td>
