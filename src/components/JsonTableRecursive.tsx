@@ -13,6 +13,8 @@ const JsonToTableRecursive = ({json, isInCard = false, minimalSpace = false}: JT
     <Table variant={'unstyled'}>
       <Tbody>
         {Object.entries(json).map(([key, value]) => {
+          if (value === null)
+            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}><i>null</i></TableRow>
           if (typeof value === 'object')
             return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>{JsonToTableRecursive({ json: value, isInCard, minimalSpace })}</TableRow>
           else

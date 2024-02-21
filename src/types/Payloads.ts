@@ -3,7 +3,16 @@ export type DIDPayload = {
 }
 
 export type BlockPayload = {
-  block_hash: string
+  experiment_id: number
+  signed_block: {
+    block: string,
+    headers: {
+      br: number[],
+      prevb: null | string
+    },
+    merkle_root: string
+    signature: BLSSig
+  }
 }
 
 export type NewContractPayload = {
@@ -36,4 +45,9 @@ export type NAI = {
   nai: '@@000000021' | '@@000000013',
   amount: string
   precision: number
+}
+
+export type BLSSig = {
+  sig: string
+  bv: string
 }

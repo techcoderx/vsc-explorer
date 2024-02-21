@@ -64,8 +64,8 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
     case 'announce_node':
       result += 'announced node'
       break
-    case 'announce_block':
-      result += 'announced block '+(tx.payload as BlockPayload).block_hash
+    case 'propose_block':
+      result += 'proposed block' //+(tx.payload as BlockPayload).signed_block.block
       break
     case 'create_contract':
       result += 'created contract '+(tx.payload as NewContractPayload).code
