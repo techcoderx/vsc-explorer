@@ -44,7 +44,7 @@ const Blocks = () => {
             <Tr>
               <Th>Id</Th>
               <Th>Age</Th>
-              <Th>Announcer</Th>
+              <Th>Proposer</Th>
               <Th>Block Hash</Th>
             </Tr>
           </Thead>
@@ -65,7 +65,7 @@ const Blocks = () => {
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td><Link as={ReactRouterLink} to={'/@'+item.announcer}>{item.announcer}</Link></Td>
+                  <Td><Link as={ReactRouterLink} to={'/@'+item.proposer}>{item.proposer}</Link></Td>
                   <Td isTruncated><Link href={ipfsSubGw(item.block_hash)} target='_blank'>{item.block_hash}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>

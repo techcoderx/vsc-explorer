@@ -22,7 +22,7 @@ export interface Block {
   ts: string
   l1_tx: string
   l1_block: number
-  announcer: string
+  proposer: string
   prev_block_hash?: string
   block_hash: string
   error?: string
@@ -48,7 +48,7 @@ const txTypes = [
   'disable_witness',
   'allow_witness',
   'disallow_witness',
-  'announce_block',
+  'propose_block',
   'create_contract',
   'join_contract',
   'leave_contract',
