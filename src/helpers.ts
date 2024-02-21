@@ -1,5 +1,5 @@
 import { L1Transaction } from './types/HafApiResult'
-import { BlockPayload, DepositPayload, NAI, NewContractPayload } from './types/Payloads'
+import { DepositPayload, NAI, NewContractPayload } from './types/Payloads'
 
 export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
