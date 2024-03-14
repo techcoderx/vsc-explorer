@@ -71,12 +71,12 @@ export interface L1Transaction {
 }
 
 export interface Contract {
-  id: number
+  contract_id: string
   created_in_op: string
   created_in_l1_block: number
   created_at: string
   name: string
-  manifest_id: string
+  description: string
   code: string
 }
 

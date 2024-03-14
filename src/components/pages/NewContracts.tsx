@@ -19,10 +19,9 @@ const NewContracts = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Id</Th>
+              <Th>Contract Id</Th>
               <Th>Age</Th>
               <Th>Created In Tx</Th>
-              <Th>Manifest ID</Th>
               <Th>Code</Th>
             </Tr>
           </Thead>
@@ -38,18 +37,13 @@ const NewContracts = () => {
             ) : ( isContractsSuccess ?
               contracts.map((item, i) => (
                 <Tr key={i}>
-                  <Td>{item.id}</Td>
+                  <Td>{item.contract_id}</Td>
                   <Td sx={{whiteSpace: 'nowrap'}}>
                     <Tooltip label={item.created_at} placement='top'>
                       {timeAgo(item.created_at)}
                     </Tooltip>
                   </Td>
                   <Td><Link as={ReactRouterLink} to={'/tx/'+item.created_in_op}>{item.created_in_op}</Link></Td>
-                  <Td>
-                    <Tooltip label={item.manifest_id} placement='top'>
-                      <Link href={ipfsGw+'/ipfs/'+item.manifest_id} target='_blank'>{item.manifest_id.substring(0,15)+'...'}</Link>
-                    </Tooltip>
-                  </Td>
                   <Td>
                     <Tooltip label={item.code} placement='top'>
                       <Link href={ipfsGw+'/ipfs/'+item.code} target='_blank'>{item.code.substring(0,15)+'...'}</Link>
