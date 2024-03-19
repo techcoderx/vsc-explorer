@@ -1,5 +1,5 @@
 import { L1Transaction } from './types/HafApiResult'
-import { DepositPayload, NAI, NewContractPayload } from './types/Payloads'
+import { DepositPayload, ElectionResultPayload, NAI, NewContractPayload } from './types/Payloads'
 
 export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
@@ -69,6 +69,9 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       break
     case 'create_contract':
       result += 'created contract '+(tx.payload as NewContractPayload).code
+      break
+    case 'election_result':
+      result += 'proposed election result for epoch '+(tx.payload as ElectionResultPayload).epoch
       break
     case 'deposit':
       result += 'deposited '+naiToString((tx.payload as DepositPayload).amount)
