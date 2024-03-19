@@ -50,6 +50,7 @@ const txTypes = [
   'disallow_witness',
   'propose_block',
   'create_contract',
+  'election_result',
   'join_contract',
   'leave_contract',
   'multisig_txref',

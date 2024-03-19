@@ -21,6 +21,12 @@ export type NewContractPayload = {
   code: string
 }
 
+export type ElectionResultPayload = {
+  epoch: number
+  data: string
+  signature: BLSSig
+}
+
 export type ContractCommitmentPayload = {
   contract_id: string
   node_identity: string
