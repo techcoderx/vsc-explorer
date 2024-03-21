@@ -1,9 +1,18 @@
+type L1AccountAuths = {
+  account_auths: [string, number][],
+  key_auths: [string, number][],
+  weight_threshold: number
+}
+
 export type L1Account = {
   balance: string
   savings_balance: string
   hbd_balance: string
   savings_hbd_balance: string
   vesting_shares: string
+  owner: L1AccountAuths
+  active: L1AccountAuths
+  posting: L1AccountAuths
 }
 
 export type L1Dgp = {
