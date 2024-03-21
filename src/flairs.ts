@@ -3,5 +3,6 @@ type Flairs = {
 }
 
 export const L1Accs: Flairs = {
-  'vsc.ptk-d12e6110': 'Multisig Controller'
+  'vsc.ms-8968d20c': 'Multisig Controller',
+  'vsc.network': 'Official Account'
 }

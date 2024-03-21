@@ -1,15 +1,15 @@
-import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge, Link, Table, Tbody } from '@chakra-ui/react'
+import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge, Link, Table, Tbody, Tr } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
-import { fetchAccHistory, fetchAccInfo, fetchL1, fetchWitness } from '../../requests'
+import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness } from '../../requests'
 import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1Account, L1Dgp } from '../../types/L1ApiResult'
-import { themeColorLight } from '../../settings'
+import { multisigAccount, themeColorLight } from '../../settings'
 
 const count = 50
 
@@ -49,6 +49,12 @@ const L1User = () => {
     queryFn: async () => fetchAccHistory(user,count,last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
+  const { data: msNames } = useQuery({
+    cacheTime: 15000,
+    queryKey: ['vsc-ms-names', 'sk_owner'],
+    queryFn: async () => fetchMsOwners(l1AccResult[0].owner.key_auths.map(a => a[0])),
+    enabled: user === multisigAccount && !!l1Acc && !invalidParams && !l1Acc.error
+  })
   const l1AccResult = l1Acc?.result as L1Account[]
   const l1DgpResult = l1Dgp?.result as L1Dgp
   if (invalidParams)
@@ -64,6 +70,23 @@ const L1User = () => {
         <Text fontSize={'xl'} margin={'10px 0px'}>Failed to fetch L1 Hive account, error: {l1Acc.error.toString()}</Text> :
         <Flex direction={{base: 'column', lg: 'row'}} marginTop='20px' gap='6'>
           <VStack width={{base: '100%', lg: 'ss'}} spacing={'6'}>
+            { user === multisigAccount ?
+              <Card width={'100%'}>
+                <CardHeader marginBottom='-15px'>
+                  <Heading size={'md'} textAlign={'center'}>Multisig Key Holders ({l1AccResult[0].owner.weight_threshold}/{l1AccResult[0].owner.key_auths.length+l1AccResult[0].owner.account_auths.length})</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Table variant={'unstyled'}>
+                    <Tbody>
+                      {!!msNames ? msNames.map((a, i) => (
+                        <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a}>{a}</Link></Tr>
+                      )).concat(l1AccResult[0].owner.account_auths.map((a, i) => (
+                        <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a[0]}>{a[0]}</Link>{a[1] > 1 ? ' ('+a[1]+')' : ''}</Tr>
+                      ))) : <Tr></Tr>}
+                    </Tbody>
+                  </Table>
+                </CardBody>
+              </Card> :
             <Card width={'100%'}>
               <CardHeader marginBottom={'-15px'}>
                 <Heading size={'md'} textAlign={'center'}>VSC Witness</Heading>
@@ -109,6 +132,7 @@ const L1User = () => {
                 </Table>
               </CardBody>
             </Card>
+            }
             <Card width={'100%'}>
               <CardHeader marginBottom='-15px'>
                 <Heading size={'md'} textAlign={'center'}>L1 Balances</Heading>

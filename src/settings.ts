@@ -13,3 +13,5 @@ export const ipfsGw = 'https://ipfs.io'
 export const ipfsSubGw = (cid: string): string => 'https://'+cid+'.ipfs.dweb.link'
 
 export const l1ExplorerName = 'HiveHub'
+
+export const multisigAccount = 'vsc.ms-8968d20c'

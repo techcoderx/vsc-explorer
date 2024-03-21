@@ -77,6 +77,12 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
   return trx
 }
 
+export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_l1_accounts_by_pubkeys?pubkeys={"${pubkeys.join('","')}"}`)
+  const trx: string[] = await res.json()
+  return trx
+}
+
 interface HiveRPCResponse {
   id: number
   jsonrpc: string
