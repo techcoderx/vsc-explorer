@@ -49,7 +49,7 @@ const L1User = () => {
     queryFn: async () => fetchAccHistory(user,count,last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
-  const { data: msNames } = useQuery({
+  const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
     cacheTime: 15000,
     queryKey: ['vsc-ms-names', 'sk_owner'],
     queryFn: async () => fetchMsOwners(l1AccResult[0].owner.key_auths.map(a => a[0])),
@@ -73,12 +73,12 @@ const L1User = () => {
             { user === multisigAccount ?
               <Card width={'100%'}>
                 <CardHeader marginBottom='-15px'>
-                  <Heading size={'md'} textAlign={'center'}>Multisig Key Holders ({l1AccResult[0].owner.weight_threshold}/{l1AccResult[0].owner.key_auths.length+l1AccResult[0].owner.account_auths.length})</Heading>
+                  <Heading size={'md'} textAlign={'center'}>Multisig Key Holders ({isL1AccSuccess ? l1AccResult[0].owner.weight_threshold : '...'}/{isL1AccSuccess ? l1AccResult[0].owner.key_auths.length+l1AccResult[0].owner.account_auths.length : '...'})</Heading>
                 </CardHeader>
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      {!!msNames ? msNames.map((a, i) => (
+                      {!!msNames && isMsNamesSuccess && isL1AccSuccess ? msNames.map((a, i) => (
                         <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a}>{a}</Link></Tr>
                       )).concat(l1AccResult[0].owner.account_auths.map((a, i) => (
                         <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a[0]}>{a[0]}</Link>{a[1] > 1 ? ' ('+a[1]+')' : ''}</Tr>
