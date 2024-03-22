@@ -22,6 +22,10 @@ export const thousandSeperator = (num: number | bigint | string): string => {
   return num_parts.join(".")
 }
 
+export const roundFloat = (num: number, decimals: number): number => {
+  return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals)
+}
+
 export const isPuralArr = (arr: Array<any>) => arr.length > 1
 
 export const validateHiveUsername = (value: string): string | null => {

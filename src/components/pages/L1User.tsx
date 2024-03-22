@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness } from '../../requests'
-import { describeL1TxBriefly, thousandSeperator } from '../../helpers'
+import { describeL1TxBriefly, roundFloat, thousandSeperator } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
@@ -140,8 +140,8 @@ const L1User = () => {
               <CardBody>
                 <Table variant={'unstyled'}>
                   <Tbody>
-                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance))+' HIVE' : 'Error'}/>
-                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance))+' HBD' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance),3))+' HIVE' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance),3))+' HBD' : 'Error'}/>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Staked HIVE' isLoading={isL1AccLoading || isL1DgpLoading}>
                       { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error ?
                         <Tooltip label={thousandSeperator(parseFloat(l1AccResult[0].vesting_shares))+' VESTS'} placement='top'>{
