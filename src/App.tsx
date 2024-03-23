@@ -26,6 +26,10 @@ const router = createBrowserRouter([
         element: <Witnesses/>
       },
       {
+        path: '/witnesses/:page?',
+        element: <Witnesses/>
+      },
+      {
         path: '/blocks/:page?',
         element: <Blocks/>
       },
