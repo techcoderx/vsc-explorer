@@ -1,25 +1,37 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchWitnesses } from '../../requests'
+import PageNotFound from './404'
+import Pagination from '../Pagination'
+
+const count = 50
 
 const Witnesses = () => {
+  const { page } = useParams()
+  const pageNumber = parseInt(page || '1')
+  const invalidParams = isNaN(pageNumber) || pageNumber < 1
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
-    queryFn: fetchProps
+    queryFn: fetchProps,
+    enabled: !invalidParams
   })
+  const id_start = prop ? Math.max((pageNumber-1)*count+1,1) : null
   const { data: witnesses, isLoading: isWitnessLoading, isSuccess: isWitnessSuccess } = useQuery({
     cacheTime: Infinity,
-    queryKey: ['vsc-witnesses', 0],
-    queryFn: async () => fetchWitnesses(0)
+    queryKey: ['vsc-witnesses', id_start],
+    queryFn: async () => fetchWitnesses(id_start!, count),
+    enabled: !invalidParams && !!id_start
   })
+  if (invalidParams)
+    return <PageNotFound/>
   return (
     <>
       <Text fontSize={'5xl'}>Witnesses</Text>
       <hr/><br/>
       <Text>Total {isPropSuccess ? prop.witnesses : 0} witnesses</Text>
-      <Box overflowX="auto" marginTop={'15px'}>
+      <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -63,6 +75,7 @@ const Witnesses = () => {
           </Tbody>
         </Table>
       </Box>
+      { isPropSuccess && isWitnessSuccess ? <Pagination path={'/witnesses'} currentPageNum={pageNumber} maxPageNum={Math.ceil(prop.witnesses/count)}/> : null }
     </>
   )
 }
