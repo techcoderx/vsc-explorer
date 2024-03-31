@@ -7,14 +7,21 @@ import {
   MultisigTxRefPayload
 } from './Payloads'
 
+export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref'
+
 export interface Props {
+  epoch: number
   txrefs: number
   contracts: number
   witnesses: number
   db_version: number
   l2_block_height: number
+  l2_transactions: number
   last_processed_block: number
-  operations: bigint
+  last_processed_subindexer_op: number
+  operations: number
+  anchor_refs: number
+  bridge_txs: number
 }
 
 export interface Block {
@@ -25,7 +32,29 @@ export interface Block {
   proposer: string
   prev_block_hash?: string
   block_hash: string
+  block_body_hash: string
+}
+
+export interface BlockDetail extends Block {
   error?: string
+  merkle_root: string
+  signature: {
+    sig: string
+    bv: string
+  }
+}
+
+export interface BlockRangeItm extends Block {
+  txs: number
+}
+
+export interface BlockTx {
+  id: string
+  did?: string
+  tx_type: L2TxType
+  block_num: number
+  auth_count: number
+  idx_in_block: number
 }
 
 export interface Witness {

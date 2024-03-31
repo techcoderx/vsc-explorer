@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness } from '../../requests'
-import { describeL1TxBriefly, roundFloat, thousandSeperator } from '../../helpers'
+import { describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
@@ -87,6 +87,23 @@ const L1User = () => {
                   </Table>
                 </CardBody>
               </Card> :
+              <Card width={'100%'}>
+                <CardHeader marginBottom={'-15px'}>
+                  <Heading size={'md'} textAlign={'center'}>L1 User Info</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Table variant={'unstyled'}>
+                    <Tbody>
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Tx Count' isLoading={isL1AccvLoading} value={isL1AccSuccess ? thousandSeperator(l1Accv!.tx_count) : 'Error'}/>
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Activity' isLoading={isL1AccvLoading}>
+                        { isL1AccvSuccess ? <Tooltip label={l1Accv.last_activity} placement={'top'}>{timeAgo(l1Accv.last_activity)}</Tooltip> : 'Error' }
+                      </TableRow>
+                    </Tbody>
+                  </Table>
+                </CardBody>
+              </Card>
+            }
+            { isWitSuccess && witness.id ?
             <Card width={'100%'}>
               <CardHeader marginBottom={'-15px'}>
                 <Heading size={'md'} textAlign={'center'}>VSC Witness</Heading>
@@ -131,7 +148,7 @@ const L1User = () => {
                   </Tbody>
                 </Table>
               </CardBody>
-            </Card>
+            </Card> : null
             }
             <Card width={'100%'}>
               <CardHeader marginBottom='-15px'>

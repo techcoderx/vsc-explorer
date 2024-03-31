@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, Outlet, } from 'react-router-dom'
-import { themeColor, themeColorULight } from '../settings'
+import { multisigAccount, themeColor, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 
 const Navbar = () => {
@@ -228,7 +228,18 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Witnesses',
-    href: '/witnesses'
+    children: [
+      {
+        label: 'Overview',
+        subLabel: 'List of witnesses',
+        href: '/witnesses'
+      },
+      {
+        label: 'Multisig Account',
+        subLabel: 'Activities of multisig account on L1',
+        href: '/@'+multisigAccount
+      }
+    ]
   },
   {
     label: 'Blockchain',

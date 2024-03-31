@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { request as gqlRequest, gql } from 'graphql-request'
-import { Props, Block, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { L2BlockCID, L2TxCID } from './types/L2ApiResult'
@@ -11,9 +11,9 @@ export const fetchProps = async (): Promise<Props> => {
   return vscProps
 }
 
-export const fetchBlocks = async (start: number, count = 50): Promise<Block[]> => {
+export const fetchBlocks = async (start: number, count = 50): Promise<BlockRangeItm[]> => {
   const res = await fetch(`${hafVscApi}/rpc/get_block_range?blk_id_start=${start}&blk_count=${count}`)
-  const blocks: Block[] = await res.json()
+  const blocks: BlockRangeItm[] = await res.json()
   return blocks
 }
 
@@ -41,15 +41,21 @@ export const fetchMultisigTxRefs = async (last_id: number, count: number = 100):
   return refs
 }
 
-export const fetchBlock = async (block_id: number): Promise<Block> => {
+export const fetchBlock = async (block_id: number): Promise<BlockDetail> => {
   const res = await fetch(`${hafVscApi}/rpc/get_block_by_id?blk_id=${block_id}`)
-  const blk: Block = await res.json()
+  const blk: BlockDetail = await res.json()
   return blk
 }
 
-export const fetchBlockByHash = async (block_hash: string): Promise<Block> => {
+export const fetchBlockByHash = async (block_hash: string): Promise<BlockDetail> => {
   const res = await fetch(`${hafVscApi}/rpc/get_block_by_hash?blk_hash=${block_hash}`)
-  const blk: Block = await res.json()
+  const blk: BlockDetail = await res.json()
+  return blk
+}
+
+export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_txs_in_block?blk_id=${block_id}`)
+  const blk: BlockTx[] = await res.json()
   return blk
 }
 

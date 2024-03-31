@@ -45,12 +45,14 @@ const Blocks = () => {
               <Th>Id</Th>
               <Th>Age</Th>
               <Th>Proposer</Th>
+              <Th>Txs</Th>
               <Th>Block Hash</Th>
             </Tr>
           </Thead>
           <Tbody>
             {isBlocksLoading ? (
               <Tr>
+                <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
                 <Td><Skeleton height="20px" /></Td>
@@ -66,6 +68,7 @@ const Blocks = () => {
                     </Tooltip>
                   </Td>
                   <Td><Link as={ReactRouterLink} to={'/@'+item.proposer}>{item.proposer}</Link></Td>
+                  <Td>{item.txs}</Td>
                   <Td isTruncated><Link href={ipfsSubGw(item.block_hash)} target='_blank'>{item.block_hash}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>
