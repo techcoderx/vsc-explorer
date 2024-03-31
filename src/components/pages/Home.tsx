@@ -42,7 +42,7 @@ const Home = () => {
               <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
                 <InfoBox title="Current Epoch" prop={prop?.epoch} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Witnesses" prop={prop?.witnesses} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-                <InfoBox title="Transactions (L2)" prop={prop?.l2_transactions} isLoading={isPropLoading} isSuccess={isPropSuccess} />
+                <InfoBox title="Contract Calls" prop={prop?.transactions} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
               <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
                 <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />

@@ -16,7 +16,7 @@ export interface Props {
   witnesses: number
   db_version: number
   l2_block_height: number
-  l2_transactions: number
+  transactions: number
   last_processed_block: number
   last_processed_subindexer_op: number
   operations: number
