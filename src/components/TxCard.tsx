@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ReactNode } from "react"
 import { themeColor, themeColorLight } from "../settings"
 import { timeAgo } from "../helpers"
-import { TransactionTypes } from '../types/L2ApiResult'
+import { L2TxType } from '../types/HafApiResult'
 
 type Attr = {
   id: number
@@ -29,7 +29,7 @@ type L2TxAttr = {
   id: number
   ts: string
   txid: string
-  op: TransactionTypes
+  op: L2TxType
 }
 
 export const L2TxCard = ({ts, txid, op}: L2TxAttr) => {

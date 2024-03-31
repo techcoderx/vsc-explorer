@@ -3,15 +3,14 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { cid as isCID } from 'is-ipfs'
 import { CID } from 'multiformats/cid'
-import { fetchBlock, fetchBlockByHash, useFindCID } from '../../requests'
+import { fetchBlock, fetchBlockByHash, fetchBlockTxs } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
 import { isPuralArr, thousandSeperator, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer } from '../../settings'
 import { L2TxCard } from '../TxCard'
-import { L2BlockCID } from '../../types/L2ApiResult'
-import { Block as BlockResult } from '../../types/HafApiResult'
+import { BlockDetail as BlockResult } from '../../types/HafApiResult'
 
 export const BlockByID = () => {
   const {blockNum} = useParams()
@@ -41,9 +40,12 @@ export const BlockByHash = () => {
 
 const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number) => {
   const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
-  const { data, isLoading: isL2BlockLoading, isError: isL2BlockError } = useFindCID(block?.block_hash, true, false, l1BlockSuccess)
-  const l2Block = data as L2BlockCID
-  const isValidL2Block = !isL2BlockLoading && !isL2BlockError && l2Block.findCID.type === 'vsc-block' && l2Block.findCID.data && Array.isArray(l2Block.findCID.data.txs)
+  const { data: l2BlockTxs, isLoading: isL2BlockLoading, isError: isL2BlockError } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-block-txs', blkNum],
+    queryFn: async () => fetchBlockTxs(blkNum),
+    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
+  })
   if (invalidBlkNum)
     return <PageNotFound/>
   return (
@@ -67,18 +69,16 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
         </Table>
       )}
       {isL2BlockLoading ? <Text mt={'9'}>Loading L2 Block...</Text> : null}
-      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError ? (isValidL2Block ? (
+      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ?
         <Box mt={'9'}>
-          <Heading fontSize={'2xl'}>{l2Block.findCID.data.txs.length} transaction{isPuralArr(l2Block.findCID.data.txs) ? 's' : ''} in this block</Heading>
+          <Heading fontSize={'2xl'}>{l2BlockTxs.length} transaction{isPuralArr(l2BlockTxs) ? 's' : ''} in this block</Heading>
           <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
-            {l2Block.findCID.data.txs.map((tx, i) => {
-              if (!tx.id || typeof tx.id['/'] !== 'string' || typeof tx.op !== 'string')
-                return null
-              return (<L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id['/']} op={tx.op}/>)
+            {l2BlockTxs.map((tx, i) => {
+              return (<L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id} op={tx.tx_type}/>)
             })}
           </Flex>
         </Box>
-      ): <Text>Invalid or malformed L2 block data</Text>) : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
+      : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
     </>
   )
 }
