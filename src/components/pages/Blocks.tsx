@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
 import { fetchProps, fetchBlocks } from '../../requests'
-import { thousandSeperator, timeAgo } from '../../helpers'
-import { ipfsSubGw } from '../../settings'
+import { abbreviateHash, getBitsetStrFromHex, getPercentFromBitsetStr, thousandSeperator, timeAgo } from '../../helpers'
+import { ProgressBarPct } from '../ProgressPercent'
 
 const count = 50
 
@@ -47,16 +47,13 @@ const Blocks = () => {
               <Th>Proposer</Th>
               <Th>Txs</Th>
               <Th>Block Hash</Th>
+              <Th>Voted</Th>
             </Tr>
           </Thead>
           <Tbody>
             {isBlocksLoading ? (
               <Tr>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
+                {[...Array(6)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
               </Tr>
             ) : ( isBlocksSuccess ?
               blocks.map((item, i) => (
@@ -69,7 +66,10 @@ const Blocks = () => {
                   </Td>
                   <Td><Link as={ReactRouterLink} to={'/@'+item.proposer}>{item.proposer}</Link></Td>
                   <Td>{item.txs}</Td>
-                  <Td isTruncated><Link href={ipfsSubGw(item.block_hash)} target='_blank'>{item.block_hash}</Link></Td>
+                  <Td><Link as={ReactRouterLink} to={'/block-by-hash/'+item.block_hash}>{abbreviateHash(item.block_hash)}</Link></Td>
+                  <Td maxW={'200px'}>
+                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))}/>
+                  </Td>
                 </Tr>
               )) : <Tr></Tr>
             )}

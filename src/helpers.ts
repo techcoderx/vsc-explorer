@@ -1,3 +1,4 @@
+import BitSet from 'bitset'
 import { L1Transaction } from './types/HafApiResult'
 import { DepositPayload, ElectionResultPayload, NAI, NewContractPayload } from './types/Payloads'
 
@@ -88,4 +89,58 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       break
   }
   return result
+}
+
+export const abbreviateHash = (hash: string): string => {
+  return `${hash.substring(0,12)}...${hash.slice(-12)}`
+}
+
+export const getBitsetStrFromHex = (bv: string) => {
+  return BitSet.fromHexString(bv).toString(2)
+}
+
+export const getPercentFromBitsetStr = (bs: string) => {
+  return ((bs.split('1').length-1)/bs.length)*100
+}
+
+export const getVotedMembers = (bv: string, members: string[]) => {
+  const bs = BitSet.fromHexString(bv)
+  const voted = []
+  for (const m in members)
+    if (bs.get(Number(m)) === 1)
+      voted.push(members[m])
+  return voted
+}
+
+// do we want to display signatures in original base64url format?
+export const hexToBase64Url = (hexString: string): string => {
+  let matching = hexString.match(/\w{2}/g)
+  if (matching)
+    return window.btoa(matching.map(a => String.fromCharCode(parseInt(a, 16))).join(''))
+      .replace('+', '-').replace('/', '_').replace(/=+$/, '')
+  else
+    return ''
+}
+
+export const bitsGrid = (input: string) => {
+  let output = ''
+  let spaceCount = 0
+
+  for (let i = 0; i < input.length; i++) {
+    output += input[i]
+
+    // If this is an 8th character, add a space
+    if ((i + 1) % 8 === 0) {
+      output += ' '
+      spaceCount++
+    }
+    
+    // If we've added 8 spaces, add a newline and reset the space counter
+    if (spaceCount === 8) {
+      output += '\n'
+      spaceCount = 0
+    }
+  }
+
+  return output
 }
