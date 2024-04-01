@@ -1,60 +1,60 @@
-import { Badge, Box, Button, Card, CardBody, CardHeader, Heading, Skeleton, Table, Tbody, Text } from '@chakra-ui/react'
+import { Badge, Box, Button, Card, CardBody, CardHeader, Heading, Link, Skeleton, Table, Tbody, Text } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
-import { cid as isCID } from 'is-ipfs'
-import { CID } from 'multiformats/cid'
-import { useVerifyJWS } from '../../did'
-import PageNotFound from './404'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { useFindCID } from '../../requests'
+import { fetchL2Tx } from '../../requests'
 import { themeColorLight, themeColorScheme, ipfsSubGw } from '../../settings'
-import { L2TxCID } from '../../types/L2ApiResult'
+import { useQuery } from '@tanstack/react-query'
+import { thousandSeperator } from '../../helpers'
 
 const L2Tx = () => {
   const { txid } = useParams()
-  const validCID = typeof txid === 'string' && isCID(txid) && CID.parse(txid).code === 0x71
-  const { data, isLoading, isError, isSuccess } = useFindCID(txid, true, true, validCID)
-  const l2Tx = data as L2TxCID
-  const notActuallyTx = isSuccess && (data.findCID.type !== 'vsc-tx' || !l2Tx.findCID.payload || !l2Tx.findCID.signatures)
-  const proof = useVerifyJWS(l2Tx ? l2Tx.findCID.payload : '', l2Tx ? l2Tx.findCID.signatures : [], !notActuallyTx)
-  if (!validCID)
-    return <PageNotFound/>
+  const { data: l2Tx, isLoading, isError, isSuccess } = useQuery({
+    cacheTime: 15000,
+    queryKey: ['vsc-tx-l2', txid],
+    queryFn: () => fetchL2Tx(txid!),
+    enabled: !!txid
+  })
   return (
     <Box marginBottom={'15px'}>
       <Text fontSize={'5xl'}>L2 Transaction</Text>
       <Text fontSize={'3xl'} opacity={'0.7'}>{txid}</Text>
-      <Button as={ReactRouterLink} margin={'20px 0px'} colorScheme={themeColorScheme} variant={'outline'} to={ipfsSubGw(txid)} target='_blank'>View in IPFS</Button>
+      <Button as={ReactRouterLink} margin={'20px 0px'} colorScheme={themeColorScheme} variant={'outline'} to={ipfsSubGw(txid || '')} target='_blank'>View in IPFS</Button>
       {isLoading ? <Skeleton h={'20px'} mt={'20px'}/> : null}
-      {isSuccess && !notActuallyTx ? (
+      {isSuccess && !l2Tx.error ? (
         <Box>
           <Table>
             <Tbody>
-              <TableRow label='Version' value={l2Tx.findCID.data.__v}/>
               <TableRow label='Transaction Type'>
-                <Badge color={themeColorLight}>{l2Tx.findCID.data.tx.op}</Badge>
+                <Badge color={themeColorLight}>{l2Tx.tx_type}</Badge>
               </TableRow>
-              <TableRow label='Contract' value={l2Tx.findCID.data.tx.contract_id} link={'/tx/'+l2Tx.findCID.data.tx.contract_id}/>
-              <TableRow label='Lock Block' value={l2Tx.findCID.data.lock_block} link={'/block-by-hash/'+l2Tx.findCID.data.lock_block}/>
-              <TableRow label='Sender' isLoading={!proof}>{proof ? proof.kid.split('#')[0] : <Skeleton h={'20px'}/>}</TableRow>
-              {l2Tx.findCID.data.tx.op === 'call_contract' ? <TableRow label='Salt' value={l2Tx.findCID.data.tx.salt}/> : null}
-              {l2Tx.findCID.data.tx.op === 'call_contract' ? <TableRow label='Action' value={l2Tx.findCID.data.tx.action}/> : null}
-              {l2Tx.findCID.data.tx.op === 'contract_output' ? <TableRow label='Parent Transaction' value={l2Tx.findCID.data.tx.parent_tx_id} link={'/vsc-tx/'+l2Tx.findCID.data.tx.parent_tx_id}/> : null}
-              {l2Tx.findCID.data.tx.op === 'contract_output' ? <TableRow label='State Merkle' value={l2Tx.findCID.data.tx.state_merkle}/> : null}
-              {l2Tx.findCID.data.tx.op === 'contract_output' ? <TableRow label='Inputs'><JsonToTableRecursive json={l2Tx.findCID.data.tx.inputs} minimalSpace isInCard/></TableRow> : null}
-              <TableRow label='JWS Payload' value={l2Tx.findCID.payload}/>
-              <TableRow label='Signatures'><JsonToTableRecursive json={l2Tx.findCID.signatures} minimalSpace isInCard/></TableRow>
+              <TableRow label='Contract ID' value={l2Tx.contract_id}/>
+              <TableRow label='Contract Action' value={l2Tx.contract_action}/>
+              <TableRow label='Included In Block'>
+                <Link as={ReactRouterLink} to={'/block/'+l2Tx.block_num}>{l2Tx.block_num}</Link> <Badge color={themeColorLight}>Position: {l2Tx.idx_in_block}</Badge>
+              </TableRow>
+              {l2Tx.tx_type === 'call_contract' ? <TableRow label={`Signers (${l2Tx.signers.length})`}>{l2Tx.signers.join('\n')}</TableRow> : null}
+              {l2Tx.tx_type === 'call_contract' ? <TableRow label={'Output Transaction'}><Link as={ReactRouterLink} to={'/vsc-tx/'+l2Tx.output}>{l2Tx.input}</Link></TableRow> : null}
+              {l2Tx.tx_type === 'contract_output' ? <TableRow label={'Input Transaction'}><Link as={ReactRouterLink} to={(l2Tx.input_src === 'vsc' ? '/vsc-tx/' : '/tx/')+l2Tx.input}>{l2Tx.input}</Link></TableRow> : null}
+              {l2Tx.io_gas ? <TableRow label='Gas Used'>{thousandSeperator(l2Tx.io_gas)}</TableRow> : null}
             </Tbody>
           </Table>
-          {l2Tx.findCID.data.tx.op === 'call_contract' ? (
-            <Card mt={'30px'}>
-              <CardHeader><Heading fontSize={'2xl'}>Transaction Payload</Heading></CardHeader>
+          <Card mt={'30px'}>
+            <CardHeader><Heading fontSize={'2xl'}>Transaction Payload</Heading></CardHeader>
+            <CardBody mt={'-20px'}>
+              <JsonToTableRecursive json={l2Tx.payload} minimalSpace isInCard/>
+            </CardBody>
+          </Card>
+          {l2Tx.contract_output ? l2Tx.contract_output.map((out, i) =>
+            <Card key={i} mt={'30px'}>
+              <CardHeader><Heading fontSize={'2xl'}>Contract Output #{i}</Heading></CardHeader>
               <CardBody mt={'-20px'}>
-                <JsonToTableRecursive json={l2Tx.findCID.data.tx.payload} minimalSpace isInCard/>
+                <JsonToTableRecursive json={out} minimalSpace isInCard/>
               </CardBody>
             </Card>
-          ) : null}
+          ): null}
         </Box>
-      ) : (notActuallyTx ? <Text>CID is not a VSC L2 transaction</Text> : (isError ? <Text>Failed to fetch VSC L2 transaction</Text> : null))}
+      ) : (isSuccess && l2Tx.error ? <Text>{l2Tx.error}</Text> : (isError ? <Text>Failed to fetch VSC L2 transaction</Text> : null))}
     </Box>
   )
 }
