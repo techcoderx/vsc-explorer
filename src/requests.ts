@@ -1,9 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import { request as gqlRequest, gql } from 'graphql-request'
-import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
-import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { L2BlockCID, L2TxCID } from './types/L2ApiResult'
+import { hafVscApi, hiveApi } from './settings'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -101,6 +98,12 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return trx
 }
 
+export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
+  const res = await fetch(`${hafVscApi}/rpc/search_by_cid?cid=${search_cid}`)
+  const trx: CIDSearchResult = await res.json()
+  return trx
+}
+
 interface HiveRPCResponse {
   id: number
   jsonrpc: string
@@ -129,23 +132,4 @@ export const fetchL1 = async (method: string, params: object): Promise<HiveRPCRe
   })
   const result = await res.json()
   return result
-}
-
-export const useFindCID = (id?: string, includeData: boolean = true, includeSignatures: boolean = false, enabled: boolean = false) => {
-  const query = gql`
-  {
-    findCID(id: "${id}") {
-      type,
-      ${includeData ? 'data,' : ''}
-      ${includeSignatures ? 'payload,\nsignatures' : ''}
-    }
-  }
-  `
-  const usedQuery = useQuery({
-    cacheTime: Infinity,
-    queryKey: ['find-cid', id, includeData, includeSignatures],
-    queryFn: (): Promise<L2BlockCID|L2TxCID> => gqlRequest(vscNodeApi, query),
-    enabled: enabled
-  })
-  return usedQuery
 }

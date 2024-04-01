@@ -18,10 +18,8 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { cid as isCID } from 'is-ipfs'
-import { CID } from 'multiformats/cid'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
-import { fetchL1, fetchTxByL1Id, fetchBlock, useFindCID } from '../requests'
+import { fetchL1, fetchTxByL1Id, fetchBlock, cidSearch } from '../requests'
 import { validateHiveUsername } from '../helpers'
 import { L1Account } from '../types/L1ApiResult'
 
@@ -39,19 +37,29 @@ interface SearchResultHook {
   isLoading: boolean
 }
 
-enum SearchResultType {
-  Block = 'Block',
-  L2Block = 'L2 Block',
-  L1Account = 'L1 Account',
-  L1Transaction = 'L1 Transaction',
-  L2Transaction = 'L2 Transaction'
+enum SearchQueryType {
+  Block,
+  L1Account,
+  L1Transaction,
+  CID
 }
 
-const useQueryType = (): [SearchResultType | undefined, (v: SearchResultType) => void] => {
-  const [queryType, setQueryType] = useState<SearchResultType>()
+enum SearchResultType {
+  Block = 'Block',
+  L1Account = 'L1 Account',
+  L1Transaction = 'L1 Transaction',
+  L2Transaction = 'L2 Contract Call',
+  ContractOutput = 'Contract Output',
+  Epoch = 'Epoch',
+  AnchorRef = 'Anchor Ref',
+  Contract = 'Contract'
+}
+
+const useQueryType = (): [SearchQueryType | undefined, (v: SearchQueryType) => void] => {
+  const [queryType, setQueryType] = useState<SearchQueryType>()
 
   return [
-    queryType, (val: SearchResultType) => {
+    queryType, (val: SearchQueryType) => {
       if (queryType !== val)
         setQueryType(val)
     }
@@ -64,27 +72,31 @@ const useSearchResults = (query: string): SearchResultHook => {
     cacheTime: Infinity,
     queryKey: ['vsc-l1-tx', query],
     queryFn: async () => fetchTxByL1Id(query),
-    enabled: queryType === SearchResultType.L1Transaction
+    enabled: queryType === SearchQueryType.L1Transaction
   })
   const { data: l1Acc, isLoading: isL1AccLoading, isError: isL1AccErr } = useQuery({
     cacheTime: 15000,
     queryKey: ['hive-account', query],
     queryFn: async () => fetchL1('condenser_api.get_accounts', [[query]]),
-    enabled: queryType === SearchResultType.L1Account
+    enabled: queryType === SearchQueryType.L1Account
   })
   const { data: block, isLoading: isBlockLoading, isError: isBlockError } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-block', query],
     queryFn: async () => fetchBlock(parseInt(query)),
-    enabled: queryType === SearchResultType.Block
+    enabled: queryType === SearchQueryType.Block
   })
-  const validCID = isCID(query) && CID.parse(query).code === 0x71
-  const { data: cidRes, isLoading: isCIDLoading, isError: isCIDError } = useFindCID(query, false, false, validCID)
+  const { data: cidRes, isLoading: isCIDLoading, isError: isCIDError } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-cid-search', query],
+    queryFn: async () => cidSearch(query),
+    enabled: queryType === SearchQueryType.CID
+  })
 
   const result: SearchResult[] = []
   if (query.length > 0) {
     if (new RegExp(/^[a-fA-F0-9]{40}$/).test(query)) {
-      setQueryType(SearchResultType.L1Transaction)
+      setQueryType(SearchQueryType.L1Transaction)
       return {
         searchResult: [...(!isL1TxErr && l1Tx && l1Tx.length > 0 ? [{
           type: SearchResultType.L1Transaction,
@@ -93,7 +105,7 @@ const useSearchResults = (query: string): SearchResultHook => {
         isLoading: isL1TxLoading
       }
     } else if (validateHiveUsername(query) === null) {
-      setQueryType(SearchResultType.L1Account)
+      setQueryType(SearchQueryType.L1Account)
       return {
         searchResult: [...(!isL1AccErr && l1Acc && !l1Acc.error && (l1Acc.result as L1Account[]).length > 0 ? [{
           type: SearchResultType.L1Account,
@@ -101,26 +113,57 @@ const useSearchResults = (query: string): SearchResultHook => {
         }] : [])],
         isLoading: isL1AccLoading
       }
-    } else if (validCID) {
-      setQueryType(SearchResultType.L2Block)
-      return {
-        searchResult: [...(!isCIDError && cidRes && cidRes.findCID ? (cidRes.findCID.type === 'vsc-block' ? [{
-          type: SearchResultType.L2Block,
-          href: '/block-by-hash/'+query
-        }]: (cidRes.findCID.type === 'vsc-tx' ? [{
-          type: SearchResultType.L2Transaction,
-          href: '/vsc-tx/'+query
-        }] : [])) : [])],
-        isLoading: isCIDLoading
-      }
     } else if (!isNaN(parseInt(query)) && parseInt(query) > 0) {
-      setQueryType(SearchResultType.Block)
+      setQueryType(SearchQueryType.Block)
       return {
         searchResult: [...(!isBlockError && block && !block.error ? [{
           type: SearchResultType.Block,
           href: '/block/'+query
         }] : [])],
         isLoading: isBlockLoading
+      }
+    } else {
+      setQueryType(SearchQueryType.CID)
+      let result: SearchResult[] = []
+      if (!isCIDError && !isCIDLoading) {
+        switch (cidRes.type) {
+          case 'block':
+            result = [{
+              type: SearchResultType.Block,
+              href: '/block/'+cidRes.result
+            }]
+            break
+          case 'call_contract':
+            result = [{
+              type: SearchResultType.L2Transaction,
+              href: '/vsc-tx/'+query
+            }]
+            break
+          case 'contract_output':
+            result = [{
+              type: SearchResultType.ContractOutput,
+              href: '/vsc-tx/'+query
+            }]
+            break
+          case 'contract':
+            result = [{
+              type: SearchResultType.Contract,
+              href: '/contract/'+query
+            }]
+            break
+          case 'anchor_ref':
+            result = [{
+              type: SearchResultType.AnchorRef,
+              href: '/anchor-ref/'+cidRes.result
+            }]
+            break
+          default:
+            break
+        }
+      }
+      return {
+        searchResult: [...result],
+        isLoading: isCIDLoading
       }
     }
   }

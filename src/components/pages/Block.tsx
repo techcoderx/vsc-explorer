@@ -1,8 +1,6 @@
 import { Text, Table, Tbody, Stack, Grid, GridItem, Flex, Tabs, Tab, TabList, TabPanels, TabPanel, Link } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
-import { cid as isCID } from 'is-ipfs'
-import { CID } from 'multiformats/cid'
 import { fetchBlock, fetchBlockByHash, fetchBlockTxs, fetchMembersAtBlock } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
@@ -29,7 +27,7 @@ export const BlockByID = () => {
 
 export const BlockByHash = () => {
   const {blockId} = useParams()
-  const invalidBlkId = !blockId || !isCID(blockId) || CID.parse(blockId).code !== 0x71
+  const invalidBlkId = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
   const { data, isLoading, isError} = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-block', blockId],

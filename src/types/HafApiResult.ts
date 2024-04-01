@@ -167,3 +167,8 @@ export interface ContractOut {
   },
   errorType?: number
 }
+
+export interface CIDSearchResult {
+  type?: string
+  result?: string | number
+}
