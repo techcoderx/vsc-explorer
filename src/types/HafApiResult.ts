@@ -123,3 +123,46 @@ export interface L1Acc {
   tx_count: number
   last_activity: string
 }
+
+export interface Tx {
+  id: string
+  ts: string
+  input: string
+  input_src: 'vsc' | 'hive'
+  output: string
+  block_num: number
+  idx_in_block: number
+  contract_id: string
+  contract_action: string
+  payload: any
+  contract_output?: ContractOut[]
+  io_gas?: number
+  error?: string
+}
+
+export interface L1Tx extends Tx {
+  signers: {
+    active: string[]
+    posting: string[]
+  }
+  tx_type: 'call_contract'
+}
+
+export interface L2Tx extends Tx {
+  nonce: number
+  signers: string[]
+  tx_type: L2TxType
+}
+
+export interface ContractOut {
+  ret?: any
+  logs: any[]
+  IOGas: number
+  error?: {
+    msg: string
+    colm: number
+    file: string
+    line: number
+  },
+  errorType?: number
+}

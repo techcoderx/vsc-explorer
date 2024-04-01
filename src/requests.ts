@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { request as gqlRequest, gql } from 'graphql-request'
-import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { L2BlockCID, L2TxCID } from './types/L2ApiResult'
@@ -80,6 +80,12 @@ export const fetchAccInfo = async (username: string): Promise<L1Acc> => {
 export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> => {
   const res = await fetch(`${hafVscApi}/rpc/get_ops_by_l1_tx?trx_id=${trx_id}`)
   const trx: L1Transaction[] = await res.json()
+  return trx
+}
+
+export const fetchL2Tx = async (trx_id: string): Promise<L2Tx> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)
+  const trx: L2Tx = await res.json()
   return trx
 }
 
