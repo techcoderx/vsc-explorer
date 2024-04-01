@@ -23,6 +23,12 @@ export const fetchWitnesses = async (startId: number, count = 50): Promise<Witne
   return blocks
 }
 
+export const fetchMembersAtBlock = async (block_num: number): Promise<string[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_members_at_block?blk_num=${block_num}`)
+  const blocks: string[] = await res.json()
+  return blocks
+}
+
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
   const res = await fetch(`${hafVscApi}/rpc/list_latest_ops?with_payload=true`)
   const txs: L1Transaction[] = await res.json()

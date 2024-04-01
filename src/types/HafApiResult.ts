@@ -46,6 +46,7 @@ export interface BlockDetail extends Block {
 
 export interface BlockRangeItm extends Block {
   txs: number
+  bv: string
 }
 
 export interface BlockTx {

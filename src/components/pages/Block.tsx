@@ -1,16 +1,18 @@
-import { Text, Table, Tbody, Stack, Box, Heading, Flex } from '@chakra-ui/react'
+import { Text, Table, Tbody, Stack, Grid, GridItem, Flex, Tabs, Tab, TabList, TabPanels, TabPanel, Link } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { cid as isCID } from 'is-ipfs'
 import { CID } from 'multiformats/cid'
-import { fetchBlock, fetchBlockByHash, fetchBlockTxs } from '../../requests'
+import { fetchBlock, fetchBlockByHash, fetchBlockTxs, fetchMembersAtBlock } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { isPuralArr, thousandSeperator, timeAgo } from '../../helpers'
-import { ipfsSubGw, l1Explorer } from '../../settings'
+import { bitsGrid, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
+import { ipfsSubGw, l1Explorer, themeColorScheme } from '../../settings'
 import { L2TxCard } from '../TxCard'
 import { BlockDetail as BlockResult } from '../../types/HafApiResult'
+import { ProgressBarPct } from '../ProgressPercent'
+import { getBitsetStrFromHex, getPercentFromBitsetStr } from '../../helpers'
 
 export const BlockByID = () => {
   const {blockNum} = useParams()
@@ -46,6 +48,13 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     queryFn: async () => fetchBlockTxs(blkNum),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
   })
+  const { data: members } = useQuery({
+    cacheTime: Infinity,
+    queryKey: ['vsc-members-at-block', 'l2', blkNum],
+    queryFn: async () => fetchMembersAtBlock(block.l1_block),
+    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
+  })
+  const votedMembers = getVotedMembers((block && block.signature.bv) ?? '0', members ?? [])
   if (invalidBlkNum)
     return <PageNotFound/>
   return (
@@ -65,20 +74,43 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
             <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@'+block?.proposer}/>
             <TableRow label="Previous Block Hash" value={block?.prev_block_hash ?? 'NULL'} isLoading={isBlockLoading} link={block?.prev_block_hash ? ipfsSubGw(block?.prev_block_hash) : undefined}/>
             <TableRow label="Block Hash" value={block?.block_hash} isLoading={isBlockLoading} link={block ? ipfsSubGw(block?.block_hash): undefined}/>
+            <TableRow label='Participation'><ProgressBarPct fontSize={'md'} val={getPercentFromBitsetStr(getBitsetStrFromHex((block && block.signature.bv) ?? 0))}/></TableRow>
           </Tbody>
         </Table>
       )}
-      {isL2BlockLoading ? <Text mt={'9'}>Loading L2 Block...</Text> : null}
-      {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ?
-        <Box mt={'9'}>
-          <Heading fontSize={'2xl'}>{l2BlockTxs.length} transaction{isPuralArr(l2BlockTxs) ? 's' : ''} in this block</Heading>
-          <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
-            {l2BlockTxs.map((tx, i) => {
-              return (<L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id} op={tx.tx_type}/>)
-            })}
-          </Flex>
-        </Box>
-      : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
+      <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'enclosed'}>
+        <TabList>
+          <Tab>Transactions ({l2BlockTxs?.length || 0})</Tab>
+          <Tab>Participating Members ({votedMembers.length})</Tab>
+        </TabList>
+        <TabPanels mt={'2'}>
+          <TabPanel>
+          {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
+          {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ?
+            <Flex direction={'column'} gap={'3'}>
+              {l2BlockTxs.map((tx, i) => {
+                return (<L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id} op={tx.tx_type}/>)
+              })}
+            </Flex>
+          : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
+          </TabPanel>
+          <TabPanel>
+            <Table>
+              <Tbody>
+                <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>{bitsGrid(getBitsetStrFromHex((block && block.signature.bv) ?? '0'))}</TableRow>
+                <TableRow label={'Voted Members'}>
+                  <Grid templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']} gap={3}>{
+                    votedMembers.map((m, i) => {
+                      return <GridItem key={i}><Link as={ReactRouterLink} to={'/@'+m}>{m}</Link></GridItem>
+                    })
+                  }</Grid>
+                </TableRow>
+                <TableRow label='BLS Signature' value={'0x'+(block && block.signature.sig)??''} isLoading={isBlockLoading} overflowWrap={'anywhere'}/>
+              </Tbody>
+            </Table>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   )
 }
