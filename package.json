@@ -18,9 +18,6 @@
     "@tanstack/react-query": "^4.33.0",
     "bitset": "^5.1.1",
     "framer-motion": "^10.16.1",
-    "graphql-request": "^6.1.0",
-    "is-ipfs": "^8.0.1",
-    "multiformats": "^12.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0"
