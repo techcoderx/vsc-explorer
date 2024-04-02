@@ -1,4 +1,4 @@
-import { Props, Witness, L1Transaction, Contract, MultisigTxRef, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi } from './settings'
 
@@ -38,9 +38,9 @@ export const fetchLatestContracts = async (): Promise<Contract[]> => {
   return contracts
 }
 
-export const fetchMultisigTxRefs = async (last_id: number, count: number = 100): Promise<MultisigTxRef[]> => {
-  const res = await fetch(`${hafVscApi}/rpc/list_txrefs?last_id=${last_id}&count=${count}`)
-  const refs: MultisigTxRef[] = await res.json()
+export const fetchAnchorRefs = async (last_id: number, count: number = 100): Promise<AnchorRefs[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/list_anchor_refs?last_ref=${last_id}&count=${count}`)
+  const refs: AnchorRefs[] = await res.json()
   return refs
 }
 

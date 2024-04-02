@@ -1,46 +1,43 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { fetchProps, fetchMultisigTxRefs } from '../../requests'
-import { timeAgo } from '../../helpers'
+import { fetchProps, fetchAnchorRefs } from '../../requests'
+import { abbreviateHash, timeAgo } from '../../helpers'
 import { ipfsSubGw } from '../../settings'
 
-const MultisigRefs = () => {
+const AnchorRefs = () => {
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps
   })
-  const refs = prop?.txrefs
+  const refs = prop?.anchor_refs
   const { data: txRefs, isLoading: isTxRefsLoading, isSuccess: isTxRefsSuccess } = useQuery({
     cacheTime: Infinity,
-    queryKey: ['vsc-multisig-txrefs', refs],
-    queryFn: async () => await fetchMultisigTxRefs(refs!),
+    queryKey: ['vsc-anchor-refs', refs],
+    queryFn: async () => (await fetchAnchorRefs(refs!)).reverse(),
     enabled: !!refs
   })
 
   return (
     <>
-      <Text fontSize={'5xl'}>Latest Multisig Tx Refs</Text>
+      <Text fontSize={'5xl'}>Latest Anchor Refs</Text>
       <hr/><br/>
-      <Text>Total {isPropSuccess ? prop.txrefs : 0} Tx Refs</Text>
+      <Text>Total {isPropSuccess ? prop.anchor_refs : 0} Anchor Refs</Text>
       <Box overflowX="auto" marginTop={'15px'}>
         <Table variant="simple">
           <Thead>
             <Tr>
               <Th>Id</Th>
               <Th>Age</Th>
-              <Th>L1 Tx</Th>
-              <Th>Ref ID</Th>
+              <Th>Block Number</Th>
+              <Th>Ref CID</Th>
             </Tr>
           </Thead>
           <Tbody>
             {isTxRefsLoading ? (
               <Tr>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
+                {[...Array(4)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
               </Tr>
             ) : ( isTxRefsSuccess ?
               txRefs.map((item, i) => (
@@ -51,8 +48,8 @@ const MultisigRefs = () => {
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td isTruncated><Link as={ReactRouterLink} to={'/tx/'+item.l1_tx}>{item.l1_tx}</Link></Td>
-                  <Td isTruncated><Link href={ipfsSubGw(item.ref_id)} target='_blank'>{item.ref_id}</Link></Td>
+                  <Td isTruncated><Link as={ReactRouterLink} to={'/block/'+item.block_num}>{item.block_num}</Link></Td>
+                  <Td isTruncated><Link href={ipfsSubGw(item.cid)} target='_blank'>{abbreviateHash(item.cid)}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>
             )}
@@ -63,4 +60,4 @@ const MultisigRefs = () => {
   )
 }
 
-export default MultisigRefs
+export default AnchorRefs
