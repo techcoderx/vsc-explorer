@@ -11,6 +11,8 @@ import { BlockByID, BlockByHash } from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
 import L2Tx from './components/pages/L2Tx'
+import Elections from './components/pages/Elections'
+import Epoch from './components/pages/Epoch'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
       {
         path: '/witnesses/:page?',
         element: <Witnesses/>
+      },
+      {
+        path: '/elections',
+        element: <Elections/>
+      },
+      {
+        path: '/epoch/:epochNum',
+        element: <Epoch/>
       },
       {
         path: '/blocks/:page?',

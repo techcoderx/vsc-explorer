@@ -94,7 +94,7 @@ const L1User = () => {
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Tx Count' isLoading={isL1AccvLoading} value={isL1AccSuccess ? thousandSeperator(l1Accv!.tx_count) : 'Error'}/>
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='Tx Count' isLoading={isL1AccvLoading} value={isL1AccSuccess ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}/>
                       <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Activity' isLoading={isL1AccvLoading}>
                         { isL1AccvSuccess ? <Tooltip label={l1Accv.last_activity} placement={'top'}>{timeAgo(l1Accv.last_activity)}</Tooltip> : 'Error' }
                       </TableRow>
