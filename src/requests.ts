@@ -1,4 +1,4 @@
-import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi } from './settings'
 
@@ -66,6 +66,24 @@ export const fetchWitness = async (username: string): Promise<Witness> => {
   const res = await fetch(`${hafVscApi}/rpc/get_witness?username=${username}`)
   const wit: Witness = await res.json()
   return wit
+}
+
+export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/list_epochs?last_epoch=${last_epoch}&count=${count}`)
+  const epochs: Election[] = await res.json()
+  return epochs
+}
+
+export const fetchEpoch = async (epoch_num: number): Promise<Epoch> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_epoch?epoch_num=${epoch_num}`)
+  const epoch: Epoch = await res.json()
+  return epoch
+}
+
+export const fetchBlocksInEpoch = async (epoch_num: number, start_block_id: number = 0, count: number = 200): Promise<BlockInEpoch[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_l2_blocks_in_epoch?epoch_num=${epoch_num}&start_id=${start_block_id}&count=${count}`)
+  const blocks: BlockInEpoch[] = await res.json()
+  return blocks
 }
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce: number|null = null): Promise<L1Transaction[]> => {

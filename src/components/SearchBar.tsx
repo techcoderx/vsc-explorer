@@ -157,6 +157,12 @@ const useSearchResults = (query: string): SearchResultHook => {
               href: '/anchor-ref/'+cidRes.result
             }]
             break
+          case 'election_result':
+            result = [{
+              type: SearchResultType.Epoch,
+              href: '/epoch/'+cidRes.result
+            }]
+            break
           default:
             break
         }

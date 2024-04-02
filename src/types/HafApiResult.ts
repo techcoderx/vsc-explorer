@@ -71,6 +71,40 @@ export interface Witness {
   produced: number
 }
 
+export interface Election {
+  epoch: number
+  l1_block_num: number
+  l1_tx: string
+  ts: string
+  proposer: string
+  data_cid: string
+  sig: string
+  bv: string
+}
+
+export interface Epoch {
+  epoch: number
+  l1_block_num: number
+  l1_tx: string
+  ts: string
+  proposer: string
+  data_cid: string
+  election: string[]
+  members_at_start: string[]
+  sig: string
+  bv: string
+  error?: string
+}
+
+export interface BlockInEpoch {
+  id: number
+  ts: string
+  block_hash: string
+  proposer: string
+  txs: number
+  bv: string
+}
+
 const txTypes = [
   'announce_node',
   'enable_witness',

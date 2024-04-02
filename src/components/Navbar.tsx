@@ -235,6 +235,11 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '/witnesses'
       },
       {
+        label: 'Elections',
+        subLabel: 'Witness selection of every epoch',
+        href: '/elections'
+      },
+      {
         label: 'Multisig Account',
         subLabel: 'Activities of multisig account on L1',
         href: '/@'+multisigAccount
