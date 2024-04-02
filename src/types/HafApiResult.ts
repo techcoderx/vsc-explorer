@@ -3,8 +3,7 @@ import {
   BlockPayload,
   NewContractPayload,
   ContractCommitmentPayload,
-  NodeAnnouncePayload,
-  MultisigTxRefPayload
+  NodeAnnouncePayload
 } from './Payloads'
 
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref'
@@ -98,7 +97,7 @@ export interface L1Transaction {
   l1_tx: string
   l1_block: number
   username: string
-  payload?: DIDPayload | BlockPayload | NewContractPayload | ContractCommitmentPayload | NodeAnnouncePayload | MultisigTxRefPayload | object
+  payload?: DIDPayload | BlockPayload | NewContractPayload | ContractCommitmentPayload | NodeAnnouncePayload | object
 }
 
 export interface Contract {
@@ -111,12 +110,12 @@ export interface Contract {
   code: string
 }
 
-export interface MultisigTxRef {
+export interface AnchorRefs {
   id: number
   ts: string
-  l1_tx: string
-  l1_block: number
-  ref_id: string
+  cid: string
+  tx_root: string
+  block_num: number
 }
 
 export interface L1Acc {

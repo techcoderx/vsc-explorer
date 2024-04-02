@@ -37,10 +37,6 @@ export type NodeAnnouncePayload = {
   witnessEnabled: boolean
 }
 
-export type MultisigTxRefPayload = {
-  ref_id: string
-}
-
 export type DepositPayload = {
   to: string
   from: string

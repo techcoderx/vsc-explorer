@@ -258,6 +258,10 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'Contracts',
         subLabel: 'Deployed smart contracts',
         href: '/contracts'
+      }, {
+        label: 'Anchor Refs',
+        subLabel: 'Latest anchor refs',
+        href: '/anchor-refs'
       }
     ]
   }

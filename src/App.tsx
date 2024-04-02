@@ -5,7 +5,7 @@ import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
-import MultisigRefs from './components/pages/MultisigRefs'
+import AnchorRefs from './components/pages/AnchorRefs'
 import PageNotFound from './components/pages/404'
 import { BlockByID, BlockByHash } from './components/pages/Block'
 import L1User from './components/pages/L1User'
@@ -50,8 +50,8 @@ const router = createBrowserRouter([
         element: <NewContracts/>
       },
       {
-        path: '/txrefs',
-        element: <MultisigRefs/>
+        path: '/anchor-refs',
+        element: <AnchorRefs/>
       },
       {
         path: '/:username/:page?',
