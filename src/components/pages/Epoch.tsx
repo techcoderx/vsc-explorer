@@ -4,10 +4,11 @@ import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import { abbreviateHash, bitsGrid, getVotedMembers, getBitsetStrFromHex, getPercentFromBitsetStr, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, getVotedMembers, getBitsetStrFromHex, getPercentFromBitsetStr, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
+import { ParticipatedMembers } from '../BlsAggMembers'
 
 const Epoch = () => {
   const { epochNum } = useParams()
@@ -36,7 +37,7 @@ const Epoch = () => {
         <PrevNextBtns toPrev={epchNum > 0 ? '/epoch/'+(epchNum!-1) : undefined} toNext={'/epoch/'+(epchNum!+1)}/>
       </Stack>
       <hr/>
-      {isEpochError || epoch?.error ? <Text>Failed to load block, error: {epoch ? epoch.error : 'Failed to fetch from HAF node'}</Text> : (
+      {isEpochError || epoch?.error ? <Text>Failed to load epoch, error: {epoch ? epoch.error : 'Failed to fetch from HAF node'}</Text> : (
         <Box>
           <Table mt={'20px'}>
             <Tbody>
@@ -95,19 +96,11 @@ const Epoch = () => {
                 )}
               </TabPanel>
               <TabPanel>
-                <Table>
-                  <Tbody>
-                    <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>{bitsGrid(getBitsetStrFromHex((epoch && epoch.bv) ?? '0'))}</TableRow>
-                    <TableRow label={'Voted Members'}>
-                      <Grid templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']} gap={3}>{
-                        votedMembers.map((m, i) => {
-                          return <GridItem key={i}><Link as={ReactRouterLink} to={'/@'+m}>{m}</Link></GridItem>
-                        })
-                      }</Grid>
-                    </TableRow>
-                    <TableRow label='BLS Signature' value={'0x'+(epoch && epoch.sig)??''} isLoading={isEpochLoading} overflowWrap={'anywhere'}/>
-                  </Tbody>
-                </Table>
+                <ParticipatedMembers
+                  bvHex={(epoch && epoch.bv) ?? '0'}
+                  sig={(epoch && epoch.sig)??''}
+                  members={votedMembers}
+                  isLoading={isEpochLoading}/>
               </TabPanel>
             </TabPanels>
           </Tabs>

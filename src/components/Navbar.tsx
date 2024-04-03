@@ -236,7 +236,7 @@ const NAV_ITEMS: Array<NavItem> = [
       },
       {
         label: 'Elections',
-        subLabel: 'Witness selection of every epoch',
+        subLabel: 'Witness selection of each epoch',
         href: '/elections'
       },
       {
