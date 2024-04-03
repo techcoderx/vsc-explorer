@@ -1,16 +1,17 @@
-import { Text, Table, Tbody, Stack, Grid, GridItem, Flex, Tabs, Tab, TabList, TabPanels, TabPanel, Link } from '@chakra-ui/react'
+import { Text, Table, Tbody, Stack, Flex, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { fetchBlock, fetchBlockByHash, fetchBlockTxs, fetchMembersAtBlock } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { bitsGrid, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
+import { getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
 import { ipfsSubGw, l1Explorer, themeColorScheme } from '../../settings'
 import { L2TxCard } from '../TxCard'
 import { BlockDetail as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { getBitsetStrFromHex, getPercentFromBitsetStr } from '../../helpers'
+import { ParticipatedMembers } from '../BlsAggMembers'
 
 export const BlockByID = () => {
   const {blockNum} = useParams()
@@ -93,19 +94,11 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
           : (isL2BlockError ? <Text>Failed to load L2 block data</Text> : null)}
           </TabPanel>
           <TabPanel>
-            <Table>
-              <Tbody>
-                <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>{bitsGrid(getBitsetStrFromHex((block && block.signature.bv) ?? '0'))}</TableRow>
-                <TableRow label={'Voted Members'}>
-                  <Grid templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']} gap={3}>{
-                    votedMembers.map((m, i) => {
-                      return <GridItem key={i}><Link as={ReactRouterLink} to={'/@'+m}>{m}</Link></GridItem>
-                    })
-                  }</Grid>
-                </TableRow>
-                <TableRow label='BLS Signature' value={'0x'+(block && block.signature.sig)??''} isLoading={isBlockLoading} overflowWrap={'anywhere'}/>
-              </Tbody>
-            </Table>
+            <ParticipatedMembers
+              bvHex={(block && block.signature.bv) ?? '0'}
+              sig={(block && block.signature.sig)??''}
+              members={votedMembers}
+              isLoading={isBlockLoading}/>
           </TabPanel>
         </TabPanels>
       </Tabs>
