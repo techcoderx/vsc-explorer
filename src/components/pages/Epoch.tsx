@@ -48,7 +48,7 @@ const Epoch = () => {
               <TableRow label='Proposer' value={epoch?.proposer} isLoading={isEpochLoading} link={'/@'+epoch?.proposer}/>
               <TableRow label='Election Data CID' value={epoch?.data_cid} isLoading={isEpochLoading}/>
               <TableRow label='Participation'><ProgressBarPct fontSize={'md'} val={getPercentFromBitsetStr(getBitsetStrFromHex((epoch && epoch.bv) ?? '0'))}/></TableRow>
-              <TableRow label='Elected Members' isLoading={isEpochLoading}>
+              <TableRow label={`Elected Members (${epoch?.election.length})`} isLoading={isEpochLoading}>
                 <Grid templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']} gap={3}>{
                   epoch?.election.map((m, i) => {
                     return <GridItem key={i}><Link as={ReactRouterLink} to={'/@'+m}>{m}</Link></GridItem>
@@ -68,12 +68,14 @@ const Epoch = () => {
                   (isBlocksError || !Array.isArray(blocks)) ? <Text>Failed to load blocks in epoch</Text> : (
                     <Table>
                       <Thead>
-                        <Th>Id</Th>
-                        <Th>Age</Th>
-                        <Th>Proposer</Th>
-                        <Th>Txs</Th>
-                        <Th>Block Hash</Th>
-                        <Th>Voted</Th>
+                        <Tr>
+                          <Th>Id</Th>
+                          <Th>Age</Th>
+                          <Th>Proposer</Th>
+                          <Th>Txs</Th>
+                          <Th>Block Hash</Th>
+                          <Th>Voted</Th>
+                        </Tr>
                       </Thead>
                       <Tbody>{blocks.map((item, i) => (
                         <Tr key={i}>
