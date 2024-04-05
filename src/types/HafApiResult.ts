@@ -152,6 +152,11 @@ export interface AnchorRefs {
   block_num: number
 }
 
+export interface AnchorRef extends AnchorRefs {
+  refs: string[]
+  error?: string
+}
+
 export interface L1Acc {
   name: string
   tx_count: number
