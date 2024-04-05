@@ -3,7 +3,6 @@ import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchAnchorRefs } from '../../requests'
 import { abbreviateHash, timeAgo } from '../../helpers'
-import { ipfsSubGw } from '../../settings'
 
 const AnchorRefs = () => {
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
@@ -42,14 +41,14 @@ const AnchorRefs = () => {
             ) : ( isTxRefsSuccess ?
               txRefs.map((item, i) => (
                 <Tr key={i}>
-                  <Td>{item.id}</Td>
+                  <Td><Link as={ReactRouterLink} to={'/anchor-ref/'+item.id}>{item.id}</Link></Td>
                   <Td sx={{whiteSpace: 'nowrap'}}>
                     <Tooltip label={item.ts} placement='top'>
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
                   <Td isTruncated><Link as={ReactRouterLink} to={'/block/'+item.block_num}>{item.block_num}</Link></Td>
-                  <Td isTruncated><Link href={ipfsSubGw(item.cid)} target='_blank'>{abbreviateHash(item.cid)}</Link></Td>
+                  <Td isTruncated><Link as={ReactRouterLink} to={'/anchor-ref/'+item.id}>{abbreviateHash(item.cid)}</Link></Td>
                 </Tr>
               )) : <Tr></Tr>
             )}

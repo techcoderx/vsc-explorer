@@ -1,4 +1,4 @@
-import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch } from './types/HafApiResult'
+import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi } from './settings'
 
@@ -42,6 +42,18 @@ export const fetchAnchorRefs = async (last_id: number, count: number = 100): Pro
   const res = await fetch(`${hafVscApi}/rpc/list_anchor_refs?last_ref=${last_id}&count=${count}`)
   const refs: AnchorRefs[] = await res.json()
   return refs
+}
+
+export const fetchAnchorRefByID = async (id: number): Promise<AnchorRef> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_anchor_ref_by_id?id=${id}`)
+  const ref: AnchorRef = await res.json()
+  return ref
+}
+
+export const fetchAnchorRefByCID = async (cid: string): Promise<AnchorRef> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_anchor_ref_by_cid?cid=${cid}`)
+  const ref: AnchorRef = await res.json()
+  return ref
 }
 
 export const fetchBlock = async (block_id: number): Promise<BlockDetail> => {

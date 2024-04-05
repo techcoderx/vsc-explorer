@@ -13,6 +13,7 @@ import L1Tx from './components/pages/L1Tx'
 import L2Tx from './components/pages/L2Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
+import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: '/anchor-refs',
         element: <AnchorRefs/>
+      },
+      {
+        path: '/anchor-ref/:refid',
+        element: <AnchorRefByID/>
+      },
+      {
+        path: '/anchor-ref-cid/:cid',
+        element: <AnchorRefByHash/>
       },
       {
         path: '/:username/:page?',
