@@ -1,4 +1,4 @@
-import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge, Link, Table, Tbody, Tr } from '@chakra-ui/react'
+import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge, Link, Table, Tbody, Tr, Tag, Stack } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
@@ -9,7 +9,7 @@ import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1Account, L1Dgp } from '../../types/L1ApiResult'
-import { multisigAccount, themeColorLight } from '../../settings'
+import { multisigAccount, themeColorScheme } from '../../settings'
 
 const count = 50
 
@@ -61,7 +61,11 @@ const L1User = () => {
     return <PageNotFound/>
   return (
     <>
-      <Text fontSize={'5xl'} marginBottom='10px'>{username} {L1AccFlairs[user] ? <Badge color={themeColorLight} fontSize={'2xl'}>{L1AccFlairs[user]}</Badge> : null}</Text>
+      <Stack direction={{base: 'column', md: 'row'}} justifyContent='space-between'>
+        <Text fontSize={'5xl'} marginBottom='10px'>{username}</Text>
+        {/* Note: Wrap with another HStack when there are more than one flair */}
+        {L1AccFlairs[user] ? <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>{L1AccFlairs[user]}</Tag> : null}
+      </Stack>
       <hr/>
       { isL1AccSuccess && !l1Acc.error && l1AccResult.length === 0 ?
         <Text fontSize={'xl'} margin={'10px 0px'}>Account does not exist</Text> :
