@@ -19,7 +19,6 @@ export const AnchorRefByID = () => {
     queryFn: async () => fetchAnchorRefByID(refNum),
     enabled: !invalidRefId
   })
-  console.log(refid, data)
   return AnchorRef(data!, isLoading, isError, invalidRefId, refNum)
 }
 
