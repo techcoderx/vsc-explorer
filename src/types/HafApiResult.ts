@@ -139,9 +139,19 @@ export interface Contract {
   created_in_op: string
   created_in_l1_block: number
   created_at: string
+  creator: string
   name: string
   description: string
   code: string
+}
+
+export interface ContractWifProof extends Contract {
+  storage_proof: {
+    hash?: string
+    sig?: string
+    bv?: string
+  }
+  error?: string
 }
 
 export interface AnchorRefs {
