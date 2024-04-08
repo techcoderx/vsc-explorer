@@ -66,7 +66,11 @@ const Blocks = () => {
                   </Td>
                   <Td><Link as={ReactRouterLink} to={'/@'+item.proposer}>{item.proposer}</Link></Td>
                   <Td>{item.txs}</Td>
-                  <Td><Link as={ReactRouterLink} to={'/block-by-hash/'+item.block_hash}>{abbreviateHash(item.block_hash)}</Link></Td>
+                  <Td>
+                    <Tooltip label={item.block_hash} placement='top'>
+                      <Link as={ReactRouterLink} to={'/block-by-hash/'+item.block_hash}>{abbreviateHash(item.block_hash)}</Link>
+                    </Tooltip>
+                  </Td>
                   <Td maxW={'200px'}>
                     <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))}/>
                   </Td>

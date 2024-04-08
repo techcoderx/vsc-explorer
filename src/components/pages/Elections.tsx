@@ -49,7 +49,11 @@ const Elections = () => {
                     </Tooltip>
                   </Td>
                   <Td><Link as={ReactRouterLink} to={'/@'+epoch.proposer}>{epoch.proposer}</Link></Td>
-                  <Td><Link as={ReactRouterLink} to={'/epoch/'+epoch.epoch}>{abbreviateHash(epoch.data_cid)}</Link></Td>
+                  <Td>
+                    <Tooltip label={epoch.data_cid} placement='top'>
+                      <Link as={ReactRouterLink} to={'/epoch/'+epoch.epoch}>{abbreviateHash(epoch.data_cid)}</Link>
+                    </Tooltip>
+                  </Td>
                   <Td maxW={'200px'}>
                     <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(epoch.bv))}/>
                   </Td>

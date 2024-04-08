@@ -14,6 +14,7 @@ import L2Tx from './components/pages/L2Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
+import { Contract } from './components/pages/Contract'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: '/contracts',
         element: <NewContracts/>
+      },
+      {
+        path: '/contract/:contractId',
+        element: <Contract/>
       },
       {
         path: '/anchor-refs',
