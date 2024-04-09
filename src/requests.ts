@@ -1,5 +1,5 @@
 import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef, ContractWifProof, HiveBridgeTx } from './types/HafApiResult'
-import { HiveRPCResponse, L1Account, L1Dgp } from './types/L1ApiResult'
+import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { AccountBalance } from './types/L2ApiResult'
 
@@ -135,13 +135,13 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return trx
 }
 
-export const fetchLatestDepositsHive = async (last_id = null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestDepositsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
   const res = await fetch(`${hafVscApi}/rpc/list_latest_deposits_hive?count=${count}${last_id ? '&last_id='+last_id : ''}`)
   const bridgeOps: HiveBridgeTx[] = await res.json()
   return bridgeOps
 }
 
-export const fetchLatestWithdrawalsHive = async (last_id = null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestWithdrawalsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
   const res = await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id='+last_id : ''}`)
   const bridgeOps: HiveBridgeTx[] = await res.json()
   return bridgeOps
