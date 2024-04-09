@@ -2,7 +2,7 @@ import { Text, Flex, Heading, Card, CardHeader, CardBody, VStack, Tooltip, Badge
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
-import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness } from '../../requests'
+import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness, getL2BalanceByL1User } from '../../requests'
 import { describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
@@ -54,6 +54,12 @@ const L1User = () => {
     queryKey: ['vsc-ms-names', 'sk_owner'],
     queryFn: async () => fetchMsOwners(l1AccResult[0].owner.key_auths.map(a => a[0])),
     enabled: user === multisigAccount && !!l1Acc && !invalidParams && !l1Acc.error
+  })
+  const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
+    cacheTime: 30000,
+    queryKey: ['vsc-l2-balance-by-l1-user', user],
+    queryFn: async () => getL2BalanceByL1User(user!),
+    enabled: !invalidParams
   })
   const l1AccResult = l1Acc?.result as L1Account[]
   const l1DgpResult = l1Dgp?.result as L1Dgp
@@ -107,6 +113,21 @@ const L1User = () => {
                 </CardBody>
               </Card>
             }
+            { user !== multisigAccount ?
+              <Card width={'100%'}>
+                <CardHeader marginBottom={'-15px'}>
+                  <Heading size={'md'} textAlign={'center'}>L2 Balances</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Table variant={'unstyled'}>
+                    <Tbody>
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' value={thousandSeperator(l2Balance?.data.getAccountBalance.tokens.HIVE || 0)+' HIVE'} isLoading={!isL2BalSuccess}/>
+                      <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' value={thousandSeperator(l2Balance?.data.getAccountBalance.tokens.HBD || 0)+' HBD'} isLoading={!isL2BalSuccess}/>
+                    </Tbody>
+                  </Table>
+                </CardBody>
+              </Card>
+            : null }
             { isWitSuccess && witness.id ?
             <Card width={'100%'}>
               <CardHeader marginBottom={'-15px'}>
