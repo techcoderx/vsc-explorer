@@ -15,6 +15,7 @@ import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 import { Contract } from './components/pages/Contract'
+import HiveBridgeOverview from './components/pages/bridge/Overview'
 
 const router = createBrowserRouter([
   {
@@ -88,6 +89,16 @@ const router = createBrowserRouter([
       {
         path: '/vsc-tx/:txid',
         element: <L2Tx/>
+      },
+      {
+        path: '/bridge/hive',
+        element: <HiveBridgeOverview/>
+      },
+      {
+        path: '/bridge/hive/deposits/:page?'
+      },
+      {
+        path: '/bridge/hive/withdrawals/:page?'
       },
       {
         path: '*',

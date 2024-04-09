@@ -269,6 +269,10 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '/anchor-refs'
       }
     ]
+  },
+  {
+    label: 'Bridge',
+    href: '/bridge/hive'
   }
 ]
 

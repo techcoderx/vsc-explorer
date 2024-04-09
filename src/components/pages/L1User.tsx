@@ -21,13 +21,13 @@ const L1User = () => {
   const { data: l1Acc, isLoading: isL1AccLoading, isSuccess: isL1AccSuccess } = useQuery({
     cacheTime: 15000,
     queryKey: ['hive-account', username],
-    queryFn: async () => fetchL1('condenser_api.get_accounts', [[user]]),
+    queryFn: async () => fetchL1<L1Account[]>('condenser_api.get_accounts', [[user]]),
     enabled: !invalidParams
   })
   const { data: l1Dgp, isLoading: isL1DgpLoading, isSuccess: isL1DgpSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['hive-dgp'],
-    queryFn: async () => fetchL1('condenser_api.get_dynamic_global_properties', []),
+    queryFn: async () => fetchL1<L1Dgp>('condenser_api.get_dynamic_global_properties', []),
     enabled: !invalidParams
   })
   const { data: witness, isLoading: isWitLoading, isSuccess: isWitSuccess } = useQuery({
@@ -52,7 +52,7 @@ const L1User = () => {
   const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
     cacheTime: 15000,
     queryKey: ['vsc-ms-names', 'sk_owner'],
-    queryFn: async () => fetchMsOwners(l1AccResult[0].owner.key_auths.map(a => a[0])),
+    queryFn: async () => fetchMsOwners(l1Acc!.result[0].owner.key_auths.map(a => a[0])),
     enabled: user === multisigAccount && !!l1Acc && !invalidParams && !l1Acc.error
   })
   const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
@@ -61,8 +61,6 @@ const L1User = () => {
     queryFn: async () => getL2BalanceByL1User(user!),
     enabled: !invalidParams
   })
-  const l1AccResult = l1Acc?.result as L1Account[]
-  const l1DgpResult = l1Dgp?.result as L1Dgp
   if (invalidParams)
     return <PageNotFound/>
   return (
@@ -73,7 +71,7 @@ const L1User = () => {
         {L1AccFlairs[user] ? <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>{L1AccFlairs[user]}</Tag> : null}
       </Stack>
       <hr/>
-      { isL1AccSuccess && !l1Acc.error && l1AccResult.length === 0 ?
+      { isL1AccSuccess && !l1Acc.error && l1Acc.result.length === 0 ?
         <Text fontSize={'xl'} margin={'10px 0px'}>Account does not exist</Text> :
 
         isL1AccSuccess && l1Acc.error ?
@@ -83,14 +81,14 @@ const L1User = () => {
             { user === multisigAccount ?
               <Card width={'100%'}>
                 <CardHeader marginBottom='-15px'>
-                  <Heading size={'md'} textAlign={'center'}>Multisig Key Holders ({isL1AccSuccess ? l1AccResult[0].owner.weight_threshold : '...'}/{isL1AccSuccess ? l1AccResult[0].owner.key_auths.length+l1AccResult[0].owner.account_auths.length : '...'})</Heading>
+                  <Heading size={'md'} textAlign={'center'}>Multisig Key Holders ({isL1AccSuccess ? l1Acc.result[0].owner.weight_threshold : '...'}/{isL1AccSuccess ? l1Acc.result[0].owner.key_auths.length+l1Acc.result[0].owner.account_auths.length : '...'})</Heading>
                 </CardHeader>
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
                       {!!msNames && isMsNamesSuccess && isL1AccSuccess ? msNames.map((a, i) => (
                         <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a}>{a}</Link></Tr>
-                      )).concat(l1AccResult[0].owner.account_auths.map((a, i) => (
+                      )).concat(l1Acc.result[0].owner.account_auths.map((a, i) => (
                         <Tr key={i}><Link as={ReactRouterLink} to={'/@'+a[0]}>{a[0]}</Link>{a[1] > 1 ? ' ('+a[1]+')' : ''}</Tr>
                       ))) : <Tr></Tr>}
                     </Tbody>
@@ -182,12 +180,12 @@ const L1User = () => {
               <CardBody>
                 <Table variant={'unstyled'}>
                   <Tbody>
-                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1AccResult[0].balance)+parseFloat(l1AccResult[0].savings_balance),3))+' HIVE' : 'Error'}/>
-                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1AccResult[0].hbd_balance)+parseFloat(l1AccResult[0].savings_hbd_balance),3))+' HBD' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HIVE Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1Acc.result[0].balance)+parseFloat(l1Acc.result[0].savings_balance),3))+' HIVE' : 'Error'}/>
+                    <TableRow isInCard minimalSpace minWidthLabel='115px' label='HBD Balance' isLoading={isL1AccLoading} value={isL1AccSuccess && !l1Acc.error ? thousandSeperator(roundFloat(parseFloat(l1Acc.result[0].hbd_balance)+parseFloat(l1Acc.result[0].savings_hbd_balance),3))+' HBD' : 'Error'}/>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Staked HIVE' isLoading={isL1AccLoading || isL1DgpLoading}>
                       { isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error ?
-                        <Tooltip label={thousandSeperator(parseFloat(l1AccResult[0].vesting_shares))+' VESTS'} placement='top'>{
-                            thousandSeperator((parseFloat(l1DgpResult.total_vesting_fund_hive)*parseFloat(l1AccResult[0].vesting_shares)/parseFloat(l1DgpResult.total_vesting_shares)).toFixed(3))+' HP'
+                        <Tooltip label={thousandSeperator(parseFloat(l1Acc.result[0].vesting_shares))+' VESTS'} placement='top'>{
+                            thousandSeperator((parseFloat(l1Dgp.result.total_vesting_fund_hive)*parseFloat(l1Acc.result[0].vesting_shares)/parseFloat(l1Dgp.result.total_vesting_shares)).toFixed(3))+' HP'
                           }
                         </Tooltip>
                         : 'Error'

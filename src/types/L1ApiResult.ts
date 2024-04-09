@@ -1,3 +1,16 @@
+export interface HiveRPCResponse<T> {
+  id: number
+  jsonrpc: string
+  result: T
+  error?: HiveRPCError
+}
+
+interface HiveRPCError {
+  code: number
+  message: string
+  data?: string
+}
+
 type L1AccountAuths = {
   account_auths: [string, number][],
   key_auths: [string, number][],
