@@ -1,5 +1,5 @@
-import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef, ContractWifProof } from './types/HafApiResult'
-import { L1Account, L1Dgp } from './types/L1ApiResult'
+import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef, ContractWifProof, HiveBridgeTx } from './types/HafApiResult'
+import { HiveRPCResponse, L1Account, L1Dgp } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { AccountBalance } from './types/L2ApiResult'
 
@@ -135,26 +135,25 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return trx
 }
 
+export const fetchLatestDepositsHive = async (last_id = null, count = 100): Promise<HiveBridgeTx[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/list_latest_deposits_hive?count=${count}${last_id ? '&last_id='+last_id : ''}`)
+  const bridgeOps: HiveBridgeTx[] = await res.json()
+  return bridgeOps
+}
+
+export const fetchLatestWithdrawalsHive = async (last_id = null, count = 100): Promise<HiveBridgeTx[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id='+last_id : ''}`)
+  const bridgeOps: HiveBridgeTx[] = await res.json()
+  return bridgeOps
+}
+
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
   const res = await fetch(`${hafVscApi}/rpc/search_by_cid?cid=${search_cid}`)
   const trx: CIDSearchResult = await res.json()
   return trx
 }
 
-interface HiveRPCResponse {
-  id: number
-  jsonrpc: string
-  result: L1Account[] | L1Dgp
-  error?: HiveRPCError
-}
-
-interface HiveRPCError {
-  code: number
-  message: string
-  data?: string
-}
-
-export const fetchL1 = async (method: string, params: object): Promise<HiveRPCResponse> => {
+export const fetchL1 = async <T>(method: string, params: object): Promise<HiveRPCResponse<T>> => {
   const res = await fetch(`${hiveApi}`, {
     method: 'POST',
     headers: {

@@ -220,3 +220,12 @@ export interface CIDSearchResult {
   type?: string
   result?: string | number
 }
+
+export interface HiveBridgeTx {
+  id: number
+  ts: string
+  in_op: string
+  l1_block: number
+  username: string
+  amount: string
+}
