@@ -16,6 +16,7 @@ import Epoch from './components/pages/Epoch'
 import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
+import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 
 const router = createBrowserRouter([
   {
@@ -95,10 +96,12 @@ const router = createBrowserRouter([
         element: <HiveBridgeOverview/>
       },
       {
-        path: '/bridge/hive/deposits/:page?'
+        path: '/bridge/hive/deposits/:page?',
+        element: <HiveDeposits/>
       },
       {
-        path: '/bridge/hive/withdrawals/:page?'
+        path: '/bridge/hive/withdrawals/:page?',
+        element: <HiveWithdrawals/>
       },
       {
         path: '*',
