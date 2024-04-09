@@ -1,6 +1,7 @@
 import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef, ContractWifProof } from './types/HafApiResult'
 import { L1Account, L1Dgp } from './types/L1ApiResult'
-import { hafVscApi, hiveApi } from './settings'
+import { hafVscApi, hiveApi, vscNodeApi } from './settings'
+import { AccountBalance } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -168,4 +169,32 @@ export const fetchL1 = async (method: string, params: object): Promise<HiveRPCRe
   })
   const result = await res.json()
   return result
+}
+
+const gql = async <T>(query: string) => {
+  return await (await fetch(vscNodeApi, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      query: query,
+      extensions: {}
+    })
+  })).json() as T
+}
+
+export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBalance> => {
+  return gql<AccountBalance>(`
+  {
+    getAccountBalance(account: "${l1_user}") {
+      account
+      block_height
+      tokens {
+        HBD
+        HIVE
+      }
+    }
+  }
+  `)
 }

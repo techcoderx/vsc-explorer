@@ -32,7 +32,7 @@ const TableRow = ({label, value, link, isLoading, children, minWidthLabel, isInC
     borderRight: allCardBorders ? cardBorderLight : 'unset'
   }}>
     <Td fontWeight='bold' padding={minimalSpace ? '10px 10px' : undefined} minW={minWidthLabel ?? undefined}>{label}</Td>
-    <Td style={{overflowWrap: overflowWrap, whiteSpace: whitespace}} padding={minimalSpace ? '10px 10px' : undefined}>{isLoading ? <Skeleton height='20px'/> : (children ? children : (link ? <Link as={ReactRouterLink} to={link} target={!link.startsWith('/')?'_blank':'_self'}>{value}</Link> : value))}</Td>
+    <Td style={{overflowWrap: overflowWrap, whiteSpace: whitespace}} padding={minimalSpace ? '10px 10px' : undefined}>{isLoading ? <Skeleton height='20px' minW='20px'/> : (children ? children : (link ? <Link as={ReactRouterLink} to={link} target={!link.startsWith('/')?'_blank':'_self'}>{value}</Link> : value))}</Td>
   </Tr>
 )
 
