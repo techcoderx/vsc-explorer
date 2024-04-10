@@ -183,6 +183,7 @@ export interface Tx {
   idx_in_block: number
   contract_id: string
   contract_action: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any
   contract_output?: ContractOut[]
   io_gas?: number
@@ -204,8 +205,9 @@ export interface L2Tx extends Tx {
 }
 
 export interface ContractOut {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ret?: any
-  logs: any[]
+  logs: string[]
   IOGas: number
   error?: {
     msg: string
