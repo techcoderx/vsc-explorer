@@ -59,7 +59,7 @@ export const HiveDeposits = () => {
     cacheTime: 30000,
     queryKey: ['vsc-deposit-count'],
     queryFn: async () => {
-      let latestRecord = await fetchLatestDepositsHive(null, 1)
+      const latestRecord = await fetchLatestDepositsHive(null, 1)
       return latestRecord.length > 0 ? latestRecord[0].id : 0
     },
     enabled: !invalidPage
@@ -88,7 +88,7 @@ export const HiveWithdrawals = () => {
     cacheTime: 30000,
     queryKey: ['vsc-withdrawal-count'],
     queryFn: async () => {
-      let latestRecord = await fetchLatestWithdrawalsHive(null, 1)
+      const latestRecord = await fetchLatestWithdrawalsHive(null, 1)
       return latestRecord.length > 0 ? latestRecord[0].id : 0
     },
     enabled: !invalidPage

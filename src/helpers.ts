@@ -27,29 +27,30 @@ export const roundFloat = (num: number, decimals: number): number => {
   return Math.round(num*Math.pow(10,decimals))/Math.pow(10,decimals)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isPuralArr = (arr: Array<any>) => arr.length > 1
 
 export const validateHiveUsername = (value: string): string | null => {
   let suffix = 'Hive username must '
   if (!value)
-      return suffix + 'not be empty.'
-  let length = value.length
+    return suffix + 'not be empty.'
+  const length = value.length
   if (length < 3 || length > 16)
-      return suffix + 'be between 3 and 16 characters.'
+    return suffix + 'be between 3 and 16 characters.'
   if (/\./.test(value))
-      suffix = 'Each account segment much '
-  let ref = value.split('.')
+    suffix = 'Each account segment much '
+  const ref = value.split('.')
   let label
   for (let i = 0, len = ref.length; i < len; i++) {
-      label = ref[i]
-      if (!/^[a-z]/.test(label))
-          return suffix + 'start with a letter.'
-      if (!/^[a-z0-9-]*$/.test(label))
-          return suffix + 'have only letters, digits, or dashes.'
-      if (!/[a-z0-9]$/.test(label))
-          return suffix + 'end with a letter or digit.'
-      if (!(label.length >= 3))
-          return suffix + 'be longer'
+    label = ref[i]
+    if (!/^[a-z]/.test(label))
+      return suffix + 'start with a letter.'
+    if (!/^[a-z0-9-]*$/.test(label))
+      return suffix + 'have only letters, digits, or dashes.'
+    if (!/[a-z0-9]$/.test(label))
+      return suffix + 'end with a letter or digit.'
+    if (!(label.length >= 3))
+      return suffix + 'be longer'
   }
   return null
 }
@@ -116,7 +117,7 @@ export const getVotedMembers = (bv: string, members: string[]) => {
 
 // do we want to display signatures in original base64url format?
 export const hexToBase64Url = (hexString: string): string => {
-  let matching = hexString.match(/\w{2}/g)
+  const matching = hexString.match(/\w{2}/g)
   if (matching)
     return window.btoa(matching.map(a => String.fromCharCode(parseInt(a, 16))).join(''))
       .replace('+', '-').replace('/', '_').replace(/=+$/, '')
