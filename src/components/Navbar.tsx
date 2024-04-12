@@ -5,6 +5,7 @@ import {
   IconButton,
   Button,
   Stack,
+  HStack,
   Collapse,
   Icon,
   Popover,
@@ -183,18 +184,20 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           textDecoration: 'none',
         }}
       >
-        <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
-          {label}
-        </Text>
-        {children && (
-          <Icon
-            as={ChevronDownIcon}
-            transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(180deg)' : ''}
-            w={6}
-            h={6}
-          />
-        )}
+        <HStack>
+          <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
+            {label}
+          </Text>
+          {children && (
+            <Icon
+              as={ChevronDownIcon}
+              transition={'all .25s ease-in-out'}
+              transform={isOpen ? 'rotate(180deg)' : ''}
+              w={6}
+              h={6}
+            />
+          )}
+        </HStack>
       </Box>
 
       <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
