@@ -170,7 +170,7 @@ export const fetchL1 = async <T>(method: string, params: object): Promise<HiveRP
   return result
 }
 
-const gql = async <T>(query: string) => {
+const gql = async <T>(query: string, variables: {[key: string]: string} = {}) => {
   return await (await fetch(vscNodeApi, {
     method: 'POST',
     headers: {
@@ -178,6 +178,7 @@ const gql = async <T>(query: string) => {
     },
     body: JSON.stringify({
       query: query,
+      variables,
       extensions: {}
     })
   })).json() as T
@@ -185,8 +186,8 @@ const gql = async <T>(query: string) => {
 
 export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBalance> => {
   return gql<AccountBalance>(`
-  {
-    getAccountBalance(account: "${l1_user}") {
+  query getAccountBalance($account: String!) {
+    getAccountBalance(account: $account) {
       account
       block_height
       tokens {
@@ -195,5 +196,7 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBala
       }
     }
   }
-  `)
+  `, {
+    account: l1_user
+  })
 }
