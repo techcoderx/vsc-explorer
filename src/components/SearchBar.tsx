@@ -148,7 +148,7 @@ const useSearchResults = (query: string): SearchResultHook => {
           case 'contract':
             result = [{
               type: SearchResultType.Contract,
-              href: '/contract/'+query
+              href: '/contract/'+cidRes.result
             }]
             break
           case 'anchor_ref':
