@@ -161,7 +161,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 
 const MobileNav = () => {
   return (
-    <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
+    <Stack bg={useColorModeValue('white', 'gray.800')} px={5} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -173,9 +173,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={0} onClick={children && onToggle}>
       <Box
-        py={2}
+        py={3}
         as={ReactRouterLink}
         to={href ?? '#'}
         justifyContent="space-between"
@@ -202,7 +202,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 
       <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
         <Stack
-          mt={2}
+          mt={0}
           pl={4}
           borderLeft={1}
           borderStyle={'solid'}
