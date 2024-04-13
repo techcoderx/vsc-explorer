@@ -41,9 +41,11 @@ const L2Tx = () => {
           </Table>
           <Card mt={'30px'}>
             <CardHeader><Heading fontSize={'2xl'}>Transaction Payload</Heading></CardHeader>
-            <CardBody mt={'-20px'}>
-              <JsonToTableRecursive json={l2Tx.payload} minimalSpace isInCard/>
-            </CardBody>
+            <CardBody mt={'-20px'}>{
+              typeof l2Tx.payload === 'object' ?
+                <JsonToTableRecursive json={l2Tx.payload} minimalSpace isInCard/>
+                : l2Tx.payload
+            }</CardBody>
           </Card>
           {l2Tx.contract_output ? l2Tx.contract_output.map((out, i) =>
             <Card key={i} mt={'30px'}>
