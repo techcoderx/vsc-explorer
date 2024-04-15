@@ -65,7 +65,7 @@ const Navbar = () => {
           <Box width={{base: 'fit-content', lg: '270px'}}>
             <SearchBar miniBtn={useBreakpointValue({base: true, lg: false})}/>
           </Box>
-          <Button onClick={toggleColorMode}>
+          <Button onClick={toggleColorMode} aria-label={'Switch color theme'}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>
         </Stack>

@@ -197,6 +197,7 @@ const SearchBar = ({miniBtn}: SearchBarProps) => {
         justifyContent={miniBtn ? 'unset' : 'flex-start'}
         colorScheme={themeColorScheme}
         variant={'outline'}
+        aria-label={'Search account, block, tx...'}
       >
         <SearchIcon/> 
         <Text
