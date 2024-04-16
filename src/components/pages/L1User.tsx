@@ -163,7 +163,7 @@ const L1User = () => {
                       ) : 'Error'}
                     </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Last Block' isLoading={isWitLoading}>
-                      <Text>{isWitSuccess ? (witness.last_block ? thousandSeperator(witness.last_block) : 'NULL') : 'Error'}</Text>
+                      <Link as={ReactRouterLink} wordBreak={'break-all'} to={witness.last_block ? '/block/'+witness.last_block : '#'}>{thousandSeperator(witness.last_block ?? 'N/A')}</Link>
                     </TableRow>
                     <TableRow isInCard minimalSpace minWidthLabel='115px' label='Produced' isLoading={isWitLoading}>
                       <Text>{isWitSuccess ? (witness.produced ? thousandSeperator(witness.produced) : 'NULL') : 'Error'}</Text>

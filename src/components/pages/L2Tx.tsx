@@ -28,7 +28,7 @@ const L2Tx = () => {
               <TableRow label='Transaction Type'>
                 <Badge color={themeColorLight}>{l2Tx.tx_type}</Badge>
               </TableRow>
-              <TableRow label='Contract ID' value={l2Tx.contract_id}/>
+              <TableRow label='Contract ID' value={l2Tx.contract_id} link={'/contract/'+l2Tx.contract_id}/>
               <TableRow label='Contract Action' value={l2Tx.contract_action}/>
               <TableRow label='Included In Block'>
                 <Link as={ReactRouterLink} to={'/block/'+l2Tx.block_num}>{l2Tx.block_num}</Link> <Badge color={themeColorLight}>Position: {l2Tx.idx_in_block}</Badge>

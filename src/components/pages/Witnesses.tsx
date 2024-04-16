@@ -67,7 +67,7 @@ const Witnesses = () => {
                       {item.is_up_to_date ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}
                     </Tooltip>
                   </Td>
-                  <Td>{item.last_block ?? 'N/A'}</Td>
+                  <Td><Link as={ReactRouterLink} to={item.last_block ? '/block/'+item.last_block : '#'}>{item.last_block ?? 'N/A'}</Link></Td>
                   <Td>{item.produced}</Td>
                 </Tr>
               )) : null
