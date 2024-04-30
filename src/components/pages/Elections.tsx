@@ -16,7 +16,7 @@ const Elections = () => {
   const { data: epochs, isLoading: isEpochsLoading, isSuccess: isEpochsSuccess } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-epochs', currentEpoch],
-    queryFn: async () => (await fetchElections(currentEpoch!)).reverse(),
+    queryFn: async () => fetchElections(currentEpoch!),
     enabled: !!currentEpoch
   })
   return (
