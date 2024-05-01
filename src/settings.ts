@@ -14,4 +14,4 @@ export const ipfsSubGw = (cid: string): string => 'https://'+cid+'.ipfs.dweb.lin
 
 export const l1ExplorerName = 'HiveHub'
 
-export const multisigAccount = 'vsc.ms-8968d20c'
+export const multisigAccount = 'vsc.gateway'
