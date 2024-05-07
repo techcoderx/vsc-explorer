@@ -8,17 +8,31 @@ interface JTR {
   minimalSpace?: boolean
 }
 
-const JsonToTableRecursive = ({json, isInCard = false, minimalSpace = false}: JTR): ReactNode => {
+const JsonToTableRecursive = ({ json, isInCard = false, minimalSpace = false }: JTR): ReactNode => {
   return (
     <Table variant={'unstyled'}>
       <Tbody>
         {Object.entries(json).map(([key, value]) => {
           if (value === null)
-            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}><i>null</i></TableRow>
+            return (
+              <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
+                <i>null</i>
+              </TableRow>
+            )
           if (typeof value === 'object')
-            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>{JsonToTableRecursive({ json: value, isInCard, minimalSpace })}</TableRow>
+            return (
+              <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
+                {JsonToTableRecursive({ json: value, isInCard, minimalSpace })}
+              </TableRow>
+            )
           else
-            return <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}><Text wordBreak='break-all' style={{whiteSpace: 'pre-wrap'}}>{typeof value === 'string' ? value : value.toString()}</Text></TableRow>
+            return (
+              <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
+                <Text wordBreak="break-all" style={{ whiteSpace: 'pre-wrap' }}>
+                  {typeof value === 'string' ? value : value.toString()}
+                </Text>
+              </TableRow>
+            )
         })}
       </Tbody>
     </Table>

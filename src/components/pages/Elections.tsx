@@ -13,7 +13,11 @@ const Elections = () => {
     queryFn: fetchProps
   })
   const currentEpoch = prop?.epoch
-  const { data: epochs, isLoading: isEpochsLoading, isSuccess: isEpochsSuccess } = useQuery({
+  const {
+    data: epochs,
+    isLoading: isEpochsLoading,
+    isSuccess: isEpochsSuccess
+  } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-epochs', currentEpoch],
     queryFn: async () => fetchElections(currentEpoch!),
@@ -22,7 +26,8 @@ const Elections = () => {
   return (
     <>
       <Text fontSize={'5xl'}>Elections</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Box overflowX="auto">
         <Table variant={'simple'}>
           <Thead>
@@ -37,29 +42,45 @@ const Elections = () => {
           <Tbody>
             {isEpochsLoading ? (
               <Tr>
-                {[...Array(6)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
+                {[...Array(6)].map((_, i) => (
+                  <Td key={i}>
+                    <Skeleton height="20px" />
+                  </Td>
+                ))}
               </Tr>
-            ):(isEpochsSuccess ? 
+            ) : isEpochsSuccess ? (
               epochs.map((epoch, i) => (
                 <Tr key={i}>
-                  <Td><Link as={ReactRouterLink} to={'/epoch/'+epoch.epoch}>{epoch.epoch}</Link></Td>
-                  <Td sx={{whiteSpace: 'nowrap'}}>
-                    <Tooltip label={epoch.ts} placement='top'>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
+                      {epoch.epoch}
+                    </Link>
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={epoch.ts} placement="top">
                       {timeAgo(epoch.ts)}
                     </Tooltip>
                   </Td>
-                  <Td><Link as={ReactRouterLink} to={'/@'+epoch.proposer}>{epoch.proposer}</Link></Td>
                   <Td>
-                    <Tooltip label={epoch.data_cid} placement='top'>
-                      <Link as={ReactRouterLink} to={'/epoch/'+epoch.epoch}>{abbreviateHash(epoch.data_cid)}</Link>
+                    <Link as={ReactRouterLink} to={'/@' + epoch.proposer}>
+                      {epoch.proposer}
+                    </Link>
+                  </Td>
+                  <Td>
+                    <Tooltip label={epoch.data_cid} placement="top">
+                      <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
+                        {abbreviateHash(epoch.data_cid)}
+                      </Link>
                     </Tooltip>
                   </Td>
                   <Td maxW={'200px'}>
-                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(epoch.bv))}/>
+                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(epoch.bv))} />
                   </Td>
                 </Tr>
               ))
-            : <Tr></Tr>)}
+            ) : (
+              <Tr></Tr>
+            )}
           </Tbody>
         </Table>
       </Box>

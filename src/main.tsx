@@ -10,7 +10,7 @@ const theme = extendTheme({
   },
   config: {
     useSystemColorMode: true,
-    initialColorMode: "dark"
+    initialColorMode: 'dark'
   }
 })
 
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <App />
       </QueryClientProvider>
     </ChakraProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

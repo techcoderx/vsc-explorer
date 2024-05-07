@@ -11,7 +11,11 @@ const AnchorRefs = () => {
     queryFn: fetchProps
   })
   const refs = prop?.anchor_refs
-  const { data: txRefs, isLoading: isTxRefsLoading, isSuccess: isTxRefsSuccess } = useQuery({
+  const {
+    data: txRefs,
+    isLoading: isTxRefsLoading,
+    isSuccess: isTxRefsSuccess
+  } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-anchor-refs', refs],
     queryFn: async () => (await fetchAnchorRefs(refs!)).reverse(),
@@ -21,7 +25,8 @@ const AnchorRefs = () => {
   return (
     <>
       <Text fontSize={'5xl'}>Latest Anchor Refs</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Text>Total {isPropSuccess ? prop.anchor_refs : 0} Anchor Refs</Text>
       <Box overflowX="auto" marginTop={'15px'}>
         <Table variant="simple">
@@ -36,21 +41,39 @@ const AnchorRefs = () => {
           <Tbody>
             {isTxRefsLoading ? (
               <Tr>
-                {[...Array(4)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
+                {[...Array(4)].map((_, i) => (
+                  <Td key={i}>
+                    <Skeleton height="20px" />
+                  </Td>
+                ))}
               </Tr>
-            ) : ( isTxRefsSuccess ?
+            ) : isTxRefsSuccess ? (
               txRefs.map((item, i) => (
                 <Tr key={i}>
-                  <Td><Link as={ReactRouterLink} to={'/anchor-ref/'+item.id}>{item.id}</Link></Td>
-                  <Td sx={{whiteSpace: 'nowrap'}}>
-                    <Tooltip label={item.ts} placement='top'>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/anchor-ref/' + item.id}>
+                      {item.id}
+                    </Link>
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.ts} placement="top">
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td isTruncated><Link as={ReactRouterLink} to={'/block/'+item.block_num}>{item.block_num}</Link></Td>
-                  <Td isTruncated><Link as={ReactRouterLink} to={'/anchor-ref/'+item.id}>{abbreviateHash(item.cid)}</Link></Td>
+                  <Td isTruncated>
+                    <Link as={ReactRouterLink} to={'/block/' + item.block_num}>
+                      {item.block_num}
+                    </Link>
+                  </Td>
+                  <Td isTruncated>
+                    <Link as={ReactRouterLink} to={'/anchor-ref/' + item.id}>
+                      {abbreviateHash(item.cid)}
+                    </Link>
+                  </Td>
                 </Tr>
-              )) : <Tr></Tr>
+              ))
+            ) : (
+              <Tr></Tr>
             )}
           </Tbody>
         </Table>

@@ -1,4 +1,22 @@
-import { Props, Witness, L1Transaction, Contract, AnchorRefs, L1Acc, BlockRangeItm, BlockDetail, BlockTx, L2Tx, CIDSearchResult, Election, Epoch, BlockInEpoch, AnchorRef, ContractWifProof, HiveBridgeTx } from './types/HafApiResult'
+import {
+  Props,
+  Witness,
+  L1Transaction,
+  Contract,
+  AnchorRefs,
+  L1Acc,
+  BlockRangeItm,
+  BlockDetail,
+  BlockTx,
+  L2Tx,
+  CIDSearchResult,
+  Election,
+  Epoch,
+  BlockInEpoch,
+  AnchorRef,
+  ContractWifProof,
+  HiveBridgeTx
+} from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { AccountBalance } from './types/L2ApiResult'
@@ -99,14 +117,28 @@ export const fetchEpoch = async (epoch_num: number): Promise<Epoch> => {
   return epoch
 }
 
-export const fetchBlocksInEpoch = async (epoch_num: number, start_block_id: number = 0, count: number = 200): Promise<BlockInEpoch[]> => {
-  const res = await fetch(`${hafVscApi}/rpc/get_l2_blocks_in_epoch?epoch_num=${epoch_num}&start_id=${start_block_id}&count=${count}`)
+export const fetchBlocksInEpoch = async (
+  epoch_num: number,
+  start_block_id: number = 0,
+  count: number = 200
+): Promise<BlockInEpoch[]> => {
+  const res = await fetch(
+    `${hafVscApi}/rpc/get_l2_blocks_in_epoch?epoch_num=${epoch_num}&start_id=${start_block_id}&count=${count}`
+  )
   const blocks: BlockInEpoch[] = await res.json()
   return blocks
 }
 
-export const fetchAccHistory = async (username: string, count: number = 50, last_nonce: number|null = null): Promise<L1Transaction[]> => {
-  const res = await fetch(`${hafVscApi}/rpc/get_op_history_by_l1_user?username=${username}&count=${count}${last_nonce?'&last_nonce='+last_nonce:''}`)
+export const fetchAccHistory = async (
+  username: string,
+  count: number = 50,
+  last_nonce: number | null = null
+): Promise<L1Transaction[]> => {
+  const res = await fetch(
+    `${hafVscApi}/rpc/get_op_history_by_l1_user?username=${username}&count=${count}${
+      last_nonce ? '&last_nonce=' + last_nonce : ''
+    }`
+  )
   const hist: L1Transaction[] = await res.json()
   return hist
 }
@@ -136,13 +168,13 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
 }
 
 export const fetchLatestDepositsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
-  const res = await fetch(`${hafVscApi}/rpc/list_latest_deposits_hive?count=${count}${last_id ? '&last_id='+last_id : ''}`)
+  const res = await fetch(`${hafVscApi}/rpc/list_latest_deposits_hive?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
   const bridgeOps: HiveBridgeTx[] = await res.json()
   return bridgeOps
 }
 
 export const fetchLatestWithdrawalsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
-  const res = await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id='+last_id : ''}`)
+  const res = await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
   const bridgeOps: HiveBridgeTx[] = await res.json()
   return bridgeOps
 }
@@ -170,22 +202,25 @@ export const fetchL1 = async <T>(method: string, params: object): Promise<HiveRP
   return result
 }
 
-const gql = async <T>(query: string, variables: {[key: string]: string} = {}) => {
-  return await (await fetch(vscNodeApi, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query: query,
-      variables,
-      extensions: {}
+const gql = async <T>(query: string, variables: { [key: string]: string } = {}) => {
+  return (await (
+    await fetch(vscNodeApi, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: query,
+        variables,
+        extensions: {}
+      })
     })
-  })).json() as T
+  ).json()) as T
 }
 
 export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBalance> => {
-  return gql<AccountBalance>(`
+  return gql<AccountBalance>(
+    `
   query getAccountBalance($account: String!) {
     getAccountBalance(account: $account) {
       account
@@ -196,7 +231,9 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBala
       }
     }
   }
-  `, {
-    account: l1_user
-  })
+  `,
+    {
+      account: l1_user
+    }
+  )
 }

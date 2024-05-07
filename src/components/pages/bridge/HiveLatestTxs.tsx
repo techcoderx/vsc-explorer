@@ -8,10 +8,24 @@ import Pagination from '../../Pagination'
 
 const count = 100
 
-const TxsTable = ({type, txs, isLoading, isSuccess, currentPage, txCount}: {type: string, txs?: HiveBridgeTx[], isLoading: boolean, isSuccess: boolean, currentPage: number, txCount?: number}) => {
+const TxsTable = ({
+  type,
+  txs,
+  isLoading,
+  isSuccess,
+  currentPage,
+  txCount
+}: {
+  type: string
+  txs?: HiveBridgeTx[]
+  isLoading: boolean
+  isSuccess: boolean
+  currentPage: number
+  txCount?: number
+}) => {
   return (
     <>
-      <Box overflowX='auto' m={'15px 0px'}>
+      <Box overflowX="auto" m={'15px 0px'}>
         <Table variant={'simple'}>
           <Thead>
             <Tr>
@@ -25,27 +39,45 @@ const TxsTable = ({type, txs, isLoading, isSuccess, currentPage, txCount}: {type
           <Tbody>
             {isLoading ? (
               <Tr>
-                {[...Array(5)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
+                {[...Array(5)].map((_, i) => (
+                  <Td key={i}>
+                    <Skeleton height="20px" />
+                  </Td>
+                ))}
               </Tr>
-            ):(isSuccess ? 
+            ) : isSuccess ? (
               txs?.map((item, i) => (
                 <Tr key={i}>
-                  <Td><Link as={ReactRouterLink} to={'/tx/'+item.in_op}>{item.id}</Link></Td>
-                  <Td sx={{whiteSpace: 'nowrap'}}>
-                    <Tooltip label={item.ts} placement='top'>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/tx/' + item.in_op}>
+                      {item.id}
+                    </Link>
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.ts} placement="top">
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td><Link as={ReactRouterLink} to={'/@'+item.username}>{item.username}</Link></Td>
-                  <Td><Link as={ReactRouterLink} to={'/tx/'+item.in_op}>{item.in_op}</Link></Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/@' + item.username}>
+                      {item.username}
+                    </Link>
+                  </Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/tx/' + item.in_op}>
+                      {item.in_op}
+                    </Link>
+                  </Td>
                   <Td>{thousandSeperator(item.amount)}</Td>
                 </Tr>
               ))
-            : <Tr></Tr>)}
+            ) : (
+              <Tr></Tr>
+            )}
           </Tbody>
         </Table>
       </Box>
-      <Pagination path={'/bridge/hive/'+type} currentPageNum={currentPage} maxPageNum={Math.ceil((txCount || 0)/count)}/>
+      <Pagination path={'/bridge/hive/' + type} currentPageNum={currentPage} maxPageNum={Math.ceil((txCount || 0) / count)} />
     </>
   )
 }
@@ -54,7 +86,7 @@ export const HiveDeposits = () => {
   // TODO: Deposit to DID key
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
-  const invalidPage = page && isNaN(pageNumber) || pageNumber < 1
+  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: depositCount, isSuccess: isLatestTxSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-deposit-count'],
@@ -64,7 +96,11 @@ export const HiveDeposits = () => {
     },
     enabled: !invalidPage
   })
-  const { data: deposits, isSuccess: isDepSuccess, isLoading: isDepLoading } = useQuery({
+  const {
+    data: deposits,
+    isSuccess: isDepSuccess,
+    isLoading: isDepLoading
+  } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-list-deposits-hive', null, count],
     queryFn: async () => fetchLatestDepositsHive(null, count),
@@ -73,9 +109,17 @@ export const HiveDeposits = () => {
   return (
     <>
       <Text fontSize={'5xl'}>Hive Bridge Deposits</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Text>Total {isLatestTxSuccess ? depositCount : 0} deposits</Text>
-      <TxsTable type='deposits' txs={deposits} txCount={depositCount} currentPage={pageNumber} isLoading={isDepLoading} isSuccess={isDepSuccess}/>
+      <TxsTable
+        type="deposits"
+        txs={deposits}
+        txCount={depositCount}
+        currentPage={pageNumber}
+        isLoading={isDepLoading}
+        isSuccess={isDepSuccess}
+      />
     </>
   )
 }
@@ -83,7 +127,7 @@ export const HiveDeposits = () => {
 export const HiveWithdrawals = () => {
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
-  const invalidPage = page && isNaN(pageNumber) || pageNumber < 1
+  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: withdrawalCount, isSuccess: isLatestTxSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-withdrawal-count'],
@@ -93,8 +137,12 @@ export const HiveWithdrawals = () => {
     },
     enabled: !invalidPage
   })
-  const paginate = Math.max((withdrawalCount || 0)-((pageNumber-1)*count),0)
-  const { data: withdrawals, isSuccess: isWithdSuccess, isLoading: isWithdLoading } = useQuery({
+  const paginate = Math.max((withdrawalCount || 0) - (pageNumber - 1) * count, 0)
+  const {
+    data: withdrawals,
+    isSuccess: isWithdSuccess,
+    isLoading: isWithdLoading
+  } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-list-withdrawals-hive', paginate, count],
     queryFn: async () => fetchLatestWithdrawalsHive(paginate, count),
@@ -103,9 +151,17 @@ export const HiveWithdrawals = () => {
   return (
     <>
       <Text fontSize={'5xl'}>Hive Bridge Withdrawals</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Text>Total {isLatestTxSuccess ? withdrawalCount : 0} withdrawals</Text>
-      <TxsTable type='withdrawals' txs={withdrawals} txCount={withdrawalCount} currentPage={pageNumber} isLoading={isWithdLoading} isSuccess={isWithdSuccess}/>
+      <TxsTable
+        type="withdrawals"
+        txs={withdrawals}
+        txCount={withdrawalCount}
+        currentPage={pageNumber}
+        isLoading={isWithdLoading}
+        isSuccess={isWithdSuccess}
+      />
     </>
   )
 }

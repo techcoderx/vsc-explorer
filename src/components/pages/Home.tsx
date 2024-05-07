@@ -11,18 +11,18 @@ interface InfoBoxProps {
 }
 
 const InfoBox = ({ title, prop, isLoading, isSuccess }: InfoBoxProps) => (
-  <Box flex='1' padding={{base: '15px 0px', md: '25px 0px'}}>
+  <Box flex="1" padding={{ base: '15px 0px', md: '25px 0px' }}>
     <Heading size={'md'}>{title}</Heading>
-    {isLoading ? <Skeleton height='20px' /> :
-      <Text fontSize={'23px'}>
-        {isSuccess ? thousandSeperator(prop!) : 'Error'}
-      </Text>
-    }
+    {isLoading ? <Skeleton height="20px" /> : <Text fontSize={'23px'}>{isSuccess ? thousandSeperator(prop!) : 'Error'}</Text>}
   </Box>
 )
 
 const Home = () => {
-  const { data: prop, isSuccess: isPropSuccess, isLoading: isPropLoading } = useQuery({
+  const {
+    data: prop,
+    isSuccess: isPropSuccess,
+    isLoading: isPropLoading
+  } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps
@@ -32,19 +32,50 @@ const Home = () => {
     <>
       <Center>
         <Card alignItems={'center'}>
-          <CardBody textAlign='center' w='3xl' padding='15px 20px'>
-            <VStack divider={<StackDivider/>} spacing={{base: '4', md: '0'}}>
-              <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
-                <InfoBox title="Hive L1 Block Height" prop={prop?.last_processed_block} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-                <InfoBox title="VSC Block Height" prop={prop?.l2_block_height} isLoading={isPropLoading} isSuccess={isPropSuccess} />
+          <CardBody textAlign="center" w="3xl" padding="15px 20px">
+            <VStack divider={<StackDivider />} spacing={{ base: '4', md: '0' }}>
+              <Stack
+                direction={{ base: 'column', md: 'row' }}
+                w="100%"
+                divider={<StackDivider />}
+                spacing={'4'}
+                align="center"
+                justify="center"
+              >
+                <InfoBox
+                  title="Hive L1 Block Height"
+                  prop={prop?.last_processed_block}
+                  isLoading={isPropLoading}
+                  isSuccess={isPropSuccess}
+                />
+                <InfoBox
+                  title="VSC Block Height"
+                  prop={prop?.l2_block_height}
+                  isLoading={isPropLoading}
+                  isSuccess={isPropSuccess}
+                />
                 <InfoBox title="Transactions (L1)" prop={prop?.operations} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
-              <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
+              <Stack
+                direction={{ base: 'column', md: 'row' }}
+                w="100%"
+                divider={<StackDivider />}
+                spacing={'4'}
+                align="center"
+                justify="center"
+              >
                 <InfoBox title="Current Epoch" prop={prop?.epoch} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Witnesses" prop={prop?.witnesses} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Contract Calls" prop={prop?.transactions} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
-              <Stack direction={{ base: 'column', md: 'row' }} w='100%' divider={<StackDivider/>} spacing={'4'} align='center' justify='center'>
+              <Stack
+                direction={{ base: 'column', md: 'row' }}
+                w="100%"
+                divider={<StackDivider />}
+                spacing={'4'}
+                align="center"
+                justify="center"
+              >
                 <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Anchor Refs" prop={prop?.anchor_refs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Bridge Txs" prop={prop?.bridge_txs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
