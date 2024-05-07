@@ -12,8 +12,8 @@ const count = 50
 const Blocks = () => {
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
-  const invalidPage = page && isNaN(pageNumber) || pageNumber < 1
-  const paginate = page ? pageNumber*count : count
+  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
+  const paginate = page ? pageNumber * count : count
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
@@ -21,22 +21,26 @@ const Blocks = () => {
     enabled: !invalidPage
   })
   const height = prop?.l2_block_height
-  const { data: blocks, isLoading: isBlocksLoading, isSuccess: isBlocksSuccess } = useQuery({
+  const {
+    data: blocks,
+    isLoading: isBlocksLoading,
+    isSuccess: isBlocksSuccess
+  } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-blocks', height, page],
     queryFn: async () => {
-      const d = await fetchBlocks(Math.max(1,height!-paginate+1),Math.min(count,height!-paginate+count))
+      const d = await fetchBlocks(Math.max(1, height! - paginate + 1), Math.min(count, height! - paginate + count))
       return d.reverse()
     },
     enabled: !!height && !invalidPage
   })
-  if (invalidPage)
-    return <PageNotFound/>
+  if (invalidPage) return <PageNotFound />
 
   return (
     <>
       <Text fontSize={'5xl'}>Latest Blocks</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Text>Total {isPropSuccess ? thousandSeperator(prop.l2_block_height) : 0} blocks</Text>
       <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
@@ -53,34 +57,50 @@ const Blocks = () => {
           <Tbody>
             {isBlocksLoading ? (
               <Tr>
-                {[...Array(6)].map((_, i) => <Td key={i}><Skeleton height="20px" /></Td>)}
+                {[...Array(6)].map((_, i) => (
+                  <Td key={i}>
+                    <Skeleton height="20px" />
+                  </Td>
+                ))}
               </Tr>
-            ) : ( isBlocksSuccess ?
+            ) : isBlocksSuccess ? (
               blocks.map((item, i) => (
                 <Tr key={i}>
-                  <Td><Link as={ReactRouterLink} to={'/block/'+item.id}>{item.id}</Link></Td>
-                  <Td sx={{whiteSpace: 'nowrap'}}>
-                    <Tooltip label={item.ts} placement='top'>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/block/' + item.id}>
+                      {item.id}
+                    </Link>
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.ts} placement="top">
                       {timeAgo(item.ts)}
                     </Tooltip>
                   </Td>
-                  <Td><Link as={ReactRouterLink} to={'/@'+item.proposer}>{item.proposer}</Link></Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/@' + item.proposer}>
+                      {item.proposer}
+                    </Link>
+                  </Td>
                   <Td>{item.txs}</Td>
                   <Td>
-                    <Tooltip label={item.block_hash} placement='top'>
-                      <Link as={ReactRouterLink} to={'/block-by-hash/'+item.block_hash}>{abbreviateHash(item.block_hash)}</Link>
+                    <Tooltip label={item.block_hash} placement="top">
+                      <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block_hash}>
+                        {abbreviateHash(item.block_hash)}
+                      </Link>
                     </Tooltip>
                   </Td>
                   <Td maxW={'200px'}>
-                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))}/>
+                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))} />
                   </Td>
                 </Tr>
-              )) : <Tr></Tr>
+              ))
+            ) : (
+              <Tr></Tr>
             )}
           </Tbody>
         </Table>
       </Box>
-      <Pagination path='/blocks' currentPageNum={pageNumber} maxPageNum={Math.ceil((height || 0)/count)}/>
+      <Pagination path="/blocks" currentPageNum={pageNumber} maxPageNum={Math.ceil((height || 0) / count)} />
     </>
   )
 }

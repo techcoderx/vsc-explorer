@@ -21,91 +21,91 @@ import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLat
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navbar/>,
+    element: <Navbar />,
     children: [
       {
         path: '/',
-        element: <Home/>
+        element: <Home />
       },
       {
         path: '/witnesses',
-        element: <Witnesses/>
+        element: <Witnesses />
       },
       {
         path: '/witnesses/:page?',
-        element: <Witnesses/>
+        element: <Witnesses />
       },
       {
         path: '/elections',
-        element: <Elections/>
+        element: <Elections />
       },
       {
         path: '/epoch/:epochNum',
-        element: <Epoch/>
+        element: <Epoch />
       },
       {
         path: '/blocks/:page?',
-        element: <Blocks/>
+        element: <Blocks />
       },
       {
         path: '/block/:blockNum',
-        element: <BlockByID/>
+        element: <BlockByID />
       },
       {
         path: '/block-by-hash/:blockId',
-        element: <BlockByHash/>
+        element: <BlockByHash />
       },
       {
         path: '/transactions',
-        element: <NewTxs/>
+        element: <NewTxs />
       },
       {
         path: '/contracts',
-        element: <NewContracts/>
+        element: <NewContracts />
       },
       {
         path: '/contract/:contractId',
-        element: <Contract/>
+        element: <Contract />
       },
       {
         path: '/anchor-refs',
-        element: <AnchorRefs/>
+        element: <AnchorRefs />
       },
       {
         path: '/anchor-ref/:refid',
-        element: <AnchorRefByID/>
+        element: <AnchorRefByID />
       },
       {
         path: '/anchor-ref-cid/:cid',
-        element: <AnchorRefByHash/>
+        element: <AnchorRefByHash />
       },
       {
         path: '/:username/:page?',
-        element: <L1User/>
+        element: <L1User />
       },
       {
         path: '/tx/:txid',
-        element: <L1Tx/>
+        element: <L1Tx />
       },
       {
         path: '/vsc-tx/:txid',
-        element: <L2Tx/>
+        element: <L2Tx />
       },
       {
         path: '/bridge/hive',
-        element: <HiveBridgeOverview/>
+        element: <HiveBridgeOverview />
       },
       {
         path: '/bridge/hive/deposits/:page?',
-        element: <HiveDeposits/>
+        element: <HiveDeposits />
       },
       {
         path: '/bridge/hive/withdrawals/:page?',
-        element: <HiveWithdrawals/>
+        element: <HiveWithdrawals />
       },
       {
         path: '*',
-        element: <PageNotFound/>
+        element: <PageNotFound />
       }
     ]
   }

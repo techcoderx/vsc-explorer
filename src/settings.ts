@@ -10,7 +10,7 @@ export const hafVscApi = 'https://vsc-haf.techcoderx.com'
 export const vscNodeApi = 'https://vsc-graphql.techcoderx.com/api/v1/graphql'
 export const l1Explorer = 'https://hivehub.dev'
 export const ipfsGw = 'https://ipfs.io'
-export const ipfsSubGw = (cid: string): string => 'https://'+cid+'.ipfs.dweb.link'
+export const ipfsSubGw = (cid: string): string => 'https://' + cid + '.ipfs.dweb.link'
 
 export const l1ExplorerName = 'HiveHub'
 

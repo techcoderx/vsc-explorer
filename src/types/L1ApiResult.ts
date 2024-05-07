@@ -12,8 +12,8 @@ interface HiveRPCError {
 }
 
 type L1AccountAuths = {
-  account_auths: [string, number][],
-  key_auths: [string, number][],
+  account_auths: [string, number][]
+  key_auths: [string, number][]
   weight_threshold: number
 }
 

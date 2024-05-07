@@ -18,7 +18,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { Link as ReactRouterLink, Outlet, } from 'react-router-dom'
+import { Link as ReactRouterLink, Outlet } from 'react-router-dom'
 import { multisigAccount, themeColor, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 
@@ -53,7 +53,7 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <ReactRouterLink to='/'>VSC Blocks</ReactRouterLink>
+            <ReactRouterLink to="/">VSC Blocks</ReactRouterLink>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -62,8 +62,8 @@ const Navbar = () => {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={3}>
-          <Box width={{base: 'fit-content', lg: '270px'}}>
-            <SearchBar miniBtn={useBreakpointValue({base: true, lg: false})}/>
+          <Box width={{ base: 'fit-content', lg: '270px' }}>
+            <SearchBar miniBtn={useBreakpointValue({ base: true, lg: false })} />
           </Box>
           <Button onClick={toggleColorMode} aria-label={'Switch color theme'}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
@@ -102,7 +102,7 @@ const DesktopNav = () => {
                 color={linkColor}
                 _hover={{
                   textDecoration: 'none',
-                  color: linkHoverColor,
+                  color: linkHoverColor
                 }}
               >
                 {navItem.label}
@@ -127,13 +127,7 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Box
-      role={'group'}
-      display={'block'}
-      p={2}
-      rounded={'md'}
-      _hover={{ bg: useColorModeValue(themeColorULight, 'gray.900') }}
-    >
+    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: useColorModeValue(themeColorULight, 'gray.900') }}>
       <ReactRouterLink to={href ?? '#'}>
         <Stack direction={'row'} align={'center'}>
           <Box>
@@ -181,7 +175,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         justifyContent="space-between"
         alignItems="center"
         _hover={{
-          textDecoration: 'none',
+          textDecoration: 'none'
         }}
       >
         <HStack>
@@ -245,7 +239,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Multisig Account',
         subLabel: 'Activities of multisig account on L1',
-        href: '/@'+multisigAccount
+        href: '/@' + multisigAccount
       }
     ]
   },
@@ -266,7 +260,8 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'Contracts',
         subLabel: 'Deployed smart contracts',
         href: '/contracts'
-      }, {
+      },
+      {
         label: 'Anchor Refs',
         subLabel: 'Latest anchor refs',
         href: '/anchor-refs'

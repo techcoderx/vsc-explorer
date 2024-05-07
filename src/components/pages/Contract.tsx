@@ -11,7 +11,12 @@ import { ParticipatedMembers } from '../BlsAggMembers'
 export const Contract = () => {
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vs4') && contractId?.length !== 68
-  const { data: contract, isLoading, isSuccess, isError } = useQuery({
+  const {
+    data: contract,
+    isLoading,
+    isSuccess,
+    isError
+  } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-contract', contractId],
     queryFn: async () => fetchContractByID(contractId!),
@@ -29,18 +34,29 @@ export const Contract = () => {
     <>
       <Box marginBottom={'15px'}>
         <Text fontSize={'5xl'}>Contract</Text>
-        <Text fontSize={'3xl'} opacity={'0.7'}>{contractId}</Text>
+        <Text fontSize={'3xl'} opacity={'0.7'}>
+          {contractId}
+        </Text>
       </Box>
-      {isLoading ? <Skeleton h={'20px'} mt={'20px'}/> : null}
+      {isLoading ? <Skeleton h={'20px'} mt={'20px'} /> : null}
       {isSuccess && !contract.error ? (
         <Box>
           <Table>
             <Tbody>
-              <TableRow label='Creation Timestamp' value={contract ? contract.created_at+' ('+timeAgo(contract.created_at)+')' : ''} isLoading={isLoading}/>
-              <TableRow label='Created In L1 Block' value={contract.created_in_l1_block} link={l1Explorer+'/b/'+contract.created_in_l1_block} isLoading={isLoading}/>
-              <TableRow label='Created in L1 Tx' value={contract.created_in_op} link={'/tx/'+contract.created_in_op}/>
-              <TableRow label='Creator' value={contract.creator} link={'/@'+contract.creator}/>
-              <TableRow label='Contract Code CID' value={contract.code}/>
+              <TableRow
+                label="Creation Timestamp"
+                value={contract ? contract.created_at + ' (' + timeAgo(contract.created_at) + ')' : ''}
+                isLoading={isLoading}
+              />
+              <TableRow
+                label="Created In L1 Block"
+                value={contract.created_in_l1_block}
+                link={l1Explorer + '/b/' + contract.created_in_l1_block}
+                isLoading={isLoading}
+              />
+              <TableRow label="Created in L1 Tx" value={contract.created_in_op} link={'/tx/' + contract.created_in_op} />
+              <TableRow label="Creator" value={contract.creator} link={'/@' + contract.creator} />
+              <TableRow label="Contract Code CID" value={contract.code} />
             </Tbody>
           </Table>
           {hasStorageProof ? (
@@ -54,13 +70,18 @@ export const Contract = () => {
                     bvHex={contract.storage_proof.bv!}
                     sig={contract.storage_proof.sig!}
                     members={votedMembers}
-                    isLoading={isLoading}/>
+                    isLoading={isLoading}
+                  />
                 </TabPanel>
               </TabPanels>
             </Tabs>
           ) : null}
         </Box>
-      ) : (isSuccess && contract.error ? <Text>{contract.error}</Text> : (isError ? <Text>Failed to fetch contract</Text> : null))}
+      ) : isSuccess && contract.error ? (
+        <Text>{contract.error}</Text>
+      ) : isError ? (
+        <Text>Failed to fetch contract</Text>
+      ) : null}
     </>
   )
 }

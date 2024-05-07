@@ -17,19 +17,23 @@ const Witnesses = () => {
     queryFn: fetchProps,
     enabled: !invalidParams
   })
-  const id_start = prop ? Math.max((pageNumber-1)*count+1,1) : null
-  const { data: witnesses, isLoading: isWitnessLoading, isSuccess: isWitnessSuccess } = useQuery({
+  const id_start = prop ? Math.max((pageNumber - 1) * count + 1, 1) : null
+  const {
+    data: witnesses,
+    isLoading: isWitnessLoading,
+    isSuccess: isWitnessSuccess
+  } = useQuery({
     cacheTime: Infinity,
     queryKey: ['vsc-witnesses', id_start],
     queryFn: async () => fetchWitnesses(id_start!, count),
     enabled: !invalidParams && !!id_start
   })
-  if (invalidParams)
-    return <PageNotFound/>
+  if (invalidParams) return <PageNotFound />
   return (
     <>
       <Text fontSize={'5xl'}>Witnesses</Text>
-      <hr/><br/>
+      <hr />
+      <br />
       <Text>Total {isPropSuccess ? prop.witnesses : 0} witnesses</Text>
       <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
@@ -47,35 +51,61 @@ const Witnesses = () => {
           <Tbody>
             {isWitnessLoading ? (
               <Tr>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
-                <Td><Skeleton height="20px" /></Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
               </Tr>
-            ) : ( isWitnessSuccess ?
+            ) : isWitnessSuccess ? (
               witnesses.map((item, i) => (
                 <Tr key={i}>
                   <Td>{item.id}</Td>
-                  <Td><Link as={ReactRouterLink} to={'/@'+item.username}>{item.username}</Link></Td>
-                  <Td sx={{whiteSpace: 'nowrap'}} isTruncated>{item.did}</Td>
-                  <Td>{item.enabled ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}</Td>
                   <Td>
-                    <Tooltip label={item.git_commit.slice(0,8)}>
-                      {item.is_up_to_date ? <Badge colorScheme='green'>True</Badge> : <Badge colorScheme='red'>False</Badge>}
+                    <Link as={ReactRouterLink} to={'/@' + item.username}>
+                      {item.username}
+                    </Link>
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
+                    {item.did}
+                  </Td>
+                  <Td>{item.enabled ? <Badge colorScheme="green">True</Badge> : <Badge colorScheme="red">False</Badge>}</Td>
+                  <Td>
+                    <Tooltip label={item.git_commit.slice(0, 8)}>
+                      {item.is_up_to_date ? <Badge colorScheme="green">True</Badge> : <Badge colorScheme="red">False</Badge>}
                     </Tooltip>
                   </Td>
-                  <Td><Link as={ReactRouterLink} to={item.last_block ? '/block/'+item.last_block : '#'}>{item.last_block ?? 'N/A'}</Link></Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={item.last_block ? '/block/' + item.last_block : '#'}>
+                      {item.last_block ?? 'N/A'}
+                    </Link>
+                  </Td>
                   <Td>{item.produced}</Td>
                 </Tr>
-              )) : null
-            )}
+              ))
+            ) : null}
           </Tbody>
         </Table>
       </Box>
-      { isPropSuccess && isWitnessSuccess ? <Pagination path={'/witnesses'} currentPageNum={pageNumber} maxPageNum={Math.ceil(prop.witnesses/count)}/> : null }
+      {isPropSuccess && isWitnessSuccess ? (
+        <Pagination path={'/witnesses'} currentPageNum={pageNumber} maxPageNum={Math.ceil(prop.witnesses / count)} />
+      ) : null}
     </>
   )
 }

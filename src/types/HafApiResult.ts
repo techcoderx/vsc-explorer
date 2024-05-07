@@ -1,10 +1,4 @@
-import {
-  DIDPayload,
-  BlockPayload,
-  NewContractPayload,
-  ContractCommitmentPayload,
-  NodeAnnouncePayload
-} from './Payloads'
+import { DIDPayload, BlockPayload, NewContractPayload, ContractCommitmentPayload, NodeAnnouncePayload } from './Payloads'
 
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref'
 
@@ -120,8 +114,8 @@ const txTypes = [
   'custom_json',
   'deposit',
   'withdrawal'
-]  as const
-type TxTypes = typeof txTypes[number]
+] as const
+type TxTypes = (typeof txTypes)[number]
 
 export interface L1Transaction {
   id: number
@@ -214,7 +208,7 @@ export interface ContractOut {
     colm: number
     file: string
     line: number
-  },
+  }
   errorType?: number
 }
 
