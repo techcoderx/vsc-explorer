@@ -54,6 +54,7 @@ export interface BlockTx {
 export interface Witness {
   id: number
   did: string
+  consensus_did: string
   enabled: boolean
   username: string
   enabled_at?: string
