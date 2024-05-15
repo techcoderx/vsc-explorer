@@ -26,6 +26,7 @@ export interface Block {
   prev_block_hash?: string
   block_hash: string
   block_body_hash: string
+  txs: number
 }
 
 export interface BlockDetail extends Block {
@@ -38,7 +39,6 @@ export interface BlockDetail extends Block {
 }
 
 export interface BlockRangeItm extends Block {
-  txs: number
   bv: string
 }
 
