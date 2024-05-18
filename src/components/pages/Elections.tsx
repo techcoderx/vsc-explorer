@@ -1,34 +1,43 @@
 import { Text, Box, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 import { getBitsetStrFromHex, getPercentFromBitsetStr } from '../../helpers'
+import PageNotFound from './404'
+import Pagination from '../Pagination'
+
+const count = 100
 
 const Elections = () => {
+  const { page } = useParams()
+  const pageNumber = parseInt(page || '1')
+  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: prop } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-props'],
-    queryFn: fetchProps
+    queryFn: fetchProps,
+    enabled: !invalidPage
   })
-  const currentEpoch = prop?.epoch
+  const lastEpoch = (prop?.epoch || 0) - (pageNumber - 1) * count
   const {
     data: epochs,
     isLoading: isEpochsLoading,
     isSuccess: isEpochsSuccess
   } = useQuery({
     cacheTime: Infinity,
-    queryKey: ['vsc-epochs', currentEpoch],
-    queryFn: async () => fetchElections(currentEpoch!),
-    enabled: !!currentEpoch
+    queryKey: ['vsc-epochs', lastEpoch, count],
+    queryFn: async () => fetchElections(lastEpoch!, count),
+    enabled: !!prop?.epoch && !invalidPage
   })
+  if (invalidPage) return <PageNotFound />
   return (
     <>
       <Text fontSize={'5xl'}>Elections</Text>
       <hr />
       <br />
-      <Box overflowX="auto">
+      <Box overflowX="auto" mb={'15px'}>
         <Table variant={'simple'}>
           <Thead>
             <Tr>
@@ -84,6 +93,7 @@ const Elections = () => {
           </Tbody>
         </Table>
       </Box>
+      <Pagination path="/elections" currentPageNum={pageNumber} maxPageNum={Math.ceil((prop?.epoch || 0) / count)} />
     </>
   )
 }
