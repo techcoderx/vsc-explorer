@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         element: <Witnesses />
       },
       {
-        path: '/elections',
+        path: '/elections/:page?',
         element: <Elections />
       },
       {
