@@ -243,8 +243,11 @@ const L1User = () => {
                         isLoading={isWitLoading}
                         value={isWitSuccess ? witness.id : 'Error'}
                       />
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="DID Key" isLoading={isWitLoading}>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Node DID Key" isLoading={isWitLoading}>
                         <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did : 'Error'}</Text>
+                      </TableRow>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key" isLoading={isWitLoading}>
+                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.consensus_did : 'Error'}</Text>
                       </TableRow>
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Enabled" isLoading={isWitLoading}>
                         {isWitSuccess ? (
