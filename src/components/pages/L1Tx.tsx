@@ -17,7 +17,7 @@ import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchTxByL1Id } from '../../requests'
+import { fetchL1TxOutput, fetchTxByL1Id } from '../../requests'
 import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
 
@@ -27,6 +27,11 @@ const L1Tx = () => {
     cacheTime: Infinity,
     queryKey: ['vsc-l1-tx', txid],
     queryFn: async () => fetchTxByL1Id(txid!)
+  })
+  const { data: outData, isSuccess: isOutSuccess } = useQuery({
+    cacheTime: 30000,
+    queryKey: ['vsc-l1-tx-output', txid],
+    queryFn: async () => fetchL1TxOutput(txid!)
   })
   return (
     <>
@@ -94,6 +99,16 @@ const L1Tx = () => {
               <CardBody marginTop={'-25px'}>
                 <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object} />
               </CardBody>
+              {isOutSuccess && outData.length >= i + 1 && outData[i] && outData[i]?.contract_output ? (
+                <Box>
+                  <CardHeader>
+                    <Heading fontSize={'xl'}>Output</Heading>
+                  </CardHeader>
+                  <CardBody marginTop={'-25px'}>
+                    <JsonToTableRecursive isInCard minimalSpace json={outData[i]!.contract_output!} />
+                  </CardBody>
+                </Box>
+              ) : null}
             </Card>
           ))}
         </Flex>

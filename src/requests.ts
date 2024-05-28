@@ -156,6 +156,12 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
   return trx
 }
 
+export const fetchL1TxOutput = async (trx_id: string): Promise<(L1Tx | null)[]> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)
+  const trx: (L1Tx | null)[] = await res.json()
+  return trx
+}
+
 export const fetchL2Tx = async (trx_id: string): Promise<L2Tx> => {
   const res = await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)
   const trx: L2Tx = await res.json()
