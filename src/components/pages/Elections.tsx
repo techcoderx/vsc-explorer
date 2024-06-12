@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
-import { getBitsetStrFromHex, getPercentFromBitsetStr } from '../../helpers'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
 
@@ -83,7 +82,7 @@ const Elections = () => {
                     </Tooltip>
                   </Td>
                   <Td maxW={'200px'}>
-                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(epoch.bv))} />
+                    <ProgressBarPct val={(epoch.voted_weight / epoch.eligible_weight) * 100} />
                   </Td>
                 </Tr>
               ))

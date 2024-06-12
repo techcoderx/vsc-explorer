@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
 import { fetchProps, fetchBlocks } from '../../requests'
-import { abbreviateHash, getBitsetStrFromHex, getPercentFromBitsetStr, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 
 const count = 50
@@ -90,7 +90,7 @@ const Blocks = () => {
                     </Tooltip>
                   </Td>
                   <Td maxW={'200px'}>
-                    <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))} />
+                    <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
                   </Td>
                 </Tr>
               ))

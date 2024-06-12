@@ -16,7 +16,8 @@ import {
   AnchorRef,
   ContractWifProof,
   HiveBridgeTx,
-  L1Tx
+  L1Tx,
+  WeightedMembers
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
@@ -40,10 +41,10 @@ export const fetchWitnesses = async (startId: number, count = 50): Promise<Witne
   return blocks
 }
 
-export const fetchMembersAtBlock = async (block_num: number): Promise<string[]> => {
+export const fetchMembersAtBlock = async (block_num: number): Promise<WeightedMembers[]> => {
   const res = await fetch(`${hafVscApi}/rpc/get_members_at_block?blk_num=${block_num}`)
-  const blocks: string[] = await res.json()
-  return blocks
+  const members: WeightedMembers[] = await res.json()
+  return members
 }
 
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {

@@ -10,7 +10,6 @@ import { ipfsSubGw, l1Explorer, themeColorScheme } from '../../settings'
 import { L2TxCard } from '../TxCard'
 import { BlockDetail as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
-import { getBitsetStrFromHex, getPercentFromBitsetStr } from '../../helpers'
 import { ParticipatedMembers } from '../BlsAggMembers'
 
 export const BlockByID = () => {
@@ -57,7 +56,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     queryFn: async () => fetchMembersAtBlock(block.l1_block),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
   })
-  const votedMembers = getVotedMembers((block && block.signature.bv) ?? '0', members ?? [])
+  const { votedMembers, votedWeight, totalWeight } = getVotedMembers((block && block.signature.bv) ?? '0', members ?? [])
   if (invalidBlkNum) return <PageNotFound />
   return (
     <>
@@ -98,10 +97,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
               link={block ? ipfsSubGw(block?.block_hash) : undefined}
             />
             <TableRow label="Participation">
-              <ProgressBarPct
-                fontSize={'md'}
-                val={getPercentFromBitsetStr(getBitsetStrFromHex((block && block.signature.bv) ?? 0))}
-              />
+              <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />
             </TableRow>
           </Tbody>
         </Table>
@@ -128,7 +124,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
             <ParticipatedMembers
               bvHex={(block && block.signature.bv) ?? '0'}
               sig={(block && block.signature.sig) ?? ''}
-              members={votedMembers}
+              members={votedMembers.map((m) => m.username)}
               isLoading={isBlockLoading}
             />
           </TabPanel>
