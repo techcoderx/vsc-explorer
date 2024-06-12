@@ -29,7 +29,7 @@ export const Contract = () => {
     queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
     enabled: !isError && !isLoading && !invalidContractId && !!hasStorageProof
   })
-  const votedMembers = getVotedMembers((contract && contract.storage_proof.bv) ?? '0', members ?? [])
+  const { votedMembers } = getVotedMembers((contract && contract.storage_proof.bv) ?? '0', members ?? [])
   return (
     <>
       <Box marginBottom={'15px'}>
@@ -69,7 +69,7 @@ export const Contract = () => {
                   <ParticipatedMembers
                     bvHex={contract.storage_proof.bv!}
                     sig={contract.storage_proof.sig!}
-                    members={votedMembers}
+                    members={votedMembers.map((m) => m.username)}
                     isLoading={isLoading}
                   />
                 </TabPanel>

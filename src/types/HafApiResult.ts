@@ -39,6 +39,8 @@ export interface BlockDetail extends Block {
 }
 
 export interface BlockRangeItm extends Block {
+  voted_weight: number
+  eligible_weight: number
   bv: string
 }
 
@@ -73,6 +75,8 @@ export interface Election {
   ts: string
   proposer: string
   data_cid: string
+  voted_weight: number
+  eligible_weight: number
   sig: string
   bv: string
 }
@@ -84,8 +88,10 @@ export interface Epoch {
   ts: string
   proposer: string
   data_cid: string
-  election: string[]
-  members_at_start: string[]
+  election: WeightedMembers[]
+  members_at_start: WeightedMembers[]
+  voted_weight: number
+  eligible_weight: number
   sig: string
   bv: string
   error?: string
@@ -97,6 +103,8 @@ export interface BlockInEpoch {
   block_hash: string
   proposer: string
   txs: number
+  voted_weight: number
+  eligible_weight: number
   bv: string
 }
 
@@ -225,4 +233,9 @@ export interface HiveBridgeTx {
   l1_block: number
   username: string
   amount: string
+}
+
+export interface WeightedMembers {
+  username: string
+  weight: number
 }

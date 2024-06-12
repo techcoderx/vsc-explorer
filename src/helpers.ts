@@ -1,5 +1,5 @@
 import BitSet from 'bitset'
-import { L1Transaction } from './types/HafApiResult'
+import { L1Transaction, WeightedMembers } from './types/HafApiResult'
 import { DepositPayload, ElectionResultPayload, NAI, NewContractPayload } from './types/Payloads'
 
 export const timeAgo = (date: string): string => {
@@ -92,15 +92,22 @@ export const getBitsetStrFromHex = (bv: string) => {
   return BitSet.fromHexString(bv).toString(2)
 }
 
-export const getPercentFromBitsetStr = (bs: string) => {
-  return ((bs.split('1').length - 1) / bs.length) * 100
-}
-
-export const getVotedMembers = (bv: string, members: string[]) => {
+export const getVotedMembers = (
+  bv: string,
+  members: WeightedMembers[]
+): { votedMembers: WeightedMembers[]; votedWeight: number; totalWeight: number } => {
   const bs = BitSet.fromHexString(bv)
   const voted = []
-  for (const m in members) if (bs.get(Number(m)) === 1) voted.push(members[m])
-  return voted
+  let votedWeight = 0
+  let totalWeight = 0
+  for (const m in members) {
+    totalWeight += members[m].weight
+    if (bs.get(Number(m)) === 1) {
+      voted.push(members[m])
+      votedWeight += members[m].weight
+    }
+  }
+  return { votedMembers: voted, votedWeight, totalWeight }
 }
 
 // do we want to display signatures in original base64url format?

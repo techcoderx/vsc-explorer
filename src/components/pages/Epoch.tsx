@@ -24,18 +24,13 @@ import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import {
-  abbreviateHash,
-  getVotedMembers,
-  getBitsetStrFromHex,
-  getPercentFromBitsetStr,
-  thousandSeperator,
-  timeAgo
-} from '../../helpers'
+import { abbreviateHash, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
+
+export const ELECTION_UPDATE_2_EPOCH = 125
 
 const Epoch = () => {
   const { epochNum } = useParams()
@@ -62,7 +57,7 @@ const Epoch = () => {
     enabled: !invalidEpochNum
   })
   const blockCount = (blocks && blocks.length) ?? 0
-  const votedMembers = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
+  const { votedMembers } = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
@@ -93,7 +88,7 @@ const Epoch = () => {
               <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
               <TableRow label="Election Data CID" value={epoch?.data_cid} isLoading={isEpochLoading} />
               <TableRow label="Participation">
-                <ProgressBarPct fontSize={'md'} val={getPercentFromBitsetStr(getBitsetStrFromHex((epoch && epoch.bv) ?? '0'))} />
+                <ProgressBarPct fontSize={'md'} val={(epoch ? epoch?.voted_weight / epoch?.eligible_weight : 0) * 100} />
               </TableRow>
               <TableRow label={`Elected Members (${epoch?.election.length})`} isLoading={isEpochLoading}>
                 <Grid
@@ -103,8 +98,14 @@ const Epoch = () => {
                   {epoch?.election.map((m, i) => {
                     return (
                       <GridItem key={i}>
-                        <Link as={ReactRouterLink} to={'/@' + m}>
-                          {m}
+                        <Link as={ReactRouterLink} to={'/@' + m.username}>
+                          {m.username}
+                          {epoch.epoch >= ELECTION_UPDATE_2_EPOCH ? (
+                            <Text display={'inline'} fontSize={'small'}>
+                              {' '}
+                              ({m.weight})
+                            </Text>
+                          ) : null}
                         </Link>
                       </GridItem>
                     )
@@ -161,7 +162,7 @@ const Epoch = () => {
                             </Link>
                           </Td>
                           <Td maxW={'200px'}>
-                            <ProgressBarPct val={getPercentFromBitsetStr(getBitsetStrFromHex(item.bv))} />
+                            <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
                           </Td>
                         </Tr>
                       ))}
@@ -173,7 +174,7 @@ const Epoch = () => {
                 <ParticipatedMembers
                   bvHex={(epoch && epoch.bv) ?? '0'}
                   sig={(epoch && epoch.sig) ?? ''}
-                  members={votedMembers}
+                  members={votedMembers.map((m) => m.username)}
                   isLoading={isEpochLoading}
                 />
               </TabPanel>
