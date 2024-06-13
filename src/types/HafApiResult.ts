@@ -32,6 +32,8 @@ export interface Block {
 export interface BlockDetail extends Block {
   error?: string
   merkle_root: string
+  voted_weight: number
+  eligible_weight: number
   signature: {
     sig: string
     bv: string
