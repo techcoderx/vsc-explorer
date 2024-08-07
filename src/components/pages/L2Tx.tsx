@@ -84,18 +84,16 @@ const L2Tx = () => {
               )}
             </CardBody>
           </Card>
-          {l2Tx.contract_output
-            ? l2Tx.contract_output.map((out, i) => (
-                <Card key={i} mt={'30px'}>
-                  <CardHeader>
-                    <Heading fontSize={'2xl'}>Contract Output #{i}</Heading>
-                  </CardHeader>
-                  <CardBody mt={'-20px'}>
-                    <JsonToTableRecursive json={out} minimalSpace isInCard />
-                  </CardBody>
-                </Card>
-              ))
-            : null}
+          {l2Tx.contract_output && l2Tx.tx_type === 'call_contract' ? (
+            <Card mt={'30px'}>
+              <CardHeader>
+                <Heading fontSize={'2xl'}>Contract Output</Heading>
+              </CardHeader>
+              <CardBody mt={'-20px'}>
+                <JsonToTableRecursive json={l2Tx.contract_output} minimalSpace isInCard />
+              </CardBody>
+            </Card>
+          ) : null}
         </Box>
       ) : isSuccess && l2Tx.error ? (
         <Text>{l2Tx.error}</Text>
