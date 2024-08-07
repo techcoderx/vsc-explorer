@@ -54,9 +54,12 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     cacheTime: Infinity,
     queryKey: ['vsc-members-at-block', 'l2', blkNum],
     queryFn: async () => fetchMembersAtBlock(block.l1_block),
-    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
+    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum && !block.error
   })
-  const { votedMembers, votedWeight, totalWeight } = getVotedMembers((block && block.signature.bv) ?? '0', members ?? [])
+  const { votedMembers, votedWeight, totalWeight } = getVotedMembers(
+    (block && block.signature && block.signature.bv) ?? '0',
+    members ?? []
+  )
   if (invalidBlkNum) return <PageNotFound />
   return (
     <>
@@ -122,8 +125,8 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
           </TabPanel>
           <TabPanel>
             <ParticipatedMembers
-              bvHex={(block && block.signature.bv) ?? '0'}
-              sig={(block && block.signature.sig) ?? ''}
+              bvHex={(block && block.signature && block.signature.bv) ?? '0'}
+              sig={(block && block.signature && block.signature.sig) ?? ''}
               members={votedMembers.map((m) => m.username)}
               isLoading={isBlockLoading}
             />
