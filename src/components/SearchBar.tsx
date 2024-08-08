@@ -50,6 +50,9 @@ enum SearchResultType {
   L1Transaction = 'L1 Transaction',
   L2Transaction = 'L2 Contract Call',
   ContractOutput = 'Contract Output',
+  Transfer = 'L2 Transfer',
+  Withdraw = 'L2 Withdrawal Request',
+  Event = 'Event',
   Epoch = 'Epoch',
   AnchorRef = 'Anchor Ref',
   Contract = 'Contract'
@@ -177,11 +180,27 @@ const useSearchResults = (query: string): SearchResultHook => {
               }
             ]
             break
+          case 'transfer':
+            result = [
+              {
+                type: SearchResultType.Transfer,
+                href: '/vsc-tx/' + query
+              }
+            ]
+            break
+          case 'withdraw':
+            result = [
+              {
+                type: SearchResultType.Withdraw,
+                href: '/vsc-tx/' + query
+              }
+            ]
+            break
           case 'contract_output':
             result = [
               {
                 type: SearchResultType.ContractOutput,
-                href: '/vsc-tx/' + query
+                href: '/vsc-tx-output/' + query
               }
             ]
             break

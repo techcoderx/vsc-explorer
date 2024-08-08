@@ -44,28 +44,23 @@ const L2Tx = () => {
               <TableRow label="Transaction Type">
                 <Badge color={themeColorLight}>{l2Tx.tx_type}</Badge>
               </TableRow>
-              <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
-              <TableRow label="Contract Action" value={l2Tx.contract_action} />
+              {l2Tx.tx_type === 'call_contract' ? (
+                <>
+                  <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
+                  <TableRow label="Contract Action" value={l2Tx.contract_action} />
+                </>
+              ) : null}
               <TableRow label="Included In Block">
                 <Link as={ReactRouterLink} to={'/block/' + l2Tx.block_num}>
                   {l2Tx.block_num}
                 </Link>{' '}
                 <Badge color={themeColorLight}>Position: {l2Tx.idx_in_block}</Badge>
               </TableRow>
-              {l2Tx.tx_type === 'call_contract' ? (
-                <TableRow label={`Signers (${l2Tx.signers.length})`}>{l2Tx.signers.join('\n')}</TableRow>
-              ) : null}
+              <TableRow label={`Signers (${l2Tx.signers.length})`}>{l2Tx.signers.join('\n')}</TableRow>
               {l2Tx.tx_type === 'call_contract' ? (
                 <TableRow label={'Output Transaction'}>
-                  <Link as={ReactRouterLink} to={'/vsc-tx/' + l2Tx.output}>
+                  <Link as={ReactRouterLink} to={'/vsc-tx-output/' + l2Tx.output}>
                     {l2Tx.output}
-                  </Link>
-                </TableRow>
-              ) : null}
-              {l2Tx.tx_type === 'contract_output' ? (
-                <TableRow label={'Input Transaction'}>
-                  <Link as={ReactRouterLink} to={(l2Tx.input_src === 'vsc' ? '/vsc-tx/' : '/tx/') + l2Tx.input}>
-                    {l2Tx.input}
                   </Link>
                 </TableRow>
               ) : null}
@@ -96,6 +91,18 @@ const L2Tx = () => {
               </CardBody>
             </Card>
           ) : null}
+          {Array.isArray(l2Tx.events)
+            ? l2Tx.events.map((event, i) => (
+                <Card key={i} mt={'30px'}>
+                  <CardHeader>
+                    <Heading fontSize={'2xl'}>Event #{i}</Heading>
+                  </CardHeader>
+                  <CardBody mt={'-20px'}>
+                    <JsonToTableRecursive json={event} minimalSpace isInCard />
+                  </CardBody>
+                </Card>
+              ))
+            : null}
         </Box>
       ) : isSuccess && l2Tx.error ? (
         <Text>{l2Tx.error}</Text>
