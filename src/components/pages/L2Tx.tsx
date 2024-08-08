@@ -58,7 +58,7 @@ const L2Tx = () => {
               {l2Tx.tx_type === 'call_contract' ? (
                 <TableRow label={'Output Transaction'}>
                   <Link as={ReactRouterLink} to={'/vsc-tx/' + l2Tx.output}>
-                    {l2Tx.input}
+                    {l2Tx.output}
                   </Link>
                 </TableRow>
               ) : null}
@@ -69,7 +69,9 @@ const L2Tx = () => {
                   </Link>
                 </TableRow>
               ) : null}
-              {l2Tx.io_gas ? <TableRow label="Gas Used">{thousandSeperator(l2Tx.io_gas)}</TableRow> : null}
+              {l2Tx.contract_output ? (
+                <TableRow label="Gas Used">{thousandSeperator(l2Tx.contract_output.IOGas)}</TableRow>
+              ) : null}
             </Tbody>
           </Table>
           <Card mt={'30px'}>

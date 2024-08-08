@@ -41,8 +41,7 @@ type L2TxAttr = {
 }
 
 export const L2TxCard = ({ ts, txid, op }: L2TxAttr) => {
-  let txRoute = '/vsc-tx/'
-  if (op === 'anchor_ref') txRoute = '/anchor-ref-cid/'
+  const txRoute = op === 'contract_output' ? '/vsc-tx-output/' : op === 'anchor_ref' ? '/anchor-ref-cid/' : '/vsc-tx/'
   return (
     <Card
       as={Link}
