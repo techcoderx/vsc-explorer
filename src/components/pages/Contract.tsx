@@ -34,7 +34,7 @@ export const Contract = () => {
     <>
       <Box marginBottom={'15px'}>
         <Text fontSize={'5xl'}>Contract</Text>
-        <Text fontSize={'3xl'} opacity={'0.7'}>
+        <Text fontSize={'2xl'} opacity={'0.7'}>
           {contractId}
         </Text>
       </Box>
