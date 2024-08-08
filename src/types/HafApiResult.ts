@@ -1,6 +1,6 @@
 import { DIDPayload, BlockPayload, NewContractPayload, ContractCommitmentPayload, NodeAnnouncePayload } from './Payloads'
 
-export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref'
+export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'event'
 
 export interface Props {
   epoch: number
@@ -190,7 +190,7 @@ export interface Tx {
   contract_action: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any
-  contract_output?: ContractOut[]
+  contract_output?: ContractOut
   io_gas?: number
   error?: string
 }
@@ -221,6 +221,20 @@ export interface ContractOut {
     line: number
   }
   errorType?: number
+}
+
+export interface ContractOutputTx {
+  id: string
+  block_num: number
+  idx_in_block: number
+  ts: string
+  contract_id: string
+  total_io_gas: number
+  outputs: {
+    tx_id: string
+    output: ContractOut
+  }[]
+  error?: string
 }
 
 export interface CIDSearchResult {

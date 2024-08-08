@@ -17,6 +17,7 @@ import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
+import { ContractOut } from './components/pages/ContractOut'
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: '/vsc-tx/:txid',
         element: <L2Tx />
+      },
+      {
+        path: '/vsc-tx-output/:txid',
+        element: <ContractOut />
       },
       {
         path: '/bridge/hive',
