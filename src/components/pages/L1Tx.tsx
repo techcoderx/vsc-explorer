@@ -37,7 +37,7 @@ const L1Tx = () => {
     <>
       <Box marginBottom={'15px'}>
         <Text fontSize={'5xl'}>Hive L1 Transaction</Text>
-        <Text fontSize={'3xl'} opacity={'0.7'}>
+        <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
         {isSuccess ? (

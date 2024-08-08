@@ -23,7 +23,7 @@ const L2Tx = () => {
   return (
     <Box marginBottom={'15px'}>
       <Text fontSize={'5xl'}>L2 Transaction</Text>
-      <Text fontSize={'3xl'} opacity={'0.7'}>
+      <Text fontSize={'2xl'} opacity={'0.7'}>
         {txid}
       </Text>
       <Button

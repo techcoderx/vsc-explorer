@@ -23,7 +23,7 @@ export const ContractOut = () => {
   return (
     <Box marginBottom={'15px'}>
       <Text fontSize={'5xl'}>Contract Output</Text>
-      <Text fontSize={'3xl'} opacity={'0.7'}>
+      <Text fontSize={'2xl'} opacity={'0.7'}>
         {txid}
       </Text>
       <Button
