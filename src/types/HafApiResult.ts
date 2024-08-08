@@ -193,6 +193,7 @@ export interface Tx {
   contract_output?: ContractOut
   io_gas?: number
   error?: string
+  events?: object[]
 }
 
 export interface L1Tx extends Tx {
