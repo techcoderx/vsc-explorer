@@ -1,6 +1,6 @@
 import { DIDPayload, BlockPayload, NewContractPayload, ContractCommitmentPayload, NodeAnnouncePayload } from './Payloads'
 
-export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'event'
+export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
 
 export interface Props {
   epoch: number
@@ -234,6 +234,25 @@ export interface ContractOutputTx {
   outputs: {
     tx_id: string
     output: ContractOut
+  }[]
+  error?: string
+}
+
+export interface EventsOp {
+  id: string
+  ts: string
+  block_num: number
+  idx_in_block: number
+  events: {
+    tx_id: string
+    tx_type: L2TxType
+    events: {
+      t: number
+      tk: 'HIVE' | 'HBD'
+      amt: number
+      memo?: string
+      owner: string
+    }[]
   }[]
   error?: string
 }

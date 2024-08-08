@@ -18,6 +18,7 @@ import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 import { ContractOut } from './components/pages/ContractOut'
+import { Event } from './components/pages/Event'
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: '/vsc-tx-output/:txid',
         element: <ContractOut />
+      },
+      {
+        path: '/event/:cid',
+        element: <Event />
       },
       {
         path: '/bridge/hive',

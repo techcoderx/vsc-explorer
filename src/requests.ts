@@ -18,7 +18,8 @@ import {
   HiveBridgeTx,
   L1Tx,
   WeightedMembers,
-  ContractOutputTx
+  ContractOutputTx,
+  EventsOp
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
@@ -179,6 +180,12 @@ export const fetchL1ContractCall = async (trx_id: string, op_pos: number): Promi
 export const fetchContractOut = async (trx_id: string): Promise<ContractOutputTx> => {
   const res = await fetch(`${hafVscApi}/rpc/get_contract_output?cid=${trx_id}`)
   const trx: ContractOutputTx = await res.json()
+  return trx
+}
+
+export const fetchEvents = async (cid: string): Promise<EventsOp> => {
+  const res = await fetch(`${hafVscApi}/rpc/get_event?cid=${cid}`)
+  const trx: EventsOp = await res.json()
   return trx
 }
 

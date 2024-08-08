@@ -204,6 +204,14 @@ const useSearchResults = (query: string): SearchResultHook => {
               }
             ]
             break
+          case 'event':
+            result = [
+              {
+                type: SearchResultType.Event,
+                href: '/event/' + query
+              }
+            ]
+            break
           case 'contract':
             result = [
               {
