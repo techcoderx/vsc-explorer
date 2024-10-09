@@ -49,9 +49,9 @@ const WitnessSchedule = () => {
                   return sch.bn - prop.last_processed_block > -50 || expSchedule ? (
                     <Tr
                       key={i}
-                      opacity={sch.bn - prop.last_processed_block > -9 ? '100%' : '50%'}
+                      opacity={sch.bn - prop.last_processed_block > -10 ? '100%' : '50%'}
                       fontWeight={
-                        sch.bn - prop.last_processed_block >= -10 && sch.bn - prop.last_processed_block < 0 ? 'bold' : 'normal'
+                        sch.bn - prop.last_processed_block > -10 && sch.bn - prop.last_processed_block <= 0 ? 'bold' : 'normal'
                       }
                     >
                       <Td>
@@ -59,7 +59,15 @@ const WitnessSchedule = () => {
                           {sch.account}
                         </Link>
                       </Td>
-                      <Td>{thousandSeperator(sch.bn)}</Td>
+                      <Td>
+                        {sch.bn - prop.last_processed_block < 0 ? (
+                          <Link as={ReactRouterLink} to={l1Explorer + '/b/' + sch.bn} target="_blank">
+                            {thousandSeperator(sch.bn)}
+                          </Link>
+                        ) : (
+                          thousandSeperator(sch.bn)
+                        )}
+                      </Td>
                     </Tr>
                   ) : null
                 })

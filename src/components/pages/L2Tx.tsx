@@ -64,7 +64,7 @@ const L2Tx = () => {
                   </Link>
                 </TableRow>
               ) : null}
-              {l2Tx.contract_output ? (
+              {l2Tx.contract_output && typeof l2Tx.contract_output.IOGas === 'number' ? (
                 <TableRow label="Gas Used">{thousandSeperator(l2Tx.contract_output.IOGas)}</TableRow>
               ) : null}
             </Tbody>
