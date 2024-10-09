@@ -240,6 +240,11 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'Multisig Account',
         subLabel: 'Activities of multisig account on L1',
         href: '/@' + multisigAccount
+      },
+      {
+        label: 'Schedule',
+        subLabel: 'Block production schedule',
+        href: '/schedule'
       }
     ]
   },
