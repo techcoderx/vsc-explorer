@@ -19,8 +19,7 @@ import {
   L1Tx,
   WeightedMembers,
   ContractOutputTx,
-  EventsOp,
-  Block
+  EventsOp
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
