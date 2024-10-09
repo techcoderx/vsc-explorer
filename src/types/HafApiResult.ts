@@ -112,17 +112,14 @@ export interface BlockInEpoch {
 
 const txTypes = [
   'announce_node',
-  'enable_witness',
-  'disable_witness',
-  'allow_witness',
-  'disallow_witness',
   'propose_block',
   'create_contract',
+  'announce_tx', // aka tx
+  'tx',
   'election_result',
-  'join_contract',
-  'leave_contract',
   'multisig_txref',
   'custom_json',
+  'bridge_ref',
   'deposit',
   'withdrawal'
 ] as const

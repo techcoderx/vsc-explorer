@@ -20,6 +20,8 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchTxByL1Id } from '../../requests'
 import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
+import { BlockDetail, Epoch, L1Tx as L1ContractCall } from '../../types/HafApiResult'
+import { ProgressBarPct } from '../ProgressPercent'
 
 const L1Tx = () => {
   const { txid } = useParams()
@@ -99,15 +101,99 @@ const L1Tx = () => {
               <CardBody marginTop={'-25px'}>
                 <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object} />
               </CardBody>
-              {isOutSuccess && outData.length >= i + 1 && outData[i] && outData[i]?.contract_output ? (
-                <Box>
-                  <CardHeader>
-                    <Heading fontSize={'xl'}>Output</Heading>
-                  </CardHeader>
-                  <CardBody marginTop={'-25px'}>
-                    <JsonToTableRecursive isInCard minimalSpace json={outData[i]!.contract_output!} />
-                  </CardBody>
-                </Box>
+              {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
+                trx.type === 'announce_tx' || trx.type === 'tx' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Output</Heading>
+                    </CardHeader>
+                    <CardBody marginTop={'-25px'}>
+                      <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as L1ContractCall).contract_output!} />
+                    </CardBody>
+                  </Box>
+                ) : trx.type === 'election_result' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+                    </CardHeader>
+                    <CardBody marginTop={'-25px'}>
+                      <Table margin={'0'} variant={'unstyled'}>
+                        <Tbody>
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Epoch"
+                            value={(outData[i]! as Epoch).epoch}
+                            link={'/epoch/' + (outData[i]! as Epoch).epoch}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Data CID"
+                            value={(outData[i]! as Epoch).data_cid}
+                          />
+                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                            <ProgressBarPct
+                              fontSize={'md'}
+                              val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
+                            />
+                          </TableRow>
+                        </Tbody>
+                      </Table>
+                    </CardBody>
+                  </Box>
+                ) : trx.type === 'propose_block' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Proposed Block</Heading>
+                    </CardHeader>
+                    <CardBody marginTop={'-25px'}>
+                      <Table margin={'0'} variant={'unstyled'}>
+                        <Tbody>
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Block Number"
+                            value={(outData[i]! as BlockDetail).id}
+                            link={'/block/' + (outData[i]! as BlockDetail).id}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Block Hash"
+                            value={(outData[i]! as BlockDetail).block_hash}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Block Body Hash"
+                            value={(outData[i]! as BlockDetail).block_body_hash}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Transactions"
+                            value={(outData[i]! as BlockDetail).txs}
+                          />
+                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                            <ProgressBarPct
+                              fontSize={'md'}
+                              val={
+                                ((outData[i]! as BlockDetail).voted_weight / (outData[i]! as BlockDetail).eligible_weight) * 100
+                              }
+                            />
+                          </TableRow>
+                        </Tbody>
+                      </Table>
+                    </CardBody>
+                  </Box>
+                ) : null
               ) : null}
             </Card>
           ))}
