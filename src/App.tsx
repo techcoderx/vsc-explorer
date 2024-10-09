@@ -19,6 +19,7 @@ import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 import { ContractOut } from './components/pages/ContractOut'
 import { Event } from './components/pages/Event'
+import WitnessSchedule from './components/pages/Schedule'
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/witnesses/:page?',
         element: <Witnesses />
+      },
+      {
+        path: '/schedule',
+        element: <WitnessSchedule />
       },
       {
         path: '/elections/:page?',

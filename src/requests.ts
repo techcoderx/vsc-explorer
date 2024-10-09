@@ -23,7 +23,7 @@ import {
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { AccountBalance } from './types/L2ApiResult'
+import { AccountBalance, WitnessSchedule } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   const getVSCProps = await fetch(hafVscApi)
@@ -263,5 +263,15 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBala
     {
       account: l1_user
     }
+  )
+}
+
+export const getWitnessSchedule = async (): Promise<WitnessSchedule> => {
+  return gql<WitnessSchedule>(
+    `
+    query GetWitnessSchedule {
+      witnessSchedule
+    }
+    `
   )
 }
