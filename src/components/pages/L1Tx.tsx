@@ -20,7 +20,7 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchTxByL1Id } from '../../requests'
 import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { BlockDetail, Epoch, L1Tx as L1ContractCall } from '../../types/HafApiResult'
+import { BlockDetail, ContractCreatedOutput, Epoch, L1Tx as L1ContractCall } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 
 const L1Tx = () => {
@@ -189,6 +189,26 @@ const L1Tx = () => {
                               }
                             />
                           </TableRow>
+                        </Tbody>
+                      </Table>
+                    </CardBody>
+                  </Box>
+                ) : trx.type === 'create_contract' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Created Contract</Heading>
+                    </CardHeader>
+                    <CardBody marginTop={'-25px'}>
+                      <Table margin={'0'} variant={'unstyled'}>
+                        <Tbody>
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Contract ID"
+                            value={(outData[i]! as ContractCreatedOutput).contract_id}
+                            link={'/contract/' + (outData[i]! as ContractCreatedOutput).contract_id}
+                          />
                         </Tbody>
                       </Table>
                     </CardBody>
