@@ -179,7 +179,6 @@ export interface Tx {
   id: string
   ts: string
   input: string
-  input_src: 'vsc' | 'hive'
   output: string
   block_num: number
   idx_in_block: number
@@ -199,12 +198,14 @@ export interface L1Tx extends Tx {
     posting: string[]
   }
   tx_type: 'call_contract'
+  input_src: 'hive'
 }
 
 export interface L2Tx extends Tx {
   nonce: number
   signers: string[]
   tx_type: L2TxType
+  input_src: 'vsc'
 }
 
 export interface ContractOut {

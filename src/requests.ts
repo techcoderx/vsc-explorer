@@ -171,15 +171,23 @@ export const fetchL2Tx = async (trx_id: string): Promise<L2Tx> => {
   return trx
 }
 
-export const fetchL1ContractCall = async (trx_id: string, op_pos: number): Promise<L1Tx> => {
-  const res = await fetch(`${hafVscApi}/rpc/get_l1_contract_call?trx_id=${trx_id}&op_pos=${op_pos}`)
-  const trx: L1Tx = await res.json()
-  return trx
-}
-
 export const fetchContractOut = async (trx_id: string): Promise<ContractOutputTx> => {
   const res = await fetch(`${hafVscApi}/rpc/get_contract_output?cid=${trx_id}`)
   const trx: ContractOutputTx = await res.json()
+  return trx
+}
+
+export const fetchCallsByContractId = async (
+  contract_id: string,
+  count: number = 100,
+  last_id?: number
+): Promise<(L1Tx | L2Tx)[]> => {
+  const res = await fetch(
+    `${hafVscApi}/rpc/list_contract_calls_by_contract_id?contract_id=${contract_id}&count=${count}${
+      last_id ? `&last_id=${last_id}` : ''
+    }`
+  )
+  const trx: (L1Tx | L2Tx)[] = await res.json()
   return trx
 }
 

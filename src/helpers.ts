@@ -85,7 +85,7 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
 
 export const abbreviateHash = (hash: string, first_chars: number = 12, last_chars: number = 12): string => {
   if (first_chars + last_chars + 2 >= hash.length) return hash
-  return `${hash.substring(0, first_chars)}...${hash.slice(-last_chars)}`
+  return `${hash.substring(0, first_chars)}...${last_chars ? hash.slice(-last_chars) : ''}`
 }
 
 export const getBitsetStrFromHex = (bv: string) => {
