@@ -208,6 +208,10 @@ export interface L2Tx extends Tx {
   input_src: 'vsc'
 }
 
+export interface ContractCreatedOutput {
+  contract_id: string
+}
+
 export interface ContractOut {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ret?: any
