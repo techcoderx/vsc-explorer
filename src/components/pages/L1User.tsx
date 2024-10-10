@@ -95,7 +95,7 @@ const L1User = () => {
   const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
     cacheTime: 30000,
     queryKey: ['vsc-l2-balance-by-l1-user', user],
-    queryFn: async () => getL2BalanceByL1User(user!),
+    queryFn: async () => getL2BalanceByL1User('hive:' + user!),
     enabled: !invalidParams
   })
   if (invalidParams) return <PageNotFound />
