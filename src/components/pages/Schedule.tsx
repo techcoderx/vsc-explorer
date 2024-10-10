@@ -14,7 +14,7 @@ const WitnessSchedule = () => {
     queryFn: fetchProps
   })
   const { data: schedule, isSuccess: isScheduleSuccess } = useQuery({
-    cacheTime: 30000,
+    cacheTime: 120000,
     queryKey: ['vsc-witness-schedule'],
     queryFn: async () => getWitnessSchedule()
   })
