@@ -5,7 +5,7 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL2Tx } from '../../requests'
 import { themeColorLight, themeColorScheme, ipfsSubGw } from '../../settings'
 import { useQuery } from '@tanstack/react-query'
-import { thousandSeperator } from '../../helpers'
+import { timeAgo, thousandSeperator } from '../../helpers'
 
 const L2Tx = () => {
   const { txid } = useParams()
@@ -44,12 +44,9 @@ const L2Tx = () => {
               <TableRow label="Transaction Type">
                 <Badge color={themeColorLight}>{l2Tx.tx_type}</Badge>
               </TableRow>
-              {l2Tx.tx_type === 'call_contract' ? (
-                <>
-                  <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
-                  <TableRow label="Contract Action" value={l2Tx.contract_action} />
-                </>
-              ) : null}
+              <TableRow label="Timestamp" value={l2Tx.ts + ' (' + timeAgo(l2Tx.ts) + ')'} />
+              <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
+              <TableRow label="Contract Action" value={l2Tx.contract_action} />
               <TableRow label="Included In Block">
                 <Link as={ReactRouterLink} to={'/block/' + l2Tx.block_num}>
                   {l2Tx.block_num}
