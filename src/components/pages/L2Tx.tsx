@@ -45,8 +45,12 @@ const L2Tx = () => {
                 <Badge color={themeColorLight}>{l2Tx.tx_type}</Badge>
               </TableRow>
               <TableRow label="Timestamp" value={l2Tx.ts + ' (' + timeAgo(l2Tx.ts) + ')'} />
-              <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
-              <TableRow label="Contract Action" value={l2Tx.contract_action} />
+              {l2Tx.tx_type === 'call_contract' ? (
+                <>
+                  <TableRow label="Contract ID" value={l2Tx.contract_id} link={'/contract/' + l2Tx.contract_id} />
+                  <TableRow label="Contract Action" value={l2Tx.contract_action} />
+                </>
+              ) : null}
               <TableRow label="Included In Block">
                 <Link as={ReactRouterLink} to={'/block/' + l2Tx.block_num}>
                   {l2Tx.block_num}
