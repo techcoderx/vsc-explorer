@@ -189,7 +189,7 @@ export interface Tx {
   contract_output?: ContractOut
   io_gas?: number
   error?: string
-  events?: object[]
+  events?: EventItm[]
 }
 
 export interface L1Tx extends Tx {
@@ -206,6 +206,11 @@ export interface L2Tx extends Tx {
   signers: string[]
   tx_type: L2TxType
   input_src: 'vsc'
+}
+
+export interface TransferWithdrawOutput {
+  tx_type: 'transfer' | 'withdraw'
+  events: EventItm[]
 }
 
 export interface ContractCreatedOutput {
@@ -248,15 +253,17 @@ export interface EventsOp {
   events: {
     tx_id: string
     tx_type: L2TxType
-    events: {
-      t: number
-      tk: 'HIVE' | 'HBD'
-      amt: number
-      memo?: string
-      owner: string
-    }[]
+    events: EventItm[]
   }[]
   error?: string
+}
+
+export interface EventItm {
+  t: number
+  tk: 'HIVE' | 'HBD'
+  amt: number
+  memo?: string
+  owner: string
 }
 
 export interface CIDSearchResult {
