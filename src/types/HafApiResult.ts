@@ -217,6 +217,13 @@ export interface ContractCreatedOutput {
   contract_id: string
 }
 
+export interface ContractCallOutput {
+  tx_type: 'call_contract'
+  contract_output: ContractOut
+  io_gas: number
+  events: EventItm[]
+}
+
 export interface ContractOut {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ret?: any
