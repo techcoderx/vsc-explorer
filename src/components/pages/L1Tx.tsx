@@ -20,8 +20,28 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchTxByL1Id } from '../../requests'
 import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { BlockDetail, ContractCreatedOutput, Epoch, L1Tx as L1ContractCall } from '../../types/HafApiResult'
+import {
+  BlockDetail,
+  ContractCreatedOutput,
+  Epoch,
+  EventItm,
+  L1Tx as L1TxCall,
+  TransferWithdrawOutput
+} from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
+
+const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
+  return (
+    <Box>
+      <CardHeader>
+        <Heading fontSize={'xl'}>Event #{i}</Heading>
+      </CardHeader>
+      <CardBody marginTop={'-25px'}>
+        <JsonToTableRecursive isInCard minimalSpace json={evt} />
+      </CardBody>
+    </Box>
+  )
+}
 
 const L1Tx = () => {
   const { txid } = useParams()
@@ -103,14 +123,22 @@ const L1Tx = () => {
               </CardBody>
               {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
                 trx.type === 'announce_tx' || trx.type === 'tx' ? (
-                  <Box>
-                    <CardHeader>
-                      <Heading fontSize={'xl'}>Output</Heading>
-                    </CardHeader>
-                    <CardBody marginTop={'-25px'}>
-                      <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as L1ContractCall).contract_output!} />
-                    </CardBody>
-                  </Box>
+                  (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'call_contract' ? (
+                    <Box>
+                      <CardHeader>
+                        <Heading fontSize={'xl'}>Output</Heading>
+                      </CardHeader>
+                      <CardBody marginTop={'-25px'}>
+                        <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as L1TxCall).contract_output!} />
+                      </CardBody>
+                      {((outData[i]! as L1TxCall).events || []).map((evt, i) => (
+                        <Event key={i} evt={evt} i={i} />
+                      ))}
+                    </Box>
+                  ) : (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'transfer' ||
+                    (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'withdraw' ? (
+                    (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
+                  ) : null
                 ) : trx.type === 'election_result' ? (
                   <Box>
                     <CardHeader>

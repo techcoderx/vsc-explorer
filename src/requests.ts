@@ -17,6 +17,7 @@ import {
   ContractWifProof,
   HiveBridgeTx,
   L1Tx,
+  TransferWithdrawOutput,
   WeightedMembers,
   ContractOutputTx,
   EventsOp,
@@ -124,7 +125,7 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
 
 export const fetchL1TxOutput = async (
   trx_id: string
-): Promise<(L1Tx | Election | BlockDetail | ContractCreatedOutput | null)[]> => {
+): Promise<(L1Tx | TransferWithdrawOutput | Election | BlockDetail | ContractCreatedOutput | null)[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)).json()
 }
 
