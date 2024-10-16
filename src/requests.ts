@@ -21,7 +21,8 @@ import {
   WeightedMembers,
   ContractOutputTx,
   EventsOp,
-  ContractCreatedOutput
+  ContractCreatedOutput,
+  ContractCallOutput
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
@@ -125,7 +126,7 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
 
 export const fetchL1TxOutput = async (
   trx_id: string
-): Promise<(L1Tx | TransferWithdrawOutput | Election | BlockDetail | ContractCreatedOutput | null)[]> => {
+): Promise<(ContractCallOutput | TransferWithdrawOutput | Election | BlockDetail | ContractCreatedOutput | null)[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)).json()
 }
 

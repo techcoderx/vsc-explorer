@@ -25,7 +25,7 @@ import {
   ContractCreatedOutput,
   Epoch,
   EventItm,
-  L1Tx as L1TxCall,
+  ContractCallOutput,
   TransferWithdrawOutput
 } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
@@ -123,20 +123,20 @@ const L1Tx = () => {
               </CardBody>
               {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
                 trx.type === 'announce_tx' || trx.type === 'tx' ? (
-                  (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'call_contract' ? (
+                  (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'call_contract' ? (
                     <Box>
                       <CardHeader>
                         <Heading fontSize={'xl'}>Output</Heading>
                       </CardHeader>
                       <CardBody marginTop={'-25px'}>
-                        <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as L1TxCall).contract_output!} />
+                        <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as ContractCallOutput).contract_output!} />
                       </CardBody>
-                      {((outData[i]! as L1TxCall).events || []).map((evt, i) => (
+                      {((outData[i]! as ContractCallOutput).events || []).map((evt, i) => (
                         <Event key={i} evt={evt} i={i} />
                       ))}
                     </Box>
-                  ) : (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'transfer' ||
-                    (outData[i] as L1TxCall | TransferWithdrawOutput).tx_type === 'withdraw' ? (
+                  ) : (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'transfer' ||
+                    (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'withdraw' ? (
                     (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
                   ) : null
                 ) : trx.type === 'election_result' ? (
