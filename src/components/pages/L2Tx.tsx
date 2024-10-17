@@ -59,14 +59,12 @@ const L2Tx = () => {
     isSuccess,
     refetch
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-tx-l2', txid],
     queryFn: () => fetchL2Tx(txid!),
     refetchOnWindowFocus: false,
     enabled: !!txid
   })
   const { data: l2Tx2, refetch: refetchL2Tx2 } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-tx-l2-gql', txid],
     queryFn: () => fetchL2TxGql(txid!),
     refetchOnWindowFocus: false,

@@ -11,7 +11,6 @@ const NewContracts = () => {
     isLoading: isContractsLoading,
     isSuccess: isContractsSuccess
   } = useQuery({
-    cacheTime: 9000,
     queryKey: ['vsc-latest-contracts'],
     queryFn: fetchLatestContracts
   })

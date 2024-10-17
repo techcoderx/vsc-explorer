@@ -53,14 +53,12 @@ export const Contract = () => {
     isSuccess,
     isError
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-contract', contractId],
     queryFn: async () => fetchContractByID(contractId!),
     enabled: !invalidContractId
   })
   const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
   const { data: members } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
     queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
     enabled: !isError && !isLoading && !invalidContractId && !!hasStorageProof

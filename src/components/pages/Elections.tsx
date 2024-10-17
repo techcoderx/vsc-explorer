@@ -14,7 +14,6 @@ const Elections = () => {
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: prop } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
     enabled: !invalidPage
@@ -25,7 +24,6 @@ const Elections = () => {
     isLoading: isEpochsLoading,
     isSuccess: isEpochsSuccess
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-epochs', lastEpoch, count],
     queryFn: async () => fetchElections(lastEpoch!, count),
     enabled: !!prop?.epoch && !invalidPage

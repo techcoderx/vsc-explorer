@@ -46,12 +46,10 @@ const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
 const L1Tx = () => {
   const { txid } = useParams()
   const { data, isLoading, isSuccess } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-l1-tx', txid],
     queryFn: async () => fetchTxByL1Id(txid!)
   })
   const { data: outData, isSuccess: isOutSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-l1-tx-output', txid],
     queryFn: async () => fetchL1TxOutput(txid!)
   })

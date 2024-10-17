@@ -23,7 +23,6 @@ const Home = () => {
     isSuccess: isPropSuccess,
     isLoading: isPropLoading
   } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps
   })

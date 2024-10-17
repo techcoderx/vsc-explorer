@@ -15,7 +15,6 @@ export const ContractOut = () => {
     isError,
     isSuccess
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-tx-output', txid],
     queryFn: () => fetchContractOut(txid!),
     enabled: !!txid

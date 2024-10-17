@@ -10,7 +10,6 @@ const NewTxs = () => {
     isLoading: isTxsLoading,
     isSuccess: isTxsSuccess
   } = useQuery({
-    cacheTime: 10000,
     queryKey: ['vsc-latest-txs'],
     queryFn: fetchLatestTxs
   })

@@ -39,7 +39,6 @@ const L1User = () => {
     isLoading: isL1AccLoading,
     isSuccess: isL1AccSuccess
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['hive-account', username],
     queryFn: async () => fetchL1<L1Account[]>('condenser_api.get_accounts', [[user]]),
     enabled: !invalidParams
@@ -49,7 +48,6 @@ const L1User = () => {
     isLoading: isL1DgpLoading,
     isSuccess: isL1DgpSuccess
   } = useQuery({
-    cacheTime: 30000,
     queryKey: ['hive-dgp'],
     queryFn: async () => fetchL1<L1Dgp>('condenser_api.get_dynamic_global_properties', []),
     enabled: !invalidParams
@@ -59,7 +57,6 @@ const L1User = () => {
     isLoading: isWitLoading,
     isSuccess: isWitSuccess
   } = useQuery({
-    cacheTime: 60000,
     queryKey: ['vsc-witness', username],
     queryFn: async () => fetchWitness(user),
     enabled: !invalidParams
@@ -69,7 +66,6 @@ const L1User = () => {
     isLoading: isL1AccvLoading,
     isSuccess: isL1AccvSuccess
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-account', username],
     queryFn: async () => fetchAccInfo(user),
     enabled: !invalidParams
@@ -81,19 +77,16 @@ const L1User = () => {
     isSuccess: isHistSuccess,
     isError: isHistError
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-l1-acc-history', username, last_nonce],
     queryFn: async () => fetchAccHistory(user, count, last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
   const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-ms-names', 'sk_owner'],
     queryFn: async () => fetchMsOwners(l1Acc!.result[0].owner.key_auths.map((a) => a[0])),
     enabled: user === multisigAccount && !!l1Acc && !invalidParams && !l1Acc.error
   })
   const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-l2-balance-by-l1-user', user],
     queryFn: async () => getL2BalanceByL1User('hive:' + user!),
     enabled: !invalidParams

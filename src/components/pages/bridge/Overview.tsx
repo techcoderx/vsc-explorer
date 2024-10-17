@@ -70,17 +70,14 @@ const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
 
 const HiveBridgeOverview = () => {
   const { data: l1Acc, isSuccess: isL1AccSuccess } = useQuery({
-    cacheTime: 15000,
     queryKey: ['hive-account', multisigAccount],
     queryFn: async () => fetchL1<L1Account[]>('condenser_api.get_accounts', [[multisigAccount]])
   })
   const { data: deposits, isSuccess: isDepSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-list-deposits-hive', null, 10],
     queryFn: async () => fetchLatestDepositsHive(null, 10)
   })
   const { data: withdrawals, isSuccess: isWithdSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-list-withdrawals-hive', null, 10],
     queryFn: async () => fetchLatestWithdrawalsHive(null, 10)
   })

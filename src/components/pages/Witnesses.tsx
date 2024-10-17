@@ -12,7 +12,6 @@ const Witnesses = () => {
   const pageNumber = parseInt(page || '1')
   const invalidParams = isNaN(pageNumber) || pageNumber < 1
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
     enabled: !invalidParams
@@ -23,7 +22,6 @@ const Witnesses = () => {
     isLoading: isWitnessLoading,
     isSuccess: isWitnessSuccess
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-witnesses', id_start],
     queryFn: async () => fetchWitnesses(id_start!, count),
     enabled: !invalidParams && !!id_start

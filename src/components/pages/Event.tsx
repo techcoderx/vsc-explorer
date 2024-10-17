@@ -33,7 +33,6 @@ export const Event = () => {
     isError,
     isSuccess
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['vsc-event', cid],
     queryFn: () => fetchEvents(cid!),
     enabled: !!cid
