@@ -26,7 +26,7 @@ import {
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { AccountBalance, WitnessSchedule } from './types/L2ApiResult'
+import { AccountBalance, WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(hafVscApi)).json()
@@ -236,5 +236,33 @@ export const getWitnessSchedule = async (): Promise<WitnessSchedule> => {
       witnessSchedule
     }
     `
+  )
+}
+
+export const fetchL2TxGql = async (trx_id: string): Promise<L2TxGql> => {
+  return gql<L2TxGql>(
+    `
+  query L2Tx($trx_id: String!) {
+    findTransaction(
+      filterOptions: {byId: $trx_id}
+    ) {
+      txs {
+        first_seen
+        id
+        src
+        status
+        sig_hash
+        data {
+          op
+          contract_id
+          action
+          payload
+        }
+      }
+    }
+  }`,
+    {
+      trx_id
+    }
   )
 }
