@@ -4,7 +4,7 @@ import { DepositPayload, ElectionResultPayload, NAI, NewContractPayload } from '
 
 export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
-  const diffInSeconds = Math.abs(now - new Date(date + 'Z').getTime()) / 1000
+  const diffInSeconds = Math.abs(now - new Date(date + (!date.endsWith('Z') ? 'Z' : '')).getTime()) / 1000
 
   const days = Math.floor(diffInSeconds / 86400)
   const hours = Math.floor(diffInSeconds / 3600) % 24
