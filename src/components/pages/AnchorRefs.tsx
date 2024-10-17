@@ -6,7 +6,6 @@ import { abbreviateHash, timeAgo } from '../../helpers'
 
 const AnchorRefs = () => {
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps
   })
@@ -16,7 +15,6 @@ const AnchorRefs = () => {
     isLoading: isTxRefsLoading,
     isSuccess: isTxRefsSuccess
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-anchor-refs', refs],
     queryFn: async () => (await fetchAnchorRefs(refs!)).reverse(),
     enabled: !!refs

@@ -14,7 +14,6 @@ export const AnchorRefByID = () => {
   const refNum = parseInt(refid!)
   const invalidRefId = isNaN(refNum) || refNum < 0
   const { data, isLoading, isError } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-anchor-ref-by-id', refNum],
     queryFn: async () => fetchAnchorRefByID(refNum),
     enabled: !invalidRefId
@@ -26,12 +25,11 @@ export const AnchorRefByHash = () => {
   const { cid } = useParams()
   const invalidRefId = !cid || cid.length !== 59 || !cid.startsWith('bafyrei')
   const { data, isLoading, isError } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-anchor-ref-by-cid', cid],
     queryFn: async () => fetchAnchorRefByCID(cid!),
     enabled: !invalidRefId
   })
-  const refNum = !isLoading && !isError && !data.error ? data.id : 0
+  const refNum = !isLoading && !isError && data && !data.error ? data.id : 0
   return AnchorRef(data!, isLoading, isError, invalidRefId, refNum)
 }
 

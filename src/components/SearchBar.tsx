@@ -76,7 +76,6 @@ const useSearchResults = (query: string): SearchResultHook => {
     isLoading: isL1TxLoading,
     isError: isL1TxErr
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-l1-tx', query],
     queryFn: async () => fetchTxByL1Id(query),
     enabled: queryType === SearchQueryType.L1Transaction
@@ -86,7 +85,6 @@ const useSearchResults = (query: string): SearchResultHook => {
     isLoading: isL1AccLoading,
     isError: isL1AccErr
   } = useQuery({
-    cacheTime: 15000,
     queryKey: ['hive-account', query],
     queryFn: async () => fetchL1('condenser_api.get_accounts', [[query]]),
     enabled: queryType === SearchQueryType.L1Account
@@ -96,7 +94,6 @@ const useSearchResults = (query: string): SearchResultHook => {
     isLoading: isBlockLoading,
     isError: isBlockError
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-block', query],
     queryFn: async () => fetchBlock(parseInt(query)),
     enabled: queryType === SearchQueryType.Block
@@ -106,7 +103,6 @@ const useSearchResults = (query: string): SearchResultHook => {
     isLoading: isCIDLoading,
     isError: isCIDError
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-cid-search', query],
     queryFn: async () => cidSearch(query),
     enabled: queryType === SearchQueryType.CID
@@ -162,7 +158,7 @@ const useSearchResults = (query: string): SearchResultHook => {
     } else {
       setQueryType(SearchQueryType.CID)
       let result: SearchResult[] = []
-      if (!isCIDError && !isCIDLoading) {
+      if (!isCIDError && !isCIDLoading && cidRes) {
         switch (cidRes.type) {
           case 'block':
             result = [

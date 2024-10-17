@@ -88,7 +88,6 @@ export const HiveDeposits = () => {
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: depositCount, isSuccess: isLatestTxSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-deposit-count'],
     queryFn: async () => {
       const latestRecord = await fetchLatestDepositsHive(null, 1)
@@ -101,7 +100,6 @@ export const HiveDeposits = () => {
     isSuccess: isDepSuccess,
     isLoading: isDepLoading
   } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-list-deposits-hive', null, count],
     queryFn: async () => fetchLatestDepositsHive(null, count),
     enabled: !invalidPage && typeof depositCount === 'number'
@@ -129,7 +127,6 @@ export const HiveWithdrawals = () => {
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const { data: withdrawalCount, isSuccess: isLatestTxSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-withdrawal-count'],
     queryFn: async () => {
       const latestRecord = await fetchLatestWithdrawalsHive(null, 1)
@@ -143,7 +140,6 @@ export const HiveWithdrawals = () => {
     isSuccess: isWithdSuccess,
     isLoading: isWithdLoading
   } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-list-withdrawals-hive', paginate, count],
     queryFn: async () => fetchLatestWithdrawalsHive(paginate, count),
     enabled: !invalidPage && typeof withdrawalCount === 'number'

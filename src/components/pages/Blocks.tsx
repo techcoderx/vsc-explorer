@@ -15,7 +15,6 @@ const Blocks = () => {
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
   const paginate = page ? pageNumber * count : count
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
-    cacheTime: 30000,
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
     enabled: !invalidPage
@@ -26,7 +25,6 @@ const Blocks = () => {
     isLoading: isBlocksLoading,
     isSuccess: isBlocksSuccess
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-blocks', height, page],
     queryFn: async () => {
       const d = await fetchBlocks(Math.max(1, height! - paginate + 1), Math.min(count, height! - paginate + count))

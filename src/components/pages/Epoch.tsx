@@ -41,7 +41,6 @@ const Epoch = () => {
     isLoading: isEpochLoading,
     isError: isEpochError
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-epoch', epchNum],
     queryFn: async () => fetchEpoch(epchNum),
     enabled: !invalidEpochNum
@@ -51,7 +50,6 @@ const Epoch = () => {
     isLoading: isBlocksLoading,
     isError: isBlocksError
   } = useQuery({
-    cacheTime: 60000,
     queryKey: ['vsc-block-in-epoch', epchNum, 0, 200],
     queryFn: async () => fetchBlocksInEpoch(epchNum),
     enabled: !invalidEpochNum

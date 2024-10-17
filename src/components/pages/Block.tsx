@@ -17,7 +17,6 @@ export const BlockByID = () => {
   const blkNum = parseInt(blockNum!)
   const invalidBlkNum = isNaN(blkNum) || blkNum < 1
   const { data, isLoading, isError } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-block', blkNum],
     queryFn: async () => fetchBlock(blkNum),
     enabled: !invalidBlkNum
@@ -29,12 +28,11 @@ export const BlockByHash = () => {
   const { blockId } = useParams()
   const invalidBlkId = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
   const { data, isLoading, isError } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-block', blockId],
     queryFn: async () => fetchBlockByHash(blockId!),
     enabled: !invalidBlkId
   })
-  const blkNum = !isLoading && !isError && !data.error ? data.id : 0
+  const blkNum = !isLoading && !isError && data && !data.error ? data.id : 0
   return Block(data!, isLoading, isError, invalidBlkId, blkNum)
 }
 
@@ -45,13 +43,11 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     isLoading: isL2BlockLoading,
     isError: isL2BlockError
   } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-block-txs', blkNum],
     queryFn: async () => fetchBlockTxs(blkNum),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
   })
   const { data: members } = useQuery({
-    cacheTime: Infinity,
     queryKey: ['vsc-members-at-block', 'l2', blkNum],
     queryFn: async () => fetchMembersAtBlock(block.l1_block),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum && !block.error
@@ -115,7 +111,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
             {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
             {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ? (
               <Flex direction={'column'} gap={'3'}>
-                {l2BlockTxs.map((tx, i) => {
+                {l2BlockTxs?.map((tx, i) => {
                   return <L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id} op={tx.tx_type} />
                 })}
               </Flex>
