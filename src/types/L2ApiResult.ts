@@ -1,4 +1,4 @@
-import { L2TxType } from './HafApiResult'
+import { CallContractPayload, XferWdPayload } from './Payloads'
 
 export interface AccountBalance {
   data: {
@@ -34,12 +34,7 @@ export interface Tx {
         src: 'vsc'
         status: 'UNCONFIRMED' | 'INCLUDED' | 'CONFIRMED'
         sig_hash?: string // absent if graphql node was reindexed after the transaction
-        data: {
-          op: L2TxType
-          contract_id?: string
-          action?: string
-          payload: any
-        }
+        data: CallContractPayload | XferWdPayload
       }[]
     }
   }

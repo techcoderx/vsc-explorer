@@ -1,6 +1,13 @@
 import BitSet from 'bitset'
 import { L1Transaction, WeightedMembers } from './types/HafApiResult'
-import { DepositPayload, ElectionResultPayload, NAI, NewContractPayload } from './types/Payloads'
+import {
+  CallContractPayload,
+  DepositPayload,
+  ElectionResultPayload,
+  NAI,
+  NewContractPayload,
+  XferWdPayload
+} from './types/Payloads'
 
 export const timeAgo = (date: string): string => {
   const now = new Date().getTime()
@@ -65,7 +72,7 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       result += 'proposed block' //+(tx.payload as BlockPayload).signed_block.block
       break
     case 'create_contract':
-      result += 'created contract ' + (tx.payload as NewContractPayload).code
+      result += 'created contract ' + abbreviateHash((tx.payload as NewContractPayload).code, 15, 0)
       break
     case 'election_result':
       result += 'proposed election result for epoch ' + (tx.payload as ElectionResultPayload).epoch
@@ -75,6 +82,15 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       break
     case 'withdrawal':
       result += 'withdrawn ' + naiToString((tx.payload as DepositPayload).amount)
+      break
+    case 'announce_tx':
+    case 'tx':
+      const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
+      if (call.op === 'call_contract')
+        result += 'call ' + abbreviateHash(call.action, 30, 0) + ' at contract ' + abbreviateHash(call.contract_id, 20, 0)
+      else if (call.op === 'transfer' || call.op === 'withdraw')
+        result +=
+          call.op + ' ' + call.payload.amount / 1000 + ' ' + call.payload.tk + ' to ' + abbreviateHash(call.payload.to, 20, 0)
       break
     default:
       result += tx.type.replace(/_/g, ' ')

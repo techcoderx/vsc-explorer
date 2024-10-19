@@ -1,6 +1,15 @@
-import { DIDPayload, BlockPayload, NewContractPayload, ContractCommitmentPayload, NodeAnnouncePayload } from './Payloads'
-
-export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
+import {
+  DIDPayload,
+  BlockPayload,
+  NewContractPayload,
+  ContractCommitmentPayload,
+  NodeAnnouncePayload,
+  L2TxType,
+  CallContractPayload,
+  XferWdPayload,
+  DepositPayload,
+  ElectionResultPayload
+} from './Payloads'
 
 export interface Props {
   epoch: number
@@ -133,7 +142,15 @@ export interface L1Transaction {
   l1_tx: string
   l1_block: number
   username: string
-  payload?: DIDPayload | BlockPayload | NewContractPayload | ContractCommitmentPayload | NodeAnnouncePayload | object
+  payload?:
+    | DIDPayload
+    | BlockPayload
+    | NewContractPayload
+    | ContractCommitmentPayload
+    | NodeAnnouncePayload
+    | ElectionResultPayload
+    | DepositPayload
+    | { tx: CallContractPayload | XferWdPayload }
 }
 
 export interface Contract {
