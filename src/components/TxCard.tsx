@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ReactNode } from 'react'
 import { themeColor, themeColorLight } from '../settings'
 import { timeAgo } from '../helpers'
-import { L2TxType } from '../types/HafApiResult'
+import { L2TxType } from '../types/Payloads'
 
 type Attr = {
   id: number

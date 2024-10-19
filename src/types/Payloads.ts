@@ -43,6 +43,31 @@ export type DepositPayload = {
   amount: NAI
 }
 
+export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
+
+interface L1TxPayload {
+  op: L2TxType
+  payload: any
+}
+
+export interface CallContractPayload extends L1TxPayload {
+  op: 'call_contract'
+  contract_id: string
+  action: string
+  payload: any
+}
+
+export interface XferWdPayload extends L1TxPayload {
+  op: 'transfer' | 'withdraw'
+  payload: {
+    tk: 'HIVE' | 'HBD'
+    to: string
+    from: string
+    memo?: string
+    amount: number
+  }
+}
+
 export type NAI = {
   nai: '@@000000021' | '@@000000013'
   amount: string
