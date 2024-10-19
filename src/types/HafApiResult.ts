@@ -263,7 +263,9 @@ export interface ContractOutputTx {
   contract_id: string
   total_io_gas: number
   outputs: {
+    src: 'hive' | 'vsc'
     tx_id: string
+    op_pos?: number
     output: ContractOut
   }[]
   error?: string

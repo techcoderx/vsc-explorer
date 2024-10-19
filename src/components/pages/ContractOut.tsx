@@ -62,8 +62,14 @@ export const ContractOut = () => {
                 <Card key={i} mt={'30px'}>
                   <CardHeader>
                     <Heading fontSize={'2xl'}>Output #{i}</Heading>
-                    <Link as={ReactRouterLink} to={'/vsc-tx/' + output.tx_id} fontSize={'md'} opacity={'0.7'}>
+                    <Link
+                      as={ReactRouterLink}
+                      to={(output.src === 'vsc' ? '/vsc-tx/' : '/tx/') + output.tx_id}
+                      fontSize={'md'}
+                      opacity={'0.7'}
+                    >
                       {output.tx_id}
+                      {output.src === 'hive' ? '-' + output.op_pos : ''}
                     </Link>
                   </CardHeader>
                   <CardBody mt={'-20px'}>
