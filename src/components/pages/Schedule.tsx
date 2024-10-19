@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -29,7 +29,16 @@ const WitnessSchedule = () => {
     refetchInterval: 10000
   })
   if (latestBlock && Array.isArray(latestBlock) && latestBlock.length >= 1)
-    blocksProduced.current[(Math.floor(latestBlock[0].l1_block / 10) * 10).toString()] = latestBlock[0]
+    blocksProduced.current[(latestBlock[0].l1_block - (latestBlock[0].l1_block % 10)).toString()] = latestBlock[0]
+  useEffect(() => {
+    const l2BlockNums = Object.keys(blocksProduced.current)
+    if (l2BlockNums.length > 50) {
+      // cleanup blocksProduced periodically
+      let min = parseInt(l2BlockNums[0])
+      for (let i in l2BlockNums) if (parseInt(l2BlockNums[i]) < min) min = parseInt(l2BlockNums[i])
+      delete blocksProduced.current[min.toString()]
+    }
+  }, [latestBlock])
   return (
     <>
       <Text fontSize={'5xl'}>Schedule</Text>
