@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { l1Explorer, themeColorScheme } from '../../settings'
-import { fetchProps, getWitnessSchedule } from '../../requests'
+import { fetchBlocks, fetchProps, getWitnessSchedule } from '../../requests'
 import { thousandSeperator } from '../../helpers'
+import { BlockRangeItm } from '../../types/HafApiResult'
 
 const WitnessSchedule = () => {
   const [expSchedule, setExpSchedule] = useState(false)
+  const blocksProduced = useRef<{ [blockNum: string]: BlockRangeItm }>({})
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
@@ -20,6 +22,14 @@ const WitnessSchedule = () => {
     refetchOnWindowFocus: false,
     refetchInterval: 60000
   })
+  const { data: latestBlock } = useQuery({
+    queryKey: ['vsc-latest-block'],
+    queryFn: () => fetchBlocks(prop!.l2_block_height, 1),
+    enabled: !!prop && !!prop.l2_block_height,
+    refetchInterval: 10000
+  })
+  if (latestBlock && Array.isArray(latestBlock) && latestBlock.length >= 1)
+    blocksProduced.current[(Math.floor(latestBlock[0].l1_block / 10) * 10).toString()] = latestBlock[0]
   return (
     <>
       <Text fontSize={'5xl'}>Schedule</Text>
@@ -43,6 +53,7 @@ const WitnessSchedule = () => {
             <Tr>
               <Th>Username</Th>
               <Th>L1 Block</Th>
+              <Th>VSC Block</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -69,6 +80,13 @@ const WitnessSchedule = () => {
                         ) : (
                           thousandSeperator(sch.bn)
                         )}
+                      </Td>
+                      <Td>
+                        {blocksProduced.current[sch.bn] ? (
+                          <Link as={ReactRouterLink} to={'/block/' + blocksProduced.current[sch.bn].id}>
+                            {thousandSeperator(blocksProduced.current[sch.bn].id)}
+                          </Link>
+                        ) : null}
                       </Td>
                     </Tr>
                   ) : null
