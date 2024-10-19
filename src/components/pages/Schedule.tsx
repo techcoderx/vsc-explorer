@@ -10,11 +10,15 @@ const WitnessSchedule = () => {
   const [expSchedule, setExpSchedule] = useState(false)
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     queryKey: ['vsc-props'],
-    queryFn: fetchProps
+    queryFn: fetchProps,
+    refetchOnWindowFocus: false,
+    refetchInterval: 10000
   })
   const { data: schedule, isSuccess: isScheduleSuccess } = useQuery({
     queryKey: ['vsc-witness-schedule'],
-    queryFn: async () => getWitnessSchedule()
+    queryFn: async () => getWitnessSchedule(),
+    refetchOnWindowFocus: false,
+    refetchInterval: 60000
   })
   return (
     <>
