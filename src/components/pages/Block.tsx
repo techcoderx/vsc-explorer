@@ -65,7 +65,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
       </Stack>
       <hr />
       {block?.error || isBlockError ? (
-        <Text>Failed to load block, error: {block ? block.error : 'Failed to fetch from HAF node'}</Text>
+        <Text>{block ? block.error : 'Failed to fetch block from VSC-HAF node'}</Text>
       ) : (
         <Table marginTop="20px">
           <Tbody>

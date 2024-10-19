@@ -65,7 +65,7 @@ const Epoch = () => {
       </Stack>
       <hr />
       {isEpochError || epoch?.error ? (
-        <Text>Failed to load epoch, error: {epoch ? epoch.error : 'Failed to fetch from HAF node'}</Text>
+        <Text>{epoch ? epoch.error : 'Failed to fetch epoch from VSC-HAF node'}</Text>
       ) : (
         <Box>
           <Table mt={'20px'}>

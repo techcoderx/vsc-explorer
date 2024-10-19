@@ -385,12 +385,12 @@ const L1User = () => {
           <VStack spacing={'3'} flexGrow={'1'}>
             {isL1AccvLoading || isHistLoading ? (
               <Card width="100%">
-                <CardBody>Loading VSC L1 transaction tistory...</CardBody>
+                <CardBody>Loading VSC L1 transaction history...</CardBody>
               </Card>
             ) : null}
             {isHistError ? (
               <Card width="100%">
-                <CardBody>Failed to load VSC L1 transaction gistory</CardBody>
+                <CardBody>Failed to load VSC L1 transaction history</CardBody>
               </Card>
             ) : null}
             {isHistSuccess ? (
