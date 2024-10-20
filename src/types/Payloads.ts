@@ -44,6 +44,7 @@ export type DepositPayload = {
 }
 
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
+export type Coin = 'HIVE' | 'HBD'
 
 interface L1TxPayload {
   op: L2TxType
@@ -60,7 +61,7 @@ export interface CallContractPayload extends L1TxPayload {
 export interface XferWdPayload extends L1TxPayload {
   op: 'transfer' | 'withdraw'
   payload: {
-    tk: 'HIVE' | 'HBD'
+    tk: Coin
     to: string
     from: string
     memo?: string

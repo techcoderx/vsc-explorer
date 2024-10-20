@@ -8,7 +8,8 @@ import {
   CallContractPayload,
   XferWdPayload,
   DepositPayload,
-  ElectionResultPayload
+  ElectionResultPayload,
+  Coin
 } from './Payloads'
 
 export interface Props {
@@ -24,6 +25,17 @@ export interface Props {
   operations: number
   anchor_refs: number
   bridge_txs: number
+}
+
+interface Item<IdType extends number | string> {
+  id: IdType
+  ts: string
+  block_num: number
+}
+
+/** usually used for l2 items */
+interface ItemWithIdxBlk<IdType extends number | string> extends Item<IdType> {
+  idx_in_block: number
 }
 
 export interface Block {
@@ -55,13 +67,10 @@ export interface BlockRangeItm extends Block {
   bv: string
 }
 
-export interface BlockTx {
-  id: string
+export interface BlockTx extends ItemWithIdxBlk<string> {
   did?: string
   tx_type: L2TxType
-  block_num: number
   auth_count: number
-  idx_in_block: number
 }
 
 export interface Witness {
@@ -173,12 +182,9 @@ export interface ContractWifProof extends Contract {
   error?: string
 }
 
-export interface AnchorRefs {
-  id: number
-  ts: string
+export interface AnchorRefs extends Item<number> {
   cid: string
   tx_root: string
-  block_num: number
 }
 
 export interface AnchorRef extends AnchorRefs {
@@ -192,24 +198,26 @@ export interface L1Acc {
   last_activity: string
 }
 
-export interface Tx {
-  id: string
-  ts: string
+/** Contract call short details */
+interface ContractCallDetailMinimal {
+  contract_id: string
+  action: string
+  io_gas?: number
+}
+
+/** For contract calls by contract id */
+interface ContractCallTx extends ItemWithIdxBlk<string>, ContractCallDetailMinimal {
   input: string
   output: string
-  block_num: number
-  idx_in_block: number
-  contract_id: string
   contract_action: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any
   contract_output?: ContractOut
-  io_gas?: number
   error?: string
   events?: EventItm[]
 }
 
-export interface L1Tx extends Tx {
+export interface L1ContractCallTx extends ContractCallTx {
   signers: {
     active: string[]
     posting: string[]
@@ -218,12 +226,36 @@ export interface L1Tx extends Tx {
   input_src: 'hive'
 }
 
-export interface L2Tx extends Tx {
+export interface L2ContractCallTx extends ContractCallTx {
   nonce: number
   signers: string[]
   tx_type: L2TxType
   input_src: 'vsc'
 }
+
+/** Call history */
+interface TxHistoryBase extends ItemWithIdxBlk<string> {
+  tx_type: L2TxType
+  nonce: number
+}
+
+interface CallContractTxHistory extends TxHistoryBase {
+  tx_type: 'call_contract'
+  details: ContractCallDetailMinimal
+}
+
+interface XferWdTxHistory extends TxHistoryBase {
+  tx_type: 'transfer' | 'withdraw'
+  details: {
+    to: string
+    from: string
+    memo?: string
+    token: Coin
+    amount: number
+  }
+}
+
+export type TxHistory = CallContractTxHistory | XferWdTxHistory
 
 export interface TransferWithdrawOutput {
   tx_type: 'transfer' | 'withdraw'
@@ -255,11 +287,7 @@ export interface ContractOut {
   errorType?: number
 }
 
-export interface ContractOutputTx {
-  id: string
-  block_num: number
-  idx_in_block: number
-  ts: string
+export interface ContractOutputTx extends ItemWithIdxBlk<string> {
   contract_id: string
   total_io_gas: number
   outputs: {
@@ -271,11 +299,7 @@ export interface ContractOutputTx {
   error?: string
 }
 
-export interface EventsOp {
-  id: string
-  ts: string
-  block_num: number
-  idx_in_block: number
+export interface EventsOp extends ItemWithIdxBlk<string> {
   events: {
     tx_id: string
     tx_type: L2TxType
@@ -286,10 +310,18 @@ export interface EventsOp {
 
 export interface EventItm {
   t: number
-  tk: 'HIVE' | 'HBD'
+  tk: Coin
   amt: number
   memo?: string
   owner: string
+}
+
+export interface EventHistoryItm extends Item<string> {
+  event_id: number
+  event_cid: string
+  tx_pos: number
+  pos_in_tx: number
+  event: EventItm
 }
 
 export interface CIDSearchResult {

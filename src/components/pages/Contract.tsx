@@ -5,6 +5,7 @@ import {
   Link,
   Skeleton,
   Table,
+  TableContainer,
   Tbody,
   Tabs,
   Tab,
@@ -28,9 +29,9 @@ import { timeAgo, getVotedMembers, thousandSeperator, abbreviateHash } from '../
 import { l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
-import { L1Tx, L2Tx } from '../../types/HafApiResult'
+import { L1ContractCallTx, L2ContractCallTx } from '../../types/HafApiResult'
 
-const callerSummary = (tx: L1Tx | L2Tx): { primary: string; add: number } => {
+const callerSummary = (tx: L1ContractCallTx | L2ContractCallTx): { primary: string; add: number } => {
   return tx.input_src === 'vsc'
     ? { primary: tx.signers[0], add: tx.signers.length - 1 }
     : tx.input_src === 'hive'
@@ -43,7 +44,7 @@ const callerSummary = (tx: L1Tx | L2Tx): { primary: string; add: number } => {
 
 export const Contract = () => {
   const [txCount, setTxCount] = useState(0)
-  const [contractTxs, setContractTxs] = useState<(L1Tx | L2Tx)[]>([])
+  const [contractTxs, setContractTxs] = useState<(L1ContractCallTx | L2ContractCallTx)[]>([])
   const [contractTxEnd, setContractTxEnd] = useState(false)
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vs4') && contractId?.length !== 68
@@ -113,62 +114,69 @@ export const Contract = () => {
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
-                <Table mb={'5'}>
-                  <Thead>
-                    <Tr>
-                      <Th textAlign={'center'}>Source</Th>
-                      <Th>Transaction ID</Th>
-                      <Th>Age</Th>
-                      <Th>Sender</Th>
-                      <Th>Action</Th>
-                      <Th>Gas Used</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {contractTxs.map((tx, i) => {
-                      const callerSumm = callerSummary(tx)
-                      return (
-                        <Tr key={i}>
-                          <Td textAlign={'center'}>
-                            <Badge colorScheme={themeColorScheme}>{tx.input_src}</Badge>
-                          </Td>
-                          <Td>
-                            <Tooltip label={tx.input} placement={'top'}>
-                              <Link as={ReactRouterLink} to={(tx.input_src === 'hive' ? '/tx/' : '/vsc-tx/') + tx.input}>
-                                {abbreviateHash(tx.input, 20, 0)}
-                              </Link>
-                            </Tooltip>
-                          </Td>
-                          <Td>
-                            <Tooltip label={tx.ts} placement={'top'}>
-                              {timeAgo(tx.ts)}
-                            </Tooltip>
-                          </Td>
-                          <Td>
-                            <Tooltip label={callerSumm.primary} placement={'top'}>
-                              {abbreviateHash(callerSumm.primary, 20, 0)}
-                            </Tooltip>
-                            {callerSumm.add > 0 ? (
-                              <Text fontStyle={'italic'} opacity={'0.5'}>{` (+${callerSumm.add})`}</Text>
-                            ) : (
-                              ''
-                            )}
-                          </Td>
-                          <Td>{tx.contract_action}</Td>
-                          <Td isNumeric>
-                            {typeof tx.io_gas === 'number' ? (
-                              thousandSeperator(tx.io_gas)
-                            ) : (
-                              <Text fontStyle={'italic'} opacity={'0.5'}>
-                                Pending...
-                              </Text>
-                            )}
-                          </Td>
-                        </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
+                <TableContainer>
+                  <Table mb={'5'}>
+                    <Thead>
+                      <Tr>
+                        <Th textAlign={'center'}>Source</Th>
+                        <Th>Transaction ID</Th>
+                        <Th>Age</Th>
+                        <Th>Action</Th>
+                        <Th>Sender</Th>
+                        <Th>Gas Used</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {contractTxs.map((tx, i) => {
+                        const callerSumm = callerSummary(tx)
+                        return (
+                          <Tr key={i}>
+                            <Td textAlign={'center'}>
+                              <Badge colorScheme={themeColorScheme}>{tx.input_src}</Badge>
+                            </Td>
+                            <Td>
+                              <Tooltip label={tx.input} placement={'top'}>
+                                <Link as={ReactRouterLink} to={(tx.input_src === 'hive' ? '/tx/' : '/vsc-tx/') + tx.input}>
+                                  {abbreviateHash(tx.input, 20, 0)}
+                                </Link>
+                              </Tooltip>
+                            </Td>
+                            <Td>
+                              <Tooltip label={tx.ts} placement={'top'}>
+                                {timeAgo(tx.ts)}
+                              </Tooltip>
+                            </Td>
+                            <Td>{tx.contract_action}</Td>
+                            <Td>
+                              <Tooltip label={callerSumm.primary} placement={'top'}>
+                                <Link
+                                  as={ReactRouterLink}
+                                  to={(tx.input_src === 'vsc' ? '/address/' : '/@') + callerSumm.primary}
+                                >
+                                  {abbreviateHash(callerSumm.primary, 20, 0)}
+                                </Link>
+                              </Tooltip>
+                              {callerSumm.add > 0 ? (
+                                <Text fontStyle={'italic'} opacity={'0.5'}>{` (+${callerSumm.add})`}</Text>
+                              ) : (
+                                ''
+                              )}
+                            </Td>
+                            <Td isNumeric>
+                              {typeof tx.io_gas === 'number' ? (
+                                thousandSeperator(tx.io_gas)
+                              ) : (
+                                <Text fontStyle={'italic'} opacity={'0.5'}>
+                                  Pending...
+                                </Text>
+                              )}
+                            </Td>
+                          </Tr>
+                        )
+                      })}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
                 {!contractTxEnd && contractTxs.length > 0 ? (
                   <Center>
                     <Button

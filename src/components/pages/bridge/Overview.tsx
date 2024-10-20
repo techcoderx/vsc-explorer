@@ -9,6 +9,7 @@ import {
   Stat,
   StatLabel,
   StatNumber,
+  TableContainer,
   Table,
   Th,
   Tr,
@@ -33,38 +34,40 @@ const cardBorderLight = '1.5px solid #e2e8f0'
 
 const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
   return (
-    <Table variant={'simple'}>
-      <Thead>
-        <Tr>
-          <Th>ID</Th>
-          <Th>Age</Th>
-          <Th>To User</Th>
-          <Th>Amount</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {txs?.map((tx, i) => (
-          <Tr key={i} _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
-            <Td>
-              <Link as={ReactRouterLink} to={'/tx/' + tx.in_op}>
-                {tx.id}
-              </Link>
-            </Td>
-            <Td>
-              <Tooltip label={tx.ts} placement={'top'}>
-                {timeAgo(tx.ts)}
-              </Tooltip>
-            </Td>
-            <Td>
-              <Link as={ReactRouterLink} to={'/@' + tx.username}>
-                {tx.username}
-              </Link>
-            </Td>
-            <Td>{thousandSeperator(tx.amount)}</Td>
+    <TableContainer>
+      <Table variant={'simple'}>
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Age</Th>
+            <Th>To User</Th>
+            <Th>Amount</Th>
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
+        </Thead>
+        <Tbody>
+          {txs?.map((tx, i) => (
+            <Tr key={i} _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
+              <Td>
+                <Link as={ReactRouterLink} to={'/tx/' + tx.in_op}>
+                  {tx.id}
+                </Link>
+              </Td>
+              <Td>
+                <Tooltip label={tx.ts} placement={'top'}>
+                  {timeAgo(tx.ts)}
+                </Tooltip>
+              </Td>
+              <Td>
+                <Link as={ReactRouterLink} to={'/@' + tx.username}>
+                  {tx.username}
+                </Link>
+              </Td>
+              <Td>{thousandSeperator(tx.amount)}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   )
 }
 

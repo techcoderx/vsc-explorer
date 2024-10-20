@@ -8,7 +8,7 @@ import {
   BlockRangeItm,
   BlockDetail,
   BlockTx,
-  L2Tx,
+  L2ContractCallTx,
   CIDSearchResult,
   Election,
   Epoch,
@@ -16,7 +16,7 @@ import {
   AnchorRef,
   ContractWifProof,
   HiveBridgeTx,
-  L1Tx,
+  L1ContractCallTx,
   TransferWithdrawOutput,
   WeightedMembers,
   ContractOutputTx,
@@ -130,7 +130,7 @@ export const fetchL1TxOutput = async (
   return await (await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)).json()
 }
 
-export const fetchL2Tx = async (trx_id: string): Promise<L2Tx> => {
+export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)).json()
 }
 
@@ -142,7 +142,7 @@ export const fetchCallsByContractId = async (
   contract_id: string,
   count: number = 100,
   last_id?: number
-): Promise<(L1Tx | L2Tx)[]> => {
+): Promise<(L1ContractCallTx | L2ContractCallTx)[]> => {
   return await (
     await fetch(
       `${hafVscApi}/rpc/list_contract_calls_by_contract_id?contract_id=${contract_id}&count=${count}${

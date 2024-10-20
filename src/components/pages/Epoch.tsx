@@ -17,7 +17,8 @@ import {
   TabPanels,
   TabPanel,
   Skeleton,
-  Tooltip
+  Tooltip,
+  TableContainer
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
@@ -124,48 +125,50 @@ const Epoch = () => {
                 ) : isBlocksError || !Array.isArray(blocks) ? (
                   <Text>Failed to load blocks in epoch</Text>
                 ) : (
-                  <Table>
-                    <Thead>
-                      <Tr>
-                        <Th>Id</Th>
-                        <Th>Age</Th>
-                        <Th>Proposer</Th>
-                        <Th>Txs</Th>
-                        <Th>Block Hash</Th>
-                        <Th>Voted</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {blocks.map((item, i) => (
-                        <Tr key={i}>
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/block/' + item.id}>
-                              {item.id}
-                            </Link>
-                          </Td>
-                          <Td sx={{ whiteSpace: 'nowrap' }}>
-                            <Tooltip label={item.ts} placement="top">
-                              {timeAgo(item.ts)}
-                            </Tooltip>
-                          </Td>
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/@' + item.proposer}>
-                              {item.proposer}
-                            </Link>
-                          </Td>
-                          <Td>{item.txs}</Td>
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block_hash}>
-                              {abbreviateHash(item.block_hash)}
-                            </Link>
-                          </Td>
-                          <Td maxW={'200px'}>
-                            <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
-                          </Td>
+                  <TableContainer>
+                    <Table>
+                      <Thead>
+                        <Tr>
+                          <Th>Id</Th>
+                          <Th>Age</Th>
+                          <Th>Proposer</Th>
+                          <Th>Txs</Th>
+                          <Th>Block Hash</Th>
+                          <Th>Voted</Th>
                         </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
+                      </Thead>
+                      <Tbody>
+                        {blocks.map((item, i) => (
+                          <Tr key={i}>
+                            <Td>
+                              <Link as={ReactRouterLink} to={'/block/' + item.id}>
+                                {item.id}
+                              </Link>
+                            </Td>
+                            <Td sx={{ whiteSpace: 'nowrap' }}>
+                              <Tooltip label={item.ts} placement="top">
+                                {timeAgo(item.ts)}
+                              </Tooltip>
+                            </Td>
+                            <Td>
+                              <Link as={ReactRouterLink} to={'/@' + item.proposer}>
+                                {item.proposer}
+                              </Link>
+                            </Td>
+                            <Td>{item.txs}</Td>
+                            <Td>
+                              <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block_hash}>
+                                {abbreviateHash(item.block_hash)}
+                              </Link>
+                            </Td>
+                            <Td maxW={'200px'}>
+                              <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
+                            </Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
                 )}
               </TabPanel>
               <TabPanel>

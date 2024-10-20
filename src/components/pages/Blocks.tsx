@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Tooltip, Link } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
@@ -40,7 +40,7 @@ const Blocks = () => {
       <hr />
       <br />
       <Text>Total {isPropSuccess ? thousandSeperator(prop.l2_block_height) : 0} blocks</Text>
-      <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
+      <TableContainer marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -97,7 +97,7 @@ const Blocks = () => {
             )}
           </Tbody>
         </Table>
-      </Box>
+      </TableContainer>
       <Pagination path="/blocks" currentPageNum={pageNumber} maxPageNum={Math.ceil((height || 0) / count)} />
     </>
   )
