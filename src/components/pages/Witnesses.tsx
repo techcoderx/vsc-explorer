@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchWitnesses } from '../../requests'
@@ -33,7 +33,7 @@ const Witnesses = () => {
       <hr />
       <br />
       <Text>Total {isPropSuccess ? prop.witnesses : 0} witnesses</Text>
-      <Box overflowX="auto" marginTop={'15px'} marginBottom={'15px'}>
+      <TableContainer marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -100,7 +100,7 @@ const Witnesses = () => {
             ) : null}
           </Tbody>
         </Table>
-      </Box>
+      </TableContainer>
       {isPropSuccess && isWitnessSuccess ? (
         <Pagination path={'/witnesses'} currentPageNum={pageNumber} maxPageNum={Math.ceil(prop.witnesses / count)} />
       ) : null}

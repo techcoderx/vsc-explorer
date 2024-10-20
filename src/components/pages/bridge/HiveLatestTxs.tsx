@@ -1,4 +1,4 @@
-import { Text, Box, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
@@ -25,7 +25,7 @@ const TxsTable = ({
 }) => {
   return (
     <>
-      <Box overflowX="auto" m={'15px 0px'}>
+      <TableContainer m={'15px 0px'}>
         <Table variant={'simple'}>
           <Thead>
             <Tr>
@@ -76,7 +76,7 @@ const TxsTable = ({
             )}
           </Tbody>
         </Table>
-      </Box>
+      </TableContainer>
       <Pagination path={'/bridge/hive/' + type} currentPageNum={currentPage} maxPageNum={Math.ceil((txCount || 0) / count)} />
     </>
   )

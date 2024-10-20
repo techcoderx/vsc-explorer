@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Tooltip, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { abbreviateHash, timeAgo } from '../../helpers'
@@ -18,7 +18,7 @@ const NewContracts = () => {
     <>
       <Text fontSize={'5xl'}>Latest Contracts</Text>
       <hr />
-      <Box overflowX="auto" marginTop={'15px'}>
+      <TableContainer marginTop={'15px'}>
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -79,7 +79,7 @@ const NewContracts = () => {
             )}
           </Tbody>
         </Table>
-      </Box>
+      </TableContainer>
     </>
   )
 }
