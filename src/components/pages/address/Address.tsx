@@ -27,66 +27,83 @@ import {
 } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
-import { fetchL2AccTxHistory, fetchAccEventHistory } from '../../../requests'
+import { fetchL2AccTxHistory, fetchAccEventHistory, fetchAccInfo } from '../../../requests'
 import { abbreviateHash, getNextTabRoute, thousandSeperator, timeAgo } from '../../../helpers'
 import { themeColorScheme } from '../../../settings'
 import { EventTypeNames } from '../../../types/Payloads'
+import Pagination from '../../Pagination'
 import { AddressBalanceCard } from './Balances'
 import { AddressActivityCard } from './Activity'
 
+const count = 100
+
 export const AddressTxs = () => {
   const { addr } = useOutletContext<{ addr: string }>()
+  const { page } = useParams()
+  const pageNum = parseInt(page || '1')
+  const { data: activity } = useQuery({
+    queryKey: ['vsc-address-activity', addr],
+    queryFn: async () => fetchAccInfo(addr)
+  })
+  const lastNonce = (activity?.tx_count || 0) - (pageNum - 1) * count
   const { data: txs } = useQuery({
-    queryKey: ['vsc-address-tx-history', addr],
-    queryFn: async () => fetchL2AccTxHistory(addr),
+    queryKey: ['vsc-address-tx-history', addr, count, lastNonce],
+    queryFn: async () => fetchL2AccTxHistory(addr, count, lastNonce),
     staleTime: 60000
   })
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Transaction ID</Th>
-            <Th>Age</Th>
-            <Th>Block</Th>
-            <Th>Method</Th>
-            <Th>To Address</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {(txs || []).map((tx, i) => {
-            const to = tx.tx_type === 'call_contract' ? tx.details.contract_id : tx.details.to
-            return (
-              <Tr key={i}>
-                <Td>
-                  <Tooltip label={tx.id} placement={'top'}>
-                    <Link as={ReactRouterLink} to={'/vsc-tx/' + tx.id}>
-                      {abbreviateHash(tx.id, 25, 0)}
+    <Box>
+      <TableContainer mb={'4'}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Transaction ID</Th>
+              <Th>Age</Th>
+              <Th>Block</Th>
+              <Th>Method</Th>
+              <Th>To Address</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {(txs || []).map((tx, i) => {
+              const to = tx.tx_type === 'call_contract' ? tx.details.contract_id : tx.details.to
+              return (
+                <Tr key={i}>
+                  <Td>
+                    <Tooltip label={tx.id} placement={'top'}>
+                      <Link as={ReactRouterLink} to={'/vsc-tx/' + tx.id}>
+                        {abbreviateHash(tx.id, 25, 0)}
+                      </Link>
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Tooltip label={tx.ts} placement={'top'}>
+                      {timeAgo(tx.ts)}
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/block/' + tx.block_num}>
+                      {thousandSeperator(tx.block_num)}
                     </Link>
-                  </Tooltip>
-                </Td>
-                <Td>
-                  <Tooltip label={tx.ts} placement={'top'}>
-                    {timeAgo(tx.ts)}
-                  </Tooltip>
-                </Td>
-                <Td>
-                  <Link as={ReactRouterLink} to={'/block/' + tx.block_num}>
-                    {thousandSeperator(tx.block_num)}
-                  </Link>
-                </Td>
-                <Td>{tx.tx_type === 'call_contract' ? abbreviateHash(tx.details.action, 20, 0) : tx.tx_type}</Td>
-                <Td>
-                  <Link as={ReactRouterLink} to={(tx.tx_type === 'call_contract' ? '/contract/' : '/address/') + to}>
-                    {abbreviateHash(to, 25, 0)}
-                  </Link>
-                </Td>
-              </Tr>
-            )
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
+                  </Td>
+                  <Td>{tx.tx_type === 'call_contract' ? abbreviateHash(tx.details.action, 20, 0) : tx.tx_type}</Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={(tx.tx_type === 'call_contract' ? '/contract/' : '/address/') + to}>
+                      {abbreviateHash(to, 25, 0)}
+                    </Link>
+                  </Td>
+                </Tr>
+              )
+            })}
+          </Tbody>
+        </Table>
+      </TableContainer>
+      <Pagination
+        path={`/address/${addr}/txs`}
+        currentPageNum={pageNum || 1}
+        maxPageNum={Math.ceil((activity?.tx_count || 0) / count)}
+      />
+    </Box>
   )
 }
 
@@ -148,7 +165,7 @@ export const AddressEvents = () => {
                   </Badge>
                 </Td>
                 <Td isNumeric>
-                  {Math.abs(evt.event.amt)} {evt.event.tk}
+                  {Math.abs(evt.event.amt / 1000)} {evt.event.tk}
                 </Td>
               </Tr>
             )
