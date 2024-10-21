@@ -79,3 +79,13 @@ export type BLSSig = {
   sig: string
   bv: string
 }
+
+export const EventTypeNames: { [type: number]: string } = {
+  0: '',
+  110_001: 'Transfer',
+  110_002: 'Withdraw',
+  110_003: 'Deposit'
+  // 110_004: 'Stake HBD',
+  // 110_005: 'Unstake HBD',
+  // 110_006: 'Claim HBD'
+}

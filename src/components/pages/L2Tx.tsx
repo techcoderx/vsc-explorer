@@ -150,7 +150,13 @@ const L2Tx = () => {
                 <Badge color={themeColorLight}>Position: {l2Tx.idx_in_block}</Badge>
               </TableRow>
               <TableRow overflowWrap={'anywhere'} label={`Signers (${l2Tx.signers.length})`}>
-                {l2Tx.signers.join('\n')}
+                {l2Tx.signers.map((signer, i) => {
+                  return (
+                    <Link key={i} as={ReactRouterLink} to={'/address/' + signer}>
+                      {signer}
+                    </Link>
+                  )
+                })}
               </TableRow>
               {l2TxGql && l2TxGql.sig_hash ? (
                 <TableRow label={'Signature CID'}>

@@ -66,11 +66,11 @@ const L1User = () => {
     isLoading: isL1AccvLoading,
     isSuccess: isL1AccvSuccess
   } = useQuery({
-    queryKey: ['vsc-account', username],
-    queryFn: async () => fetchAccInfo(user),
+    queryKey: ['vsc-account', 'hive:' + username],
+    queryFn: async () => fetchAccInfo('hive:' + user),
     enabled: !invalidParams
   })
-  const last_nonce = l1Accv ? Math.max(l1Accv.tx_count - (pageNumber - 1) * 50 - 1, 0) : null
+  const last_nonce = l1Accv ? Math.max(l1Accv.tx_count - (pageNumber - 1) * 50 - 1, 0) : undefined
   const {
     data: history,
     isLoading: isHistLoading,

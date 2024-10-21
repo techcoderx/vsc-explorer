@@ -20,6 +20,7 @@ import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLat
 import { ContractOut } from './components/pages/ContractOut'
 import { Event } from './components/pages/Event'
 import WitnessSchedule from './components/pages/Schedule'
+import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,24 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />
+      },
+      {
+        path: '/address/:addr',
+        element: <Address />,
+        children: [
+          {
+            path: '/address/:addr',
+            element: <AddressTxs />
+          },
+          {
+            path: '/address/:addr/txs/:page?',
+            element: <AddressTxs />
+          },
+          {
+            path: '/address/:addr/events/:page?',
+            element: <AddressEvents />
+          }
+        ]
       },
       {
         path: '/witnesses',
