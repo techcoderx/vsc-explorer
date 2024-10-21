@@ -75,7 +75,7 @@ const Navbar = () => {
         <MobileNav />
       </Collapse>
 
-      <Container width={'100%'} maxW={'7xl'} marginTop={'15px'} marginBottom={'40px'}>
+      <Container width={'100%'} maxW={'8xl'} marginTop={'15px'} marginBottom={'40px'}>
         <Outlet />
       </Container>
     </Box>
