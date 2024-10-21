@@ -22,7 +22,9 @@ import {
   ContractOutputTx,
   EventsOp,
   ContractCreatedOutput,
-  ContractCallOutput
+  ContractCallOutput,
+  TxHistory,
+  EventHistoryItm
 } from './types/HafApiResult'
 import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
@@ -102,11 +104,7 @@ export const fetchBlocksInEpoch = async (
   ).json()
 }
 
-export const fetchAccHistory = async (
-  username: string,
-  count: number = 50,
-  last_nonce: number | null = null
-): Promise<L1Transaction[]> => {
+export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
   return await (
     await fetch(
       `${hafVscApi}/rpc/get_op_history_by_l1_user?username=${username}&count=${count}${
@@ -116,8 +114,16 @@ export const fetchAccHistory = async (
   ).json()
 }
 
+export const fetchL2AccTxHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<TxHistory[]> => {
+  return await (
+    await fetch(
+      `${hafVscApi}/rpc/get_l2_tx_history_by_did?did=${did}&count=${count}${last_nonce ? `&last_nonce=${last_nonce}` : ''}`
+    )
+  ).json()
+}
+
 export const fetchAccInfo = async (username: string): Promise<L1Acc> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_l1_user?username=${username}`)).json()
+  return await (await fetch(`${hafVscApi}/rpc/get_l2_user?did=${username}`)).json()
 }
 
 export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> => {
@@ -154,6 +160,21 @@ export const fetchCallsByContractId = async (
 
 export const fetchEvents = async (cid: string): Promise<EventsOp> => {
   return await (await fetch(`${hafVscApi}/rpc/get_event?cid=${cid}`)).json()
+}
+
+export const fetchAccEventHistory = async (
+  did: string,
+  count: number = 100,
+  last_event_id?: number,
+  last_event_pos?: number
+): Promise<EventHistoryItm[]> => {
+  return await (
+    await fetch(
+      `${hafVscApi}/rpc/get_event_history_by_account_name?account_name=${did}&count=${count}${
+        last_event_id ? `&last_event_id=${last_event_id}` : ''
+      }${last_event_pos ? `&last_event_pos=${last_event_pos}` : ''}`
+    )
+  ).json()
 }
 
 export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {

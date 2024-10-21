@@ -9,7 +9,7 @@ import {
   XferWdPayload
 } from './types/Payloads'
 
-export const timeAgo = (date: string): string => {
+export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
   const diffInSeconds = Math.abs(now - new Date(date + (!date.endsWith('Z') ? 'Z' : '')).getTime()) / 1000
 
@@ -18,8 +18,8 @@ export const timeAgo = (date: string): string => {
   const minutes = Math.floor(diffInSeconds / 60) % 60
   const seconds = Math.floor(diffInSeconds % 60)
 
-  if (days > 0) return `${days} days ${hours} hrs ago`
-  if (hours > 0) return `${hours} hrs ${minutes} mins ago`
+  if (days > 0) return `${days} days${!one ? ` ${hours} hrs` : ''} ago`
+  if (hours > 0) return `${hours} hrs${!one ? ` ${minutes} mins` : ''} ago`
   if (minutes > 0) return `${minutes} mins ago`
   return `${seconds} secs ago`
 }
@@ -102,6 +102,20 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
 export const abbreviateHash = (hash: string, first_chars: number = 12, last_chars: number = 12): string => {
   if (first_chars + last_chars + 2 >= hash.length) return hash
   return `${hash.substring(0, first_chars)}...${last_chars ? hash.slice(-last_chars) : ''}`
+}
+
+export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: number, pos: number = 3) => {
+  // first element of segments should be an empty string (!!)
+  if (newIdx > 0) {
+    // add tabname to pathname if not first idx regardless
+    if (segments.length >= pos + 1) segments[pos] = tabNames[newIdx]
+    else segments.push(tabNames[newIdx])
+  } else {
+    // only add tabname to pathname for 0 idx if there are other segments after it (i.e. page number)
+    if (segments.length > pos + 1) segments[pos] = tabNames[newIdx]
+    else if (segments.length === pos + 1) segments.pop()
+  }
+  return segments.join('/').trim().replace(/\/+$/, '')
 }
 
 export const getBitsetStrFromHex = (bv: string) => {
