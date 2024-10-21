@@ -104,7 +104,7 @@ export const abbreviateHash = (hash: string, first_chars: number = 12, last_char
   return `${hash.substring(0, first_chars)}...${last_chars ? hash.slice(-last_chars) : ''}`
 }
 
-export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: number, pos: number = 3) => {
+export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: number, pageNum: number = 1, pos: number = 3) => {
   // first element of segments should be an empty string (!!)
   if (newIdx > 0) {
     // add tabname to pathname if not first idx regardless
@@ -114,6 +114,16 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
     // only add tabname to pathname for 0 idx if there are other segments after it (i.e. page number)
     if (segments.length > pos + 1) segments[pos] = tabNames[newIdx]
     else if (segments.length === pos + 1) segments.pop()
+  }
+  // page number
+  if (pageNum > 1) {
+    if (segments.length >= pos + 2) segments[pos + 1] = pageNum.toString()
+    if (segments.length === pos) segments.push(tabNames[newIdx])
+    if (segments.length === pos + 1) segments.push(pageNum.toString())
+  } else if (pageNum === 1) {
+    if (segments.length > pos + 2) segments[pos + 1] = pageNum.toString()
+    else if (segments.length === pos + 2) segments.pop()
+    if (segments.length === pos + 1 && newIdx === 0) segments.pop()
   }
   return segments.join('/').trim().replace(/\/+$/, '')
 }
