@@ -80,9 +80,9 @@ const Epoch = () => {
               <TableRow label="L1 Tx" value={epoch?.l1_tx} isLoading={isEpochLoading} link={'/tx/' + epoch?.l1_tx} />
               <TableRow
                 label="L1 Block"
-                value={epoch?.l1_block_num}
+                value={epoch?.block_num}
                 isLoading={isEpochLoading}
-                link={l1Explorer + '/b/' + epoch?.l1_block_num}
+                link={l1Explorer + '/b/' + epoch?.block_num}
               />
               <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
               <TableRow label="Election Data CID" value={epoch?.data_cid} isLoading={isEpochLoading} />
