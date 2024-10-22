@@ -192,9 +192,10 @@ export interface AnchorRef extends AnchorRefs {
   error?: string
 }
 
-export interface L1Acc {
+export interface AccInfo {
   name: string
   tx_count: number
+  event_count: number
   last_activity: string
 }
 

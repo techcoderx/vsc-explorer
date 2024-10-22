@@ -109,70 +109,84 @@ export const AddressTxs = () => {
 
 export const AddressEvents = () => {
   const { addr } = useOutletContext<{ addr: string }>()
+  const { page } = useParams()
+  const pageNum = parseInt(page || '1')
+  const { data: activity } = useQuery({
+    queryKey: ['vsc-address-activity', addr],
+    queryFn: async () => fetchAccInfo(addr)
+  })
+  const lastNonce = (activity?.event_count || 0) - (pageNum - 1) * count
   const { data: events } = useQuery({
-    queryKey: ['vsc-address-event-history', addr],
-    queryFn: async () => fetchAccEventHistory(addr),
+    queryKey: ['vsc-address-event-history', addr, count, lastNonce],
+    queryFn: async () => fetchAccEventHistory(addr, count, lastNonce),
     staleTime: 60000
   })
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Transaction ID</Th>
-            <Th>Age</Th>
-            <Th>Block</Th>
-            <Th>Type</Th>
-            <Th>Event CID</Th>
-            <Th></Th>
-            <Th>Amount</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {(events || []).map((evt, i) => {
-            return (
-              <Tr key={i}>
-                <Td>
-                  <Tooltip label={evt.id} placement={'top'}>
-                    <Link as={ReactRouterLink} to={'/vsc-tx/' + evt.id}>
-                      {abbreviateHash(evt.id, 25, 0)}
+    <Box>
+      <TableContainer mb={'4'}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Transaction ID</Th>
+              <Th>Age</Th>
+              <Th>Block</Th>
+              <Th>Type</Th>
+              <Th>Event CID</Th>
+              <Th></Th>
+              <Th>Amount</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {(events || []).map((evt, i) => {
+              return (
+                <Tr key={i}>
+                  <Td>
+                    <Tooltip label={evt.id} placement={'top'}>
+                      <Link as={ReactRouterLink} to={'/vsc-tx/' + evt.id}>
+                        {abbreviateHash(evt.id, 25, 0)}
+                      </Link>
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Tooltip label={evt.ts} placement={'top'}>
+                      {timeAgo(evt.ts)}
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={'/block/' + evt.block_num}>
+                      {thousandSeperator(evt.block_num)}
                     </Link>
-                  </Tooltip>
-                </Td>
-                <Td>
-                  <Tooltip label={evt.ts} placement={'top'}>
-                    {timeAgo(evt.ts)}
-                  </Tooltip>
-                </Td>
-                <Td>
-                  <Link as={ReactRouterLink} to={'/block/' + evt.block_num}>
-                    {thousandSeperator(evt.block_num)}
-                  </Link>
-                </Td>
-                <Td>
-                  <Badge colorScheme={themeColorScheme}>{EventTypeNames[evt.event.t]}</Badge>
-                </Td>
-                <Td>
-                  <Tooltip label={evt.event_cid} placement={'top'}>
-                    <Link as={ReactRouterLink} to={'/event/' + evt.event_cid}>
-                      {abbreviateHash(evt.id, 25, 0)}
-                    </Link>
-                  </Tooltip>
-                </Td>
-                <Td>
-                  <Badge colorScheme={evt.event.amt < 0 ? 'red' : 'green'} minW={'10'} textAlign={'center'}>
-                    {evt.event.amt < 0 ? 'OUT' : 'IN'}
-                  </Badge>
-                </Td>
-                <Td isNumeric>
-                  {Math.abs(evt.event.amt / 1000)} {evt.event.tk}
-                </Td>
-              </Tr>
-            )
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
+                  </Td>
+                  <Td>
+                    <Badge colorScheme={themeColorScheme}>{EventTypeNames[evt.event.t]}</Badge>
+                  </Td>
+                  <Td>
+                    <Tooltip label={evt.event_cid} placement={'top'}>
+                      <Link as={ReactRouterLink} to={'/event/' + evt.event_cid}>
+                        {abbreviateHash(evt.id, 25, 0)}
+                      </Link>
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Badge colorScheme={evt.event.amt < 0 ? 'red' : 'green'} minW={'10'} textAlign={'center'}>
+                      {evt.event.amt < 0 ? 'OUT' : 'IN'}
+                    </Badge>
+                  </Td>
+                  <Td isNumeric>
+                    {Math.abs(evt.event.amt / 1000)} {evt.event.tk}
+                  </Td>
+                </Tr>
+              )
+            })}
+          </Tbody>
+        </Table>
+      </TableContainer>
+      <Pagination
+        path={`/address/${addr}/events`}
+        currentPageNum={pageNum || 1}
+        maxPageNum={Math.ceil((activity?.event_count || 0) / count)}
+      />
+    </Box>
   )
 }
 
