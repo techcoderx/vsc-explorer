@@ -23,8 +23,3 @@ export type L1Account = {
   active: L1AccountAuths
   posting: L1AccountAuths
 }
-
-export type L1Dgp = {
-  total_vesting_fund_hive: string
-  total_vesting_shares: string
-}
