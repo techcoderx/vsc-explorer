@@ -18,13 +18,13 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router-dom'
 import PageNotFound from './404'
-import { fetchAccHistory, fetchAccInfo, fetchL1, fetchMsOwners, fetchWitness, getL2BalanceByL1User } from '../../requests'
-import { describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { fetchAccHistory, fetchAccInfo, fetchL1Rest, fetchMsOwners, fetchWitness, getL2BalanceByL1User } from '../../requests'
+import { describeL1TxBriefly, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
-import { L1Account, L1Dgp } from '../../types/L1ApiResult'
+import { L1AccountAuthority } from '../../types/L1ApiResult'
 import { multisigAccount, themeColorScheme } from '../../settings'
 
 const count = 50
@@ -34,22 +34,9 @@ const L1User = () => {
   const pageNumber = parseInt(page || '1')
   const invalidParams = !username || !username.startsWith('@') || isNaN(pageNumber) || pageNumber < 1
   const user = !invalidParams ? username.replace('@', '') : ''
-  const {
-    data: l1Acc,
-    isLoading: isL1AccLoading,
-    isSuccess: isL1AccSuccess
-  } = useQuery({
+  const { data: l1Acc, isError: isL1AccErr } = useQuery({
     queryKey: ['hive-account', username],
-    queryFn: async () => fetchL1<L1Account[]>('condenser_api.get_accounts', [[user]]),
-    enabled: !invalidParams
-  })
-  const {
-    data: l1Dgp,
-    isLoading: isL1DgpLoading,
-    isSuccess: isL1DgpSuccess
-  } = useQuery({
-    queryKey: ['hive-dgp'],
-    queryFn: async () => fetchL1<L1Dgp>('condenser_api.get_dynamic_global_properties', []),
+    queryFn: async () => fetchL1Rest<L1AccountAuthority>(`/hafbe/accounts/${user}/authority`),
     enabled: !invalidParams
   })
   const {
@@ -83,8 +70,8 @@ const L1User = () => {
   })
   const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
     queryKey: ['vsc-ms-names', 'sk_owner'],
-    queryFn: async () => fetchMsOwners(l1Acc!.result[0].owner.key_auths.map((a) => a[0])),
-    enabled: user === multisigAccount && !!l1Acc && !invalidParams && !l1Acc.error
+    queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
+    enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
   })
   const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
     queryKey: ['vsc-l2-balance-by-l1-user', user],
@@ -106,13 +93,13 @@ const L1User = () => {
         ) : null}
       </Stack>
       <hr />
-      {isL1AccSuccess && !l1Acc.error && l1Acc.result.length === 0 ? (
+      {l1Acc && !l1Acc.owner ? (
         <Text fontSize={'xl'} margin={'10px 0px'}>
           Account does not exist
         </Text>
-      ) : isL1AccSuccess && l1Acc.error ? (
+      ) : isL1AccErr ? (
         <Text fontSize={'xl'} margin={'10px 0px'}>
-          Failed to fetch L1 Hive account, error: {l1Acc.error.toString()}
+          Failed to fetch L1 Hive account
         </Text>
       ) : (
         <Flex direction={{ base: 'column', lg: 'row' }} marginTop="20px" gap="6">
@@ -121,15 +108,14 @@ const L1User = () => {
               <Card width={'100%'}>
                 <CardHeader marginBottom="-15px">
                   <Heading size={'md'} textAlign={'center'}>
-                    Multisig Key Holders ({isL1AccSuccess ? l1Acc.result[0].owner.weight_threshold : '...'}/
-                    {isL1AccSuccess ? l1Acc.result[0].owner.key_auths.length + l1Acc.result[0].owner.account_auths.length : '...'}
-                    )
+                    Multisig Key Holders ({l1Acc ? l1Acc.owner.weight_threshold : '...'}/
+                    {l1Acc ? l1Acc.owner.key_auths.length + l1Acc.owner.account_auths.length : '...'})
                   </Heading>
                 </CardHeader>
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      {!!msNames && isMsNamesSuccess && isL1AccSuccess ? (
+                      {!!msNames && isMsNamesSuccess && !!l1Acc ? (
                         msNames
                           .map((a, i) => (
                             <Tr key={i}>
@@ -139,7 +125,7 @@ const L1User = () => {
                             </Tr>
                           ))
                           .concat(
-                            l1Acc.result[0].owner.account_auths.map((a, i) => (
+                            l1Acc.owner.account_auths.map((a, i) => (
                               <Tr key={i}>
                                 <Link as={ReactRouterLink} to={'/@' + a[0]}>
                                   {a[0]}
@@ -171,7 +157,7 @@ const L1User = () => {
                         minWidthLabel="115px"
                         label="Tx Count"
                         isLoading={isL1AccvLoading}
-                        value={isL1AccSuccess ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
+                        value={!!l1Acc ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
                       />
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
                         {isL1AccvSuccess ? (
@@ -317,70 +303,6 @@ const L1User = () => {
                 </CardBody>
               </Card>
             ) : null}
-            <Card width={'100%'}>
-              <CardHeader marginBottom="-15px">
-                <Heading size={'md'} textAlign={'center'}>
-                  L1 Balances
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <Table variant={'unstyled'}>
-                  <Tbody>
-                    <TableRow
-                      isInCard
-                      minimalSpace
-                      minWidthLabel="115px"
-                      label="HIVE Balance"
-                      isLoading={isL1AccLoading}
-                      value={
-                        isL1AccSuccess && !l1Acc.error
-                          ? thousandSeperator(
-                              roundFloat(parseFloat(l1Acc.result[0].balance) + parseFloat(l1Acc.result[0].savings_balance), 3)
-                            ) + ' HIVE'
-                          : 'Error'
-                      }
-                    />
-                    <TableRow
-                      isInCard
-                      minimalSpace
-                      minWidthLabel="115px"
-                      label="HBD Balance"
-                      isLoading={isL1AccLoading}
-                      value={
-                        isL1AccSuccess && !l1Acc.error
-                          ? thousandSeperator(
-                              roundFloat(
-                                parseFloat(l1Acc.result[0].hbd_balance) + parseFloat(l1Acc.result[0].savings_hbd_balance),
-                                3
-                              )
-                            ) + ' HBD'
-                          : 'Error'
-                      }
-                    />
-                    <TableRow
-                      isInCard
-                      minimalSpace
-                      minWidthLabel="115px"
-                      label="Staked HIVE"
-                      isLoading={isL1AccLoading || isL1DgpLoading}
-                    >
-                      {isL1DgpSuccess && !l1Dgp.error && isL1AccSuccess && !l1Acc.error ? (
-                        <Tooltip label={thousandSeperator(parseFloat(l1Acc.result[0].vesting_shares)) + ' VESTS'} placement="top">
-                          {thousandSeperator(
-                            (
-                              (parseFloat(l1Dgp.result.total_vesting_fund_hive) * parseFloat(l1Acc.result[0].vesting_shares)) /
-                              parseFloat(l1Dgp.result.total_vesting_shares)
-                            ).toFixed(3)
-                          ) + ' HP'}
-                        </Tooltip>
-                      ) : (
-                        'Error'
-                      )}
-                    </TableRow>
-                  </Tbody>
-                </Table>
-              </CardBody>
-            </Card>
           </VStack>
           <VStack spacing={'3'} flexGrow={'1'}>
             {isL1AccvLoading || isHistLoading ? (

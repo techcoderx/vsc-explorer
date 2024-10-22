@@ -19,7 +19,7 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
-import { fetchL1, fetchTxByL1Id, fetchBlock, cidSearch } from '../requests'
+import { fetchTxByL1Id, fetchBlock, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
 import { L1Account } from '../types/L1ApiResult'
 
@@ -86,7 +86,7 @@ const useSearchResults = (query: string): SearchResultHook => {
     isError: isL1AccErr
   } = useQuery({
     queryKey: ['hive-account', query],
-    queryFn: async () => fetchL1('condenser_api.get_accounts', [[query]]),
+    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe/accounts/${query}`),
     enabled: queryType === SearchQueryType.L1Account
   })
   const {
@@ -129,7 +129,7 @@ const useSearchResults = (query: string): SearchResultHook => {
       setQueryType(SearchQueryType.L1Account)
       return {
         searchResult: [
-          ...(!isL1AccErr && l1Acc && !l1Acc.error && (l1Acc.result as L1Account[]).length > 0
+          ...(!isL1AccErr && l1Acc && l1Acc.id
             ? [
                 {
                   type: SearchResultType.L1Account,
