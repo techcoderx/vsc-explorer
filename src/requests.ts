@@ -26,7 +26,6 @@ import {
   TxHistory,
   EventHistoryItm
 } from './types/HafApiResult'
-import { HiveRPCResponse } from './types/L1ApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { AccountBalance, WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
 
@@ -192,21 +191,8 @@ export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> =>
   return await (await fetch(`${hafVscApi}/rpc/search_by_cid?cid=${search_cid}`)).json()
 }
 
-export const fetchL1 = async <T>(method: string, params: object): Promise<HiveRPCResponse<T>> => {
-  const res = await fetch(`${hiveApi}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      id: 1,
-      jsonrpc: '2.0',
-      method: method,
-      params: params
-    })
-  })
-  const result = await res.json()
-  return result
+export const fetchL1Rest = async <T>(route: string): Promise<T> => {
+  return await (await fetch(`${hiveApi}${route}`)).json()
 }
 
 const gql = async <T>(query: string, variables: { [key: string]: string } = {}) => {

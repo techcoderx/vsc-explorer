@@ -28,7 +28,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { fetchL2AccTxHistory, fetchAccEventHistory, fetchAccInfo } from '../../../requests'
-import { abbreviateHash, getNextTabRoute, thousandSeperator, timeAgo } from '../../../helpers'
+import { abbreviateHash, getNextTabRoute, roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
 import { themeColorScheme } from '../../../settings'
 import { EventTypeNames } from '../../../types/Payloads'
 import Pagination from '../../Pagination'
@@ -173,7 +173,7 @@ export const AddressEvents = () => {
                     </Badge>
                   </Td>
                   <Td isNumeric>
-                    {Math.abs(evt.event.amt / 1000)} {evt.event.tk}
+                    {roundFloat(Math.abs(evt.event.amt / 1000), 3)} {evt.event.tk}
                   </Td>
                 </Tr>
               )

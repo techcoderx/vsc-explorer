@@ -23,10 +23,10 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { fetchL1, fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
+import { fetchL1Rest, fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Account } from '../../../types/L1ApiResult'
-import { thousandSeperator, timeAgo } from '../../../helpers'
+import { roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
 import { HiveBridgeTx } from '../../../types/HafApiResult'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
@@ -74,7 +74,7 @@ const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
 const HiveBridgeOverview = () => {
   const { data: l1Acc, isSuccess: isL1AccSuccess } = useQuery({
     queryKey: ['hive-account', multisigAccount],
-    queryFn: async () => fetchL1<L1Account[]>('condenser_api.get_accounts', [[multisigAccount]])
+    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe/accounts/${multisigAccount}`)
   })
   const { data: deposits, isSuccess: isDepSuccess } = useQuery({
     queryKey: ['vsc-list-deposits-hive', null, 10],
@@ -95,10 +95,8 @@ const HiveBridgeOverview = () => {
             <Stat>
               <StatLabel>HIVE TVL</StatLabel>
               <StatNumber>
-                {isL1AccSuccess && !l1Acc.error ? (
-                  thousandSeperator(
-                    (parseFloat(l1Acc.result[0].balance) + parseFloat(l1Acc.result[0].savings_balance)).toFixed(3)
-                  ) + ' HIVE'
+                {isL1AccSuccess && l1Acc.id ? (
+                  thousandSeperator(roundFloat(l1Acc.balance / 1000 + l1Acc.savings_balance / 1000, 3)) + ' HIVE'
                 ) : (
                   <Skeleton height={'20px'} maxW={'40px'} />
                 )}
@@ -107,10 +105,8 @@ const HiveBridgeOverview = () => {
             <Stat>
               <StatLabel>HBD TVL</StatLabel>
               <StatNumber>
-                {isL1AccSuccess && !l1Acc.error ? (
-                  thousandSeperator(
-                    (parseFloat(l1Acc.result[0].hbd_balance) + parseFloat(l1Acc.result[0].savings_hbd_balance)).toFixed(3)
-                  ) + ' HBD'
+                {isL1AccSuccess && l1Acc.id ? (
+                  thousandSeperator(roundFloat(l1Acc.hbd_balance / 1000 + l1Acc.hbd_saving_balance / 1000, 3)) + ' HBD'
                 ) : (
                   <Skeleton height={'20px'} maxW={'40px'} />
                 )}
