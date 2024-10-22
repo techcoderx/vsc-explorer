@@ -66,8 +66,8 @@ const L1Tx = () => {
               <Text fontSize={'xl'} display={'inline'}>
                 Included in L1 block{' '}
               </Text>
-              <Link href={l1Explorer + '/b/' + data[0].l1_block} target="_blank" fontSize={'xl'}>
-                {'#' + thousandSeperator(data[0].l1_block)}
+              <Link href={l1Explorer + '/b/' + data[0].block_num} target="_blank" fontSize={'xl'}>
+                {'#' + thousandSeperator(data[0].block_num)}
               </Link>
             </Box>
           ) : (

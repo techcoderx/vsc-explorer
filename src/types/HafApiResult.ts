@@ -88,11 +88,9 @@ export interface Witness {
   produced: number
 }
 
-export interface Election {
+export interface Election extends Item<number> {
   epoch: number
-  l1_block_num: number
   l1_tx: string
-  ts: string
   proposer: string
   data_cid: string
   voted_weight: number
@@ -101,11 +99,9 @@ export interface Election {
   bv: string
 }
 
-export interface Epoch {
+export interface Epoch extends Item<number> {
   epoch: number
-  l1_block_num: number
   l1_tx: string
-  ts: string
   proposer: string
   data_cid: string
   election: WeightedMembers[]
@@ -143,13 +139,10 @@ const txTypes = [
 ] as const
 type TxTypes = (typeof txTypes)[number]
 
-export interface L1Transaction {
-  id: number
+export interface L1Transaction extends Item<number> {
   nonce: number
-  ts: string
   type: TxTypes
   l1_tx: string
-  l1_block: number
   username: string
   payload?:
     | DIDPayload
@@ -330,11 +323,8 @@ export interface CIDSearchResult {
   result?: string | number
 }
 
-export interface HiveBridgeTx {
-  id: number
-  ts: string
+export interface HiveBridgeTx extends Item<number> {
   in_op: string
-  l1_block: number
   username: string
   amount: string
 }
