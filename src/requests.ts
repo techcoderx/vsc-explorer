@@ -4,7 +4,7 @@ import {
   L1Transaction,
   Contract,
   AnchorRefs,
-  L1Acc,
+  AccInfo,
   BlockRangeItm,
   BlockDetail,
   BlockTx,
@@ -122,7 +122,7 @@ export const fetchL2AccTxHistory = async (did: string, count: number = 100, last
   ).json()
 }
 
-export const fetchAccInfo = async (username: string): Promise<L1Acc> => {
+export const fetchAccInfo = async (username: string): Promise<AccInfo> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_user?did=${username}`)).json()
 }
 
@@ -162,17 +162,12 @@ export const fetchEvents = async (cid: string): Promise<EventsOp> => {
   return await (await fetch(`${hafVscApi}/rpc/get_event?cid=${cid}`)).json()
 }
 
-export const fetchAccEventHistory = async (
-  did: string,
-  count: number = 100,
-  last_event_id?: number,
-  last_event_pos?: number
-): Promise<EventHistoryItm[]> => {
+export const fetchAccEventHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<EventHistoryItm[]> => {
   return await (
     await fetch(
       `${hafVscApi}/rpc/get_event_history_by_account_name?account_name=${did}&count=${count}${
-        last_event_id ? `&last_event_id=${last_event_id}` : ''
-      }${last_event_pos ? `&last_event_pos=${last_event_pos}` : ''}`
+        last_nonce ? `&last_nonce=${last_nonce}` : ''
+      }`
     )
   ).json()
 }
