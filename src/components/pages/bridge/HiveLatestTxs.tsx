@@ -2,7 +2,7 @@ import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleto
 import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
-import { thousandSeperator, timeAgo } from '../../../helpers'
+import { abbreviateHash, thousandSeperator, timeAgo } from '../../../helpers'
 import { HiveBridgeTx } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
 
@@ -49,7 +49,7 @@ const TxsTable = ({
               txs?.map((item, i) => (
                 <Tr key={i}>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/tx/' + item.in_op}>
+                    <Link as={ReactRouterLink} to={'/tx/' + item.tx_hash}>
                       {item.id}
                     </Link>
                   </Td>
@@ -59,13 +59,21 @@ const TxsTable = ({
                     </Tooltip>
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + item.username}>
-                      {item.username}
+                    <Link as={ReactRouterLink} to={type === 'withdrawals' ? '/@' + item.to : '/address/' + item.to}>
+                      {type !== 'withdrawals' ? (
+                        <Tooltip label={item.to} placement={'top'}>
+                          {item.to.startsWith('hive:') ? item.to.replace('hive:', '') : abbreviateHash(item.to, 30, 0)}
+                        </Tooltip>
+                      ) : (
+                        item.to
+                      )}
                     </Link>
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/tx/' + item.in_op}>
-                      {item.in_op}
+                    <Link as={ReactRouterLink} to={'/tx/' + item.tx_hash}>
+                      <Tooltip label={item.tx_hash} placement={'top'}>
+                        {abbreviateHash(item.tx_hash, 20, 0)}
+                      </Tooltip>
                     </Link>
                   </Td>
                   <Td>{thousandSeperator(item.amount)}</Td>
@@ -83,7 +91,6 @@ const TxsTable = ({
 }
 
 export const HiveDeposits = () => {
-  // TODO: Deposit to DID key
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1

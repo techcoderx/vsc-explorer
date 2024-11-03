@@ -176,9 +176,7 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
 }
 
 export const fetchLatestDepositsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
-  return await (
-    await fetch(`${hafVscApi}/rpc/list_latest_deposits_hive?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
-  ).json()
+  return await (await fetch(`${hafVscApi}/rpc/list_latest_deposits?count=${count}${last_id ? '&last_id=' + last_id : ''}`)).json()
 }
 
 export const fetchLatestWithdrawalsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {

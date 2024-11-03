@@ -324,8 +324,8 @@ export interface CIDSearchResult {
 }
 
 export interface HiveBridgeTx extends Item<number> {
-  in_op: string
-  username: string
+  tx_hash: string
+  to: string
   amount: string
 }
 
