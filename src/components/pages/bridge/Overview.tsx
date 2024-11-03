@@ -26,7 +26,7 @@ import { Link as ReactRouterLink } from 'react-router-dom'
 import { fetchL1Rest, fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Account } from '../../../types/L1ApiResult'
-import { roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
+import { abbreviateHash, roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
 import { HiveBridgeTx } from '../../../types/HafApiResult'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
@@ -48,7 +48,7 @@ const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
           {txs?.map((tx, i) => (
             <Tr key={i} _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
               <Td>
-                <Link as={ReactRouterLink} to={'/tx/' + tx.in_op}>
+                <Link as={ReactRouterLink} to={'/tx/' + tx.tx_hash}>
                   {tx.id}
                 </Link>
               </Td>
@@ -58,8 +58,10 @@ const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
                 </Tooltip>
               </Td>
               <Td>
-                <Link as={ReactRouterLink} to={'/@' + tx.username}>
-                  {tx.username}
+                <Link as={ReactRouterLink} to={'/address/' + tx.to}>
+                  <Tooltip label={tx.to} placement={'top'}>
+                    {tx.to.startsWith('hive:') ? tx.to.replace('hive:', '') : abbreviateHash(tx.to, 20, 0)}
+                  </Tooltip>
                 </Link>
               </Td>
               <Td>{thousandSeperator(tx.amount)}</Td>
