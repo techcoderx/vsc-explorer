@@ -45,13 +45,16 @@ const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
 
 const L1Tx = () => {
   const { txid } = useParams()
+  const isValid = !!txid && /^[0-9a-fA-F]{40}$/i.test(txid)
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['vsc-l1-tx', txid],
-    queryFn: async () => fetchTxByL1Id(txid!)
+    queryFn: async () => fetchTxByL1Id(txid!),
+    enabled: isValid
   })
   const { data: outData, isSuccess: isOutSuccess } = useQuery({
     queryKey: ['vsc-l1-tx-output', txid],
-    queryFn: async () => fetchL1TxOutput(txid!)
+    queryFn: async () => fetchL1TxOutput(txid!),
+    enabled: isValid
   })
   return (
     <>
@@ -60,7 +63,9 @@ const L1Tx = () => {
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
-        {isSuccess ? (
+        {!isValid ? (
+          <Text>Invalid transaction ID</Text>
+        ) : isSuccess ? (
           data.length > 0 ? (
             <Box marginTop={'10px'}>
               <Text fontSize={'xl'} display={'inline'}>

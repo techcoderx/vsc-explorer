@@ -323,10 +323,13 @@ export interface CIDSearchResult {
   result?: string | number
 }
 
-export interface HiveBridgeTx extends Item<number> {
+export interface BridgeTx extends Item<number> {
   tx_hash: string
   to: string
   amount: string
+  nonce: number
+  memo?: string
+  status: string
 }
 
 export interface WeightedMembers {

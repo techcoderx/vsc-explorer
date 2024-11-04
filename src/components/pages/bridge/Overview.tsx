@@ -27,12 +27,12 @@ import { fetchL1Rest, fetchLatestDeposits, fetchLatestWithdrawals } from '../../
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Account } from '../../../types/L1ApiResult'
 import { abbreviateHash, roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
-import { HiveBridgeTx } from '../../../types/HafApiResult'
+import { BridgeTx } from '../../../types/HafApiResult'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1.5px solid #e2e8f0'
 
-const BridgeTxsTable = ({ txs }: { txs?: HiveBridgeTx[] }) => {
+const BridgeTxsTable = ({ txs }: { txs?: BridgeTx[] }) => {
   return (
     <TableContainer>
       <Table variant={'simple'}>

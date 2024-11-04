@@ -3,7 +3,7 @@ import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
 import { abbreviateHash, thousandSeperator, timeAgo } from '../../../helpers'
-import { HiveBridgeTx } from '../../../types/HafApiResult'
+import { BridgeTx } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
 import { l1Explorer } from '../../../settings'
 
@@ -18,7 +18,7 @@ const TxsTable = ({
   txCount
 }: {
   type: string
-  txs?: HiveBridgeTx[]
+  txs?: BridgeTx[]
   isLoading: boolean
   isSuccess: boolean
   currentPage: number
@@ -32,6 +32,7 @@ const TxsTable = ({
             <Tr>
               <Th>ID</Th>
               <Th>Age</Th>
+              <Th>Block Number</Th>
               <Th>To User</Th>
               <Th>Tx ID</Th>
               <Th>Amount</Th>
@@ -58,6 +59,11 @@ const TxsTable = ({
                     <Tooltip label={item.ts} placement="top">
                       {timeAgo(item.ts)}
                     </Tooltip>
+                  </Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={l1Explorer + '/b/' + item.block_num}>
+                      {item.block_num}
+                    </Link>
                   </Td>
                   <Td>
                     <Link as={ReactRouterLink} to={type === 'withdrawals' ? '/@' + item.to : '/address/' + item.to}>
