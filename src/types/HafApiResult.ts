@@ -189,6 +189,8 @@ export interface AccInfo {
   name: string
   tx_count: number
   event_count: number
+  deposit_count: number
+  withdraw_req_count: number
   last_activity: string
 }
 
