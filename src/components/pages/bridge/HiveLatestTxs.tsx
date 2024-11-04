@@ -1,10 +1,11 @@
 import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
+import { fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
 import { abbreviateHash, thousandSeperator, timeAgo } from '../../../helpers'
 import { HiveBridgeTx } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
+import { l1Explorer } from '../../../settings'
 
 const count = 100
 
@@ -97,7 +98,7 @@ export const HiveDeposits = () => {
   const { data: depositCount, isSuccess: isLatestTxSuccess } = useQuery({
     queryKey: ['vsc-deposit-count'],
     queryFn: async () => {
-      const latestRecord = await fetchLatestDepositsHive(null, 1)
+      const latestRecord = await fetchLatestDeposits(null, 1)
       return latestRecord.length > 0 ? latestRecord[0].id : 0
     },
     enabled: !invalidPage
@@ -108,7 +109,7 @@ export const HiveDeposits = () => {
     isLoading: isDepLoading
   } = useQuery({
     queryKey: ['vsc-list-deposits-hive', null, count],
-    queryFn: async () => fetchLatestDepositsHive(null, count),
+    queryFn: async () => fetchLatestDeposits(null, count),
     enabled: !invalidPage && typeof depositCount === 'number'
   })
   return (
@@ -136,7 +137,7 @@ export const HiveWithdrawals = () => {
   const { data: withdrawalCount, isSuccess: isLatestTxSuccess } = useQuery({
     queryKey: ['vsc-withdrawal-count'],
     queryFn: async () => {
-      const latestRecord = await fetchLatestWithdrawalsHive(null, 1)
+      const latestRecord = await fetchLatestWithdrawals(null, 1)
       return latestRecord.length > 0 ? latestRecord[0].id : 0
     },
     enabled: !invalidPage
@@ -148,7 +149,7 @@ export const HiveWithdrawals = () => {
     isLoading: isWithdLoading
   } = useQuery({
     queryKey: ['vsc-list-withdrawals-hive', paginate, count],
-    queryFn: async () => fetchLatestWithdrawalsHive(paginate, count),
+    queryFn: async () => fetchLatestWithdrawals(paginate, count),
     enabled: !invalidPage && typeof withdrawalCount === 'number'
   })
   return (
