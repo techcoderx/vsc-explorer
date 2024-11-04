@@ -15,7 +15,7 @@ export const AddressDeposits = () => {
     queryKey: ['vsc-address-activity', addr],
     queryFn: async () => fetchAccInfo(addr)
   })
-  const lastNonce = (activity?.tx_count || 0) - (pageNum - 1) * count
+  const lastNonce = (activity?.deposit_count || 0) - (pageNum - 1) * count
   const { data: txs } = useQuery({
     queryKey: ['vsc-address-deposits', addr, count, lastNonce],
     queryFn: async () => fetchDepositsByAddr(addr, count, lastNonce),
@@ -64,7 +64,7 @@ export const AddressDeposits = () => {
       <Pagination
         path={`/address/${addr}/deposits`}
         currentPageNum={pageNum || 1}
-        maxPageNum={Math.ceil((activity?.tx_count || 0) / count)}
+        maxPageNum={Math.ceil((activity?.deposit_count || 0) / count)}
       />
     </Box>
   )

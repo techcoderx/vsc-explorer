@@ -16,7 +16,7 @@ export const AddressWithdrawals = () => {
     queryKey: ['vsc-address-activity', addr],
     queryFn: async () => fetchAccInfo(addr)
   })
-  const lastNonce = (activity?.tx_count || 0) - (pageNum - 1) * count
+  const lastNonce = (activity?.withdraw_req_count || 0) - (pageNum - 1) * count
   const { data: txs } = useQuery({
     queryKey: ['vsc-address-withdrawals', addr, count, lastNonce],
     queryFn: async () => fetchWithdrawReqsByAddr(addr, count, lastNonce),
@@ -75,7 +75,7 @@ export const AddressWithdrawals = () => {
       <Pagination
         path={`/address/${addr}/withdrawals`}
         currentPageNum={pageNum || 1}
-        maxPageNum={Math.ceil((activity?.tx_count || 0) / count)}
+        maxPageNum={Math.ceil((activity?.withdraw_req_count || 0) / count)}
       />
     </Box>
   )
