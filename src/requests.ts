@@ -175,11 +175,11 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_accounts_by_pubkeys?pubkeys={"${pubkeys.join('","')}"}`)).json()
 }
 
-export const fetchLatestDepositsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestDeposits = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
   return await (await fetch(`${hafVscApi}/rpc/list_latest_deposits?count=${count}${last_id ? '&last_id=' + last_id : ''}`)).json()
 }
 
-export const fetchLatestWithdrawalsHive = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestWithdrawals = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
   return await (
     await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
   ).json()

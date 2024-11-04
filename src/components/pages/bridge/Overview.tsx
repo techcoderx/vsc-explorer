@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { fetchL1Rest, fetchLatestDepositsHive, fetchLatestWithdrawalsHive } from '../../../requests'
+import { fetchL1Rest, fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Account } from '../../../types/L1ApiResult'
 import { abbreviateHash, roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
@@ -80,11 +80,11 @@ const HiveBridgeOverview = () => {
   })
   const { data: deposits, isSuccess: isDepSuccess } = useQuery({
     queryKey: ['vsc-list-deposits-hive', null, 10],
-    queryFn: async () => fetchLatestDepositsHive(null, 10)
+    queryFn: async () => fetchLatestDeposits(null, 10)
   })
   const { data: withdrawals, isSuccess: isWithdSuccess } = useQuery({
     queryKey: ['vsc-list-withdrawals-hive', null, 10],
-    queryFn: async () => fetchLatestWithdrawalsHive(null, 10)
+    queryFn: async () => fetchLatestWithdrawals(null, 10)
   })
   return (
     <>
