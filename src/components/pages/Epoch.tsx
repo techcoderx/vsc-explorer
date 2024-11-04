@@ -113,10 +113,10 @@ const Epoch = () => {
               </TableRow>
             </Tbody>
           </Table>
-          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'enclosed'}>
+          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList>
               <Tab>Blocks ({blockCount})</Tab>
-              <Tab>Participating Members ({votedMembers.length})</Tab>
+              <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>

@@ -104,7 +104,7 @@ export const Contract = () => {
               <TableRow label="Contract Code CID" value={contract.code} />
             </Tbody>
           </Table>
-          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'enclosed'}>
+          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList>
               <Tab>
                 Transactions ({txCount}
