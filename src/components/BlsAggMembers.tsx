@@ -20,7 +20,7 @@ export const ParticipatedMembers = ({
         <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>
           {bitsGrid(getBitsetStrFromHex(bvHex))}
         </TableRow>
-        <TableRow label={'Voted Members'}>
+        <TableRow label={`Voted Members (${members.length})`}>
           <Grid
             templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
             gap={3}
