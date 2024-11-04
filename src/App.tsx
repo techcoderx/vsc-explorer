@@ -21,6 +21,8 @@ import { ContractOut } from './components/pages/ContractOut'
 import { Event } from './components/pages/Event'
 import WitnessSchedule from './components/pages/Schedule'
 import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
+import { AddressDeposits } from './components/pages/address/Deposits'
+import { AddressWithdrawals } from './components/pages/address/Withdrawals'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
           {
             path: '/address/:addr/events/:page?',
             element: <AddressEvents />
+          },
+          {
+            path: '/address/:addr/deposits/:page?',
+            element: <AddressDeposits />
+          },
+          {
+            path: '/address/:addr/withdrawals/:page?',
+            element: <AddressWithdrawals />
           }
         ]
       },

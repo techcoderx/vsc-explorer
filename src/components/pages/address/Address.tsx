@@ -190,7 +190,7 @@ export const AddressEvents = () => {
   )
 }
 
-const tabNames = ['txs', 'events']
+const tabNames = ['txs', 'events', 'deposits', 'withdrawals']
 
 export const Address = () => {
   const navigate = useNavigate()
@@ -219,9 +219,11 @@ export const Address = () => {
         index={tabIndex}
         onChange={(newIdx: number) => navigate(getNextTabRoute(tabNames, segments, newIdx), { preventScrollReset: true })}
       >
-        <TabList>
+        <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
           <Tab>Transactions</Tab>
           <Tab>Events</Tab>
+          <Tab>Deposits</Tab>
+          <Tab>Withdrawals</Tab>
         </TabList>
         <Box pt={'4'}>
           <Outlet context={{ addr }} />

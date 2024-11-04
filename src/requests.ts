@@ -15,7 +15,7 @@ import {
   BlockInEpoch,
   AnchorRef,
   ContractWifProof,
-  HiveBridgeTx,
+  BridgeTx,
   L1ContractCallTx,
   TransferWithdrawOutput,
   WeightedMembers,
@@ -175,13 +175,31 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_accounts_by_pubkeys?pubkeys={"${pubkeys.join('","')}"}`)).json()
 }
 
-export const fetchLatestDeposits = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestDeposits = async (last_id: number | null, count = 100): Promise<BridgeTx[]> => {
   return await (await fetch(`${hafVscApi}/rpc/list_latest_deposits?count=${count}${last_id ? '&last_id=' + last_id : ''}`)).json()
 }
 
-export const fetchLatestWithdrawals = async (last_id: number | null, count = 100): Promise<HiveBridgeTx[]> => {
+export const fetchLatestWithdrawals = async (last_id: number | null, count = 100): Promise<BridgeTx[]> => {
   return await (
     await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
+  ).json()
+}
+
+export const fetchDepositsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {
+  return await (
+    await fetch(
+      `${hafVscApi}/rpc/get_deposits_by_address?address=${address}&count=${count}${last_nonce ? '&last_nonce=' + last_nonce : ''}`
+    )
+  ).json()
+}
+
+export const fetchWithdrawReqsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {
+  return await (
+    await fetch(
+      `${hafVscApi}/rpc/get_withdrawal_requests_by_address?address=${address}&count=${count}${
+        last_nonce ? '&last_nonce=' + last_nonce : ''
+      }`
+    )
   ).json()
 }
 
