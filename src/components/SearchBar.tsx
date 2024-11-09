@@ -45,6 +45,7 @@ enum SearchQueryType {
 }
 
 enum SearchResultType {
+  Address = 'Address',
   Block = 'Block',
   L1Account = 'L1 Account',
   L1Transaction = 'L1 Transaction',
@@ -160,6 +161,14 @@ const useSearchResults = (query: string): SearchResultHook => {
       let result: SearchResult[] = []
       if (!isCIDError && !isCIDLoading && cidRes) {
         switch (cidRes.type) {
+          case 'address':
+            result = [
+              {
+                type: SearchResultType.Address,
+                href: '/address/' + query
+              }
+            ]
+            break
           case 'block':
             result = [
               {
