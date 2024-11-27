@@ -87,7 +87,7 @@ const useSearchResults = (query: string): SearchResultHook => {
     isError: isL1AccErr
   } = useQuery({
     queryKey: ['hive-account', query],
-    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe/accounts/${query}`),
+    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe-api/accounts/${query}`),
     enabled: queryType === SearchQueryType.L1Account
   })
   const {
