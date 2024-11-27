@@ -36,7 +36,7 @@ const L1User = () => {
   const user = !invalidParams ? username.replace('@', '') : ''
   const { data: l1Acc, isError: isL1AccErr } = useQuery({
     queryKey: ['hive-account', username],
-    queryFn: async () => fetchL1Rest<L1AccountAuthority>(`/hafbe/accounts/${user}/authority`),
+    queryFn: async () => fetchL1Rest<L1AccountAuthority>(`/hafbe-api/accounts/${user}/authority`),
     enabled: !invalidParams
   })
   const {

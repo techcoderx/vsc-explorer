@@ -76,7 +76,7 @@ const BridgeTxsTable = ({ txs }: { txs?: BridgeTx[] }) => {
 const HiveBridgeOverview = () => {
   const { data: l1Acc, isSuccess: isL1AccSuccess } = useQuery({
     queryKey: ['hive-account', multisigAccount],
-    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe/accounts/${multisigAccount}`)
+    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe-api/accounts/${multisigAccount}`)
   })
   const { data: deposits, isSuccess: isDepSuccess } = useQuery({
     queryKey: ['vsc-list-deposits-hive', null, 10],
