@@ -39,7 +39,10 @@ const Blocks = () => {
       <Text fontSize={'5xl'}>Latest Blocks</Text>
       <hr />
       <br />
-      <Text>Total {isPropSuccess ? thousandSeperator(prop.l2_block_height) : 0} blocks</Text>
+      <Text>
+        Total {isPropSuccess ? thousandSeperator(prop.l2_block_height) : 0} blocks. Blocks in VSC are only produced when there are
+        pending transactions to be included.
+      </Text>
       <TableContainer marginTop={'15px'} marginBottom={'15px'}>
         <Table variant="simple">
           <Thead>
