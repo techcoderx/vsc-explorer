@@ -33,3 +33,15 @@ The resulting files can be found in `dist` folder.
 ```
 pnpm run preview
 ```
+
+## Dockerized setup
+
+#### Build image
+```sh
+docker build -t vsc-blocks .
+```
+
+#### Run container
+```sh
+docker run -d --rm -p 8080:8080 --name=vsc-blocks vsc-blocks
+```
