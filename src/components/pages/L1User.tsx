@@ -162,7 +162,7 @@ const L1User = () => {
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
                         {isL1AccvSuccess ? (
                           <Tooltip label={l1Accv.last_activity} placement={'top'}>
-                            {timeAgo(l1Accv.last_activity)}
+                            {l1Accv.last_activity === '1970-01-01T00:00:00' ? 'Never' : timeAgo(l1Accv.last_activity)}
                           </Tooltip>
                         ) : (
                           'Error'
