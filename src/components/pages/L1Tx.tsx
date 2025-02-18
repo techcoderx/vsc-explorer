@@ -6,6 +6,7 @@ import {
   Skeleton,
   Link,
   Button,
+  Spinner,
   Heading,
   Card,
   CardHeader,
@@ -126,20 +127,28 @@ const L1Tx = () => {
               </CardBody>
               {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
                 trx.type === 'announce_tx' || trx.type === 'tx' ? (
-                  (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'call_contract' ? (
+                  (outData[i] as ContractCallOutput).tx_type === 'call_contract' ? (
                     <Box>
                       <CardHeader>
-                        <Heading fontSize={'xl'}>Output</Heading>
+                        <Heading fontSize={'xl'}>
+                          Output
+                          {!(outData[i] as ContractCallOutput).contract_output &&
+                          (outData[i] as ContractCallOutput).events.length === 0 ? (
+                            <Spinner size={'sm'} ml={'2.5'} />
+                          ) : null}
+                        </Heading>
                       </CardHeader>
                       <CardBody marginTop={'-25px'}>
-                        <JsonToTableRecursive isInCard minimalSpace json={(outData[i]! as ContractCallOutput).contract_output!} />
+                        {(outData[i] as ContractCallOutput).contract_output ? (
+                          <JsonToTableRecursive isInCard minimalSpace json={(outData[i] as ContractCallOutput).contract_output} />
+                        ) : null}
                       </CardBody>
                       {((outData[i]! as ContractCallOutput).events || []).map((evt, i) => (
                         <Event key={i} evt={evt} i={i} />
                       ))}
                     </Box>
-                  ) : (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'transfer' ||
-                    (outData[i] as ContractCallOutput | TransferWithdrawOutput).tx_type === 'withdraw' ? (
+                  ) : (outData[i] as TransferWithdrawOutput).tx_type === 'transfer' ||
+                    (outData[i] as TransferWithdrawOutput).tx_type === 'withdraw' ? (
                     (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
                   ) : null
                 ) : trx.type === 'election_result' ? (
