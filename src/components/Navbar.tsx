@@ -18,7 +18,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { Link as ReactRouterLink, Outlet } from 'react-router-dom'
+import { Link as ReactRouterLink, Outlet } from 'react-router'
 import { multisigAccount, themeColor, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 

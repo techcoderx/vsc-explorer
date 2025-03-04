@@ -1,5 +1,5 @@
 import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Tooltip, Link } from '@chakra-ui/react'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
 import Pagination from '../Pagination'

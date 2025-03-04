@@ -1,5 +1,5 @@
 import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
-import { Link as ReactRouterLink, useParams } from 'react-router-dom'
+import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchWitnesses } from '../../requests'
 import PageNotFound from './404'

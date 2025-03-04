@@ -1,6 +1,6 @@
 import { Flex, ButtonGroup, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
-import { Link as ReactRouterLink, To } from 'react-router-dom'
+import { Link as ReactRouterLink, To } from 'react-router'
 import { themeColor, themeColorULight } from '../settings'
 
 interface PaginationProps {

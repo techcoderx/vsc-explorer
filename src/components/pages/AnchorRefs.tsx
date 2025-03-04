@@ -1,5 +1,5 @@
 import { Text, Table, Thead, Tbody, Tr, Th, Td, Box, Skeleton, Tooltip, Link } from '@chakra-ui/react'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps, fetchAnchorRefs } from '../../requests'
 import { abbreviateHash, timeAgo } from '../../helpers'

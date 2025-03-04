@@ -1,6 +1,6 @@
 import { Box, Link, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tooltip, Badge } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useOutletContext, useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useOutletContext, useParams, Link as ReactRouterLink } from 'react-router'
 import Pagination from '../../Pagination'
 import { fetchAccInfo, fetchWithdrawReqsByAddr } from '../../../requests'
 import { abbreviateHash, timeAgo, thousandSeperator } from '../../../helpers'

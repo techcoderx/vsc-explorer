@@ -1,6 +1,6 @@
 import { Text, Table, Tbody, Stack, Flex, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { fetchBlock, fetchBlockByHash, fetchBlockTxs, fetchMembersAtBlock } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'

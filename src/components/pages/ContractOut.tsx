@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Card, CardBody, CardHeader, Heading, Link, Skeleton, Table, Tbody, Text } from '@chakra-ui/react'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { themeColorLight, themeColorScheme, ipfsSubGw } from '../../settings'

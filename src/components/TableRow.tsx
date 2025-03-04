@@ -1,5 +1,5 @@
 import { Tr, Td, Skeleton, Link } from '@chakra-ui/react'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink } from 'react-router'
 import { ReactNode } from 'react'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'

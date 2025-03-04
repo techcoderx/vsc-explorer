@@ -16,7 +16,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL2Tx, fetchL2TxGql } from '../../requests'

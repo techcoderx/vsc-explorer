@@ -21,7 +21,7 @@ import {
   TableContainer
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'

@@ -1,5 +1,5 @@
 import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
-import { Link as ReactRouterLink, useParams } from 'react-router-dom'
+import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
 import { abbreviateHash, thousandSeperator, timeAgo } from '../../../helpers'

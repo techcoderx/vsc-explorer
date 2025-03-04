@@ -16,15 +16,7 @@ import {
   Box,
   Badge
 } from '@chakra-ui/react'
-import {
-  useParams,
-  Navigate,
-  Link as ReactRouterLink,
-  Outlet,
-  useOutletContext,
-  useLocation,
-  useNavigate
-} from 'react-router-dom'
+import { useParams, Navigate, Link as ReactRouterLink, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { fetchL2AccTxHistory, fetchAccEventHistory, fetchAccInfo } from '../../../requests'
