@@ -16,7 +16,7 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchAccHistory, fetchAccInfo, fetchL1Rest, fetchMsOwners, fetchWitness, getL2BalanceByL1User } from '../../requests'
 import { describeL1TxBriefly, thousandSeperator, timeAgo } from '../../helpers'

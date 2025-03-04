@@ -1,5 +1,5 @@
 import { Badge, Card, CardBody, Text, Tooltip } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { ReactNode } from 'react'
 import { themeColor, themeColorLight } from '../settings'
 import { timeAgo } from '../helpers'

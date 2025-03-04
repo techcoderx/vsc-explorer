@@ -22,7 +22,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink } from 'react-router'
 import { fetchL1Rest, fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Account } from '../../../types/L1ApiResult'

@@ -1,6 +1,6 @@
 import { Text, Table, Tbody, Stack, Flex, Box, Heading } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { fetchAnchorRefByCID, fetchAnchorRefByID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'

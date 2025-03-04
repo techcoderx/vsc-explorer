@@ -1,5 +1,5 @@
 import { Table, Tbody, Grid, GridItem, Link } from '@chakra-ui/react'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink } from 'react-router'
 import TableRow from './TableRow'
 import { bitsGrid, getBitsetStrFromHex } from '../helpers'
 

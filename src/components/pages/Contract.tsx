@@ -22,7 +22,7 @@ import {
   Center
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import { fetchCallsByContractId, fetchContractByID, fetchMembersAtBlock } from '../../requests'
 import TableRow from '../TableRow'
 import { timeAgo, getVotedMembers, thousandSeperator, abbreviateHash } from '../../helpers'

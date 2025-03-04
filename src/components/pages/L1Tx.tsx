@@ -14,7 +14,7 @@ import {
   Badge,
   Flex
 } from '@chakra-ui/react'
-import { useParams, Link as ReactRouterLink } from 'react-router-dom'
+import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
