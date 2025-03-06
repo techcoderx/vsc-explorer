@@ -1,5 +1,6 @@
 import React from 'react'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react/extend-theme'
+import { Provider } from '@chakra-ui/react/provider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -28,10 +29,10 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
+    <Provider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
-    </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 )
