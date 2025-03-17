@@ -276,6 +276,20 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Bridge',
     href: '/bridge/hive'
+  },
+  {
+    label: 'Tools',
+    children: [
+      // {
+      //   label: 'Broadcast Transaction',
+      //   subLabel: 'Sign and broadcast a VSC transaction'
+      // },
+      {
+        label: 'Verify Contract',
+        subLabel: 'Submit contract source code for verification',
+        href: '/tools/verify/contract'
+      }
+    ]
   }
 ]
 

@@ -23,6 +23,7 @@ import WitnessSchedule from './components/pages/Schedule'
 import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
 import { AddressDeposits } from './components/pages/address/Deposits'
 import { AddressWithdrawals } from './components/pages/address/Withdrawals'
+import { VerifyContract } from './components/pages/tools/VerifyContract'
 
 const router = createBrowserRouter([
   {
@@ -146,6 +147,10 @@ const router = createBrowserRouter([
       {
         path: '/bridge/hive/withdrawals/:page?',
         element: <HiveWithdrawals />
+      },
+      {
+        path: '/tools/verify/contract',
+        element: <VerifyContract />
       },
       {
         path: '*',
