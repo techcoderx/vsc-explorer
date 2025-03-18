@@ -26,7 +26,8 @@ import {
   FormLabel,
   Select,
   Textarea,
-  Input
+  Input,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
@@ -103,6 +104,10 @@ export const VerifyContract = () => {
     index: searchParams.get('skipnotice') === '1' ? 1 : 0,
     count: steps.length
   })
+  const stepOrient: 'vertical' | 'horizontal' | undefined = useBreakpointValue({
+    base: 'vertical',
+    md: 'horizontal'
+  })
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
@@ -116,7 +121,14 @@ export const VerifyContract = () => {
       </Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
-          <Stepper size="lg" index={stage} colorScheme={themeColorScheme}>
+          <Stepper
+            size="lg"
+            index={stage}
+            colorScheme={themeColorScheme}
+            orientation={stepOrient}
+            height={stepOrient === 'vertical' ? '200px' : undefined}
+            gap={stepOrient === 'vertical' ? 0 : undefined}
+          >
             {steps.map((s, index) => (
               <Step key={index}>
                 <StepIndicator>
