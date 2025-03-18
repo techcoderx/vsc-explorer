@@ -25,9 +25,11 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Textarea
+  Textarea,
+  Input
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useSearchParams } from 'react-router'
 import { themeColorScheme, themeColorLight } from '../../../settings'
 import MultiFileInput from '../../MultiFileInput'
 
@@ -96,10 +98,12 @@ const licenses = [
 ]
 
 export const VerifyContract = () => {
+  const [searchParams] = useSearchParams()
   const { activeStep: stage, setActiveStep: setStage } = useSteps({
-    index: 0,
+    index: searchParams.get('skipnotice') === '1' ? 1 : 0,
     count: steps.length
   })
+  const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
   const [files, setFiles] = useState<File[]>([])
@@ -163,6 +167,16 @@ export const VerifyContract = () => {
               <Card mb={'3'}>
                 <CardBody>
                   <Stack direction={'column'} gap={'3'}>
+                    <FormControl>
+                      <FormLabel>Contract Address</FormLabel>
+                      <Input
+                        type="text"
+                        placeholder="vs4..."
+                        value={addr}
+                        onChange={(e) => setAddr(e.target.value)}
+                        focusBorderColor={themeColorLight}
+                      />
+                    </FormControl>
                     <FormControl>
                       <FormLabel>Language</FormLabel>
                       <Select focusBorderColor={themeColorLight} disabled>
