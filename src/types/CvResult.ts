@@ -4,7 +4,7 @@ export interface CvInfo {
   username: string
   request_ts: string
   verified_ts: string
-  status: string
+  status: 'pending' | 'queued' | 'in progress' | 'success' | 'failed' | 'not match'
   exports: string[]
   files: string[]
   lockfile: string
