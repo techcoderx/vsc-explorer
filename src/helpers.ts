@@ -37,6 +37,15 @@ export const roundFloat = (num: number, decimals: number): number => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isPuralArr = (arr: Array<any>) => arr.length > 1
 
+export const isValidJSONStr = (str: string) => {
+  try {
+    JSON.parse(str)
+  } catch {
+    return false
+  }
+  return true
+}
+
 export const validateHiveUsername = (value: string): string | null => {
   let suffix = 'Hive username must '
   if (!value) return suffix + 'not be empty.'
