@@ -27,12 +27,14 @@ import {
   Select,
   Textarea,
   Input,
-  useBreakpointValue
+  useBreakpointValue,
+  useToast
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { themeColorScheme, themeColorLight } from '../../../settings'
 import MultiFileInput from '../../MultiFileInput'
+import { isValidJSONStr } from '../../../helpers'
 
 const steps = [
   {
@@ -112,6 +114,7 @@ export const VerifyContract = () => {
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
   const [files, setFiles] = useState<File[]>([])
+  const toast = useToast()
   return (
     <>
       <Text fontSize={'5xl'}>Verify Contract</Text>
@@ -223,7 +226,34 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme} onClick={() => setStage(2)}>
+                  <Button
+                    colorScheme={themeColorScheme}
+                    onClick={() => {
+                      if (!addr.startsWith('vs4')) {
+                        return toast({
+                          title: "Contract address must start with 'vs4'",
+                          status: 'error',
+                          isClosable: true,
+                          position: 'bottom-right'
+                        })
+                      } else if (!license) {
+                        return toast({
+                          title: 'Please select a license',
+                          status: 'error',
+                          isClosable: true,
+                          position: 'bottom-right'
+                        })
+                      } else if (!deps || !isValidJSONStr(deps)) {
+                        return toast({
+                          title: 'Dependencies must be a valid JSON',
+                          status: 'error',
+                          isClosable: true,
+                          position: 'bottom-right'
+                        })
+                      }
+                      setStage(2)
+                    }}
+                  >
                     Next
                   </Button>
                 </Stack>
