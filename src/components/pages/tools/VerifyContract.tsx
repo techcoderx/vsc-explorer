@@ -28,13 +28,16 @@ import {
   Textarea,
   Input,
   useBreakpointValue,
-  useToast
+  useToast,
+  Spinner
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { themeColorScheme, themeColorLight } from '../../../settings'
 import MultiFileInput from '../../MultiFileInput'
 import { isValidJSONStr } from '../../../helpers'
+import { cvInfo } from '../../../cvRequests'
+import { fetchContractByID } from '../../../requests'
 
 const steps = [
   {
@@ -114,7 +117,49 @@ export const VerifyContract = () => {
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
   const [files, setFiles] = useState<File[]>([])
+  const [isSpinning, setIsSpinning] = useState(false)
   const toast = useToast()
+  const nextClicked = async () => {
+    let e = ''
+    if (!addr.startsWith('vs4')) {
+      e = "Contract address must start with 'vs4'"
+    } else if (!license) {
+      e = 'Please select a license'
+    } else if (!deps || !isValidJSONStr(deps)) {
+      e = 'Dependencies must be a valid JSON'
+    }
+    if (e) {
+      return toast({ title: e, status: 'error' })
+    }
+
+    try {
+      setIsSpinning(true)
+      const verifInfo = await cvInfo(addr)
+      if (verifInfo && (verifInfo.status === 'queued' || verifInfo.status === 'in progress' || verifInfo.status === 'success')) {
+        setIsSpinning(false)
+        return toast({ title: 'Contract is already verified or being verified.', status: 'error' })
+      }
+      if (!verifInfo) {
+        const contractInf = await fetchContractByID(addr)
+        if (contractInf.error) {
+          setIsSpinning(false)
+          return toast({ title: 'Contract not found', status: 'error' })
+        }
+      }
+    } catch {
+      setIsSpinning(false)
+      return toast({ title: 'Failed to call backend for contract verification status', status: 'error' })
+    }
+    setIsSpinning(false)
+    setStage(2)
+  }
+  const submitClicked = async () => {
+    if (files.length === 0)
+      return toast({
+        title: 'Please choose a file',
+        status: 'error'
+      })
+  }
   return (
     <>
       <Text fontSize={'5xl'}>Verify Contract</Text>
@@ -203,6 +248,7 @@ export const VerifyContract = () => {
                       <Select
                         focusBorderColor={themeColorLight}
                         placeholder="Choose a license..."
+                        value={license}
                         onChange={(e) => setLicense(e.target.value)}
                       >
                         {licenses.map((l, i) => (
@@ -217,6 +263,7 @@ export const VerifyContract = () => {
                       <Textarea
                         focusBorderColor={themeColorLight}
                         placeholder="Copy dependencies from package.json here"
+                        value={deps}
                         onChange={(e) => setDeps(e.target.value)}
                       ></Textarea>
                     </FormControl>
@@ -226,35 +273,11 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
-                  <Button
-                    colorScheme={themeColorScheme}
-                    onClick={() => {
-                      if (!addr.startsWith('vs4')) {
-                        return toast({
-                          title: "Contract address must start with 'vs4'",
-                          status: 'error',
-                          isClosable: true,
-                          position: 'bottom-right'
-                        })
-                      } else if (!license) {
-                        return toast({
-                          title: 'Please select a license',
-                          status: 'error',
-                          isClosable: true,
-                          position: 'bottom-right'
-                        })
-                      } else if (!deps || !isValidJSONStr(deps)) {
-                        return toast({
-                          title: 'Dependencies must be a valid JSON',
-                          status: 'error',
-                          isClosable: true,
-                          position: 'bottom-right'
-                        })
-                      }
-                      setStage(2)
-                    }}
-                  >
-                    Next
+                  <Button colorScheme={themeColorScheme} onClick={nextClicked}>
+                    <Flex gap={'2'} align={'center'}>
+                      <Spinner size={'sm'} hidden={!isSpinning} />
+                      <Text>Next</Text>
+                    </Flex>
                   </Button>
                 </Stack>
               </Center>
@@ -271,7 +294,9 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(1)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme}>Submit</Button>
+                  <Button colorScheme={themeColorScheme} onClick={submitClicked}>
+                    Submit
+                  </Button>
                 </Stack>
               </Center>
             </Box>
