@@ -1,15 +1,16 @@
-import { useState, useRef } from 'react'
+import { useRef, Dispatch, SetStateAction } from 'react'
 import { Input, Box, Text, List, ListItem, ListIcon, Button, Flex, IconButton } from '@chakra-ui/react'
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons'
 import { themeColor, themeColorScheme } from '../settings'
 
 interface MultiFileInputProps {
+  files: File[]
+  setFiles: Dispatch<SetStateAction<File[]>>
   accept?: string
   onChange?: (files: File[]) => void
 }
 
-const MultiFileInput: React.FC<MultiFileInputProps> = ({ accept, onChange }) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept, onChange }) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,7 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ accept, onChange }) => 
     newFiles.forEach((file) => newFilesMap.set(file.name, file))
     const processedNewFiles = Array.from(newFilesMap.values())
 
-    setSelectedFiles((prev) => {
+    setFiles((prev) => {
       // Create a map of existing files for quick lookup
       const existingFilesMap = new Map(prev.map((file) => [file.name, file]))
 
@@ -41,7 +42,7 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ accept, onChange }) => 
   }
 
   const handleRemoveFile = (fileName: string) => {
-    setSelectedFiles((prev) => {
+    setFiles((prev) => {
       const updatedFiles = prev.filter((file) => file.name !== fileName)
       onChange?.(updatedFiles)
       return updatedFiles
@@ -69,13 +70,13 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ accept, onChange }) => 
       </label>
 
       {/* Selected files display */}
-      {selectedFiles.length > 0 && (
+      {files.length > 0 && (
         <Box mt={4}>
           <Text fontSize="sm" mb={2}>
-            Selected files ({selectedFiles.length}):
+            Selected files ({files.length}):
           </Text>
           <List spacing={2}>
-            {selectedFiles.map((file) => (
+            {files.map((file) => (
               <ListItem key={file.name} fontSize="sm">
                 <Flex align="center">
                   <ListIcon as={AttachmentIcon} color={themeColor} />
@@ -102,9 +103,7 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ accept, onChange }) => 
 
       {/* Helper text */}
       <Text mt={2} fontSize="sm" color="gray.500">
-        {selectedFiles.length > 0
-          ? 'Files with same names will be overwritten. Click X to remove.'
-          : 'You can select multiple files.'}
+        {files.length > 0 ? 'Files with same names will be overwritten. Click X to remove.' : 'You can select multiple files.'}
       </Text>
     </Box>
   )
