@@ -287,7 +287,7 @@ export const VerifyContract = () => {
               <Card mb={'3'}>
                 <CardBody>
                   <FormControl>
-                    <MultiFileInput accept=".ts" onChange={(f) => setFiles(f)} />
+                    <MultiFileInput files={files} setFiles={setFiles} accept=".ts" onChange={(f) => setFiles(f)} />
                   </FormControl>
                 </CardBody>
               </Card>
