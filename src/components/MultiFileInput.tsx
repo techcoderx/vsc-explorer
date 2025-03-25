@@ -1,5 +1,5 @@
 import { useRef, Dispatch, SetStateAction } from 'react'
-import { Input, Box, Text, List, ListItem, ListIcon, Button, Flex, IconButton } from '@chakra-ui/react'
+import { Input, Box, Text, List, ListItem, ListIcon, Button, Flex, IconButton, useToast } from '@chakra-ui/react'
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons'
 import { themeColor, themeColorScheme } from '../settings'
 
@@ -12,14 +12,29 @@ interface MultiFileInputProps {
 
 const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept, onChange }) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const toast = useToast()
+  const MAX_FILE_SIZE = 1024 * 1024 // 1MB in bytes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const newFiles = Array.from(e.target.files)
 
+    // Filter out files exceeding the size limit
+    const validFiles = newFiles.filter((file) => file.size <= MAX_FILE_SIZE)
+    const invalidFiles = newFiles.filter((file) => file.size > MAX_FILE_SIZE)
+
+    // Notify user about invalid files
+    if (invalidFiles.length > 0) {
+      toast({
+        title: 'File(s) too large',
+        description: `The following files exceed the 1MB limit and were not added: ${invalidFiles.map((f) => f.name).join(', ')}`,
+        status: 'error'
+      })
+    }
+
     // Create a map to keep only the last occurrence of each filename
     const newFilesMap = new Map<string, File>()
-    newFiles.forEach((file) => newFilesMap.set(file.name, file))
+    validFiles.forEach((file) => newFilesMap.set(file.name, file))
     const processedNewFiles = Array.from(newFilesMap.values())
 
     setFiles((prev) => {
@@ -41,6 +56,7 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
     }
   }
 
+  // The rest of the component remains unchanged
   const handleRemoveFile = (fileName: string) => {
     setFiles((prev) => {
       const updatedFiles = prev.filter((file) => file.name !== fileName)
@@ -103,7 +119,9 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
 
       {/* Helper text */}
       <Text mt={2} fontSize="sm" color="gray.500">
-        {files.length > 0 ? 'Files with same names will be overwritten. Click X to remove.' : 'You can select multiple files.'}
+        {files.length > 0
+          ? 'Files with same names will be overwritten. Click X to remove.'
+          : 'You can select multiple files up to 1MB each.'}
       </Text>
     </Box>
   )
