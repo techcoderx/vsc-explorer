@@ -27,7 +27,7 @@ import {
   Spinner,
   Stack
 } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { fetchCallsByContractId, fetchContractByID, fetchMembersAtBlock } from '../../requests'
@@ -273,20 +273,20 @@ export const Contract = () => {
                         </CardBody>
                       </Card>
                       <Stack direction="row" justifyContent="space-between" align="flex-end">
-                        <Text fontSize={'lg'}>
+                        <Box fontSize={'lg'}>
                           <b>Dependencies</b>
                           {!!verifInfo.lockfile ? (
-                            <Text display={'inline'}>
+                            <Box display={'inline'}>
                               {' ('}
                               <Link href={`${cvApi}/contract/${contractId}/files/cat/${verifInfo.lockfile}`} target="_blank">
                                 View lockfile
                               </Link>
                               {')'}
-                            </Text>
+                            </Box>
                           ) : (
                             ''
                           )}
-                        </Text>
+                        </Box>
                         <CopyButton text={JSON.stringify(verifInfo.dependencies, null, 2)} />
                       </Stack>
                       <SourceFile content={JSON.stringify(verifInfo.dependencies, null, 2)} />
@@ -307,6 +307,33 @@ export const Contract = () => {
                           ))
                         : null}
                     </>
+                  ) : verifInfo.status === 'queued' ? (
+                    <Flex align={'center'} gap={'2'}>
+                      <Spinner size={'sm'} />
+                      <Text fontSize={'md'}>Contract verification request is currently in queue.</Text>
+                    </Flex>
+                  ) : verifInfo.status === 'in progress' ? (
+                    <Flex align={'center'} gap={'2'}>
+                      <Spinner size={'sm'} />
+                      <Text fontSize={'md'}>Contract verification request is currently being processed.</Text>
+                    </Flex>
+                  ) : verifInfo.status === 'failed' ? (
+                    <Flex align={'center'} gap={'2'}>
+                      <WarningIcon />
+                      <Text fontSize={'md'}>Contract verification failed to complete.</Text>
+                    </Flex>
+                  ) : verifInfo.status === 'not match' ? (
+                    <Flex align={'center'} gap={'2'}>
+                      <WarningIcon />
+                      <Text fontSize={'md'}>
+                        Contract verification failed due to non-matching deployed bytecode from compiled source code.
+                      </Text>
+                    </Flex>
+                  ) : verifInfo.status === 'pending' ? (
+                    <Flex align={'center'} gap={'2'}>
+                      <Spinner size={'sm'} />
+                      <Text fontSize={'md'}>Contract verification request is currently pending.</Text>
+                    </Flex>
                   ) : null
                 ) : verifError ? (
                   <Text>Failed to fetch contract verification status.</Text>
