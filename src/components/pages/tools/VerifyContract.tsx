@@ -29,11 +29,12 @@ import {
   Input,
   useBreakpointValue,
   useToast,
-  Spinner
+  Spinner,
+  ToastId
 } from '@chakra-ui/react'
-import { useState } from 'react'
-import { useSearchParams } from 'react-router'
-import { themeColorScheme, themeColorLight } from '../../../settings'
+import { useRef, useState } from 'react'
+import { useSearchParams, Link as ReactRouterLink } from 'react-router'
+import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import MultiFileInput from '../../MultiFileInput'
 import { isValidJSONStr } from '../../../helpers'
 import { cvInfo } from '../../../cvRequests'
@@ -114,11 +115,13 @@ export const VerifyContract = () => {
     md: 'horizontal'
   })
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
+  const [lang, _setLang] = useState('assemblyscript')
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
   const [files, setFiles] = useState<File[]>([])
   const [isSpinning, setIsSpinning] = useState(false)
   const toast = useToast()
+  const toastRef = useRef<ToastId>()
   const nextClicked = async () => {
     let e = ''
     if (!addr.startsWith('vs4')) {
@@ -159,6 +162,66 @@ export const VerifyContract = () => {
         title: 'Please choose a file',
         status: 'error'
       })
+    setIsSpinning(true)
+    toastRef.current = toast({
+      title: 'Submitting verification request...',
+      description: '(1/3) Preparing request...',
+      status: 'loading',
+      duration: null
+    })
+    try {
+      let createReq = await fetch(`${cvApi}/verify/${addr}/new`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ license, lang, dependencies: JSON.parse(deps!) })
+      })
+      if (createReq.status !== 200) {
+        setIsSpinning(false)
+        let e = await createReq.json()
+        toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
+        return
+      }
+      for (let f in files) {
+        toast.update(toastRef.current, {
+          description: `(2/3) Uploading file ${parseInt(f) + 1} of ${files.length}: ${files[f].name}`
+        })
+        const fd = new FormData()
+        fd.append('file', files[f])
+        fd.append('filename', files[f].name)
+        const uploadReq = await fetch(`${cvApi}/verify/${addr}/upload`, {
+          method: 'POST',
+          body: fd
+        })
+        if (uploadReq.status !== 200) {
+          setIsSpinning(false)
+          let e = await uploadReq.json()
+          toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
+          return
+        }
+      }
+      toast.update(toastRef.current, { description: '(3/3) Finalizing upload...' })
+      const finalizeReq = await fetch(`${cvApi}/verify/${addr}/complete`, { method: 'POST' })
+      if (finalizeReq.status !== 200) {
+        setIsSpinning(false)
+        let e = await finalizeReq.json()
+        toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
+        return
+      }
+      toast.update(toastRef.current, {
+        title: 'Success',
+        description: 'Contract verification request submitted successfully!',
+        status: 'success',
+        duration: 30000
+      })
+      setIsSpinning(false)
+      setStage(3)
+    } catch {
+      setIsSpinning(false)
+      toast.update(toastRef.current, { title: 'Error', description: 'Unknown error occurred', status: 'error', duration: 15000 })
+      return
+    }
   }
   return (
     <>
@@ -273,7 +336,7 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme} onClick={nextClicked}>
+                  <Button colorScheme={themeColorScheme} onClick={nextClicked} disabled={isSpinning}>
                     <Flex gap={'2'} align={'center'}>
                       <Spinner size={'sm'} hidden={!isSpinning} />
                       <Text>Next</Text>
@@ -294,12 +357,26 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(1)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme} onClick={submitClicked}>
-                    Submit
+                  <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning}>
+                    <Flex gap={'2'} align={'center'}>
+                      <Spinner size={'sm'} hidden={!isSpinning} />
+                      <Text>Submit</Text>
+                    </Flex>
                   </Button>
                 </Stack>
               </Center>
             </Box>
+          ) : stage === 3 ? (
+            <Flex direction="column" gap={'5'} align={'center'}>
+              <Text fontSize={'9xl'}>🎉</Text>
+              <Text>
+                Your contract source code is being verified. This may take a few minutes depending on the queue. Refer to the
+                Source Code tab in contract page for status.
+              </Text>
+              <Button colorScheme={themeColorScheme} as={ReactRouterLink} to={`/contract/${addr}`}>
+                View Contract
+              </Button>
+            </Flex>
           ) : null}
         </Stack>
       </Center>
