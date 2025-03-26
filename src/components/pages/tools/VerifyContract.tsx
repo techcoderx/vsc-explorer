@@ -9,6 +9,7 @@ import {
   Code,
   Flex,
   Heading,
+  Link,
   Stack,
   StackDivider,
   Step,
@@ -75,6 +76,18 @@ const notice = [
       <Text>
         The entrypoint filename must be <Code>index.ts</Code> for AS contracts. Please ensure that this file exists and exports
         all public methods.
+      </Text>
+    )
+  },
+  {
+    title: 'Folder Structure',
+    body: (
+      <Text>
+        All source code files must not be located in any sub-folders. See example in{' '}
+        <Link href="https://github.com/vsc-eco/btc-relay/tree/main/assembly" target="_blank">
+          BTC relay contract
+        </Link>
+        .
       </Text>
     )
   },
