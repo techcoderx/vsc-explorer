@@ -2,6 +2,8 @@ import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Badge,
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchWitnesses } from '../../requests'
+import { thousandSeperator } from '../../helpers'
+import { l1Explorer } from '../../settings'
 // import PageNotFound from './404'
 // import Pagination from '../Pagination'
 
@@ -38,6 +40,7 @@ const Witnesses = () => {
               <Th>Id</Th>
               <Th>Username</Th>
               <Th>Enabled</Th>
+              <Th>Last Update</Th>
               <Th>DID Key</Th>
               {/* <Th>Up To Date</Th>
               <Th>Last Block</Th>
@@ -47,6 +50,9 @@ const Witnesses = () => {
           <Tbody>
             {isWitnessLoading ? (
               <Tr>
+                <Td>
+                  <Skeleton height="20px" />
+                </Td>
                 <Td>
                   <Skeleton height="20px" />
                 </Td>
@@ -79,6 +85,11 @@ const Witnesses = () => {
                     </Link>
                   </Td>
                   <Td>{item.enabled ? <Badge colorScheme="green">True</Badge> : <Badge colorScheme="red">False</Badge>}</Td>
+                  <Td>
+                    <Link as={ReactRouterLink} to={l1Explorer + '/b/' + item.height} target="_blank">
+                      {thousandSeperator(item.height)}
+                    </Link>
+                  </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
                     {item.did_keys[0].key}
                   </Td>
