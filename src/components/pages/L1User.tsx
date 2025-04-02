@@ -204,7 +204,7 @@ const L1User = () => {
                 </CardBody>
               </Card>
             ) : null}
-            {isWitSuccess && witness.id ? (
+            {isWitSuccess && witness.account ? (
               <Card width={'100%'}>
                 <CardHeader marginBottom={'-15px'}>
                   <Heading size={'md'} textAlign={'center'}>
@@ -214,19 +214,16 @@ const L1User = () => {
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      <TableRow
+                      {/* <TableRow
                         isInCard
                         minimalSpace
                         minWidthLabel="115px"
                         label="ID"
                         isLoading={isWitLoading}
                         value={isWitSuccess ? witness.id : 'Error'}
-                      />
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Node DID Key" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did : 'Error'}</Text>
-                      </TableRow>
+                      /> */}
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.consensus_did : 'Error'}</Text>
+                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did_keys[0].key : 'Error'}</Text>
                       </TableRow>
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Enabled" isLoading={isWitLoading}>
                         {isWitSuccess ? (
@@ -239,7 +236,7 @@ const L1User = () => {
                           'Error'
                         )}
                       </TableRow>
-                      {isWitSuccess && witness.enabled ? (
+                      {/* {isWitSuccess && witness.enabled ? (
                         <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update" isLoading={isWitLoading}>
                           {witness.enabled_at ? (
                             <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.enabled_at}>
@@ -297,7 +294,7 @@ const L1User = () => {
                       </TableRow>
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Produced" isLoading={isWitLoading}>
                         <Text>{isWitSuccess ? (witness.produced ? thousandSeperator(witness.produced) : 'NULL') : 'Error'}</Text>
-                      </TableRow>
+                      </TableRow> */}
                     </Tbody>
                   </Table>
                 </CardBody>
