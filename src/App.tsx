@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 // import Home from './components/pages/Home'
-// import Witnesses from './components/pages/Witnesses'
+import Witnesses from './components/pages/Witnesses'
 // import Blocks from './components/pages/Blocks'
 // import NewTxs from './components/pages/NewTxs'
 // import NewContracts from './components/pages/NewContracts'
@@ -61,10 +61,10 @@ const router = createBrowserRouter([
       //     }
       //   ]
       // },
-      // {
-      //   path: '/witnesses',
-      //   element: <Witnesses />
-      // },
+      {
+        path: '/witnesses',
+        element: <Witnesses />
+      },
       // {
       //   path: '/witnesses/:page?',
       //   element: <Witnesses />

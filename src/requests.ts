@@ -37,8 +37,8 @@ export const fetchBlocks = async (start: number, count = 50): Promise<BlockRange
   return await (await fetch(`${hafVscApi}/rpc/get_block_range?blk_id_start=${start}&blk_count=${count}`)).json()
 }
 
-export const fetchWitnesses = async (startId: number, count = 50): Promise<Witness[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_witnesses_by_id?id_start=${startId}&count=${count}`)).json()
+export const fetchWitnesses = async (): Promise<Witness[]> => {
+  return await (await fetch(`${hafVscApi}/witnesses`)).json()
 }
 
 export const fetchMembersAtBlock = async (block_num: number): Promise<WeightedMembers[]> => {

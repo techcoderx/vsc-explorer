@@ -74,18 +74,24 @@ export interface BlockTx extends ItemWithIdxBlk<string> {
 }
 
 export interface Witness {
-  id: number
-  did: string
-  consensus_did: string
-  enabled: boolean
-  username: string
-  enabled_at?: string
-  disabled_at?: string
+  height: number
+  account: string
+  did_keys: [
+    {
+      ct: 'DID-BLS'
+      t: 'consensus'
+      key: string
+    }
+  ]
+  enabled: true
+  gateway_key: string
   git_commit: string
-  latest_git_commit: string
-  is_up_to_date: boolean
-  last_block?: number
-  produced: number
+  net_id: 'go-mainnet'
+  peer_addrs: string[]
+  peer_id: string
+  protocol_version: number
+  ts: string
+  version_id: string
 }
 
 export interface Election extends Item<number> {

@@ -6,7 +6,7 @@ export const themeColorDark = 'pink.500'
 export const themeColorScheme = 'pink'
 
 export const hiveApi = 'https://techcoderx.com'
-export const hafVscApi = 'https://vsc-haf.techcoderx.com'
+export const hafVscApi = 'https://vsc.techcoderx.com/be-api/v1'
 export const vscNodeApi = 'https://vsc-graphql.techcoderx.com/api/v1/graphql'
 export const cvApi = 'http://localhost:8080/cv-api/v1'
 export const l1Explorer = 'https://hivehub.dev'
