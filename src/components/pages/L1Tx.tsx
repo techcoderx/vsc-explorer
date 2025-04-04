@@ -24,7 +24,7 @@ import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../
 import {
   BlockDetail,
   ContractCreatedOutput,
-  Epoch,
+  // Epoch,
   EventItm,
   ContractCallOutput,
   TransferWithdrawOutput
@@ -151,40 +151,40 @@ const L1Tx = () => {
                     (outData[i] as TransferWithdrawOutput).tx_type === 'withdraw' ? (
                     (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
                   ) : null
-                ) : trx.type === 'election_result' ? (
-                  <Box>
-                    <CardHeader>
-                      <Heading fontSize={'xl'}>Proposed Election Result</Heading>
-                    </CardHeader>
-                    <CardBody marginTop={'-25px'}>
-                      <Table margin={'0'} variant={'unstyled'}>
-                        <Tbody>
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Epoch"
-                            value={(outData[i]! as Epoch).epoch}
-                            link={'/epoch/' + (outData[i]! as Epoch).epoch}
-                          />
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Data CID"
-                            value={(outData[i]! as Epoch).data_cid}
-                          />
-                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
-                            <ProgressBarPct
-                              fontSize={'md'}
-                              val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
-                            />
-                          </TableRow>
-                        </Tbody>
-                      </Table>
-                    </CardBody>
-                  </Box>
-                ) : trx.type === 'propose_block' ? (
+                ) : // ) : trx.type === 'election_result' ? (
+                //   <Box>
+                //     <CardHeader>
+                //       <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+                //     </CardHeader>
+                //     <CardBody marginTop={'-25px'}>
+                //       <Table margin={'0'} variant={'unstyled'}>
+                //         <Tbody>
+                //           <TableRow
+                //             minimalSpace
+                //             isInCard
+                //             allCardBorders
+                //             label="Epoch"
+                //             value={(outData[i]! as Epoch).epoch}
+                //             link={'/epoch/' + (outData[i]! as Epoch).epoch}
+                //           />
+                //           <TableRow
+                //             minimalSpace
+                //             isInCard
+                //             allCardBorders
+                //             label="Data CID"
+                //             value={(outData[i]! as Epoch).data_cid}
+                //           />
+                //           <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                //             <ProgressBarPct
+                //               fontSize={'md'}
+                //               val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
+                //             />
+                //           </TableRow>
+                //         </Tbody>
+                //       </Table>
+                //     </CardBody>
+                //   </Box>
+                trx.type === 'propose_block' ? (
                   <Box>
                     <CardHeader>
                       <Heading fontSize={'xl'}>Proposed Block</Heading>
