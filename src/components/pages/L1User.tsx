@@ -11,21 +11,29 @@ import {
   Link,
   Table,
   Tbody,
-  Tr,
+  // Tr,
   Tag,
   Stack
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
-import { fetchAccHistory, fetchAccInfo, fetchL1Rest, fetchMsOwners, fetchWitness, getL2BalanceByL1User } from '../../requests'
+import {
+  fetchAccHistory,
+  // fetchAccInfo,
+  fetchL1AccInfo,
+  fetchL1Rest,
+  // fetchMsOwners,
+  fetchWitness
+  // getL2BalanceByL1User
+} from '../../requests'
 import { describeL1TxBriefly, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1AccountAuthority } from '../../types/L1ApiResult'
-import { multisigAccount, themeColorScheme } from '../../settings'
+import { themeColorScheme } from '../../settings'
 
 const count = 50
 
@@ -53,8 +61,8 @@ const L1User = () => {
     isLoading: isL1AccvLoading,
     isSuccess: isL1AccvSuccess
   } = useQuery({
-    queryKey: ['vsc-account', 'hive:' + username],
-    queryFn: async () => fetchAccInfo('hive:' + user),
+    queryKey: ['vsc-l1-account', username],
+    queryFn: async () => fetchL1AccInfo(user),
     enabled: !invalidParams
   })
   const last_nonce = l1Accv ? Math.max(l1Accv.tx_count - (pageNumber - 1) * 50 - 1, 0) : undefined
@@ -68,16 +76,16 @@ const L1User = () => {
     queryFn: async () => fetchAccHistory(user, count, last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
-  const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
-    queryKey: ['vsc-ms-names', 'sk_owner'],
-    queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
-    enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
-  })
-  const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
-    queryKey: ['vsc-l2-balance-by-l1-user', user],
-    queryFn: async () => getL2BalanceByL1User('hive:' + user!),
-    enabled: !invalidParams
-  })
+  // const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
+  //   queryKey: ['vsc-ms-names', 'sk_owner'],
+  //   queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
+  //   enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
+  // })
+  // const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
+  //   queryKey: ['vsc-l2-balance-by-l1-user', user],
+  //   queryFn: async () => getL2BalanceByL1User('hive:' + user!),
+  //   enabled: !invalidParams
+  // })
   if (invalidParams) return <PageNotFound />
   return (
     <>
@@ -104,7 +112,7 @@ const L1User = () => {
       ) : (
         <Flex direction={{ base: 'column', lg: 'row' }} marginTop="20px" gap="6">
           <VStack width={{ base: '100%', lg: 'ss' }} spacing={'6'}>
-            {user === multisigAccount ? (
+            {/* {user === multisigAccount ? (
               <Card width={'100%'}>
                 <CardHeader marginBottom="-15px">
                   <Heading size={'md'} textAlign={'center'}>
@@ -141,39 +149,39 @@ const L1User = () => {
                   </Table>
                 </CardBody>
               </Card>
-            ) : (
-              <Card width={'100%'}>
-                <CardHeader marginBottom={'-15px'}>
-                  <Heading size={'md'} textAlign={'center'}>
-                    L1 User Info
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Table variant={'unstyled'}>
-                    <Tbody>
-                      <TableRow
-                        isInCard
-                        minimalSpace
-                        minWidthLabel="115px"
-                        label="Tx Count"
-                        isLoading={isL1AccvLoading}
-                        value={!!l1Acc ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
-                      />
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
-                        {isL1AccvSuccess ? (
-                          <Tooltip label={l1Accv.last_activity} placement={'top'}>
-                            {l1Accv.last_activity === '1970-01-01T00:00:00' ? 'Never' : timeAgo(l1Accv.last_activity)}
-                          </Tooltip>
-                        ) : (
-                          'Error'
-                        )}
-                      </TableRow>
-                    </Tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            )}
-            {user !== multisigAccount ? (
+            ) : ( */}
+            <Card width={'100%'}>
+              <CardHeader marginBottom={'-15px'}>
+                <Heading size={'md'} textAlign={'center'}>
+                  L1 User Info
+                </Heading>
+              </CardHeader>
+              <CardBody>
+                <Table variant={'unstyled'}>
+                  <Tbody>
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="Tx Count"
+                      isLoading={isL1AccvLoading}
+                      value={!!l1Acc ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
+                    />
+                    <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
+                      {isL1AccvSuccess ? (
+                        <Tooltip label={l1Accv.last_activity} placement={'top'}>
+                          {l1Accv.last_activity === '1970-01-01T00:00:00' ? 'Never' : timeAgo(l1Accv.last_activity)}
+                        </Tooltip>
+                      ) : (
+                        'Error'
+                      )}
+                    </TableRow>
+                  </Tbody>
+                </Table>
+              </CardBody>
+            </Card>
+
+            {/* {user !== multisigAccount ? (
               <Card width={'100%'}>
                 <CardHeader marginBottom={'-15px'}>
                   <Heading size={'md'} textAlign={'center'}>
@@ -203,8 +211,8 @@ const L1User = () => {
                   </Table>
                 </CardBody>
               </Card>
-            ) : null}
-            {isWitSuccess && witness.account ? (
+            ) : null} */}
+            {isWitSuccess && witness.id ? (
               <Card width={'100%'}>
                 <CardHeader marginBottom={'-15px'}>
                   <Heading size={'md'} textAlign={'center'}>
@@ -214,16 +222,22 @@ const L1User = () => {
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      {/* <TableRow
+                      <TableRow
                         isInCard
                         minimalSpace
                         minWidthLabel="115px"
                         label="ID"
                         isLoading={isWitLoading}
                         value={isWitSuccess ? witness.id : 'Error'}
-                      /> */}
+                      />
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID" isLoading={isWitLoading}>
+                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.peer_id : 'Error'}</Text>
+                      </TableRow>
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.did_keys[0].key : 'Error'}</Text>
+                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.consensus_did : 'Error'}</Text>
+                      </TableRow>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Gateway Key" isLoading={isWitLoading}>
+                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.gateway_key : 'Error'}</Text>
                       </TableRow>
                       <TableRow isInCard minimalSpace minWidthLabel="115px" label="Enabled" isLoading={isWitLoading}>
                         {isWitSuccess ? (
@@ -236,25 +250,25 @@ const L1User = () => {
                           'Error'
                         )}
                       </TableRow>
-                      {/* {isWitSuccess && witness.enabled ? (
+                      {isWitSuccess ? (
                         <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update" isLoading={isWitLoading}>
-                          {witness.enabled_at ? (
-                            <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.enabled_at}>
-                              {witness.enabled_at}
+                          <Tooltip placement="top" label={witness.last_update_ts}>
+                            <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.last_update_tx}>
+                              {timeAgo(witness.last_update_ts)}
                             </Link>
-                          ) : (
-                            'N/A'
-                          )}
+                          </Tooltip>
                         </TableRow>
                       ) : null}
-                      {isWitSuccess && !witness.enabled && witness.disabled_at ? (
-                        <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update" isLoading={isWitLoading}>
-                          <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.disabled_at}>
-                            {witness.disabled_at}
-                          </Link>
+                      {isWitSuccess ? (
+                        <TableRow isInCard minimalSpace minWidthLabel="115px" label="First Seen" isLoading={isWitLoading}>
+                          <Tooltip placement="top" label={witness.first_seen_ts}>
+                            <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.first_seen_tx}>
+                              {timeAgo(witness.first_seen_ts)}
+                            </Link>
+                          </Tooltip>
                         </TableRow>
                       ) : null}
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Git Commit" isLoading={isWitLoading}>
+                      {/* <TableRow isInCard minimalSpace minWidthLabel="115px" label="Git Commit" isLoading={isWitLoading}>
                         <Link
                           as={ReactRouterLink}
                           wordBreak={'break-all'}

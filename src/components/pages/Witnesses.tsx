@@ -1,9 +1,8 @@
-import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Badge, Link } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Badge, Link, Tooltip } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchWitnesses } from '../../requests'
-import { thousandSeperator } from '../../helpers'
-import { l1Explorer } from '../../settings'
+import { timeAgo } from '../../helpers'
 // import PageNotFound from './404'
 // import Pagination from '../Pagination'
 
@@ -80,18 +79,20 @@ const Witnesses = () => {
                 <Tr key={i}>
                   <Td>{i + 1}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + item.account}>
-                      {item.account}
+                    <Link as={ReactRouterLink} to={'/@' + item.username}>
+                      {item.username}
                     </Link>
                   </Td>
                   <Td>{item.enabled ? <Badge colorScheme="green">True</Badge> : <Badge colorScheme="red">False</Badge>}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={l1Explorer + '/b/' + item.height} target="_blank">
-                      {thousandSeperator(item.height)}
-                    </Link>
+                    <Tooltip placement="top" label={item.last_update_ts}>
+                      <Link as={ReactRouterLink} to={'/tx/' + item.last_update_tx}>
+                        {timeAgo(item.last_update_ts)}
+                      </Link>
+                    </Tooltip>
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
-                    {item.did_keys[0].key}
+                    {item.consensus_did}
                   </Td>
                   {/* <Td>
                     <Tooltip label={item.git_commit.slice(0, 8)}>
