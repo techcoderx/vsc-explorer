@@ -38,7 +38,7 @@ export const fetchBlocks = async (start: number, count = 50): Promise<BlockRange
 }
 
 export const fetchWitnesses = async (): Promise<Witness[]> => {
-  return await (await fetch(`${hafVscApi}/witnesses`)).json()
+  return await (await fetch(`${hafVscApi}/haf/witnesses`)).json()
 }
 
 export const fetchMembersAtBlock = async (block_num: number): Promise<WeightedMembers[]> => {
@@ -46,7 +46,7 @@ export const fetchMembersAtBlock = async (block_num: number): Promise<WeightedMe
 }
 
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_latest_ops?with_payload=true`)).json()
+  return await (await fetch(`${hafVscApi}/haf/latest-ops/50/true`)).json()
 }
 
 export const fetchLatestContracts = async (): Promise<Contract[]> => {
@@ -82,7 +82,7 @@ export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
 }
 
 export const fetchWitness = async (username: string): Promise<Witness> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_witness?username=${username}`)).json()
+  return await (await fetch(`${hafVscApi}/haf/user/${username}/witness`)).json()
 }
 
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
@@ -105,13 +105,7 @@ export const fetchBlocksInEpoch = async (
 }
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/get_op_history_by_l1_user?username=${username}&count=${count}${
-        last_nonce ? '&last_nonce=' + last_nonce : ''
-      }`
-    )
-  ).json()
+  return await (await fetch(`${hafVscApi}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
 }
 
 export const fetchL2AccTxHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<TxHistory[]> => {
@@ -122,12 +116,16 @@ export const fetchL2AccTxHistory = async (did: string, count: number = 100, last
   ).json()
 }
 
+export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
+  return await (await fetch(`${hafVscApi}/haf/user/${username}`)).json()
+}
+
 export const fetchAccInfo = async (username: string): Promise<AccInfo> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_user?did=${username}`)).json()
 }
 
 export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_ops_by_l1_tx?trx_id=${trx_id}`)).json()
+  return await (await fetch(`${hafVscApi}/haf/tx/${trx_id}`)).json()
 }
 
 export const fetchL1TxOutput = async (

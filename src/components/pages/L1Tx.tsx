@@ -6,7 +6,6 @@ import {
   Skeleton,
   Link,
   Button,
-  Spinner,
   Heading,
   Card,
   CardHeader,
@@ -18,31 +17,30 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchTxByL1Id } from '../../requests'
+import { fetchTxByL1Id } from '../../requests'
 import { thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import {
-  BlockDetail,
-  ContractCreatedOutput,
-  // Epoch,
-  EventItm,
-  ContractCallOutput,
-  TransferWithdrawOutput
-} from '../../types/HafApiResult'
-import { ProgressBarPct } from '../ProgressPercent'
+// import BlockDetail,
+// ContractCreatedOutput,
+// Epoch,
+// EventItm,
+// ContractCallOutput,
+// TransferWithdrawOutput
+// '../../types/HafApiResult'
+// import { ProgressBarPct } from '../ProgressPercent'
 
-const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
-  return (
-    <Box>
-      <CardHeader>
-        <Heading fontSize={'xl'}>Event #{i}</Heading>
-      </CardHeader>
-      <CardBody marginTop={'-25px'}>
-        <JsonToTableRecursive isInCard minimalSpace json={evt} />
-      </CardBody>
-    </Box>
-  )
-}
+// const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
+//   return (
+//     <Box>
+//       <CardHeader>
+//         <Heading fontSize={'xl'}>Event #{i}</Heading>
+//       </CardHeader>
+//       <CardBody marginTop={'-25px'}>
+//         <JsonToTableRecursive isInCard minimalSpace json={evt} />
+//       </CardBody>
+//     </Box>
+//   )
+// }
 
 const L1Tx = () => {
   const { txid } = useParams()
@@ -52,11 +50,11 @@ const L1Tx = () => {
     queryFn: async () => fetchTxByL1Id(txid!),
     enabled: isValid
   })
-  const { data: outData, isSuccess: isOutSuccess } = useQuery({
-    queryKey: ['vsc-l1-tx-output', txid],
-    queryFn: async () => fetchL1TxOutput(txid!),
-    enabled: isValid
-  })
+  // const { data: outData, isSuccess: isOutSuccess } = useQuery({
+  //   queryKey: ['vsc-l1-tx-output', txid],
+  //   queryFn: async () => fetchL1TxOutput(txid!),
+  //   enabled: isValid
+  // })
   return (
     <>
       <Box marginBottom={'15px'}>
@@ -125,7 +123,7 @@ const L1Tx = () => {
               <CardBody marginTop={'-25px'}>
                 <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object} />
               </CardBody>
-              {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
+              {/* {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
                 trx.type === 'announce_tx' || trx.type === 'tx' ? (
                   (outData[i] as ContractCallOutput).tx_type === 'call_contract' ? (
                     <Box>
@@ -151,39 +149,39 @@ const L1Tx = () => {
                     (outData[i] as TransferWithdrawOutput).tx_type === 'withdraw' ? (
                     (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
                   ) : null
-                ) : // ) : trx.type === 'election_result' ? (
-                //   <Box>
-                //     <CardHeader>
-                //       <Heading fontSize={'xl'}>Proposed Election Result</Heading>
-                //     </CardHeader>
-                //     <CardBody marginTop={'-25px'}>
-                //       <Table margin={'0'} variant={'unstyled'}>
-                //         <Tbody>
-                //           <TableRow
-                //             minimalSpace
-                //             isInCard
-                //             allCardBorders
-                //             label="Epoch"
-                //             value={(outData[i]! as Epoch).epoch}
-                //             link={'/epoch/' + (outData[i]! as Epoch).epoch}
-                //           />
-                //           <TableRow
-                //             minimalSpace
-                //             isInCard
-                //             allCardBorders
-                //             label="Data CID"
-                //             value={(outData[i]! as Epoch).data_cid}
-                //           />
-                //           <TableRow minimalSpace isInCard allCardBorders label="Participation">
-                //             <ProgressBarPct
-                //               fontSize={'md'}
-                //               val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
-                //             />
-                //           </TableRow>
-                //         </Tbody>
-                //       </Table>
-                //     </CardBody>
-                //   </Box>
+                ) : trx.type === 'election_result' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+                    </CardHeader>
+                    <CardBody marginTop={'-25px'}>
+                      <Table margin={'0'} variant={'unstyled'}>
+                        <Tbody>
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Epoch"
+                            value={(outData[i]! as Epoch).epoch}
+                            link={'/epoch/' + (outData[i]! as Epoch).epoch}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Data CID"
+                            value={(outData[i]! as Epoch).data_cid}
+                          />
+                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                            <ProgressBarPct
+                              fontSize={'md'}
+                              val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
+                            />
+                          </TableRow>
+                        </Tbody>
+                      </Table>
+                    </CardBody>
+                  </Box>
                 trx.type === 'propose_block' ? (
                   <Box>
                     <CardHeader>
@@ -254,7 +252,7 @@ const L1Tx = () => {
                     </CardBody>
                   </Box>
                 ) : null
-              ) : null}
+              ) : null} */}
             </Card>
           ))}
         </Flex>
