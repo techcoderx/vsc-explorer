@@ -30,7 +30,7 @@ import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { AccountBalance, WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
-  return await (await fetch(hafVscApi)).json()
+  return await (await fetch(`${hafVscApi}/props`)).json()
 }
 
 export const fetchBlocks = async (start: number, count = 50): Promise<BlockRangeItm[]> => {
@@ -86,7 +86,8 @@ export const fetchWitness = async (username: string): Promise<Witness> => {
 }
 
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_epochs?last_epoch=${last_epoch}&count=${count}`)).json()
+  console.log(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)
+  return await (await fetch(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
 }
 
 export const fetchEpoch = async (epoch_num: number): Promise<Epoch> => {
