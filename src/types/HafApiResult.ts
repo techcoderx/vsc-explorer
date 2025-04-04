@@ -94,15 +94,22 @@ export interface Witness {
   version_id: string
 }
 
-export interface Election extends Item<number> {
+export interface Election {
   epoch: number
-  l1_tx: string
+  // l1_tx: string
   proposer: string
-  data_cid: string
-  voted_weight: number
-  eligible_weight: number
-  sig: string
-  bv: string
+  data: string
+  // voted_weight: number
+  // eligible_weight: number
+  // sig: string
+  // bv: string
+  members: {
+    key: string
+    account: string
+  }[]
+  weights: number[]
+  total_weight: number
+  block_height: number
 }
 
 export interface Epoch extends Item<number> {

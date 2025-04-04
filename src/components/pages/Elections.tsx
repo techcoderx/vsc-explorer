@@ -2,10 +2,11 @@ import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleto
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
-import { abbreviateHash, timeAgo } from '../../helpers'
-import { ProgressBarPct } from '../ProgressPercent'
+import { abbreviateHash, thousandSeperator } from '../../helpers'
+// import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
+import { l1Explorer } from '../../settings'
 
 const count = 100
 
@@ -26,7 +27,7 @@ const Elections = () => {
   } = useQuery({
     queryKey: ['vsc-epochs', lastEpoch, count],
     queryFn: async () => fetchElections(lastEpoch!, count),
-    enabled: !!prop?.epoch && !invalidPage
+    enabled: !!prop && typeof prop.epoch === 'number' && !invalidPage
   })
   if (invalidPage) return <PageNotFound />
   return (
@@ -39,10 +40,11 @@ const Elections = () => {
           <Thead>
             <Tr>
               <Th>Epoch</Th>
-              <Th>Age</Th>
+              <Th>L1 Block Number</Th>
               <Th>Proposer</Th>
               <Th>Data CID</Th>
-              <Th>Voted</Th>
+              <Th>Total Weight</Th>
+              {/* <Th>Voted</Th> */}
             </Tr>
           </Thead>
           <Tbody>
@@ -63,9 +65,9 @@ const Elections = () => {
                     </Link>
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
-                    <Tooltip label={epoch.ts} placement="top">
-                      {timeAgo(epoch.ts)}
-                    </Tooltip>
+                    <Link href={l1Explorer + '/b/' + epoch.block_height} target="_blank">
+                      {thousandSeperator(epoch.block_height)}
+                    </Link>
                   </Td>
                   <Td>
                     <Link as={ReactRouterLink} to={'/@' + epoch.proposer}>
@@ -73,15 +75,16 @@ const Elections = () => {
                     </Link>
                   </Td>
                   <Td>
-                    <Tooltip label={epoch.data_cid} placement="top">
+                    <Tooltip label={epoch.data} placement="top">
                       <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
-                        {abbreviateHash(epoch.data_cid)}
+                        {abbreviateHash(epoch.data)}
                       </Link>
                     </Tooltip>
                   </Td>
-                  <Td maxW={'200px'}>
+                  <Td>{epoch.total_weight}</Td>
+                  {/* <Td maxW={'200px'}>
                     <ProgressBarPct val={(epoch.voted_weight / epoch.eligible_weight) * 100} />
-                  </Td>
+                  </Td> */}
                 </Tr>
               ))
             ) : (

@@ -11,7 +11,7 @@ import Witnesses from './components/pages/Witnesses'
 // import L1User from './components/pages/L1User'
 // import L1Tx from './components/pages/L1Tx'
 // import L2Tx from './components/pages/L2Tx'
-// import Elections from './components/pages/Elections'
+import Elections from './components/pages/Elections'
 // import Epoch from './components/pages/Epoch'
 // import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 // import { Contract } from './components/pages/Contract'
@@ -73,10 +73,10 @@ const router = createBrowserRouter([
       //   path: '/schedule',
       //   element: <WitnessSchedule />
       // },
-      // {
-      //   path: '/elections/:page?',
-      //   element: <Elections />
-      // },
+      {
+        path: '/elections/:page?',
+        element: <Elections />
+      },
       // {
       //   path: '/epoch/:epochNum',
       //   element: <Epoch />
