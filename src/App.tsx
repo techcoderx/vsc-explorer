@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
-// import Home from './components/pages/Home'
+import Home from './components/pages/Home'
 import Witnesses from './components/pages/Witnesses'
 // import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Maintenance />
+        element: <Home />
       },
       // {
       //   path: '/address/:addr',

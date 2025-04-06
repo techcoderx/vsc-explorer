@@ -53,7 +53,7 @@ const Home = () => {
                   isLoading={isPropLoading}
                   isSuccess={isPropSuccess}
                 />
-                <InfoBox title="Transactions (L1)" prop={prop?.operations} isLoading={isPropLoading} isSuccess={isPropSuccess} />
+                <InfoBox title="Transactions" prop={prop?.transactions} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
               <Stack
                 direction={{ base: 'column', md: 'row' }}
@@ -65,9 +65,9 @@ const Home = () => {
               >
                 <InfoBox title="Current Epoch" prop={prop?.epoch} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Witnesses" prop={prop?.witnesses} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-                <InfoBox title="Contract Calls" prop={prop?.transactions} isLoading={isPropLoading} isSuccess={isPropSuccess} />
+                <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
-              <Stack
+              {/* <Stack
                 direction={{ base: 'column', md: 'row' }}
                 w="100%"
                 divider={<StackDivider />}
@@ -78,7 +78,7 @@ const Home = () => {
                 <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Anchor Refs" prop={prop?.anchor_refs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Bridge Txs" prop={prop?.bridge_txs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-              </Stack>
+              </Stack> */}
             </VStack>
           </CardBody>
         </Card>
