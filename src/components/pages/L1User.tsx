@@ -27,13 +27,14 @@ import {
   fetchWitness,
   getL2BalanceByL1User
 } from '../../requests'
-import { describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { availableRC, describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1AccountAuthority } from '../../types/L1ApiResult'
 import { themeColorScheme } from '../../settings'
+import { ProgressBarPct } from '../ProgressPercent'
 
 const count = 50
 
@@ -45,6 +46,11 @@ const L1User = () => {
   const { data: l1Acc, isError: isL1AccErr } = useQuery({
     queryKey: ['hive-account', username],
     queryFn: async () => fetchL1Rest<L1AccountAuthority>(`/hafbe-api/accounts/${user}/authority`),
+    enabled: !invalidParams
+  })
+  const { data: headBlock } = useQuery({
+    queryKey: ['hive-headblock'],
+    queryFn: async () => fetchL1Rest<number>(`/hafah-api/headblock`),
     enabled: !invalidParams
   })
   const {
@@ -81,11 +87,16 @@ const L1User = () => {
   //   queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
   //   enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
   // })
-  const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
+  const {
+    data: l2Balance,
+    isLoading: isL2BalLoading,
+    isSuccess: isL2BalSuccess
+  } = useQuery({
     queryKey: ['vsc-l2-balance-by-l1-user', user],
     queryFn: async () => getL2BalanceByL1User('hive:' + user!),
     enabled: !invalidParams
   })
+  const availRC = l2Balance ? availableRC(l2Balance, headBlock, true) : { avail: 0, max: 0 }
   if (invalidParams) return <PageNotFound />
   return (
     <>
@@ -153,31 +164,17 @@ const L1User = () => {
             <Card width={'100%'}>
               <CardHeader marginBottom={'-15px'}>
                 <Heading size={'md'} textAlign={'center'}>
-                  L1 User Info
+                  RC Info
                 </Heading>
               </CardHeader>
               <CardBody>
-                <Table variant={'unstyled'}>
-                  <Tbody>
-                    <TableRow
-                      isInCard
-                      minimalSpace
-                      minWidthLabel="115px"
-                      label="Tx Count"
-                      isLoading={isL1AccvLoading}
-                      value={!!l1Acc ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
-                    />
-                    <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
-                      {isL1AccvSuccess ? (
-                        <Tooltip label={l1Accv.last_activity} placement={'top'}>
-                          {l1Accv.last_activity === '1970-01-01T00:00:00' ? 'Never' : timeAgo(l1Accv.last_activity)}
-                        </Tooltip>
-                      ) : (
-                        'Error'
-                      )}
-                    </TableRow>
-                  </Tbody>
-                </Table>
+                {availRC.max > 0 ? (
+                  <ProgressBarPct val={(100 * availRC.avail) / availRC.max} fontSize="lg" height={'10px'} />
+                ) : isL2BalLoading ? (
+                  <Text>Loading balances...</Text>
+                ) : (
+                  <Text>You have no RCs available. Please deposit HBD to obtain RCs.</Text>
+                )}
               </CardBody>
             </Card>
             <Card width={'100%'}>
@@ -327,6 +324,36 @@ const L1User = () => {
                 </CardBody>
               </Card>
             ) : null}
+            <Card width={'100%'}>
+              <CardHeader marginBottom={'-15px'}>
+                <Heading size={'md'} textAlign={'center'}>
+                  L1 User Info
+                </Heading>
+              </CardHeader>
+              <CardBody>
+                <Table variant={'unstyled'}>
+                  <Tbody>
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="Tx Count"
+                      isLoading={isL1AccvLoading}
+                      value={!!l1Acc ? thousandSeperator((l1Accv && l1Accv.tx_count) ?? 0) : 'Error'}
+                    />
+                    <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Activity" isLoading={isL1AccvLoading}>
+                      {isL1AccvSuccess ? (
+                        <Tooltip label={l1Accv.last_activity} placement={'top'}>
+                          {l1Accv.last_activity === '1970-01-01T00:00:00' ? 'Never' : timeAgo(l1Accv.last_activity)}
+                        </Tooltip>
+                      ) : (
+                        'Error'
+                      )}
+                    </TableRow>
+                  </Tbody>
+                </Table>
+              </CardBody>
+            </Card>
           </VStack>
           <VStack spacing={'3'} flexGrow={'1'}>
             {isL1AccvLoading || isHistLoading ? (

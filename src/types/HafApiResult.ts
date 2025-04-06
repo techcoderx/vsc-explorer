@@ -1,15 +1,14 @@
 import {
-  DIDPayload,
   BlockPayload,
   NewContractPayload,
-  ContractCommitmentPayload,
   NodeAnnouncePayload,
   L2TxType,
   CallContractPayload,
   XferWdPayload,
   DepositPayload,
   ElectionResultPayload,
-  Coin
+  Coin,
+  TransferPayload
 } from './Payloads'
 
 export interface Props {
@@ -94,6 +93,10 @@ export interface UserBalance {
   hbd_savings: number
   hive: number
   hive_consensus: number
+  rc_used: {
+    block_height: number
+    amount: number
+  }
 }
 
 export interface Election {
@@ -143,14 +146,11 @@ const txTypes = [
   'announce_node',
   'propose_block',
   'create_contract',
-  'announce_tx', // aka tx
-  'tx',
+  'call',
   'election_result',
-  'multisig_txref',
   'custom_json',
-  'bridge_ref',
-  'deposit',
-  'withdrawal'
+  'transfer',
+  'l1_transfer'
 ] as const
 type TxTypes = (typeof txTypes)[number]
 
@@ -160,13 +160,12 @@ export interface L1Transaction extends Item<number> {
   l1_tx: string
   username: string
   payload?:
-    | DIDPayload
     | BlockPayload
     | NewContractPayload
-    | ContractCommitmentPayload
     | NodeAnnouncePayload
     | ElectionResultPayload
     | DepositPayload
+    | TransferPayload
     | { tx: CallContractPayload | XferWdPayload }
 }
 
