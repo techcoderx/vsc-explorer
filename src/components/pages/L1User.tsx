@@ -24,10 +24,10 @@ import {
   fetchL1AccInfo,
   fetchL1Rest,
   // fetchMsOwners,
-  fetchWitness
-  // getL2BalanceByL1User
+  fetchWitness,
+  getL2BalanceByL1User
 } from '../../requests'
-import { describeL1TxBriefly, thousandSeperator, timeAgo } from '../../helpers'
+import { describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
@@ -81,11 +81,11 @@ const L1User = () => {
   //   queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
   //   enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
   // })
-  // const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
-  //   queryKey: ['vsc-l2-balance-by-l1-user', user],
-  //   queryFn: async () => getL2BalanceByL1User('hive:' + user!),
-  //   enabled: !invalidParams
-  // })
+  const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
+    queryKey: ['vsc-l2-balance-by-l1-user', user],
+    queryFn: async () => getL2BalanceByL1User('hive:' + user!),
+    enabled: !invalidParams
+  })
   if (invalidParams) return <PageNotFound />
   return (
     <>
@@ -180,38 +180,51 @@ const L1User = () => {
                 </Table>
               </CardBody>
             </Card>
-
-            {/* {user !== multisigAccount ? (
-              <Card width={'100%'}>
-                <CardHeader marginBottom={'-15px'}>
-                  <Heading size={'md'} textAlign={'center'}>
-                    L2 Balances
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Table variant={'unstyled'}>
-                    <Tbody>
-                      <TableRow
-                        isInCard
-                        minimalSpace
-                        minWidthLabel="115px"
-                        label="HIVE Balance"
-                        value={thousandSeperator(l2Balance?.data.getAccountBalance.tokens.HIVE || 0) + ' HIVE'}
-                        isLoading={!isL2BalSuccess}
-                      />
-                      <TableRow
-                        isInCard
-                        minimalSpace
-                        minWidthLabel="115px"
-                        label="HBD Balance"
-                        value={thousandSeperator(l2Balance?.data.getAccountBalance.tokens.HBD || 0) + ' HBD'}
-                        isLoading={!isL2BalSuccess}
-                      />
-                    </Tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            ) : null} */}
+            <Card width={'100%'}>
+              <CardHeader marginBottom={'-15px'}>
+                <Heading size={'md'} textAlign={'center'}>
+                  L2 Balances
+                </Heading>
+              </CardHeader>
+              <CardBody>
+                <Table variant={'unstyled'}>
+                  <Tbody>
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="HIVE Balance"
+                      value={thousandSeperator(roundFloat((l2Balance?.hive || 0) / 1000, 3)) + ' HIVE'}
+                      isLoading={!isL2BalSuccess}
+                    />
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="HIVE Staked"
+                      value={thousandSeperator(roundFloat((l2Balance?.hive_consensus || 0) / 1000, 3)) + ' HIVE'}
+                      isLoading={!isL2BalSuccess}
+                    />
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="HBD Balance"
+                      value={thousandSeperator(roundFloat((l2Balance?.hbd || 0) / 1000, 3)) + ' HBD'}
+                      isLoading={!isL2BalSuccess}
+                    />
+                    <TableRow
+                      isInCard
+                      minimalSpace
+                      minWidthLabel="115px"
+                      label="HBD Staked"
+                      value={thousandSeperator(roundFloat((l2Balance?.hbd_savings || 0) / 1000, 3)) + ' HBD'}
+                      isLoading={!isL2BalSuccess}
+                    />
+                  </Tbody>
+                </Table>
+              </CardBody>
+            </Card>
             {isWitSuccess && witness.id ? (
               <Card width={'100%'}>
                 <CardHeader marginBottom={'-15px'}>

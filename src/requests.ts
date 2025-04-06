@@ -24,10 +24,11 @@ import {
   ContractCreatedOutput,
   ContractCallOutput,
   TxHistory,
-  EventHistoryItm
+  EventHistoryItm,
+  UserBalance
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { AccountBalance, WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
+import { WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
@@ -226,24 +227,8 @@ const gql = async <T>(query: string, variables: { [key: string]: string } = {}) 
   ).json()) as T
 }
 
-export const getL2BalanceByL1User = async (l1_user: string): Promise<AccountBalance> => {
-  return gql<AccountBalance>(
-    `
-  query getAccountBalance($account: String!) {
-    getAccountBalance(account: $account) {
-      account
-      block_height
-      tokens {
-        HBD
-        HIVE
-      }
-    }
-  }
-  `,
-    {
-      account: l1_user
-    }
-  )
+export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance> => {
+  return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
 }
 
 export const getWitnessSchedule = async (): Promise<WitnessSchedule> => {

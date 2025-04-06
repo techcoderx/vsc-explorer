@@ -1,7 +1,7 @@
 import { Stack, Card, CardBody, CardHeader, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { getL2BalanceByL1User } from '../../../requests'
-import { thousandSeperator } from '../../../helpers'
+import { roundFloat, thousandSeperator } from '../../../helpers'
 
 export const AddressBalanceCard = ({ addr }: { addr: string }) => {
   const { data: balance } = useQuery({
@@ -17,11 +17,11 @@ export const AddressBalanceCard = ({ addr }: { addr: string }) => {
         <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'space-between'}>
           <Stat>
             <StatLabel>Hive</StatLabel>
-            <StatNumber>{thousandSeperator(balance?.data.getAccountBalance.tokens.HIVE || 0) + ' HIVE'}</StatNumber>
+            <StatNumber>{thousandSeperator(roundFloat((balance?.hive || 0) / 1000, 3)) + ' HIVE'}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Liquid HBD</StatLabel>
-            <StatNumber>{thousandSeperator(balance?.data.getAccountBalance.tokens.HBD || 0) + ' HBD'}</StatNumber>
+            <StatNumber>{thousandSeperator(roundFloat((balance?.hbd || 0) / 1000, 3)) + ' HBD'}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Staked HBD</StatLabel>
