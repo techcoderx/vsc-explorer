@@ -14,17 +14,12 @@ import {
 
 export interface Props {
   epoch: number
-  txrefs: number
   contracts: number
   witnesses: number
-  db_version: number
   l2_block_height: number
   transactions: number
   last_processed_block: number
-  last_processed_subindexer_op: number
   operations: number
-  anchor_refs: number
-  bridge_txs: number
 }
 
 interface Item<IdType extends number | string> {
@@ -88,6 +83,17 @@ export interface Witness {
   first_seen_tx: string
   last_update_ts: string
   last_update_tx: string
+}
+
+export interface UserBalance {
+  account: string
+  block_height: number
+  hbd: number
+  hbd_avg: number
+  hbd_modify: number
+  hbd_savings: number
+  hive: number
+  hive_consensus: number
 }
 
 export interface Election {
