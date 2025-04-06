@@ -1,13 +1,15 @@
 import BitSet from 'bitset'
-import { L1Transaction, WeightedMembers } from './types/HafApiResult'
+import { L1Transaction, UserBalance, WeightedMembers } from './types/HafApiResult'
 import {
   CallContractPayload,
   DepositPayload,
   ElectionResultPayload,
   NAI,
   NewContractPayload,
+  TransferPayload,
   XferWdPayload
 } from './types/Payloads'
+import { multisigAccount } from './settings'
 
 export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
@@ -86,14 +88,22 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
     case 'election_result':
       result += 'proposed election result for epoch ' + (tx.payload as ElectionResultPayload).epoch
       break
-    case 'deposit':
-      result += 'deposited ' + naiToString((tx.payload as DepositPayload).amount)
+    case 'transfer':
+      result +=
+        'transfer ' +
+        (tx.payload as TransferPayload).amount +
+        ' ' +
+        (tx.payload as TransferPayload).asset +
+        ' to ' +
+        (tx.payload as TransferPayload).to
       break
-    case 'withdrawal':
-      result += 'withdrawn ' + naiToString((tx.payload as DepositPayload).amount)
+    case 'l1_transfer':
+      result +=
+        ((tx.payload as DepositPayload).to === multisigAccount ? 'deposited' : 'withdrawn') +
+        ' ' +
+        naiToString((tx.payload as DepositPayload).amount)
       break
-    case 'announce_tx':
-    case 'tx':
+    case 'call':
       const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
       if (call.op === 'call_contract')
         result += 'call ' + abbreviateHash(call.action, 30, 0) + ' at contract ' + abbreviateHash(call.contract_id, 20, 0)
@@ -192,4 +202,17 @@ export const bitsGrid = (input: string) => {
   }
 
   return output
+}
+
+// https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go
+export const availableRC = (bal: UserBalance, head_block_num?: number, is_hive_user: boolean = false) => {
+  const max_rc = bal.hbd + (is_hive_user ? 5000 : 0)
+  if (max_rc === 0) return { avail: 0, max: 0 }
+  const RC_RETURN_PERIOD = 120 * 60 * 20
+  const diff = (head_block_num || bal.rc_used.block_height) - bal.rc_used.block_height
+  let amt_ret = (diff * bal.rc_used.amount) / RC_RETURN_PERIOD
+  if (amt_ret > bal.rc_used.amount) {
+    amt_ret = bal.rc_used.amount
+  }
+  return { avail: max_rc - (bal.rc_used.amount - amt_ret), max: max_rc }
 }

@@ -1,7 +1,3 @@
-export type DIDPayload = {
-  did: string
-}
-
 export type BlockPayload = {
   experiment_id: number
   signed_block: {
@@ -27,11 +23,6 @@ export type ElectionResultPayload = {
   signature: BLSSig
 }
 
-export type ContractCommitmentPayload = {
-  contract_id: string
-  node_identity: string
-}
-
 export type NodeAnnouncePayload = {
   did: string
   witnessEnabled: boolean
@@ -41,6 +32,13 @@ export type DepositPayload = {
   to: string
   from: string
   amount: NAI
+}
+
+export type TransferPayload = {
+  to: string
+  from: string
+  asset: string
+  amount: number
 }
 
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
