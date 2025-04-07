@@ -31,8 +31,6 @@ import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
 // import { ParticipatedMembers } from '../BlsAggMembers'
 
-export const ELECTION_UPDATE_2_EPOCH = 125
-
 const Epoch = () => {
   const { epochNum } = useParams()
   const epchNum = parseInt(epochNum!)
@@ -99,12 +97,10 @@ const Epoch = () => {
                       <GridItem key={i}>
                         <Link as={ReactRouterLink} to={'/@' + m.account}>
                           {m.account}
-                          {epoch.epoch >= ELECTION_UPDATE_2_EPOCH ? (
-                            <Text display={'inline'} fontSize={'small'}>
-                              {' '}
-                              ({epoch?.weights[i]})
-                            </Text>
-                          ) : null}
+                          <Text display={'inline'} fontSize={'small'}>
+                            {' '}
+                            ({epoch?.weights[i]})
+                          </Text>
                         </Link>
                       </GridItem>
                     )
