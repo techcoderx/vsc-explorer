@@ -202,6 +202,16 @@ const L1User = () => {
                       value={thousandSeperator(roundFloat((l2Balance?.hive_consensus || 0) / 1000, 3)) + ' HIVE'}
                       isLoading={!isL2BalSuccess}
                     />
+                    {l2Balance && l2Balance.hive_unstaking ? (
+                      <TableRow
+                        isInCard
+                        minimalSpace
+                        minWidthLabel="115px"
+                        label="HIVE Unstaking"
+                        value={thousandSeperator(roundFloat((l2Balance?.hive_unstaking || 0) / 1000, 3)) + ' HIVE'}
+                        isLoading={!isL2BalSuccess}
+                      />
+                    ) : null}
                     <TableRow
                       isInCard
                       minimalSpace

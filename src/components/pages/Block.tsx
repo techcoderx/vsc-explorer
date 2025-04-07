@@ -1,14 +1,14 @@
-import { Text, Table, Tbody, Stack, Flex, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
+import { Text, Table, Tbody, Stack, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchBlock, fetchBlockByHash, fetchBlockTxs, fetchMembersAtBlock } from '../../requests'
+import { fetchBlock, fetchBlockByHash, fetchEpoch } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
-import { ipfsSubGw, l1Explorer, themeColorScheme } from '../../settings'
-import { L2TxCard } from '../TxCard'
-import { BlockDetail as BlockResult } from '../../types/HafApiResult'
+import { base64UrlToHex, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
+import { l1Explorer, themeColorScheme } from '../../settings'
+// import { L2TxCard } from '../TxCard'
+import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
 
@@ -32,29 +32,30 @@ export const BlockByHash = () => {
     queryFn: async () => fetchBlockByHash(blockId!),
     enabled: !invalidBlkId
   })
-  const blkNum = !isLoading && !isError && data && !data.error ? data.id : 0
+  const blkNum = !isLoading && !isError && data && !data.error ? data.be_info.block_id : 0
   return Block(data!, isLoading, isError, invalidBlkId, blkNum)
 }
 
 const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number) => {
-  const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
-  const {
-    data: l2BlockTxs,
-    isLoading: isL2BlockLoading,
-    isError: isL2BlockError
-  } = useQuery({
-    queryKey: ['vsc-block-txs', blkNum],
-    queryFn: async () => fetchBlockTxs(blkNum),
-    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
-  })
-  const { data: members } = useQuery({
-    queryKey: ['vsc-members-at-block', 'l2', blkNum],
-    queryFn: async () => fetchMembersAtBlock(block.l1_block),
+  // const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
+  // const {
+  //   data: l2BlockTxs,
+  //   isLoading: isL2BlockLoading,
+  //   isError: isL2BlockError
+  // } = useQuery({
+  //   queryKey: ['vsc-block-txs', blkNum],
+  //   queryFn: async () => fetchBlockTxs(blkNum),
+  //   enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
+  // })
+  const { data: epoch } = useQuery({
+    queryKey: ['vsc-epoch', block?.be_info.epoch],
+    queryFn: async () => fetchEpoch(block?.be_info.epoch),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum && !block.error
   })
   const { votedMembers, votedWeight, totalWeight } = getVotedMembers(
-    (block && block.signature && block.signature.bv) ?? '0',
-    members ?? []
+    base64UrlToHex((block && block.be_info && block.be_info.signature && block.be_info.signature.bv) ?? ''),
+    epoch?.members ?? [],
+    epoch?.weights ?? []
   )
   if (invalidBlkNum) return <PageNotFound />
   return (
@@ -69,32 +70,27 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
       ) : (
         <Table marginTop="20px">
           <Tbody>
-            <TableRow label="Block ID" value={block?.id} isLoading={isBlockLoading} />
+            <TableRow label="Block ID" value={block?.be_info.block_id} isLoading={isBlockLoading} />
             <TableRow
               label="Timestamp"
               value={block ? block.ts + ' (' + timeAgo(block.ts) + ')' : ''}
               isLoading={isBlockLoading}
             />
-            <TableRow label="L1 Tx" value={block?.l1_tx} isLoading={isBlockLoading} link={'/tx/' + block?.l1_tx} />
+            <TableRow label="L1 Tx" value={block?.id} isLoading={isBlockLoading} link={'/tx/' + block?.id} />
             <TableRow
-              label="L1 Block"
-              value={block?.l1_block}
+              label="Slot Height"
+              value={block?.slot_height}
               isLoading={isBlockLoading}
-              link={l1Explorer + '/b/' + block?.l1_block}
+              link={l1Explorer + '/b/' + block?.slot_height}
             />
             <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@' + block?.proposer} />
-            <TableRow
+            {/* <TableRow
               label="Previous Block Hash"
               value={block?.prev_block_hash ?? 'NULL'}
               isLoading={isBlockLoading}
               link={block?.prev_block_hash ? ipfsSubGw(block?.prev_block_hash) : undefined}
-            />
-            <TableRow
-              label="Block Hash"
-              value={block?.block_hash}
-              isLoading={isBlockLoading}
-              link={block ? ipfsSubGw(block?.block_hash) : undefined}
-            />
+            /> */}
+            <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
             <TableRow label="Participation">
               <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />
             </TableRow>
@@ -103,12 +99,13 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
       )}
       <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
         <TabList>
-          <Tab>Transactions ({l2BlockTxs?.length || 0})</Tab>
+          <Tab>Transactions</Tab>
           <Tab>Participation</Tab>
         </TabList>
         <TabPanels mt={'2'}>
           <TabPanel>
-            {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
+            👀 Coming soon...
+            {/* {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
             {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ? (
               <Flex direction={'column'} gap={'3'}>
                 {l2BlockTxs?.map((tx, i) => {
@@ -117,13 +114,13 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
               </Flex>
             ) : isL2BlockError ? (
               <Text>Failed to load L2 block data</Text>
-            ) : null}
+            ) : null} */}
           </TabPanel>
           <TabPanel>
             <ParticipatedMembers
-              bvHex={(block && block.signature && block.signature.bv) ?? '0'}
-              sig={(block && block.signature && block.signature.sig) ?? ''}
-              members={votedMembers.map((m) => m.username)}
+              bvHex={base64UrlToHex(block && block.be_info.signature && block.be_info.signature.bv) ?? ''}
+              sig={(block && block.be_info.signature && block.be_info.signature.sig) ?? ''}
+              members={votedMembers.map((m) => m.account)}
               isLoading={isBlockLoading}
             />
           </TabPanel>

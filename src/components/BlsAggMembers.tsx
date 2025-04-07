@@ -36,7 +36,7 @@ export const ParticipatedMembers = ({
             })}
           </Grid>
         </TableRow>
-        <TableRow label="BLS Signature" value={'0x' + sig} isLoading={isLoading} overflowWrap={'anywhere'} />
+        <TableRow label="BLS Signature" value={sig} isLoading={isLoading} overflowWrap={'anywhere'} />
       </Tbody>
     </Table>
   )

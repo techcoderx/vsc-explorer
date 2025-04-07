@@ -163,17 +163,18 @@ export const getBitsetStrFromHex = (bv: string) => {
 
 export const getVotedMembers = (
   bv: string,
-  members: WeightedMembers[]
+  members: WeightedMembers[],
+  weights: number[]
 ): { votedMembers: WeightedMembers[]; votedWeight: number; totalWeight: number } => {
   const bs = BitSet.fromHexString(bv)
   const voted = []
   let votedWeight = 0
   let totalWeight = 0
   for (const m in members) {
-    totalWeight += members[m].weight
+    totalWeight += weights[m]
     if (bs.get(Number(m)) === 1) {
       voted.push(members[m])
-      votedWeight += members[m].weight
+      votedWeight += weights[m]
     }
   }
   return { votedMembers: voted, votedWeight, totalWeight }
@@ -189,6 +190,28 @@ export const hexToBase64Url = (hexString: string): string => {
       .replace('/', '_')
       .replace(/=+$/, '')
   else return ''
+}
+
+export const base64UrlToHex = (base64url: string) => {
+  if (!base64url) return '0'
+  // Convert base64url to standard base64
+  let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+
+  // Add padding if necessary
+  const padLength = (4 - (base64.length % 4)) % 4
+  base64 += '='.repeat(padLength)
+
+  // Decode base64 to binary string
+  const binaryString = atob(base64)
+
+  // Convert each byte to hex
+  let hex = ''
+  for (let i = 0; i < binaryString.length; i++) {
+    const byte = binaryString.charCodeAt(i)
+    hex += byte.toString(16).padStart(2, '0')
+  }
+
+  return hex
 }
 
 export const bitsGrid = (input: string) => {

@@ -30,12 +30,12 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
-import { fetchCallsByContractId, fetchContractByID, fetchMembersAtBlock } from '../../requests'
+import { fetchCallsByContractId, fetchContractByID } from '../../requests'
 import TableRow from '../TableRow'
-import { timeAgo, getVotedMembers, thousandSeperator, abbreviateHash } from '../../helpers'
+import { timeAgo, thousandSeperator, abbreviateHash } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
-import { ParticipatedMembers } from '../BlsAggMembers'
+// import { ParticipatedMembers } from '../BlsAggMembers'
 import { L1ContractCallTx, L2ContractCallTx } from '../../types/HafApiResult'
 import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
@@ -69,12 +69,12 @@ export const Contract = () => {
     enabled: !invalidContractId
   })
   const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
-  const { data: members } = useQuery({
-    queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
-    queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
-    enabled: !isError && !isLoading && !invalidContractId && !!hasStorageProof
-  })
-  const { votedMembers } = getVotedMembers((contract && contract.storage_proof.bv) ?? '0', members ?? [])
+  // const { data: members } = useQuery({
+  //   queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
+  //   queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
+  //   enabled: !isError && !isLoading && !invalidContractId && !!hasStorageProof
+  // })
+  // const { votedMembers } = getVotedMembers((contract && contract.storage_proof.bv) ?? '0', members ?? [])
   const {
     data: verifInfo,
     error: verifError,
@@ -237,12 +237,12 @@ export const Contract = () => {
               </TabPanel>
               {hasStorageProof ? (
                 <TabPanel>
-                  <ParticipatedMembers
+                  {/* <ParticipatedMembers
                     bvHex={contract.storage_proof.bv!}
                     sig={contract.storage_proof.sig!}
                     members={votedMembers.map((m) => m.username)}
                     isLoading={isLoading}
-                  />
+                  /> */}
                 </TabPanel>
               ) : null}
               <TabPanel>

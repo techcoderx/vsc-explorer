@@ -25,11 +25,11 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import { abbreviateHash, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
-import { ParticipatedMembers } from '../BlsAggMembers'
+// import { ParticipatedMembers } from '../BlsAggMembers'
 
 export const ELECTION_UPDATE_2_EPOCH = 125
 
@@ -51,12 +51,12 @@ const Epoch = () => {
     isLoading: isBlocksLoading,
     isError: isBlocksError
   } = useQuery({
-    queryKey: ['vsc-block-in-epoch', epchNum, 0, 200],
+    queryKey: ['vsc-block-in-epoch', epchNum, 200, null],
     queryFn: async () => fetchBlocksInEpoch(epchNum),
     enabled: !invalidEpochNum
   })
   const blockCount = (blocks && blocks.length) ?? 0
-  const { votedMembers } = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
+  // const { votedMembers } = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
@@ -77,32 +77,32 @@ const Epoch = () => {
                 value={epoch ? epoch.ts + ' (' + timeAgo(epoch.ts) + ')' : ''}
                 isLoading={isEpochLoading}
               />
-              <TableRow label="L1 Tx" value={epoch?.l1_tx} isLoading={isEpochLoading} link={'/tx/' + epoch?.l1_tx} />
+              <TableRow label="L1 Tx" value={epoch?.trx_id} isLoading={isEpochLoading} link={'/tx/' + epoch?.trx_id} />
               <TableRow
                 label="L1 Block"
-                value={epoch?.block_num}
+                value={epoch?.block_height}
                 isLoading={isEpochLoading}
-                link={l1Explorer + '/b/' + epoch?.block_num}
+                link={l1Explorer + '/b/' + epoch?.block_height}
               />
               <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
-              <TableRow label="Election Data CID" value={epoch?.data_cid} isLoading={isEpochLoading} />
-              <TableRow label="Participation">
+              <TableRow label="Election Data CID" value={epoch?.data} isLoading={isEpochLoading} />
+              {/* <TableRow label="Participation">
                 <ProgressBarPct fontSize={'md'} val={(epoch ? epoch?.voted_weight / epoch?.eligible_weight : 0) * 100} />
-              </TableRow>
-              <TableRow label={`Elected Members (${epoch?.election.length})`} isLoading={isEpochLoading}>
+              </TableRow> */}
+              <TableRow label={`Elected Members (${epoch?.members.length})`} isLoading={isEpochLoading}>
                 <Grid
                   templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
                   gap={3}
                 >
-                  {epoch?.election.map((m, i) => {
+                  {epoch?.members.map((m, i) => {
                     return (
                       <GridItem key={i}>
-                        <Link as={ReactRouterLink} to={'/@' + m.username}>
-                          {m.username}
+                        <Link as={ReactRouterLink} to={'/@' + m.account}>
+                          {m.account}
                           {epoch.epoch >= ELECTION_UPDATE_2_EPOCH ? (
                             <Text display={'inline'} fontSize={'small'}>
                               {' '}
-                              ({m.weight})
+                              ({epoch?.weights[i]})
                             </Text>
                           ) : null}
                         </Link>
@@ -132,7 +132,7 @@ const Epoch = () => {
                           <Th>Id</Th>
                           <Th>Age</Th>
                           <Th>Proposer</Th>
-                          <Th>Txs</Th>
+                          {/* <Th>Txs</Th> */}
                           <Th>Block Hash</Th>
                           <Th>Voted</Th>
                         </Tr>
@@ -142,7 +142,7 @@ const Epoch = () => {
                           <Tr key={i}>
                             <Td>
                               <Link as={ReactRouterLink} to={'/block/' + item.id}>
-                                {item.id}
+                                {item.be_info.block_id}
                               </Link>
                             </Td>
                             <Td sx={{ whiteSpace: 'nowrap' }}>
@@ -155,14 +155,14 @@ const Epoch = () => {
                                 {item.proposer}
                               </Link>
                             </Td>
-                            <Td>{item.txs}</Td>
+                            {/* <Td>{item.txs}</Td> */}
                             <Td>
-                              <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block_hash}>
-                                {abbreviateHash(item.block_hash)}
+                              <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block}>
+                                {abbreviateHash(item.block)}
                               </Link>
                             </Td>
                             <Td maxW={'200px'}>
-                              <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
+                              <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
                             </Td>
                           </Tr>
                         ))}
@@ -172,12 +172,13 @@ const Epoch = () => {
                 )}
               </TabPanel>
               <TabPanel>
-                <ParticipatedMembers
+                👀 Coming soon...
+                {/* <ParticipatedMembers
                   bvHex={(epoch && epoch.bv) ?? '0'}
                   sig={(epoch && epoch.sig) ?? ''}
                   members={votedMembers.map((m) => m.username)}
                   isLoading={isEpochLoading}
-                />
+                /> */}
               </TabPanel>
             </TabPanels>
           </Tabs>

@@ -1,3 +1,4 @@
+/*
 import { useEffect, useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
@@ -109,3 +110,4 @@ const WitnessSchedule = () => {
 }
 
 export default WitnessSchedule
+*/

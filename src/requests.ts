@@ -5,14 +5,10 @@ import {
   Contract,
   AnchorRefs,
   AccInfo,
-  BlockRangeItm,
-  BlockDetail,
   BlockTx,
   L2ContractCallTx,
   CIDSearchResult,
   Election,
-  Epoch,
-  BlockInEpoch,
   AnchorRef,
   ContractWifProof,
   BridgeTx,
@@ -25,7 +21,8 @@ import {
   ContractCallOutput,
   TxHistory,
   EventHistoryItm,
-  UserBalance
+  UserBalance,
+  Block
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
@@ -34,8 +31,8 @@ export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
 }
 
-export const fetchBlocks = async (start: number, count = 50): Promise<BlockRangeItm[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_block_range?blk_id_start=${start}&blk_count=${count}`)).json()
+export const fetchBlocks = async (last_block_id: number, count = 50): Promise<Block[]> => {
+  return await (await fetch(`${hafVscApi}/blocks?last_block_id=${last_block_id}&count=${count}`)).json()
 }
 
 export const fetchWitnesses = async (): Promise<Witness[]> => {
@@ -70,12 +67,12 @@ export const fetchAnchorRefByCID = async (cid: string): Promise<AnchorRef> => {
   return await (await fetch(`${hafVscApi}/rpc/get_anchor_ref_by_cid?cid=${cid}`)).json()
 }
 
-export const fetchBlock = async (block_id: number): Promise<BlockDetail> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_block_by_id?blk_id=${block_id}`)).json()
+export const fetchBlock = async (block_id: number): Promise<Block> => {
+  return await (await fetch(`${hafVscApi}/block/by-id/${block_id}`)).json()
 }
 
-export const fetchBlockByHash = async (block_hash: string): Promise<BlockDetail> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_block_by_hash?blk_hash=${block_hash}`)).json()
+export const fetchBlockByHash = async (block_hash: string): Promise<Block> => {
+  return await (await fetch(`${hafVscApi}/block/by-cid/${block_hash}`)).json()
 }
 
 export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
@@ -91,17 +88,15 @@ export const fetchElections = async (last_epoch: number, count: number = 100): P
   return await (await fetch(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
 }
 
-export const fetchEpoch = async (epoch_num: number): Promise<Epoch> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_epoch?epoch_num=${epoch_num}`)).json()
+export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
+  return await (await fetch(`${hafVscApi}/epoch/${epoch_num}`)).json()
 }
 
-export const fetchBlocksInEpoch = async (
-  epoch_num: number,
-  start_block_id: number = 0,
-  count: number = 200
-): Promise<BlockInEpoch[]> => {
+export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 200, last_block_id?: number): Promise<Block[]> => {
   return await (
-    await fetch(`${hafVscApi}/rpc/get_l2_blocks_in_epoch?epoch_num=${epoch_num}&start_id=${start_block_id}&count=${count}`)
+    await fetch(
+      `${hafVscApi}/block/in-epoch/${epoch_num}?count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`
+    )
   ).json()
 }
 
@@ -131,7 +126,7 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
 
 export const fetchL1TxOutput = async (
   trx_id: string
-): Promise<(ContractCallOutput | TransferWithdrawOutput | Election | BlockDetail | ContractCreatedOutput | null)[]> => {
+): Promise<(ContractCallOutput | TransferWithdrawOutput | Election | Block | ContractCreatedOutput | null)[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)).json()
 }
 
