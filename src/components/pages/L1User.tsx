@@ -169,7 +169,7 @@ const L1User = () => {
               </CardHeader>
               <CardBody>
                 {availRC.max > 0 ? (
-                  <ProgressBarPct val={(100 * availRC.avail) / availRC.max} fontSize="lg" height={'10px'} />
+                  <ProgressBarPct val={(100 * availRC.avail) / availRC.max} fontSize="lg" height={'10px'} width={'100%'} />
                 ) : isL2BalLoading ? (
                   <Text>Loading balances...</Text>
                 ) : (
