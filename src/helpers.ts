@@ -103,6 +103,16 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
         ' ' +
         naiToString((tx.payload as DepositPayload).amount)
       break
+    case 'consensus_stake':
+      result += ` stake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+        (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+      } for consensus`
+      break
+    case 'consensus_unstake':
+      result += ` unstake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+        (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+      } from consensus`
+      break
     case 'call':
       const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
       if (call.op === 'call_contract')
@@ -214,6 +224,5 @@ export const availableRC = (bal: UserBalance, head_block_num?: number, is_hive_u
   if (amt_ret > bal.rc_used.amount) {
     amt_ret = bal.rc_used.amount
   }
-  console.log({ avail: max_rc - (bal.rc_used.amount - amt_ret), max: max_rc })
   return { avail: max_rc - (bal.rc_used.amount - amt_ret), max: max_rc }
 }
