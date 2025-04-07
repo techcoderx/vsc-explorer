@@ -13,23 +13,20 @@ const Blocks = () => {
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
-  const paginate = page ? pageNumber * count : count
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
     enabled: !invalidPage
   })
   const height = prop?.l2_block_height
+  const lastBlock = (prop?.l2_block_height || 0) - (pageNumber - 1) * count
   const {
     data: blocks,
     isLoading: isBlocksLoading,
     isSuccess: isBlocksSuccess
   } = useQuery({
     queryKey: ['vsc-blocks', height, page],
-    queryFn: async () => {
-      const d = await fetchBlocks(Math.max(1, height! - paginate + 1), Math.min(count, height! - paginate + count))
-      return d.reverse()
-    },
+    queryFn: async () => fetchBlocks(lastBlock, count),
     enabled: !!height && !invalidPage
   })
   if (invalidPage) return <PageNotFound />
@@ -50,7 +47,6 @@ const Blocks = () => {
               <Th>Id</Th>
               <Th>Age</Th>
               <Th>Proposer</Th>
-              <Th>Txs</Th>
               <Th>Block Hash</Th>
               <Th>Voted</Th>
             </Tr>
@@ -68,8 +64,8 @@ const Blocks = () => {
               blocks.map((item, i) => (
                 <Tr key={i}>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/block/' + item.id}>
-                      {item.id}
+                    <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
+                      {item.be_info.block_id}
                     </Link>
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
@@ -82,16 +78,16 @@ const Blocks = () => {
                       {item.proposer}
                     </Link>
                   </Td>
-                  <Td>{item.txs}</Td>
+                  {/* <Td>{item.txs}</Td> */}
                   <Td>
-                    <Tooltip label={item.block_hash} placement="top">
-                      <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block_hash}>
-                        {abbreviateHash(item.block_hash)}
+                    <Tooltip label={item.block} placement="top">
+                      <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
+                        {abbreviateHash(item.block)}
                       </Link>
                     </Tooltip>
                   </Td>
                   <Td maxW={'200px'}>
-                    <ProgressBarPct val={(item.voted_weight / item.eligible_weight) * 100} />
+                    <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
                   </Td>
                 </Tr>
               ))

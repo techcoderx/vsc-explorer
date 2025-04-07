@@ -33,32 +33,30 @@ interface ItemWithIdxBlk<IdType extends number | string> extends Item<IdType> {
 }
 
 export interface Block {
-  id: number
-  ts: string
-  l1_tx: string
-  l1_block: number
-  proposer: string
-  prev_block_hash?: string
-  block_hash: string
-  block_body_hash: string
-  txs: number
-}
-
-export interface BlockDetail extends Block {
   error?: string
+  id: string
+  block: string
+  end_block: number
   merkle_root: string
-  voted_weight: number
-  eligible_weight: number
-  signature: {
-    sig: string
-    bv: string
+  proposer: string
+  // sig_root: null
+  // signers: null
+  slot_height: number
+  start_block: number
+  stats: {
+    size: number
   }
-}
-
-export interface BlockRangeItm extends Block {
-  voted_weight: number
-  eligible_weight: number
-  bv: string
+  ts: string
+  be_info: {
+    block_id: number
+    epoch: number
+    signature: {
+      sig: string
+      bv: string
+    }
+    voted_weight: number
+    eligible_weight: number
+  }
 }
 
 export interface BlockTx extends ItemWithIdxBlk<string> {
@@ -93,6 +91,7 @@ export interface UserBalance {
   hbd_savings: number
   hive: number
   hive_consensus: number
+  hive_unstaking: number
   rc_used: {
     block_height: number
     amount: number
@@ -100,6 +99,7 @@ export interface UserBalance {
 }
 
 export interface Election {
+  error?: string
   epoch: number
   // l1_tx: string
   proposer: string
@@ -115,31 +115,10 @@ export interface Election {
   weights: number[]
   total_weight: number
   block_height: number
-}
-
-export interface Epoch extends Item<number> {
-  epoch: number
-  l1_tx: string
-  proposer: string
-  data_cid: string
-  election: WeightedMembers[]
-  members_at_start: WeightedMembers[]
-  voted_weight: number
-  eligible_weight: number
-  sig: string
-  bv: string
-  error?: string
-}
-
-export interface BlockInEpoch {
-  id: number
+  trx_id: string
   ts: string
-  block_hash: string
-  proposer: string
-  txs: number
-  voted_weight: number
   eligible_weight: number
-  bv: string
+  voted_weight: number
 }
 
 const txTypes = [
@@ -351,6 +330,6 @@ export interface BridgeTx extends Item<number> {
 }
 
 export interface WeightedMembers {
-  username: string
-  weight: number
+  account: string
+  key: string
 }
