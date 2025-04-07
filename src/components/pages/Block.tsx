@@ -48,12 +48,12 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   //   enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
   // })
   const { data: epoch } = useQuery({
-    queryKey: ['vsc-epoch', block?.be_info.epoch],
-    queryFn: async () => fetchEpoch(block?.be_info.epoch),
+    queryKey: ['vsc-epoch', block && !block.error ? block?.be_info.epoch : -1],
+    queryFn: async () => fetchEpoch(block && !block.error ? block?.be_info.epoch : -1),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkNum && !block.error
   })
   const { votedMembers, votedWeight, totalWeight } = getVotedMembers(
-    base64UrlToHex((block && block.be_info && block.be_info.signature && block.be_info.signature.bv) ?? ''),
+    base64UrlToHex((block && !block.error && block.be_info && block.be_info.signature ? block.be_info.signature.bv : '') ?? ''),
     epoch?.members ?? [],
     epoch?.weights ?? []
   )
@@ -65,47 +65,48 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/' + (blkNum! - 1) : undefined} toNext={'/block/' + (blkNum! + 1)} />
       </Stack>
       <hr />
-      {block?.error || isBlockError ? (
-        <Text>{block ? block.error : 'Failed to fetch block from VSC-HAF node'}</Text>
+      {(block && block.error) || isBlockError ? (
+        <Text mt={'3'}>{block ? block.error : 'Failed to fetch block from backend'}</Text>
       ) : (
-        <Table marginTop="20px">
-          <Tbody>
-            <TableRow label="Block ID" value={block?.be_info.block_id} isLoading={isBlockLoading} />
-            <TableRow
-              label="Timestamp"
-              value={block ? block.ts + ' (' + timeAgo(block.ts) + ')' : ''}
-              isLoading={isBlockLoading}
-            />
-            <TableRow label="L1 Tx" value={block?.id} isLoading={isBlockLoading} link={'/tx/' + block?.id} />
-            <TableRow
-              label="Slot Height"
-              value={block?.slot_height}
-              isLoading={isBlockLoading}
-              link={l1Explorer + '/b/' + block?.slot_height}
-            />
-            <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@' + block?.proposer} />
-            {/* <TableRow
+        <>
+          <Table marginTop="20px">
+            <Tbody>
+              <TableRow label="Block ID" value={block?.be_info.block_id} isLoading={isBlockLoading} />
+              <TableRow
+                label="Timestamp"
+                value={block ? block.ts + ' (' + timeAgo(block.ts) + ')' : ''}
+                isLoading={isBlockLoading}
+              />
+              <TableRow label="L1 Tx" value={block?.id} isLoading={isBlockLoading} link={'/tx/' + block?.id} />
+              <TableRow
+                label="Slot Height"
+                value={block?.slot_height}
+                isLoading={isBlockLoading}
+                link={l1Explorer + '/b/' + block?.slot_height}
+              />
+              <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@' + block?.proposer} />
+              {/* <TableRow
               label="Previous Block Hash"
               value={block?.prev_block_hash ?? 'NULL'}
               isLoading={isBlockLoading}
               link={block?.prev_block_hash ? ipfsSubGw(block?.prev_block_hash) : undefined}
             /> */}
-            <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
-            <TableRow label="Participation">
-              <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />
-            </TableRow>
-          </Tbody>
-        </Table>
-      )}
-      <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-        <TabList>
-          <Tab>Transactions</Tab>
-          <Tab>Participation</Tab>
-        </TabList>
-        <TabPanels mt={'2'}>
-          <TabPanel>
-            👀 Coming soon...
-            {/* {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
+              <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
+              <TableRow label="Participation">
+                <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />
+              </TableRow>
+            </Tbody>
+          </Table>
+
+          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
+            <TabList>
+              <Tab>Transactions</Tab>
+              <Tab>Participation</Tab>
+            </TabList>
+            <TabPanels mt={'2'}>
+              <TabPanel>
+                👀 Coming soon...
+                {/* {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
             {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ? (
               <Flex direction={'column'} gap={'3'}>
                 {l2BlockTxs?.map((tx, i) => {
@@ -115,17 +116,19 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
             ) : isL2BlockError ? (
               <Text>Failed to load L2 block data</Text>
             ) : null} */}
-          </TabPanel>
-          <TabPanel>
-            <ParticipatedMembers
-              bvHex={base64UrlToHex(block && block.be_info.signature && block.be_info.signature.bv) ?? ''}
-              sig={(block && block.be_info.signature && block.be_info.signature.sig) ?? ''}
-              members={votedMembers.map((m) => m.account)}
-              isLoading={isBlockLoading}
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+              </TabPanel>
+              <TabPanel>
+                <ParticipatedMembers
+                  bvHex={base64UrlToHex(block && block.be_info.signature && block.be_info.signature.bv) ?? ''}
+                  sig={(block && block.be_info.signature && block.be_info.signature.sig) ?? ''}
+                  members={votedMembers.map((m) => m.account)}
+                  isLoading={isBlockLoading}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </>
+      )}
     </>
   )
 }
