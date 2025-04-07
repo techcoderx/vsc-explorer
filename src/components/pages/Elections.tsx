@@ -43,6 +43,7 @@ const Elections = () => {
               <Th>L1 Block Number</Th>
               <Th>Proposer</Th>
               <Th>Data CID</Th>
+              <Th>Members</Th>
               <Th>Total Weight</Th>
               {/* <Th>Voted</Th> */}
             </Tr>
@@ -81,6 +82,7 @@ const Elections = () => {
                       </Link>
                     </Tooltip>
                   </Td>
+                  <Td>{epoch.members.length}</Td>
                   <Td>{epoch.total_weight}</Td>
                   {/* <Td maxW={'200px'}>
                     <ProgressBarPct val={(epoch.voted_weight / epoch.eligible_weight) * 100} />
