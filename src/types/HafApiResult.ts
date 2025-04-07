@@ -150,7 +150,9 @@ const txTypes = [
   'election_result',
   'custom_json',
   'transfer',
-  'l1_transfer'
+  'l1_transfer',
+  'consensus_stake',
+  'consensus_unstake'
 ] as const
 type TxTypes = (typeof txTypes)[number]
 
