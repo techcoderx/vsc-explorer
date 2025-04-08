@@ -166,23 +166,15 @@ export interface L1Transaction extends Item<number> {
 }
 
 export interface Contract {
-  contract_id: string
-  created_in_op: string
-  created_in_l1_block: number
-  created_at: string
+  error?: string
+  id: string
+  tx_id: string
+  creation_height: number
   creator: string
+  owner: string
   name: string
   description: string
   code: string
-}
-
-export interface ContractWifProof extends Contract {
-  storage_proof: {
-    hash?: string
-    sig?: string
-    bv?: string
-  }
-  error?: string
 }
 
 export interface AccInfo {

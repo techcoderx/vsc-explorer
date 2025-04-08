@@ -20,7 +20,7 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchTxByL1Id, fetchL1TxOutput } from '../../requests'
 import { roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { Block, TxHeader } from '../../types/HafApiResult'
+import { Block, Contract, TxHeader } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 
 const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
@@ -132,6 +132,22 @@ const L1Tx = () => {
                             params: l.params
                           }
                         })}
+                      />
+                    </CardBody>
+                  </Box>
+                ) : trx.type === 'create_contract' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Deployed Contract</Heading>
+                    </CardHeader>
+                    <CardBody>
+                      <TableRow
+                        minimalSpace
+                        isInCard
+                        allCardBorders
+                        label="Contract ID"
+                        value={(outData[i]! as Contract).id}
+                        link={'/contract/' + (outData[i]! as Contract).id}
                       />
                     </CardBody>
                   </Box>

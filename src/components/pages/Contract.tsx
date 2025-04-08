@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import {
   Text,
   Heading,
@@ -13,14 +13,14 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Badge,
-  Tooltip,
-  Button,
-  Center,
+  // Thead,
+  // Th,
+  // Tr,
+  // Td,
+  // Badge,
+  // Tooltip,
+  // Button,
+  // Center,
   Flex,
   Card,
   CardBody,
@@ -29,33 +29,33 @@ import {
 } from '@chakra-ui/react'
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link as ReactRouterLink } from 'react-router'
-import { fetchCallsByContractId, fetchContractByID } from '../../requests'
+import { useParams } from 'react-router'
+import { fetchContractByID } from '../../requests'
 import TableRow from '../TableRow'
-import { timeAgo, thousandSeperator, abbreviateHash } from '../../helpers'
+import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
 // import { ParticipatedMembers } from '../BlsAggMembers'
-import { L1ContractCallTx, L2ContractCallTx } from '../../types/HafApiResult'
+// import { L1ContractCallTx, L2ContractCallTx } from '../../types/HafApiResult'
 import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
 
-const callerSummary = (tx: L1ContractCallTx | L2ContractCallTx): { primary: string; add: number } => {
-  return tx.input_src === 'vsc'
-    ? { primary: tx.signers[0], add: tx.signers.length - 1 }
-    : tx.input_src === 'hive'
-    ? {
-        primary: tx.signers.active.length > 0 ? tx.signers.active[0] : tx.signers.posting[0],
-        add: tx.signers.active.length + tx.signers.posting.length - 1
-      }
-    : { primary: '', add: 0 }
-}
+// const callerSummary = (tx: L1ContractCallTx | L2ContractCallTx): { primary: string; add: number } => {
+//   return tx.input_src === 'vsc'
+//     ? { primary: tx.signers[0], add: tx.signers.length - 1 }
+//     : tx.input_src === 'hive'
+//     ? {
+//         primary: tx.signers.active.length > 0 ? tx.signers.active[0] : tx.signers.posting[0],
+//         add: tx.signers.active.length + tx.signers.posting.length - 1
+//       }
+//     : { primary: '', add: 0 }
+// }
 
 export const Contract = () => {
-  const [txCount, setTxCount] = useState(0)
-  const [contractTxs, setContractTxs] = useState<(L1ContractCallTx | L2ContractCallTx)[]>([])
-  const [contractTxEnd, setContractTxEnd] = useState(false)
+  // const [txCount, setTxCount] = useState(0)
+  // const [contractTxs, setContractTxs] = useState<(L1ContractCallTx | L2ContractCallTx)[]>([])
+  // const [contractTxEnd, setContractTxEnd] = useState(false)
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vs4') && contractId?.length !== 68
   const {
@@ -68,7 +68,7 @@ export const Contract = () => {
     queryFn: async () => fetchContractByID(contractId!),
     enabled: !invalidContractId
   })
-  const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
+  // const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
   // const { data: members } = useQuery({
   //   queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
   //   queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
@@ -89,16 +89,16 @@ export const Contract = () => {
     queryFn: async () => fetchSrcFiles(contractId!),
     enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
   })
-  useEffect(() => {
-    if (contractId)
-      fetchCallsByContractId(contractId)
-        .then((txs) => {
-          setContractTxs(txs)
-          setTxCount(txs.length)
-          if (txs.length < 100) setContractTxEnd(true)
-        })
-        .catch(() => {})
-  }, [])
+  // useEffect(() => {
+  //   if (contractId)
+  //     fetchCallsByContractId(contractId)
+  //       .then((txs) => {
+  //         setContractTxs(txs)
+  //         setTxCount(txs.length)
+  //         if (txs.length < 100) setContractTxEnd(true)
+  //       })
+  //       .catch(() => {})
+  // }, [])
   return (
     <>
       <Box marginBottom={'15px'}>
@@ -113,18 +113,18 @@ export const Contract = () => {
           <TableContainer>
             <Table>
               <Tbody>
-                <TableRow
+                {/* <TableRow
                   label="Creation Timestamp"
                   value={contract ? contract.created_at + ' (' + timeAgo(contract.created_at) + ')' : ''}
                   isLoading={isLoading}
-                />
+                /> */}
                 <TableRow
                   label="Created In L1 Block"
-                  value={contract.created_in_l1_block}
-                  link={l1Explorer + '/b/' + contract.created_in_l1_block}
+                  value={contract.creation_height}
+                  link={l1Explorer + '/b/' + contract.creation_height}
                   isLoading={isLoading}
                 />
-                <TableRow label="Created in L1 Tx" value={contract.created_in_op} link={'/tx/' + contract.created_in_op} />
+                <TableRow label="Created in L1 Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
                 <TableRow label="Creator" value={contract.creator} link={'/@' + contract.creator} />
                 <TableRow label="Bytecode CID">
                   <Flex align={'center'} gap={'2'}>
@@ -137,16 +137,14 @@ export const Contract = () => {
           </TableContainer>
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
-              <Tab>
-                Transactions ({txCount}
-                {!contractTxEnd ? '+' : ''})
-              </Tab>
-              {hasStorageProof ? <Tab>Storage Proof</Tab> : null}
+              <Tab>Transactions</Tab>
+              <Tab>Storage Proof</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
-                <TableContainer>
+                👀 Coming soon...
+                {/*<TableContainer>
                   <Table mb={'5'}>
                     <Thead>
                       <Tr>
@@ -233,18 +231,17 @@ export const Contract = () => {
                       Load More
                     </Button>
                   </Center>
-                ) : null}
+                ) : null}*/}
               </TabPanel>
-              {hasStorageProof ? (
-                <TabPanel>
-                  {/* <ParticipatedMembers
-                    bvHex={contract.storage_proof.bv!}
-                    sig={contract.storage_proof.sig!}
-                    members={votedMembers.map((m) => m.username)}
-                    isLoading={isLoading}
-                  /> */}
-                </TabPanel>
-              ) : null}
+              <TabPanel>
+                👀 Coming soon...
+                {/* <ParticipatedMembers
+                  bvHex={contract.storage_proof.bv!}
+                  sig={contract.storage_proof.sig!}
+                  members={votedMembers.map((m) => m.username)}
+                  isLoading={isLoading}
+                /> */}
+              </TabPanel>
               <TabPanel>
                 {verifInfo ? (
                   verifInfo.status === 'success' ? (
