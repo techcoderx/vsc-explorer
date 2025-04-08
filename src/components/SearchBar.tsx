@@ -19,7 +19,7 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
-import { fetchTxByL1Id, fetchBlock, cidSearch, fetchL1Rest } from '../requests'
+import { fetchProps, fetchTxByL1Id, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
 import { L1Account } from '../types/L1ApiResult'
 
@@ -38,7 +38,7 @@ interface SearchResultHook {
 }
 
 enum SearchQueryType {
-  Block,
+  Number,
   L1Account,
   L1Transaction,
   CID
@@ -48,14 +48,8 @@ enum SearchResultType {
   Address = 'Address',
   Block = 'Block',
   L1Account = 'L1 Account',
-  L1Transaction = 'L1 Transaction',
-  L2Transaction = 'L2 Contract Call',
-  ContractOutput = 'Contract Output',
-  Transfer = 'L2 Transfer',
-  Withdraw = 'L2 Withdrawal Request',
-  Event = 'Event',
+  Transaction = 'Transaction',
   Epoch = 'Epoch',
-  AnchorRef = 'Anchor Ref',
   Contract = 'Contract'
 }
 
@@ -91,13 +85,13 @@ const useSearchResults = (query: string): SearchResultHook => {
     enabled: queryType === SearchQueryType.L1Account
   })
   const {
-    data: block,
-    isLoading: isBlockLoading,
-    isError: isBlockError
+    data: prop,
+    isSuccess: isPropSuccess,
+    isLoading: isPropLoading
   } = useQuery({
-    queryKey: ['vsc-block', query],
-    queryFn: async () => fetchBlock(parseInt(query)),
-    enabled: queryType === SearchQueryType.Block
+    queryKey: ['vsc-props'],
+    queryFn: fetchProps,
+    enabled: queryType === SearchQueryType.Number
   })
   const {
     data: cidRes,
@@ -118,7 +112,7 @@ const useSearchResults = (query: string): SearchResultHook => {
           ...(!isL1TxErr && l1Tx && l1Tx.length > 0
             ? [
                 {
-                  type: SearchResultType.L1Transaction,
+                  type: SearchResultType.Transaction,
                   href: '/tx/' + query
                 }
               ]
@@ -141,20 +135,24 @@ const useSearchResults = (query: string): SearchResultHook => {
         ],
         isLoading: isL1AccLoading
       }
-    } else if (!isNaN(parseInt(query)) && parseInt(query) > 0) {
-      setQueryType(SearchQueryType.Block)
+    } else if (!isNaN(parseInt(query)) && parseInt(query) >= 0) {
+      setQueryType(SearchQueryType.Number)
+      const q = parseInt(query)
+      if (isPropSuccess && prop) {
+        if (prop.epoch >= q)
+          result.push({
+            type: SearchResultType.Epoch,
+            href: '/epoch/' + q
+          })
+        if (prop.l2_block_height >= q && q > 0)
+          result.push({
+            type: SearchResultType.Block,
+            href: '/block/' + q
+          })
+      }
       return {
-        searchResult: [
-          ...(!isBlockError && block && !block.error
-            ? [
-                {
-                  type: SearchResultType.Block,
-                  href: '/block/' + query
-                }
-              ]
-            : [])
-        ],
-        isLoading: isBlockLoading
+        searchResult: result,
+        isLoading: isPropLoading
       }
     } else {
       setQueryType(SearchQueryType.CID)
@@ -173,47 +171,15 @@ const useSearchResults = (query: string): SearchResultHook => {
             result = [
               {
                 type: SearchResultType.Block,
-                href: '/block/' + cidRes.result
+                href: '/block-by-hash/' + cidRes.result
               }
             ]
             break
-          case 'call_contract':
+          case 'tx':
             result = [
               {
-                type: SearchResultType.L2Transaction,
-                href: '/vsc-tx/' + query
-              }
-            ]
-            break
-          case 'transfer':
-            result = [
-              {
-                type: SearchResultType.Transfer,
-                href: '/vsc-tx/' + query
-              }
-            ]
-            break
-          case 'withdraw':
-            result = [
-              {
-                type: SearchResultType.Withdraw,
-                href: '/vsc-tx/' + query
-              }
-            ]
-            break
-          case 'contract_output':
-            result = [
-              {
-                type: SearchResultType.ContractOutput,
-                href: '/vsc-tx-output/' + query
-              }
-            ]
-            break
-          case 'event':
-            result = [
-              {
-                type: SearchResultType.Event,
-                href: '/event/' + query
+                type: SearchResultType.Transaction,
+                href: '/tx/' + query
               }
             ]
             break
@@ -225,15 +191,7 @@ const useSearchResults = (query: string): SearchResultHook => {
               }
             ]
             break
-          case 'anchor_ref':
-            result = [
-              {
-                type: SearchResultType.AnchorRef,
-                href: '/anchor-ref/' + cidRes.result
-              }
-            ]
-            break
-          case 'election_result':
+          case 'election':
             result = [
               {
                 type: SearchResultType.Epoch,
@@ -276,6 +234,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
         colorScheme={themeColorScheme}
         variant={'outline'}
         aria-label={'Search account, block, tx...'}
+        _focus={{ boxShadow: 'none' }}
       >
         <SearchIcon />
         <Text
