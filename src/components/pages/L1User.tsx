@@ -194,14 +194,16 @@ const L1User = () => {
                       value={thousandSeperator(roundFloat((l2Balance?.hive || 0) / 1000, 3)) + ' HIVE'}
                       isLoading={!isL2BalSuccess}
                     />
-                    <TableRow
-                      isInCard
-                      minimalSpace
-                      minWidthLabel="115px"
-                      label="HIVE Staked"
-                      value={thousandSeperator(roundFloat((l2Balance?.hive_consensus || 0) / 1000, 3)) + ' HIVE'}
-                      isLoading={!isL2BalSuccess}
-                    />
+                    {l2Balance && l2Balance.hive_consensus ? (
+                      <TableRow
+                        isInCard
+                        minimalSpace
+                        minWidthLabel="115px"
+                        label="Consensus Stake"
+                        value={thousandSeperator(roundFloat((l2Balance?.hive_consensus || 0) / 1000, 3)) + ' HIVE'}
+                        isLoading={!isL2BalSuccess}
+                      />
+                    ) : null}
                     {l2Balance && l2Balance.hive_unstaking ? (
                       <TableRow
                         isInCard
