@@ -17,30 +17,13 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchTxByL1Id } from '../../requests'
-import { thousandSeperator, timeAgo } from '../../helpers'
+import { fetchTxByL1Id, fetchL1TxOutput } from '../../requests'
+import { roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-// import BlockDetail,
-// ContractCreatedOutput,
-// Epoch,
-// EventItm,
-// ContractCallOutput,
-// TransferWithdrawOutput
-// '../../types/HafApiResult'
-// import { ProgressBarPct } from '../ProgressPercent'
+import { Block, TxHeader } from '../../types/HafApiResult'
+import { ProgressBarPct } from '../ProgressPercent'
 
-// const Event = ({ evt, i }: { evt: EventItm; i: number }) => {
-//   return (
-//     <Box>
-//       <CardHeader>
-//         <Heading fontSize={'xl'}>Event #{i}</Heading>
-//       </CardHeader>
-//       <CardBody marginTop={'-25px'}>
-//         <JsonToTableRecursive isInCard minimalSpace json={evt} />
-//       </CardBody>
-//     </Box>
-//   )
-// }
+const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
 
 const L1Tx = () => {
   const { txid } = useParams()
@@ -50,11 +33,11 @@ const L1Tx = () => {
     queryFn: async () => fetchTxByL1Id(txid!),
     enabled: isValid
   })
-  // const { data: outData, isSuccess: isOutSuccess } = useQuery({
-  //   queryKey: ['vsc-l1-tx-output', txid],
-  //   queryFn: async () => fetchL1TxOutput(txid!),
-  //   enabled: isValid
-  // })
+  const { data: outData } = useQuery({
+    queryKey: ['vsc-l1-tx-output', txid],
+    queryFn: async () => fetchL1TxOutput(txid!),
+    enabled: isValid
+  })
   return (
     <>
       <Box marginBottom={'15px'}>
@@ -114,6 +97,11 @@ const L1Tx = () => {
                       <Badge color={themeColor}>{trx.type}</Badge>
                     </TableRow>
                     <TableRow isInCard label="Nonce" value={trx.nonce} />
+                    {outData && outData[i] && VscLedgerTxNames.includes(trx.type) ? (
+                      <TableRow isInCard label="Status">
+                        <Badge color={themeColor}>{(outData[i] as TxHeader).status}</Badge>
+                      </TableRow>
+                    ) : null}
                   </Tbody>
                 </Table>
               </CardBody>
@@ -123,71 +111,36 @@ const L1Tx = () => {
               <CardBody marginTop={'-25px'}>
                 <JsonToTableRecursive isInCard minimalSpace json={trx.payload as object} />
               </CardBody>
-              {/* {isOutSuccess && outData.length >= i + 1 && outData[i] ? (
-                trx.type === 'announce_tx' || trx.type === 'tx' ? (
-                  (outData[i] as ContractCallOutput).tx_type === 'call_contract' ? (
-                    <Box>
-                      <CardHeader>
-                        <Heading fontSize={'xl'}>
-                          Output
-                          {!(outData[i] as ContractCallOutput).contract_output &&
-                          (outData[i] as ContractCallOutput).events.length === 0 ? (
-                            <Spinner size={'sm'} ml={'2.5'} />
-                          ) : null}
-                        </Heading>
-                      </CardHeader>
-                      <CardBody marginTop={'-25px'}>
-                        {(outData[i] as ContractCallOutput).contract_output ? (
-                          <JsonToTableRecursive isInCard minimalSpace json={(outData[i] as ContractCallOutput).contract_output} />
-                        ) : null}
-                      </CardBody>
-                      {((outData[i]! as ContractCallOutput).events || []).map((evt, i) => (
-                        <Event key={i} evt={evt} i={i} />
-                      ))}
-                    </Box>
-                  ) : (outData[i] as TransferWithdrawOutput).tx_type === 'transfer' ||
-                    (outData[i] as TransferWithdrawOutput).tx_type === 'withdraw' ? (
-                    (outData[i] as TransferWithdrawOutput).events.map((evt, i) => <Event key={i} evt={evt} i={i} />)
-                  ) : null
-                ) : trx.type === 'election_result' ? (
+              {outData && outData[i] ? (
+                VscLedgerTxNames.includes(trx.type) &&
+                Array.isArray((outData[i] as TxHeader).ledger) &&
+                (outData[i] as TxHeader).ledger.length > 0 ? (
                   <Box>
                     <CardHeader>
-                      <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+                      <Heading fontSize={'xl'}>Ledger Operations</Heading>
                     </CardHeader>
-                    <CardBody marginTop={'-25px'}>
-                      <Table margin={'0'} variant={'unstyled'}>
-                        <Tbody>
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Epoch"
-                            value={(outData[i]! as Epoch).epoch}
-                            link={'/epoch/' + (outData[i]! as Epoch).epoch}
-                          />
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Data CID"
-                            value={(outData[i]! as Epoch).data_cid}
-                          />
-                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
-                            <ProgressBarPct
-                              fontSize={'md'}
-                              val={((outData[i]! as Epoch).voted_weight / (outData[i]! as Epoch).eligible_weight) * 100}
-                            />
-                          </TableRow>
-                        </Tbody>
-                      </Table>
+                    <CardBody mt={'-25px'}>
+                      <JsonToTableRecursive
+                        isInCard
+                        minimalSpace
+                        json={(outData[i] as TxHeader).ledger.map((l) => {
+                          return {
+                            from: l.from,
+                            to: l.to,
+                            amount: `${roundFloat(l.amount / 1000, 3)} ${l.asset.toUpperCase()}`,
+                            type: l.type,
+                            params: l.params
+                          }
+                        })}
+                      />
                     </CardBody>
                   </Box>
-                trx.type === 'propose_block' ? (
+                ) : trx.type === 'produce_block' ? (
                   <Box>
                     <CardHeader>
                       <Heading fontSize={'xl'}>Proposed Block</Heading>
                     </CardHeader>
-                    <CardBody marginTop={'-25px'}>
+                    <CardBody mt={'-25px'}>
                       <Table margin={'0'} variant={'unstyled'}>
                         <Tbody>
                           <TableRow
@@ -195,64 +148,33 @@ const L1Tx = () => {
                             isInCard
                             allCardBorders
                             label="Block Number"
-                            value={(outData[i]! as BlockDetail).id}
-                            link={'/block/' + (outData[i]! as BlockDetail).id}
+                            value={(outData[i]! as Block).be_info.block_id}
+                            link={'/block/' + (outData[i]! as Block).be_info.block_id}
                           />
                           <TableRow
                             minimalSpace
                             isInCard
                             allCardBorders
                             label="Block Hash"
-                            value={(outData[i]! as BlockDetail).block_hash}
+                            value={(outData[i]! as Block).block}
                           />
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Block Body Hash"
-                            value={(outData[i]! as BlockDetail).block_body_hash}
-                          />
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Transactions"
-                            value={(outData[i]! as BlockDetail).txs}
-                          />
-                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
-                            <ProgressBarPct
-                              fontSize={'md'}
-                              val={
-                                ((outData[i]! as BlockDetail).voted_weight / (outData[i]! as BlockDetail).eligible_weight) * 100
-                              }
-                            />
-                          </TableRow>
-                        </Tbody>
-                      </Table>
-                    </CardBody>
-                  </Box>
-                ) : trx.type === 'create_contract' ? (
-                  <Box>
-                    <CardHeader>
-                      <Heading fontSize={'xl'}>Created Contract</Heading>
-                    </CardHeader>
-                    <CardBody marginTop={'-25px'}>
-                      <Table margin={'0'} variant={'unstyled'}>
-                        <Tbody>
-                          <TableRow
-                            minimalSpace
-                            isInCard
-                            allCardBorders
-                            label="Contract ID"
-                            value={(outData[i]! as ContractCreatedOutput).contract_id}
-                            link={'/contract/' + (outData[i]! as ContractCreatedOutput).contract_id}
-                          />
+                          {typeof (outData[i]! as Block).be_info === 'object' ? (
+                            <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                              <ProgressBarPct
+                                fontSize={'md'}
+                                val={
+                                  ((outData[i]! as Block).be_info.voted_weight / (outData[i]! as Block).be_info.eligible_weight) *
+                                  100
+                                }
+                              />
+                            </TableRow>
+                          ) : null}
                         </Tbody>
                       </Table>
                     </CardBody>
                   </Box>
                 ) : null
-              ) : null} */}
+              ) : null}
             </Card>
           ))}
         </Flex>

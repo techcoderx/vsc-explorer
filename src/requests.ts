@@ -3,26 +3,21 @@ import {
   Witness,
   L1Transaction,
   Contract,
-  AnchorRefs,
   AccInfo,
-  BlockTx,
   L2ContractCallTx,
   CIDSearchResult,
   Election,
-  AnchorRef,
   ContractWifProof,
   BridgeTx,
   L1ContractCallTx,
-  TransferWithdrawOutput,
   WeightedMembers,
   ContractOutputTx,
   EventsOp,
-  ContractCreatedOutput,
-  ContractCallOutput,
   TxHistory,
   EventHistoryItm,
   UserBalance,
-  Block
+  Block,
+  TxHeader
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
@@ -55,18 +50,6 @@ export const fetchContractByID = async (contract_id: string): Promise<ContractWi
   return await (await fetch(`${hafVscApi}/rpc/get_contract_by_id?id=${contract_id}`)).json()
 }
 
-export const fetchAnchorRefs = async (last_id: number, count: number = 100): Promise<AnchorRefs[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_anchor_refs?last_ref=${last_id}&count=${count}`)).json()
-}
-
-export const fetchAnchorRefByID = async (id: number): Promise<AnchorRef> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_anchor_ref_by_id?id=${id}`)).json()
-}
-
-export const fetchAnchorRefByCID = async (cid: string): Promise<AnchorRef> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_anchor_ref_by_cid?cid=${cid}`)).json()
-}
-
 export const fetchBlock = async (block_id: number): Promise<Block> => {
   return await (await fetch(`${hafVscApi}/block/by-id/${block_id}`)).json()
 }
@@ -75,9 +58,9 @@ export const fetchBlockByHash = async (block_hash: string): Promise<Block> => {
   return await (await fetch(`${hafVscApi}/block/by-cid/${block_hash}`)).json()
 }
 
-export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_txs_in_block?blk_id=${block_id}`)).json()
-}
+// export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
+//   return await (await fetch(`${hafVscApi}/rpc/get_txs_in_block?blk_id=${block_id}`)).json()
+// }
 
 export const fetchWitness = async (username: string): Promise<Witness> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}/witness`)).json()
@@ -124,10 +107,8 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
   return await (await fetch(`${hafVscApi}/haf/tx/${trx_id}`)).json()
 }
 
-export const fetchL1TxOutput = async (
-  trx_id: string
-): Promise<(ContractCallOutput | TransferWithdrawOutput | Election | Block | ContractCreatedOutput | null)[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_l1_tx_all_outputs?trx_id=${trx_id}`)).json()
+export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | TxHeader | null)[]> => {
+  return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
 }
 
 export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
