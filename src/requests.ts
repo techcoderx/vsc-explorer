@@ -180,7 +180,7 @@ export const fetchWithdrawReqsByAddr = async (address: string, count: number = 1
 }
 
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
-  return await (await fetch(`${hafVscApi}/rpc/search_by_cid?cid=${search_cid}`)).json()
+  return await (await fetch(`${hafVscApi}/search/${search_cid}`)).json()
 }
 
 export const fetchL1Rest = async <T>(route: string): Promise<T> => {

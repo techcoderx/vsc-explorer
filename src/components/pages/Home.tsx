@@ -67,18 +67,6 @@ const Home = () => {
                 <InfoBox title="Witnesses" prop={prop?.witnesses} isLoading={isPropLoading} isSuccess={isPropSuccess} />
                 <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
-              {/* <Stack
-                direction={{ base: 'column', md: 'row' }}
-                w="100%"
-                divider={<StackDivider />}
-                spacing={'4'}
-                align="center"
-                justify="center"
-              >
-                <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-                <InfoBox title="Anchor Refs" prop={prop?.anchor_refs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-                <InfoBox title="Bridge Txs" prop={prop?.bridge_txs} isLoading={isPropLoading} isSuccess={isPropSuccess} />
-              </Stack> */}
             </VStack>
           </CardBody>
         </Card>

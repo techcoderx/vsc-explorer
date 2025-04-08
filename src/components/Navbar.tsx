@@ -20,7 +20,7 @@ import {
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, Outlet } from 'react-router'
 import { multisigAccount, themeColor, themeColorULight } from '../settings'
-// import SearchBar from './SearchBar'
+import SearchBar from './SearchBar'
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -62,9 +62,9 @@ const Navbar = () => {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={3}>
-          {/* <Box width={{ base: 'fit-content', lg: '270px' }}>
+          <Box width={{ base: 'fit-content', lg: '270px' }}>
             <SearchBar miniBtn={useBreakpointValue({ base: true, lg: false })} />
-          </Box> */}
+          </Box>
           <Button onClick={toggleColorMode} aria-label={'Switch color theme'}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>
