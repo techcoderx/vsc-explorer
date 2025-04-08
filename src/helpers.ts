@@ -5,6 +5,7 @@ import {
   DepositPayload,
   ElectionResultPayload,
   NAI,
+  BlockPayload,
   NewContractPayload,
   TransferPayload,
   XferWdPayload
@@ -79,8 +80,8 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
     case 'announce_node':
       result += 'announced node'
       break
-    case 'propose_block':
-      result += 'proposed block' //+(tx.payload as BlockPayload).signed_block.block
+    case 'produce_block':
+      result += 'proposed block ' + (tx.payload as BlockPayload).signed_block.block
       break
     case 'create_contract':
       result += 'created contract ' + abbreviateHash((tx.payload as NewContractPayload).code, 15, 0)
@@ -102,6 +103,11 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
         ((tx.payload as DepositPayload).to === multisigAccount ? 'deposited' : 'withdrawn') +
         ' ' +
         naiToString((tx.payload as DepositPayload).amount)
+      break
+    case 'withdraw':
+      result += `withdraw ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+        (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+      }`
       break
     case 'consensus_stake':
       result += ` stake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${

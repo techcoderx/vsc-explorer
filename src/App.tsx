@@ -5,7 +5,6 @@ import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
 // import NewContracts from './components/pages/NewContracts'
-// import AnchorRefs from './components/pages/AnchorRefs'
 // import PageNotFound from './components/pages/404'
 import { BlockByID, BlockByHash } from './components/pages/Block'
 import L1User from './components/pages/L1User'
@@ -13,7 +12,6 @@ import L1Tx from './components/pages/L1Tx'
 // import L2Tx from './components/pages/L2Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
-// import { AnchorRefByHash, AnchorRefByID } from './components/pages/AnchorRef'
 // import { Contract } from './components/pages/Contract'
 // import HiveBridgeOverview from './components/pages/bridge/Overview'
 // import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
@@ -104,18 +102,6 @@ const router = createBrowserRouter([
       // {
       //   path: '/contract/:contractId',
       //   element: <Contract />
-      // },
-      // {
-      //   path: '/anchor-refs',
-      //   element: <AnchorRefs />
-      // },
-      // {
-      //   path: '/anchor-ref/:refid',
-      //   element: <AnchorRefByID />
-      // },
-      // {
-      //   path: '/anchor-ref-cid/:cid',
-      //   element: <AnchorRefByHash />
       // },
       {
         path: '/:username/:page?',

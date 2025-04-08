@@ -1,7 +1,6 @@
 import {
   BlockPayload,
   NewContractPayload,
-  NodeAnnouncePayload,
   L2TxType,
   CallContractPayload,
   XferWdPayload,
@@ -59,10 +58,26 @@ export interface Block {
   }
 }
 
-export interface BlockTx extends ItemWithIdxBlk<string> {
-  did?: string
-  tx_type: L2TxType
-  auth_count: number
+export interface LedgerOpLog {
+  to: string
+  from: string
+  amount: number
+  asset: string
+  memo: string
+  type: string
+  id: string
+  bidx: number
+  opidx: number
+  blockheight: number
+  params?: object
+}
+
+export interface TxHeader {
+  id: string
+  status: string
+  nonce: number
+  rc_limit: number
+  ledger: LedgerOpLog[]
 }
 
 export interface Witness {
@@ -123,12 +138,13 @@ export interface Election {
 
 const txTypes = [
   'announce_node',
-  'propose_block',
+  'produce_block',
   'create_contract',
   'call',
   'election_result',
   'custom_json',
   'transfer',
+  'withdraw',
   'l1_transfer',
   'consensus_stake',
   'consensus_unstake'
@@ -143,7 +159,6 @@ export interface L1Transaction extends Item<number> {
   payload?:
     | BlockPayload
     | NewContractPayload
-    | NodeAnnouncePayload
     | ElectionResultPayload
     | DepositPayload
     | TransferPayload
@@ -167,16 +182,6 @@ export interface ContractWifProof extends Contract {
     sig?: string
     bv?: string
   }
-  error?: string
-}
-
-export interface AnchorRefs extends Item<number> {
-  cid: string
-  tx_root: string
-}
-
-export interface AnchorRef extends AnchorRefs {
-  refs: string[]
   error?: string
 }
 
@@ -247,22 +252,6 @@ interface XferWdTxHistory extends TxHistoryBase {
 }
 
 export type TxHistory = CallContractTxHistory | XferWdTxHistory
-
-export interface TransferWithdrawOutput {
-  tx_type: 'transfer' | 'withdraw'
-  events: EventItm[]
-}
-
-export interface ContractCreatedOutput {
-  contract_id: string
-}
-
-export interface ContractCallOutput {
-  tx_type: 'call_contract'
-  contract_output: ContractOut
-  io_gas: number
-  events: EventItm[]
-}
 
 export interface ContractOut {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

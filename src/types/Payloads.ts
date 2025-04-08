@@ -12,8 +12,7 @@ export type BlockPayload = {
 }
 
 export type NewContractPayload = {
-  manifest_id: string
-  name: string // pla: obsolete as its already contained in the manifest, correct?
+  name: string
   code: string
 }
 
@@ -21,11 +20,6 @@ export type ElectionResultPayload = {
   epoch: number
   data: string
   signature: BLSSig
-}
-
-export type NodeAnnouncePayload = {
-  did: string
-  witnessEnabled: boolean
 }
 
 export type DepositPayload = {
