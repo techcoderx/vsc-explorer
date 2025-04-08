@@ -4,7 +4,7 @@ import Home from './components/pages/Home'
 import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
-// import NewContracts from './components/pages/NewContracts'
+import NewContracts from './components/pages/NewContracts'
 // import PageNotFound from './components/pages/404'
 import { BlockByID, BlockByHash } from './components/pages/Block'
 import L1User from './components/pages/L1User'
@@ -12,7 +12,7 @@ import L1Tx from './components/pages/L1Tx'
 // import L2Tx from './components/pages/L2Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
-// import { Contract } from './components/pages/Contract'
+import { Contract } from './components/pages/Contract'
 // import HiveBridgeOverview from './components/pages/bridge/Overview'
 // import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 // import { ContractOut } from './components/pages/ContractOut'
@@ -95,14 +95,14 @@ const router = createBrowserRouter([
         path: '/transactions',
         element: <NewTxs />
       },
-      // {
-      //   path: '/contracts',
-      //   element: <NewContracts />
-      // },
-      // {
-      //   path: '/contract/:contractId',
-      //   element: <Contract />
-      // },
+      {
+        path: '/contracts',
+        element: <NewContracts />
+      },
+      {
+        path: '/contract/:contractId',
+        element: <Contract />
+      },
       {
         path: '/:username/:page?',
         element: <L1User />

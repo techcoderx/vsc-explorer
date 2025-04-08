@@ -7,7 +7,6 @@ import {
   L2ContractCallTx,
   CIDSearchResult,
   Election,
-  ContractWifProof,
   BridgeTx,
   L1ContractCallTx,
   WeightedMembers,
@@ -43,11 +42,11 @@ export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
 }
 
 export const fetchLatestContracts = async (): Promise<Contract[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_latest_contracts`)).json()
+  return await (await fetch(`${hafVscApi}/contracts`)).json()
 }
 
-export const fetchContractByID = async (contract_id: string): Promise<ContractWifProof> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_contract_by_id?id=${contract_id}`)).json()
+export const fetchContractByID = async (contract_id: string): Promise<Contract> => {
+  return await (await fetch(`${hafVscApi}/contract/${contract_id}`)).json()
 }
 
 export const fetchBlock = async (block_id: number): Promise<Block> => {
@@ -107,7 +106,7 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
   return await (await fetch(`${hafVscApi}/haf/tx/${trx_id}`)).json()
 }
 
-export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | TxHeader | null)[]> => {
+export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Contract | TxHeader | null)[]> => {
   return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
 }
 
