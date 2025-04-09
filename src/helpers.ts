@@ -119,6 +119,16 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       } from consensus`
       break
+    case 'stake_hbd':
+      result += ` stake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+        (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+      }`
+      break
+    case 'unstake_hbd':
+      result += ` unstake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+        (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+      }`
+      break
     case 'call':
       const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
       if (call.op === 'call_contract')
