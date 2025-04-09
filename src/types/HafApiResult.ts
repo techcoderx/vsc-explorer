@@ -147,7 +147,9 @@ const txTypes = [
   'withdraw',
   'l1_transfer',
   'consensus_stake',
-  'consensus_unstake'
+  'consensus_unstake',
+  'stake_hbd',
+  'unstake_hbd'
 ] as const
 type TxTypes = (typeof txTypes)[number]
 
