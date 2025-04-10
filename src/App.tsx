@@ -17,7 +17,7 @@ import { Contract } from './components/pages/Contract'
 // import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 // import { ContractOut } from './components/pages/ContractOut'
 // import { Event } from './components/pages/Event'
-// import WitnessSchedule from './components/pages/Schedule'
+import WitnessSchedule from './components/pages/Schedule'
 // import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
 // import { AddressDeposits } from './components/pages/address/Deposits'
 // import { AddressWithdrawals } from './components/pages/address/Withdrawals'
@@ -67,10 +67,10 @@ const router = createBrowserRouter([
       //   path: '/witnesses/:page?',
       //   element: <Witnesses />
       // },
-      // {
-      //   path: '/schedule',
-      //   element: <WitnessSchedule />
-      // },
+      {
+        path: '/schedule',
+        element: <WitnessSchedule />
+      },
       {
         path: '/elections/:page?',
         element: <Elections />

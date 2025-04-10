@@ -16,11 +16,8 @@ export interface AccountBalance {
 export interface WitnessSchedule {
   data: {
     witnessSchedule: {
-      key: string
       account: string
       bn: number
-      bn_works: boolean
-      in_past: boolean
     }[]
   }
 }

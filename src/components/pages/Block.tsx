@@ -1,7 +1,7 @@
 import { Text, Table, Tbody, Stack, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchBlock, fetchBlockByHash, fetchEpoch } from '../../requests'
+import { fetchBlock, fetchEpoch } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
@@ -29,7 +29,7 @@ export const BlockByHash = () => {
   const invalidBlkId = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
   const { data, isLoading, isError } = useQuery({
     queryKey: ['vsc-block', blockId],
-    queryFn: async () => fetchBlockByHash(blockId!),
+    queryFn: async () => fetchBlock(blockId!, 'cid'),
     enabled: !invalidBlkId
   })
   const blkNum = !isLoading && !isError && data && !data.error ? data.be_info.block_id : 0

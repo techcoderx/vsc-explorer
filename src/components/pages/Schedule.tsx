@@ -1,16 +1,15 @@
-/*
 import { useEffect, useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { l1Explorer, themeColorScheme } from '../../settings'
-import { fetchBlocks, fetchProps, getWitnessSchedule } from '../../requests'
+import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
 import { thousandSeperator } from '../../helpers'
-import { BlockRangeItm } from '../../types/HafApiResult'
+import { Block } from '../../types/HafApiResult'
 
 const WitnessSchedule = () => {
   const [expSchedule, setExpSchedule] = useState(false)
-  const blocksProduced = useRef<{ [blockNum: string]: BlockRangeItm }>({})
+  const blocksProduced = useRef<{ [blockNum: string]: Block }>({})
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
@@ -18,19 +17,20 @@ const WitnessSchedule = () => {
     refetchInterval: 10000
   })
   const { data: schedule, isSuccess: isScheduleSuccess } = useQuery({
-    queryKey: ['vsc-witness-schedule'],
-    queryFn: async () => getWitnessSchedule(),
+    queryKey: ['vsc-witness-schedule', prop?.last_processed_block],
+    queryFn: async () => getWitnessSchedule(prop!.last_processed_block),
     refetchOnWindowFocus: false,
-    refetchInterval: 60000
+    refetchInterval: 60000,
+    enabled: !!prop && !!prop.last_processed_block
   })
-  const { data: latestBlock } = useQuery({
+  const currentSlot = prop ? prop.last_processed_block - (prop.last_processed_block % 10) : 0
+  const { data: blockAtCurrentSlot } = useQuery({
     queryKey: ['vsc-latest-block'],
-    queryFn: () => fetchBlocks(prop!.l2_block_height, 1),
-    enabled: !!prop && !!prop.l2_block_height,
-    refetchInterval: 10000
+    queryFn: () => fetchBlock(currentSlot, 'slot'),
+    enabled: !!currentSlot,
+    refetchInterval: 5000
   })
-  if (latestBlock && Array.isArray(latestBlock) && latestBlock.length >= 1)
-    blocksProduced.current[(latestBlock[0].l1_block - (latestBlock[0].l1_block % 10)).toString()] = latestBlock[0]
+  if (blockAtCurrentSlot && !blockAtCurrentSlot.error) blocksProduced.current[currentSlot] = blockAtCurrentSlot
   useEffect(() => {
     const l2BlockNums = Object.keys(blocksProduced.current)
     if (l2BlockNums.length > 50) {
@@ -39,7 +39,7 @@ const WitnessSchedule = () => {
       for (let i in l2BlockNums) if (parseInt(l2BlockNums[i]) < min) min = parseInt(l2BlockNums[i])
       delete blocksProduced.current[min.toString()]
     }
-  }, [latestBlock])
+  }, [blockAtCurrentSlot])
   return (
     <>
       <Text fontSize={'5xl'}>Schedule</Text>
@@ -93,8 +93,8 @@ const WitnessSchedule = () => {
                       </Td>
                       <Td>
                         {blocksProduced.current[sch.bn] ? (
-                          <Link as={ReactRouterLink} to={'/block/' + blocksProduced.current[sch.bn].id}>
-                            {thousandSeperator(blocksProduced.current[sch.bn].id)}
+                          <Link as={ReactRouterLink} to={'/block-by-hash/' + blocksProduced.current[sch.bn].block}>
+                            {thousandSeperator(blocksProduced.current[sch.bn].block)}
                           </Link>
                         ) : null}
                       </Td>
@@ -110,4 +110,3 @@ const WitnessSchedule = () => {
 }
 
 export default WitnessSchedule
-*/
