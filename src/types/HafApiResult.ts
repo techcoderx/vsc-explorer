@@ -7,7 +7,8 @@ import {
   DepositPayload,
   ElectionResultPayload,
   Coin,
-  TransferPayload
+  TransferPayload,
+  BLSSig
 } from './Payloads'
 
 export interface Props {
@@ -49,10 +50,7 @@ export interface Block {
   be_info: {
     block_id: number
     epoch: number
-    signature: {
-      sig: string
-      bv: string
-    }
+    signature: BLSSig
     voted_weight: number
     eligible_weight: number
   }
@@ -130,10 +128,13 @@ export interface Election {
   weights: number[]
   total_weight: number
   block_height: number
-  trx_id: string
-  ts: string
-  eligible_weight: number
-  voted_weight: number
+  be_info: {
+    trx_id: string
+    ts: string
+    signature: BLSSig
+    eligible_weight: number
+    voted_weight: number
+  }
 }
 
 const txTypes = [
