@@ -9,7 +9,6 @@ import {
   Election,
   BridgeTx,
   L1ContractCallTx,
-  WeightedMembers,
   ContractOutputTx,
   EventsOp,
   TxHistory,
@@ -33,10 +32,6 @@ export const fetchWitnesses = async (): Promise<Witness[]> => {
   return await (await fetch(`${hafVscApi}/haf/witnesses`)).json()
 }
 
-export const fetchMembersAtBlock = async (block_num: number): Promise<WeightedMembers[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_members_at_block?blk_num=${block_num}`)).json()
-}
-
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
   return await (await fetch(`${hafVscApi}/haf/latest-ops/50/true`)).json()
 }
@@ -49,12 +44,8 @@ export const fetchContractByID = async (contract_id: string): Promise<Contract> 
   return await (await fetch(`${hafVscApi}/contract/${contract_id}`)).json()
 }
 
-export const fetchBlock = async (block_id: number): Promise<Block> => {
-  return await (await fetch(`${hafVscApi}/block/by-id/${block_id}`)).json()
-}
-
-export const fetchBlockByHash = async (block_hash: string): Promise<Block> => {
-  return await (await fetch(`${hafVscApi}/block/by-cid/${block_hash}`)).json()
+export const fetchBlock = async (block_id: number | string, by: string = 'id'): Promise<Block> => {
+  return await (await fetch(`${hafVscApi}/block/by-${by}/${block_id}`)).json()
 }
 
 // export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
@@ -206,13 +197,19 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance
   return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
 }
 
-export const getWitnessSchedule = async (): Promise<WitnessSchedule> => {
+export const getWitnessSchedule = async (height: number): Promise<WitnessSchedule> => {
   return gql<WitnessSchedule>(
     `
-    query GetWitnessSchedule {
-      witnessSchedule
+    query WitnessSchedule($height: Uint64!) {
+      witnessSchedule(height: $height) {
+        account
+        bn
+      }
     }
-    `
+    `,
+    {
+      height: height.toString()
+    }
   )
 }
 
