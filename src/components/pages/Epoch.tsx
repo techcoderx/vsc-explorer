@@ -18,18 +18,20 @@ import {
   TabPanel,
   Skeleton,
   Tooltip,
-  TableContainer
+  TableContainer,
+  Flex
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, base64UrlToHex, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
-// import { ParticipatedMembers } from '../BlsAggMembers'
+import { ParticipatedMembers } from '../BlsAggMembers'
+import { InfoIcon } from '@chakra-ui/icons'
 
 const Epoch = () => {
   const { epochNum } = useParams()
@@ -44,6 +46,11 @@ const Epoch = () => {
     queryFn: async () => fetchEpoch(epchNum),
     enabled: !invalidEpochNum
   })
+  const { data: prevEpoch } = useQuery({
+    queryKey: ['vsc-epoch', epchNum - 1],
+    queryFn: async () => fetchEpoch(epchNum - 1),
+    enabled: !invalidEpochNum && epchNum > 0
+  })
   const {
     data: blocks,
     isLoading: isBlocksLoading,
@@ -55,7 +62,10 @@ const Epoch = () => {
   })
   const blockCount = (blocks && blocks.length) ?? 0
   const txId = epoch && epoch.be_info ? epoch.be_info.trx_id : ''
-  // const { votedMembers } = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
+  const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
+  const { votedMembers } = hasVotes
+    ? getVotedMembers(epoch!.be_info!.signature!.bv, prevEpoch.members, prevEpoch.weights)
+    : { votedMembers: [] }
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
@@ -85,9 +95,11 @@ const Epoch = () => {
               />
               <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
               <TableRow label="Election Data CID" value={epoch?.data} isLoading={isEpochLoading} />
-              {/* <TableRow label="Participation">
-                <ProgressBarPct fontSize={'md'} val={(epoch ? epoch?.voted_weight / epoch?.eligible_weight : 0) * 100} />
-              </TableRow> */}
+              {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
+                <TableRow label="Participation">
+                  <ProgressBarPct fontSize={'md'} val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
+                </TableRow>
+              ) : null}
               <TableRow label={`Elected Members (${epoch?.members.length})`} isLoading={isEpochLoading}>
                 <Grid
                   templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
@@ -169,13 +181,19 @@ const Epoch = () => {
                 )}
               </TabPanel>
               <TabPanel>
-                👀 Coming soon...
-                {/* <ParticipatedMembers
-                  bvHex={(epoch && epoch.bv) ?? '0'}
-                  sig={(epoch && epoch.sig) ?? ''}
-                  members={votedMembers.map((m) => m.username)}
-                  isLoading={isEpochLoading}
-                /> */}
+                {hasVotes ? (
+                  <ParticipatedMembers
+                    bvHex={base64UrlToHex(epoch.be_info!.signature!.bv)}
+                    sig={epoch.be_info!.signature!.sig}
+                    members={votedMembers.map((m) => m.account)}
+                    isLoading={isEpochLoading}
+                  />
+                ) : epchNum === 0 ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <InfoIcon color={themeColorScheme} />
+                    <Text fontSize={'md'}>BLS signature was not required for the first election.</Text>
+                  </Flex>
+                ) : null}
               </TabPanel>
             </TabPanels>
           </Tabs>

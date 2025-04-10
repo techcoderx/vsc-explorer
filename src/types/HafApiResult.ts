@@ -114,13 +114,8 @@ export interface UserBalance {
 export interface Election {
   error?: string
   epoch: number
-  // l1_tx: string
   proposer: string
   data: string
-  // voted_weight: number
-  // eligible_weight: number
-  // sig: string
-  // bv: string
   members: {
     key: string
     account: string
@@ -128,10 +123,10 @@ export interface Election {
   weights: number[]
   total_weight: number
   block_height: number
-  be_info: {
+  be_info?: {
     trx_id: string
     ts: string
-    signature: BLSSig
+    signature?: BLSSig
     eligible_weight: number
     voted_weight: number
   }

@@ -2,11 +2,10 @@ import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleto
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
-import { abbreviateHash, thousandSeperator } from '../../helpers'
-// import { ProgressBarPct } from '../ProgressPercent'
+import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
+import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
-import { l1Explorer } from '../../settings'
 
 const count = 100
 
@@ -40,12 +39,12 @@ const Elections = () => {
           <Thead>
             <Tr>
               <Th>Epoch</Th>
-              <Th>L1 Block Number</Th>
+              <Th>Age</Th>
               <Th>Proposer</Th>
               <Th>Data CID</Th>
               <Th>Members</Th>
               <Th>Total Weight</Th>
-              {/* <Th>Voted</Th> */}
+              <Th>Voted</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -62,13 +61,19 @@ const Elections = () => {
                 <Tr key={i}>
                   <Td>
                     <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
-                      {epoch.epoch}
+                      {thousandSeperator(epoch.epoch)}
                     </Link>
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
-                    <Link href={l1Explorer + '/b/' + epoch.block_height} target="_blank">
-                      {thousandSeperator(epoch.block_height)}
-                    </Link>
+                    {epoch.be_info ? (
+                      <Tooltip placement="top" label={epoch.be_info.ts}>
+                        {timeAgo(epoch.be_info.ts)}
+                      </Tooltip>
+                    ) : (
+                      <Text fontStyle={'italic'} opacity={'0.7'}>
+                        Indexing...
+                      </Text>
+                    )}
                   </Td>
                   <Td>
                     <Link as={ReactRouterLink} to={'/@' + epoch.proposer}>
@@ -84,9 +89,17 @@ const Elections = () => {
                   </Td>
                   <Td>{epoch.members.length}</Td>
                   <Td>{epoch.total_weight}</Td>
-                  {/* <Td maxW={'200px'}>
-                    <ProgressBarPct val={(epoch.voted_weight / epoch.eligible_weight) * 100} />
-                  </Td> */}
+                  <Td maxW={'200px'}>
+                    {epoch.epoch === 0 ? (
+                      <Text>N/A</Text>
+                    ) : epoch.be_info ? (
+                      <ProgressBarPct val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
+                    ) : (
+                      <Text fontStyle={'italic'} opacity={'0.7'}>
+                        Indexing...
+                      </Text>
+                    )}
+                  </Td>
                 </Tr>
               ))
             ) : (
