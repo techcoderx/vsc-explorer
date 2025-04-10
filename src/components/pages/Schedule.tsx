@@ -4,7 +4,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { l1Explorer, themeColorScheme } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
-import { thousandSeperator } from '../../helpers'
+import { abbreviateHash, thousandSeperator } from '../../helpers'
 import { Block } from '../../types/HafApiResult'
 
 const WitnessSchedule = () => {
@@ -54,7 +54,7 @@ const WitnessSchedule = () => {
       <Box overflowX="auto" maxW={'xl'} margin={'10px auto 15px auto'}>
         <FormControl display="flex" alignItems="center" mb={'10px'}>
           <FormLabel htmlFor="witsch-expand" mb="0">
-            Show Older Blocks
+            Show Older Slots
           </FormLabel>
           <Switch id="witsch-expand" colorScheme={themeColorScheme} size={'lg'} onChange={() => setExpSchedule(!expSchedule)} />
         </FormControl>
@@ -94,7 +94,7 @@ const WitnessSchedule = () => {
                       <Td>
                         {blocksProduced.current[sch.bn] ? (
                           <Link as={ReactRouterLink} to={'/block-by-hash/' + blocksProduced.current[sch.bn].block}>
-                            {thousandSeperator(blocksProduced.current[sch.bn].block)}
+                            {abbreviateHash(blocksProduced.current[sch.bn].block, 12, 0)}
                           </Link>
                         ) : null}
                       </Td>

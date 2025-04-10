@@ -54,6 +54,7 @@ const Epoch = () => {
     enabled: !invalidEpochNum
   })
   const blockCount = (blocks && blocks.length) ?? 0
+  const txId = epoch && epoch.be_info ? epoch.be_info.trx_id : ''
   // const { votedMembers } = getVotedMembers((epoch && epoch.bv) ?? '0', (epoch && epoch.members_at_start) ?? [])
   if (invalidEpochNum) return <PageNotFound />
   return (
@@ -72,10 +73,10 @@ const Epoch = () => {
               <TableRow label="Epoch Number" value={epochNum} isLoading={isEpochLoading} />
               <TableRow
                 label="Timestamp"
-                value={epoch ? epoch.ts + ' (' + timeAgo(epoch.ts) + ')' : ''}
+                value={epoch && epoch.be_info ? epoch.be_info.ts + ' (' + timeAgo(epoch.be_info.ts) + ')' : ''}
                 isLoading={isEpochLoading}
               />
-              <TableRow label="L1 Tx" value={epoch?.trx_id} isLoading={isEpochLoading} link={'/tx/' + epoch?.trx_id} />
+              <TableRow label="L1 Tx" value={txId} isLoading={isEpochLoading} link={'/tx/' + txId} />
               <TableRow
                 label="L1 Block"
                 value={epoch?.block_height}
