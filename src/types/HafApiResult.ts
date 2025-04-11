@@ -8,7 +8,8 @@ import {
   ElectionResultPayload,
   Coin,
   TransferPayload,
-  BLSSig
+  BLSSig,
+  InterestPayload
 } from './Payloads'
 
 export interface Props {
@@ -145,7 +146,11 @@ const txTypes = [
   'consensus_stake',
   'consensus_unstake',
   'stake_hbd',
-  'unstake_hbd'
+  'unstake_hbd',
+  'transfer_to_savings',
+  'transfer_from_savings',
+  'fill_transfer_from_savings',
+  'interest'
 ] as const
 type TxTypes = (typeof txTypes)[number]
 
@@ -160,6 +165,7 @@ export interface L1Transaction extends Item<number> {
     | ElectionResultPayload
     | DepositPayload
     | TransferPayload
+    | InterestPayload
     | { tx: CallContractPayload | XferWdPayload }
 }
 

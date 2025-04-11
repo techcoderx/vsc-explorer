@@ -35,6 +35,11 @@ export type TransferPayload = {
   amount: number
 }
 
+export type InterestPayload = {
+  owner: string
+  interest: NAI
+}
+
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
 export type Coin = 'HIVE' | 'HBD'
 

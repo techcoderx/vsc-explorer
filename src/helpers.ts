@@ -8,7 +8,8 @@ import {
   BlockPayload,
   NewContractPayload,
   TransferPayload,
-  XferWdPayload
+  XferWdPayload,
+  InterestPayload
 } from './types/Payloads'
 import { multisigAccount } from './settings'
 
@@ -128,6 +129,18 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       result += ` unstake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       }`
+      break
+    case 'transfer_to_savings':
+      result += ` stake ${naiToString((tx.payload as DepositPayload).amount)}`
+      break
+    case 'transfer_from_savings':
+      result += ` begin unstake ${naiToString((tx.payload as DepositPayload).amount)}`
+      break
+    case 'fill_transfer_from_savings':
+      result += ` unstaked ${naiToString((tx.payload as DepositPayload).amount)}`
+      break
+    case 'interest':
+      result += ` collect ${naiToString((tx.payload as InterestPayload).interest)} interest`
       break
     case 'call':
       const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
