@@ -57,7 +57,6 @@ export const fetchWitness = async (username: string): Promise<Witness> => {
 }
 
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
-  console.log(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)
   return await (await fetch(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
 }
 
@@ -65,11 +64,9 @@ export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
   return await (await fetch(`${hafVscApi}/epoch/${epoch_num}`)).json()
 }
 
-export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 200, last_block_id?: number): Promise<Block[]> => {
+export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100, last_block_id?: number): Promise<Block[]> => {
   return await (
-    await fetch(
-      `${hafVscApi}/block/in-epoch/${epoch_num}?count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`
-    )
+    await fetch(`${hafVscApi}/blocks?epoch=${epoch_num}&count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`)
   ).json()
 }
 

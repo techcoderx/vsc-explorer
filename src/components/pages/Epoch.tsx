@@ -56,7 +56,7 @@ const Epoch = () => {
     isLoading: isBlocksLoading,
     isError: isBlocksError
   } = useQuery({
-    queryKey: ['vsc-block-in-epoch', epchNum, 200, null],
+    queryKey: ['vsc-block-in-epoch', epchNum, 100, null],
     queryFn: async () => fetchBlocksInEpoch(epchNum),
     enabled: !invalidEpochNum
   })
@@ -150,7 +150,7 @@ const Epoch = () => {
                         {blocks.map((item, i) => (
                           <Tr key={i}>
                             <Td>
-                              <Link as={ReactRouterLink} to={'/block/' + item.id}>
+                              <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
                                 {item.be_info.block_id}
                               </Link>
                             </Td>
