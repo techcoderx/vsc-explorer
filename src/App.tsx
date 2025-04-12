@@ -6,7 +6,7 @@ import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
 // import PageNotFound from './components/pages/404'
-import { BlockByID, BlockByHash } from './components/pages/Block'
+import { BlockBy } from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
 // import L2Tx from './components/pages/L2Tx'
@@ -84,12 +84,8 @@ const router = createBrowserRouter([
         element: <Blocks />
       },
       {
-        path: '/block/:blockNum',
-        element: <BlockByID />
-      },
-      {
-        path: '/block-by-hash/:blockId',
-        element: <BlockByHash />
+        path: '/block/:blockId',
+        element: <BlockBy />
       },
       {
         path: '/transactions',

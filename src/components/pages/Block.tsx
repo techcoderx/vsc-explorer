@@ -12,32 +12,28 @@ import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
 
-export const BlockByID = () => {
-  const { blockNum } = useParams()
-  const blkNum = parseInt(blockNum!)
-  const invalidBlkNum = isNaN(blkNum) || blkNum < 1
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['vsc-block', blkNum],
-    queryFn: async () => fetchBlock(blkNum),
-    enabled: !invalidBlkNum
-  })
-  return Block(data!, isLoading, isError, invalidBlkNum, blkNum)
-}
-
-export const BlockByHash = () => {
+export const BlockBy = () => {
   const { blockId } = useParams()
-  const invalidBlkId = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
+  const blkNum = parseInt(blockId!)
+  const invalidBlkNum = isNaN(blkNum) || blkNum < 1
+  const invalidBlkHash = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
+  const invalidBlkId = invalidBlkNum && invalidBlkHash
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['vsc-block', blockId],
-    queryFn: async () => fetchBlock(blockId!, 'cid'),
+    queryKey: ['vsc-block', blockId!],
+    queryFn: async () => fetchBlock(blockId!, !invalidBlkNum ? 'id' : 'cid'),
     enabled: !invalidBlkId
   })
-  const blkNum = !isLoading && !isError && data && !data.error ? data.be_info.block_id : 0
-  return Block(data!, isLoading, isError, invalidBlkId, blkNum)
+  return Block(
+    data!,
+    isLoading,
+    isError,
+    invalidBlkId,
+    !invalidBlkNum ? blkNum : data && data.be_info ? data.be_info.block_id : -1
+  )
 }
 
-const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkNum: boolean, blkNum: number) => {
-  // const l1BlockSuccess = !invalidBlkNum && !isBlockLoading && !isBlockError && !block.error
+const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkId: boolean, blkNum: number) => {
+  // const l1BlockSuccess = !invalidBlkId && !isBlockLoading && !isBlockError && !block.error
   // const {
   //   data: l2BlockTxs,
   //   isLoading: isL2BlockLoading,
@@ -45,19 +41,19 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   // } = useQuery({
   //   queryKey: ['vsc-block-txs', blkNum],
   //   queryFn: async () => fetchBlockTxs(blkNum),
-  //   enabled: !isBlockError && !isBlockLoading && !invalidBlkNum
+  //   enabled: !isBlockError && !isBlockLoading && !invalidBlkId
   // })
   const { data: epoch } = useQuery({
     queryKey: ['vsc-epoch', block && !block.error ? block?.be_info.epoch : -1],
     queryFn: async () => fetchEpoch(block && !block.error ? block?.be_info.epoch : -1),
-    enabled: !isBlockError && !isBlockLoading && !invalidBlkNum && !block.error
+    enabled: !isBlockError && !isBlockLoading && !invalidBlkId && !block.error
   })
   const { votedMembers, votedWeight, totalWeight } = getVotedMembers(
     base64UrlToHex((block && !block.error && block.be_info && block.be_info.signature ? block.be_info.signature.bv : '') ?? ''),
     epoch?.members ?? [],
     epoch?.weights ?? []
   )
-  if (invalidBlkNum) return <PageNotFound />
+  if (invalidBlkId) return <PageNotFound />
   return (
     <>
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">

@@ -166,7 +166,7 @@ const Epoch = () => {
                             </Td>
                             {/* <Td>{item.txs}</Td> */}
                             <Td>
-                              <Link as={ReactRouterLink} to={'/block-by-hash/' + item.block}>
+                              <Link as={ReactRouterLink} to={'/block/' + item.block}>
                                 {abbreviateHash(item.block)}
                               </Link>
                             </Td>

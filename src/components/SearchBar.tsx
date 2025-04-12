@@ -171,7 +171,7 @@ const useSearchResults = (query: string): SearchResultHook => {
             result = [
               {
                 type: SearchResultType.Block,
-                href: '/block-by-hash/' + cidRes.result
+                href: '/block/' + cidRes.result
               }
             ]
             break
