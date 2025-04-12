@@ -5,7 +5,7 @@ import {
   CallContractPayload,
   XferWdPayload,
   DepositPayload,
-  ElectionResultPayload,
+  ElectionPayload,
   Coin,
   TransferPayload,
   BLSSig,
@@ -162,7 +162,7 @@ export interface L1Transaction extends Item<number> {
   payload?:
     | BlockPayload
     | NewContractPayload
-    | ElectionResultPayload
+    | ElectionPayload
     | DepositPayload
     | TransferPayload
     | InterestPayload

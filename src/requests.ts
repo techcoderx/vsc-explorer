@@ -94,7 +94,7 @@ export const fetchTxByL1Id = async (trx_id: string): Promise<L1Transaction[]> =>
   return await (await fetch(`${hafVscApi}/haf/tx/${trx_id}`)).json()
 }
 
-export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Contract | TxHeader | null)[]> => {
+export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | TxHeader | null)[]> => {
   return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
 }
 

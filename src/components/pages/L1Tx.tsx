@@ -20,7 +20,7 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchTxByL1Id, fetchL1TxOutput } from '../../requests'
 import { roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { Block, Contract, TxHeader } from '../../types/HafApiResult'
+import { Block, Contract, Election, TxHeader } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 
 const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
@@ -151,6 +151,52 @@ const L1Tx = () => {
                       />
                     </CardBody>
                   </Box>
+                ) : trx.type === 'election_result' ? (
+                  <Box>
+                    <CardHeader>
+                      <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+                    </CardHeader>
+                    <CardBody mt={'-25px'}>
+                      <Table margin={'0'} variant={'unstyled'}>
+                        <Tbody>
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Epoch"
+                            value={(outData[i]! as Election).epoch}
+                            link={'/epoch/' + (outData[i]! as Election).epoch}
+                          />
+                          <TableRow
+                            minimalSpace
+                            isInCard
+                            allCardBorders
+                            label="Data CID"
+                            value={(outData[i]! as Election).data}
+                            link={'/epoch/' + (outData[i]! as Election).data}
+                          />
+                          {(outData[i]! as Election).epoch > 0 ? (
+                            <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                              {typeof (outData[i]! as Election).be_info === 'object' ? (
+                                <ProgressBarPct
+                                  fontSize={'md'}
+                                  val={
+                                    ((outData[i]! as Election).be_info!.voted_weight /
+                                      (outData[i]! as Election).be_info!.eligible_weight) *
+                                    100
+                                  }
+                                />
+                              ) : (
+                                <Text fontStyle={'italic'} opacity={'0.7'}>
+                                  Indexing...
+                                </Text>
+                              )}
+                            </TableRow>
+                          ) : null}
+                        </Tbody>
+                      </Table>
+                    </CardBody>
+                  </Box>
                 ) : trx.type === 'produce_block' ? (
                   <Box>
                     <CardHeader>
@@ -174,8 +220,8 @@ const L1Tx = () => {
                             label="Block Hash"
                             value={(outData[i]! as Block).block}
                           />
-                          {typeof (outData[i]! as Block).be_info === 'object' ? (
-                            <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                          <TableRow minimalSpace isInCard allCardBorders label="Participation">
+                            {typeof (outData[i]! as Block).be_info === 'object' ? (
                               <ProgressBarPct
                                 fontSize={'md'}
                                 val={
@@ -183,8 +229,12 @@ const L1Tx = () => {
                                   100
                                 }
                               />
-                            </TableRow>
-                          ) : null}
+                            ) : (
+                              <Text fontStyle={'italic'} opacity={'0.7'}>
+                                Indexing...
+                              </Text>
+                            )}
+                          </TableRow>
                         </Tbody>
                       </Table>
                     </CardBody>
