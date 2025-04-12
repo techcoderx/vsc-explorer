@@ -64,7 +64,7 @@ const Epoch = () => {
   const txId = epoch && epoch.be_info ? epoch.be_info.trx_id : ''
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
   const { votedMembers } = hasVotes
-    ? getVotedMembers(epoch!.be_info!.signature!.bv, prevEpoch.members, prevEpoch.weights)
+    ? getVotedMembers(base64UrlToHex(epoch!.be_info!.signature!.bv), prevEpoch.members, prevEpoch.weights)
     : { votedMembers: [] }
   if (invalidEpochNum) return <PageNotFound />
   return (
