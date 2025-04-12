@@ -93,7 +93,7 @@ const WitnessSchedule = () => {
                       </Td>
                       <Td>
                         {blocksProduced.current[sch.bn] ? (
-                          <Link as={ReactRouterLink} to={'/block-by-hash/' + blocksProduced.current[sch.bn].block}>
+                          <Link as={ReactRouterLink} to={'/block/' + blocksProduced.current[sch.bn].block}>
                             {abbreviateHash(blocksProduced.current[sch.bn].block, 12, 0)}
                           </Link>
                         ) : null}
