@@ -3,7 +3,7 @@ import { L1Transaction, UserBalance, WeightedMembers } from './types/HafApiResul
 import {
   CallContractPayload,
   DepositPayload,
-  ElectionResultPayload,
+  ElectionPayload,
   NAI,
   BlockPayload,
   NewContractPayload,
@@ -88,7 +88,7 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       result += 'created contract ' + abbreviateHash((tx.payload as NewContractPayload).code, 15, 0)
       break
     case 'election_result':
-      result += 'proposed election result for epoch ' + (tx.payload as ElectionResultPayload).epoch
+      result += 'proposed election result for epoch ' + (tx.payload as ElectionPayload).epoch
       break
     case 'transfer':
       result +=

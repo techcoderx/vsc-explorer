@@ -16,7 +16,7 @@ export type NewContractPayload = {
   code: string
 }
 
-export type ElectionResultPayload = {
+export type ElectionPayload = {
   epoch: number
   data: string
   signature: BLSSig
