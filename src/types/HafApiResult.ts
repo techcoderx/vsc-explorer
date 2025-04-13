@@ -124,8 +124,8 @@ export interface Election {
   weights: number[]
   total_weight: number
   block_height: number
+  tx_id: string
   be_info?: {
-    trx_id: string
     ts: string
     signature?: BLSSig
     eligible_weight: number
