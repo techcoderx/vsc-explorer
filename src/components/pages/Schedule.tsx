@@ -25,7 +25,7 @@ const WitnessSchedule = () => {
   })
   const currentSlot = prop ? prop.last_processed_block - (prop.last_processed_block % 10) : 0
   const { data: blockAtCurrentSlot } = useQuery({
-    queryKey: ['vsc-latest-block'],
+    queryKey: ['vsc-block', 'slot', currentSlot],
     queryFn: () => fetchBlock(currentSlot, 'slot'),
     enabled: !!currentSlot,
     refetchInterval: 5000

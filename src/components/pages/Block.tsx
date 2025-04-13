@@ -18,8 +18,9 @@ export const BlockBy = () => {
   const invalidBlkNum = isNaN(blkNum) || blkNum < 1
   const invalidBlkHash = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
   const invalidBlkId = invalidBlkNum && invalidBlkHash
+  const blockBy = !invalidBlkNum ? 'id' : 'cid'
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['vsc-block', blockId!],
+    queryKey: ['vsc-block', blockBy, blockId!],
     queryFn: async () => fetchBlock(blockId!, !invalidBlkNum ? 'id' : 'cid'),
     enabled: !invalidBlkId
   })
@@ -67,7 +68,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
         <>
           <Table marginTop="20px">
             <Tbody>
-              <TableRow label="Block ID" value={block?.be_info.block_id} isLoading={isBlockLoading} />
+              <TableRow label="Block ID" value={blkNum} isLoading={isBlockLoading} />
               <TableRow
                 label="Timestamp"
                 value={block ? block.ts + ' (' + timeAgo(block.ts) + ')' : ''}

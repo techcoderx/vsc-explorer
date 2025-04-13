@@ -100,10 +100,11 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
         (tx.payload as TransferPayload).to
       break
     case 'l1_transfer':
-      result +=
-        ((tx.payload as DepositPayload).to === multisigAccount ? 'deposited' : 'withdrawn') +
-        ' ' +
-        naiToString((tx.payload as DepositPayload).amount)
+      if ((tx.payload as DepositPayload).to === multisigAccount) {
+        result += ` deposited ${naiToString((tx.payload as DepositPayload).amount)}`
+      } else {
+        result += ` withdrawn ${naiToString((tx.payload as DepositPayload).amount)}`
+      }
       break
     case 'withdraw':
       result += `withdraw ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
@@ -111,22 +112,22 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       }`
       break
     case 'consensus_stake':
-      result += ` stake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+      result += ` stake ${(tx.payload as TransferPayload).amount} HIVE${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       } for consensus`
       break
     case 'consensus_unstake':
-      result += ` unstake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+      result += ` unstake ${(tx.payload as TransferPayload).amount} HIVE${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       } from consensus`
       break
     case 'stake_hbd':
-      result += ` stake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+      result += ` stake ${(tx.payload as TransferPayload).amount} HBD${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       }`
       break
     case 'unstake_hbd':
-      result += ` unstake ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+      result += ` unstake ${(tx.payload as TransferPayload).amount} HBD${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       }`
       break
