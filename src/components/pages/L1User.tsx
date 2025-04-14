@@ -25,6 +25,7 @@ import {
   fetchL1Rest,
   // fetchMsOwners,
   fetchWitness,
+  fetchWitnessStat,
   getL2BalanceByL1User
 } from '../../requests'
 import { availableRC, describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
@@ -53,13 +54,14 @@ const L1User = () => {
     queryFn: async () => fetchL1Rest<number>(`/hafah-api/headblock`),
     enabled: !invalidParams
   })
-  const {
-    data: witness,
-    isLoading: isWitLoading,
-    isSuccess: isWitSuccess
-  } = useQuery({
+  const { data: witness, isSuccess: isWitSuccess } = useQuery({
     queryKey: ['vsc-witness', username],
     queryFn: async () => fetchWitness(user),
+    enabled: !invalidParams
+  })
+  const { data: witnessStats, isSuccess: isWitStatsSuccess } = useQuery({
+    queryKey: ['vsc-witness-stats', username],
+    queryFn: async () => fetchWitnessStat(user),
     enabled: !invalidParams
   })
   const {
@@ -242,93 +244,53 @@ const L1User = () => {
                 <CardBody>
                   <Table variant={'unstyled'}>
                     <Tbody>
-                      <TableRow
-                        isInCard
-                        minimalSpace
-                        minWidthLabel="115px"
-                        label="ID"
-                        isLoading={isWitLoading}
-                        value={isWitSuccess ? witness.id : 'Error'}
-                      />
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.peer_id : 'Error'}</Text>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="ID" value={witness.id} />
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID">
+                        <Text wordBreak={'break-all'}>{witness.peer_id}</Text>
                       </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.consensus_did : 'Error'}</Text>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key">
+                        <Text wordBreak={'break-all'}>{witness.consensus_did}</Text>
                       </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Gateway Key" isLoading={isWitLoading}>
-                        <Text wordBreak={'break-all'}>{isWitSuccess ? witness.gateway_key : 'Error'}</Text>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Gateway Key">
+                        <Text wordBreak={'break-all'}>{witness.gateway_key}</Text>
                       </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Enabled" isLoading={isWitLoading}>
-                        {isWitSuccess ? (
-                          witness.enabled ? (
-                            <Badge colorScheme="green">True</Badge>
-                          ) : (
-                            <Badge colorScheme="red">False</Badge>
-                          )
-                        ) : (
-                          'Error'
-                        )}
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Enabled">
+                        {witness.enabled ? <Badge colorScheme="green">True</Badge> : <Badge colorScheme="red">False</Badge>}
                       </TableRow>
-                      {isWitSuccess ? (
-                        <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update" isLoading={isWitLoading}>
-                          <Tooltip placement="top" label={witness.last_update_ts}>
-                            <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.last_update_tx}>
-                              {timeAgo(witness.last_update_ts)}
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update">
+                        <Tooltip placement="top" label={witness.last_update_ts}>
+                          <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.last_update_tx}>
+                            {timeAgo(witness.last_update_ts)}
+                          </Link>
+                        </Tooltip>
+                      </TableRow>
+                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="First Seen">
+                        <Tooltip placement="top" label={witness.first_seen_ts}>
+                          <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.first_seen_tx}>
+                            {timeAgo(witness.first_seen_ts)}
+                          </Link>
+                        </Tooltip>
+                      </TableRow>
+                      {isWitStatsSuccess ? (
+                        <>
+                          <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Block">
+                            <Link as={ReactRouterLink} to={witnessStats.last_block ? '/block/' + witnessStats.last_block : '#'}>
+                              {thousandSeperator(witnessStats.last_block ?? 'N/A')}
                             </Link>
-                          </Tooltip>
-                        </TableRow>
-                      ) : null}
-                      {isWitSuccess ? (
-                        <TableRow isInCard minimalSpace minWidthLabel="115px" label="First Seen" isLoading={isWitLoading}>
-                          <Tooltip placement="top" label={witness.first_seen_ts}>
-                            <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.first_seen_tx}>
-                              {timeAgo(witness.first_seen_ts)}
+                          </TableRow>
+                          <TableRow isInCard minimalSpace minWidthLabel="115px" label="Blocks Produced">
+                            <Text>{thousandSeperator(witnessStats.block_count ?? 0)}</Text>
+                          </TableRow>
+                          <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Epoch">
+                            <Link as={ReactRouterLink} to={witnessStats.last_epoch ? '/epoch/' + witnessStats.last_epoch : '#'}>
+                              {thousandSeperator(witnessStats.last_epoch ?? 'N/A')}
                             </Link>
-                          </Tooltip>
-                        </TableRow>
+                          </TableRow>
+                          <TableRow isInCard minimalSpace minWidthLabel="115px" label="Elections Held">
+                            <Text>{thousandSeperator(witnessStats.election_count ?? 0)}</Text>
+                          </TableRow>
+                        </>
                       ) : null}
-                      {/* <TableRow isInCard minimalSpace minWidthLabel="115px" label="Git Commit" isLoading={isWitLoading}>
-                        <Link
-                          as={ReactRouterLink}
-                          wordBreak={'break-all'}
-                          target={'_blank'}
-                          to={'https://github.com/vsc-eco/vsc-node/commit/' + (witness?.git_commit ?? '')}
-                        >
-                          {(witness?.git_commit ?? '').slice(0, 8)}
-                        </Link>
-                      </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Up To Date" isLoading={isWitLoading}>
-                        {isWitSuccess ? (
-                          witness.is_up_to_date ? (
-                            <Badge colorScheme="green">True</Badge>
-                          ) : (
-                            <Tooltip label={'Latest: ' + (witness.latest_git_commit ?? '').slice(0, 8)} placement={'top'}>
-                              <Link
-                                as={ReactRouterLink}
-                                target={'_blank'}
-                                to={'https://github.com/vsc-eco/vsc-node/commit/' + (witness?.latest_git_commit ?? '')}
-                              >
-                                <Badge colorScheme="red">False</Badge>
-                              </Link>
-                            </Tooltip>
-                          )
-                        ) : (
-                          'Error'
-                        )}
-                      </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Block" isLoading={isWitLoading}>
-                        <Link
-                          as={ReactRouterLink}
-                          wordBreak={'break-all'}
-                          to={witness.last_block ? '/block/' + witness.last_block : '#'}
-                        >
-                          {thousandSeperator(witness.last_block ?? 'N/A')}
-                        </Link>
-                      </TableRow>
-                      <TableRow isInCard minimalSpace minWidthLabel="115px" label="Produced" isLoading={isWitLoading}>
-                        <Text>{isWitSuccess ? (witness.produced ? thousandSeperator(witness.produced) : 'NULL') : 'Error'}</Text>
-                      </TableRow> */}
                     </Tbody>
                   </Table>
                 </CardBody>
