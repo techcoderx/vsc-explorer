@@ -11,7 +11,8 @@ import {
   XferWdPayload,
   InterestPayload
 } from './types/Payloads'
-import { multisigAccount } from './settings'
+import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
+import { Ops } from './types/L1ApiResult'
 
 export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
@@ -73,6 +74,67 @@ export const naiToString = (nai: NAI) => {
   if (nai.nai === '@@000000021') result += 'HIVE'
   else if (nai.nai === '@@000000013') result += 'HBD'
   return result
+}
+
+export const parseOperation = (op: Ops): { valid: false } | { valid: true; type: string; user: string; payload: object } => {
+  switch (op.type) {
+    case 'custom_json_operation':
+      if (op.value.id.startsWith('vsc.') && (op.value.required_auths.length > 0 || op.value.required_posting_auths.length > 0)) {
+        try {
+          let payload = JSON.parse(op.value.json)
+          if (typeof payload === 'object' && payload.net_id === NETWORK_ID) {
+            return {
+              valid: true,
+              type: op.value.id.replace('vsc.', ''),
+              user: op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0],
+              payload
+            }
+          }
+        } catch {}
+      }
+      break
+    case 'account_update_operation':
+      try {
+        let jm = JSON.parse(op.value.json_metadata)
+        if (
+          typeof jm.vsc_node === 'object' &&
+          (jm.vsc_node.net_id === NETWORK_ID || jm.vsc_node.net_id === NETWORK_ID_ANNOUNCE)
+        ) {
+          return {
+            valid: true,
+            type: 'announce_node',
+            user: op.value.account,
+            payload: {
+              did_keys: jm.did_keys,
+              vsc_node: jm.vsc_node
+            }
+          }
+        }
+      } catch {}
+      break
+    case 'interest':
+      if (op.value.owner === multisigAccount)
+        return {
+          valid: true,
+          type: op.type,
+          user: op.value.owner,
+          payload: op.value
+        }
+      break
+    case 'transfer':
+    case 'transfer_from_savings':
+    case 'transfer_to_savings':
+    case 'fill_transfer_from_savings':
+      if (op.value.from === multisigAccount || op.value.to === multisigAccount)
+        return {
+          valid: true,
+          type: op.type === 'transfer' ? 'l1_transfer' : op.type,
+          user: op.value.from !== multisigAccount ? op.value.from : op.value.to,
+          payload: op.value
+        }
+      break
+  }
+  return { valid: false }
 }
 
 export const describeL1TxBriefly = (tx: L1Transaction): string => {
@@ -208,18 +270,6 @@ export const getVotedMembers = (
     }
   }
   return { votedMembers: voted, votedWeight, totalWeight }
-}
-
-// do we want to display signatures in original base64url format?
-export const hexToBase64Url = (hexString: string): string => {
-  const matching = hexString.match(/\w{2}/g)
-  if (matching)
-    return window
-      .btoa(matching.map((a) => String.fromCharCode(parseInt(a, 16))).join(''))
-      .replace('+', '-')
-      .replace('/', '_')
-      .replace(/=+$/, '')
-  else return ''
 }
 
 export const base64UrlToHex = (base64url: string) => {

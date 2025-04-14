@@ -1,3 +1,5 @@
+import { DepositPayload, InterestPayload } from './Payloads'
+
 type L1AccountAuths = {
   account_auths: [string, number][]
   key_auths: [string, number][]
@@ -22,4 +24,53 @@ export type L1Account = {
   owner: L1AccountAuths
   active: L1AccountAuths
   posting: L1AccountAuths
+}
+
+export type Ops = CustomJson | AccUpdate | Transfers | Interest
+
+interface L1OpBase {
+  type: string
+  value: object
+}
+
+export interface CustomJson extends L1OpBase {
+  type: 'custom_json_operation'
+  value: {
+    required_auths: string[]
+    required_posting_auths: string[]
+    id: string
+    json: string
+  }
+}
+
+export interface AccUpdate extends L1OpBase {
+  type: 'account_update_operation'
+  value: {
+    account: string
+    json_metadata: string
+  }
+}
+
+export interface Transfers extends L1OpBase {
+  type: 'transfer' | 'transfer_to_savings' | 'transfer_from_savings' | 'fill_transfer_from_savings'
+  value: DepositPayload
+}
+
+export interface Interest extends L1OpBase {
+  type: 'interest'
+  value: InterestPayload
+}
+
+export interface L1TxHeader {
+  transaction_json: {
+    operations: Ops[]
+  }
+  transaction_id: string
+  block_num: number
+  transaction_num: number
+  timestamp: string
+
+  // errors
+  code?: string
+  message?: string
 }
