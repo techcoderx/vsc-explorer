@@ -80,13 +80,14 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
   switch (op.type) {
     case 'custom_json_operation':
       if (op.value.id.startsWith('vsc.') && (op.value.required_auths.length > 0 || op.value.required_posting_auths.length > 0)) {
+        let user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
         try {
           let payload = JSON.parse(op.value.json)
-          if (typeof payload === 'object' && payload.net_id === NETWORK_ID) {
+          if (typeof payload === 'object' && (payload.net_id === NETWORK_ID || user === multisigAccount)) {
             return {
               valid: true,
               type: op.value.id.replace('vsc.', ''),
-              user: op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0],
+              user,
               payload
             }
           }
@@ -112,7 +113,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
         }
       } catch {}
       break
-    case 'interest':
+    case 'interest_operation':
       if (op.value.owner === multisigAccount)
         return {
           valid: true,
@@ -121,14 +122,14 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
           payload: op.value
         }
       break
-    case 'transfer':
-    case 'transfer_from_savings':
-    case 'transfer_to_savings':
-    case 'fill_transfer_from_savings':
+    case 'transfer_operation':
+    case 'transfer_from_savings_operation':
+    case 'transfer_to_savings_operation':
+    case 'fill_transfer_from_savings_operation':
       if (op.value.from === multisigAccount || op.value.to === multisigAccount)
         return {
           valid: true,
-          type: op.type === 'transfer' ? 'l1_transfer' : op.type,
+          type: op.type === 'transfer_operation' ? 'l1_transfer' : op.type.replace('_operation', ''),
           user: op.value.from !== multisigAccount ? op.value.from : op.value.to,
           payload: op.value
         }

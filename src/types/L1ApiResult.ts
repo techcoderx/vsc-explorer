@@ -52,12 +52,16 @@ export interface AccUpdate extends L1OpBase {
 }
 
 export interface Transfers extends L1OpBase {
-  type: 'transfer' | 'transfer_to_savings' | 'transfer_from_savings' | 'fill_transfer_from_savings'
+  type:
+    | 'transfer_operation'
+    | 'transfer_to_savings_operation'
+    | 'transfer_from_savings_operation'
+    | 'fill_transfer_from_savings_operation'
   value: DepositPayload
 }
 
 export interface Interest extends L1OpBase {
-  type: 'interest'
+  type: 'interest_operation'
   value: InterestPayload
 }
 
