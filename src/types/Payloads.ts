@@ -22,12 +22,14 @@ export type ElectionPayload = {
   signature: BLSSig
 }
 
+// transfer_operation
 export type DepositPayload = {
   to: string
   from: string
   amount: NAI
 }
 
+// vsc.transfer custom_json
 export type TransferPayload = {
   to: string
   from: string

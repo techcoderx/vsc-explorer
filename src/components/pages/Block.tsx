@@ -82,12 +82,6 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                 link={l1Explorer + '/b/' + block?.slot_height}
               />
               <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@' + block?.proposer} />
-              {/* <TableRow
-              label="Previous Block Hash"
-              value={block?.prev_block_hash ?? 'NULL'}
-              isLoading={isBlockLoading}
-              link={block?.prev_block_hash ? ipfsSubGw(block?.prev_block_hash) : undefined}
-            /> */}
               <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
               <TableRow label="Participation">
                 <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />

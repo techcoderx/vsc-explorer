@@ -19,9 +19,9 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
-import { fetchProps, fetchTxByL1Id, cidSearch, fetchL1Rest } from '../requests'
+import { fetchProps, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
-import { L1Account } from '../types/L1ApiResult'
+import { L1Account, L1TxHeader } from '../types/L1ApiResult'
 
 interface SearchBarProps {
   miniBtn?: boolean
@@ -72,7 +72,7 @@ const useSearchResults = (query: string): SearchResultHook => {
     isError: isL1TxErr
   } = useQuery({
     queryKey: ['vsc-l1-tx', query],
-    queryFn: async () => fetchTxByL1Id(query),
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${query}`),
     enabled: queryType === SearchQueryType.L1Transaction
   })
   const {
@@ -109,7 +109,7 @@ const useSearchResults = (query: string): SearchResultHook => {
       setQueryType(SearchQueryType.L1Transaction)
       return {
         searchResult: [
-          ...(!isL1TxErr && l1Tx && l1Tx.length > 0
+          ...(!isL1TxErr && l1Tx && !l1Tx.code && l1Tx.transaction_json.operations.length > 0
             ? [
                 {
                   type: SearchResultType.Transaction,
