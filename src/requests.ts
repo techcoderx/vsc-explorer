@@ -15,7 +15,8 @@ import {
   EventHistoryItm,
   UserBalance,
   Block,
-  TxHeader
+  TxHeader,
+  WitnessStat
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import { WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
@@ -54,6 +55,10 @@ export const fetchBlock = async (block_id: number | string, by: string = 'id'): 
 
 export const fetchWitness = async (username: string): Promise<Witness> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}/witness`)).json()
+}
+
+export const fetchWitnessStat = async (username: string): Promise<WitnessStat> => {
+  return await (await fetch(`${hafVscApi}/witness/${username}/stats`)).json()
 }
 
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {

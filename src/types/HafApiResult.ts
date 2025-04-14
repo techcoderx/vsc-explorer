@@ -96,6 +96,14 @@ export interface Witness {
   last_update_tx: string
 }
 
+export interface WitnessStat {
+  _id: string
+  block_count: number
+  election_count: number
+  last_block: number
+  last_epoch: number
+}
+
 export interface UserBalance {
   account: string
   block_height: number
