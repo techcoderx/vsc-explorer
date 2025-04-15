@@ -97,7 +97,14 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
     case 'account_update_operation':
       try {
         let jm = JSON.parse(op.value.json_metadata)
-        if (
+        if (op.value.account === multisigAccount) {
+          return {
+            valid: true,
+            type: 'rotate_multisig',
+            user: op.value.account,
+            payload: op.value
+          }
+        } else if (
           typeof jm.vsc_node === 'object' &&
           (jm.vsc_node.net_id === NETWORK_ID || jm.vsc_node.net_id === NETWORK_ID_ANNOUNCE)
         ) {
