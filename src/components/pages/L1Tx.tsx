@@ -74,7 +74,7 @@ const ElectionResult = ({ out }: { out: Election }) => {
         <Table margin={'0'} variant={'unstyled'}>
           <Tbody>
             <TableRow minimalSpace isInCard allCardBorders label="Epoch" value={out.epoch} link={'/epoch/' + out.epoch} />
-            <TableRow minimalSpace isInCard allCardBorders label="Data CID" value={out.data} link={'/epoch/' + out.data} />
+            <TableRow minimalSpace isInCard allCardBorders label="Data CID" value={out.data} />
             {out.epoch > 0 ? (
               <TableRow minimalSpace isInCard allCardBorders label="Participation">
                 {out.be_info ? (
