@@ -19,7 +19,7 @@ import {
   WitnessStat
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { WitnessSchedule, Tx as L2TxGql } from './types/L2ApiResult'
+import { WitnessSchedule, Tx as L2TxGql, DagByCID, DagByCIDBatch } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
@@ -209,6 +209,41 @@ export const getWitnessSchedule = async (height: number): Promise<WitnessSchedul
       height: height.toString()
     }
   )
+}
+
+export const getDagByCID = async <T>(cid: string): Promise<T> => {
+  const query = `
+    query DagByCID($cid: String!) {
+      getDagByCID(cidString: $cid)
+    }  
+  `
+  const result = await gql<DagByCID>(query, { cid })
+  return JSON.parse(result.data.getDagByCID)
+}
+
+export const getDagByCIDBatch = async <T>(cids: string[]): Promise<T[]> => {
+  // Generate query fragments for each CID (e.g., "d0: getDagByCID(cidString: $cid0)")
+  const queryFragments = cids.map((_, index) => `d${index}: getDagByCID(cidString: $cid${index})`)
+
+  // Create variables object { cid0: "Qm...", cid1: "Qm...", ... }
+  const variables = cids.reduce(
+    (acc, cid, index) => ({
+      ...acc,
+      [`cid${index}`]: cid
+    }),
+    {} as Record<string, string>
+  )
+
+  // Construct full query
+  const query = `
+    query DagByCID(${cids.map((_, i) => `$cid${i}: String!`).join(', ')}) {
+      ${queryFragments.join('\n')}
+    }
+  `
+
+  // Execute query and map results to array
+  const result = await gql<DagByCIDBatch>(query, variables)
+  return cids.map((_, index) => JSON.parse(result.data[`d${index}`]))
 }
 
 export const fetchL2TxGql = async (trx_id: string): Promise<L2TxGql> => {

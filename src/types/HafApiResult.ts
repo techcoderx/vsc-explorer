@@ -160,7 +160,7 @@ const txTypes = [
   'fill_transfer_from_savings',
   'interest'
 ] as const
-type TxTypes = (typeof txTypes)[number]
+export type TxTypes = (typeof txTypes)[number]
 
 export interface L1Transaction extends Item<number> {
   nonce: number
