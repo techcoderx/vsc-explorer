@@ -129,7 +129,9 @@ export const Contract = () => {
                 <TableRow label="Bytecode CID">
                   <Flex align={'center'} gap={'2'}>
                     <Text>{contract.code}</Text>
-                    {verifInfo && verifInfo.status === 'success' ? <CheckCircleIcon color={themeColorScheme} /> : null}
+                    {verifInfo && verifInfo.status === 'success' ? (
+                      <CheckCircleIcon color={themeColorScheme} aria-label="Contract source code verified" />
+                    ) : null}
                   </Flex>
                 </TableRow>
               </Tbody>
