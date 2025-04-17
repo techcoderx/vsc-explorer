@@ -157,7 +157,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                     </Thead>
                     <Tbody>
                       {opLogs?.outputs.map((tx, i) => {
-                        return tx.ok ? (
+                        return tx.ok && tx.lidx.length > 0 ? (
                           tx.lidx.map((ln, j) => (
                             <Tr key={`${i}.${j}`}>
                               <Td>{j === 0 ? <CheckXIcon ok={tx.ok} /> : null}</Td>
