@@ -26,7 +26,7 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import { abbreviateHash, base64UrlToHex, getVotedMembers, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
@@ -62,9 +62,6 @@ const Epoch = () => {
   })
   const blockCount = (blocks && blocks.length) ?? 0
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
-  const { votedMembers } = hasVotes
-    ? getVotedMembers(base64UrlToHex(epoch!.be_info!.signature!.bv), prevEpoch.members, prevEpoch.weights)
-    : { votedMembers: [] }
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
@@ -80,11 +77,13 @@ const Epoch = () => {
           <Table mt={'20px'}>
             <Tbody>
               <TableRow label="Epoch Number" value={epochNum} isLoading={isEpochLoading} />
-              <TableRow
-                label="Timestamp"
-                value={epoch && epoch.be_info ? epoch.be_info.ts + ' (' + timeAgo(epoch.be_info.ts) + ')' : ''}
-                isLoading={isEpochLoading}
-              />
+              {epoch && epoch.be_info ? (
+                <TableRow label="Timestamp" isLoading={isEpochLoading}>
+                  <Text>
+                    {epoch.be_info.ts} ({timeAgo(epoch.be_info.ts)})
+                  </Text>
+                </TableRow>
+              ) : null}
               <TableRow label="L1 Tx" value={epoch?.tx_id} isLoading={isEpochLoading} link={'/tx/' + epoch?.tx_id} />
               <TableRow
                 label="L1 Block"
@@ -94,6 +93,7 @@ const Epoch = () => {
               />
               <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
               <TableRow label="Election Data CID" value={epoch?.data} isLoading={isEpochLoading} />
+              <TableRow label="Total Weight" value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
               {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
                 <TableRow label="Participation">
                   <ProgressBarPct fontSize={'md'} val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
@@ -182,10 +182,10 @@ const Epoch = () => {
               <TabPanel>
                 {hasVotes ? (
                   <ParticipatedMembers
-                    bvHex={base64UrlToHex(epoch.be_info!.signature!.bv)}
+                    bv={epoch.be_info!.signature!.bv}
                     sig={epoch.be_info!.signature!.sig}
-                    members={votedMembers.map((m) => m.account)}
-                    isLoading={isEpochLoading}
+                    members={prevEpoch.members}
+                    weights={prevEpoch.weights}
                   />
                 ) : epchNum === 0 ? (
                   <Flex align={'center'} gap={'2'}>

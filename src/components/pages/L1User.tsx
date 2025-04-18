@@ -28,7 +28,7 @@ import {
   fetchWitnessStat,
   getL2BalanceByL1User
 } from '../../requests'
-import { availableRC, describeL1TxBriefly, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { availableRC, describeL1TxBriefly, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
@@ -193,7 +193,7 @@ const L1User = () => {
                       minimalSpace
                       minWidthLabel="115px"
                       label="HIVE Balance"
-                      value={thousandSeperator(roundFloat((l2Balance?.hive || 0) / 1000, 3)) + ' HIVE'}
+                      value={fmtmAmount(l2Balance?.hive || 0, 'HIVE')}
                       isLoading={!isL2BalSuccess}
                     />
                     <TableRow
@@ -201,7 +201,7 @@ const L1User = () => {
                       minimalSpace
                       minWidthLabel="115px"
                       label="Consensus Stake"
-                      value={thousandSeperator(roundFloat((l2Balance?.hive_consensus || 0) / 1000, 3)) + ' HIVE'}
+                      value={fmtmAmount(l2Balance?.hive_consensus || 0, 'HIVE')}
                       isLoading={!isL2BalSuccess}
                     />
                     {l2Balance && l2Balance.hive_unstaking ? (
@@ -210,7 +210,7 @@ const L1User = () => {
                         minimalSpace
                         minWidthLabel="115px"
                         label="Consensus Unstaking"
-                        value={thousandSeperator(roundFloat((l2Balance?.hive_unstaking || 0) / 1000, 3)) + ' HIVE'}
+                        value={fmtmAmount(l2Balance.hive_unstaking, 'HIVE')}
                         isLoading={!isL2BalSuccess}
                       />
                     ) : null}
@@ -219,7 +219,7 @@ const L1User = () => {
                       minimalSpace
                       minWidthLabel="115px"
                       label="HBD Balance"
-                      value={thousandSeperator(roundFloat((l2Balance?.hbd || 0) / 1000, 3)) + ' HBD'}
+                      value={fmtmAmount(l2Balance?.hbd || 0, 'HBD')}
                       isLoading={!isL2BalSuccess}
                     />
                     <TableRow
@@ -227,7 +227,7 @@ const L1User = () => {
                       minimalSpace
                       minWidthLabel="115px"
                       label="HBD Staked"
-                      value={thousandSeperator(roundFloat((l2Balance?.hbd_savings || 0) / 1000, 3)) + ' HBD'}
+                      value={fmtmAmount(l2Balance?.hbd_savings || 0, 'HBD')}
                       isLoading={!isL2BalSuccess}
                     />
                   </Tbody>

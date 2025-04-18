@@ -125,20 +125,23 @@ export interface Election {
   epoch: number
   proposer: string
   data: string
-  members: {
-    key: string
-    account: string
-  }[]
+  members: WeightedMembers[]
   weights: number[]
   total_weight: number
   block_height: number
   tx_id: string
+  type: 'initial' | 'staked'
   be_info?: {
     ts: string
     signature?: BLSSig
     eligible_weight: number
     voted_weight: number
   }
+}
+
+export interface WeightedMembers {
+  account: string
+  key: string
 }
 
 const txTypes = [
@@ -283,15 +286,6 @@ export interface ContractOutputTx extends ItemWithIdxBlk<string> {
   error?: string
 }
 
-export interface EventsOp extends ItemWithIdxBlk<string> {
-  events: {
-    tx_id: string
-    tx_type: L2TxType
-    events: EventItm[]
-  }[]
-  error?: string
-}
-
 export interface EventItm {
   t: number
   tk: Coin
@@ -320,9 +314,4 @@ export interface BridgeTx extends Item<number> {
   nonce: number
   memo?: string
   status: string
-}
-
-export interface WeightedMembers {
-  account: string
-  key: string
 }

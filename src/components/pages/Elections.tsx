@@ -2,7 +2,7 @@ import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleto
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
-import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
@@ -83,12 +83,12 @@ const Elections = () => {
                   <Td>
                     <Tooltip label={epoch.data} placement="top">
                       <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
-                        {abbreviateHash(epoch.data)}
+                        {abbreviateHash(epoch.data, 20, 0)}
                       </Link>
                     </Tooltip>
                   </Td>
                   <Td>{epoch.members.length}</Td>
-                  <Td>{epoch.total_weight}</Td>
+                  <Td>{fmtmAmount(epoch.total_weight, 'HIVE')}</Td>
                   <Td maxW={'200px'}>
                     {epoch.epoch === 0 ? (
                       <Text>N/A</Text>

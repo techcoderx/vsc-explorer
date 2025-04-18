@@ -21,7 +21,7 @@ import { fetchBlock, fetchEpoch, getDagByCID, getDagByCIDBatch } from '../../req
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { base64UrlToHex, getVotedMembers, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, themeColorScheme } from '../../settings'
 // import { L2TxCard } from '../TxCard'
 import { Block as BlockResult } from '../../types/HafApiResult'
@@ -31,6 +31,7 @@ import { BlockHeader, OpLog } from '../../types/L2ApiResult'
 import { CheckXIcon } from '../CheckXIcon'
 import { FaCircleArrowRight } from 'react-icons/fa6'
 import { AccountLink, TxLink } from '../TableLink'
+import { Coin } from '../../types/Payloads'
 
 export const BlockBy = () => {
   const { blockId } = useParams()
@@ -65,15 +66,10 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   //   enabled: !isBlockError && !isBlockLoading && !invalidBlkId
   // })
   const { data: epoch } = useQuery({
-    queryKey: ['vsc-epoch', block && !block.error ? block?.be_info.epoch : -1],
-    queryFn: async () => fetchEpoch(block && !block.error ? block?.be_info.epoch : -1),
+    queryKey: ['vsc-epoch', block && !block.error && block.be_info ? block.be_info.epoch : -1],
+    queryFn: async () => fetchEpoch(block && !block.error && block.be_info ? block.be_info.epoch : -1),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkId && !block.error
   })
-  const { votedMembers, votedWeight, totalWeight } = getVotedMembers(
-    base64UrlToHex((block && !block.error && block.be_info && block.be_info.signature ? block.be_info.signature.bv : '') ?? ''),
-    epoch?.members ?? [],
-    epoch?.weights ?? []
-  )
   const { data: blockDag } = useQuery({
     queryKey: ['dag-by-cid', (block && block.block) ?? ''],
     queryFn: async () => getDagByCID<BlockHeader>(block.block),
@@ -115,8 +111,14 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
               />
               <TableRow label="Proposer" value={block?.proposer} isLoading={isBlockLoading} link={'/@' + block?.proposer} />
               <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
-              <TableRow label="Participation">
-                <ProgressBarPct fontSize={'md'} val={(votedWeight / totalWeight) * 100} />
+              <TableRow label="Participation" isLoading={isBlockLoading}>
+                {block && block.be_info ? (
+                  <ProgressBarPct fontSize={'md'} val={(block.be_info.voted_weight / block.be_info.eligible_weight) * 100} />
+                ) : (
+                  <Text fontStyle={'italic'} opacity={'0.7'}>
+                    Indexing...
+                  </Text>
+                )}
               </TableRow>
             </Tbody>
           </Table>
@@ -172,7 +174,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                               <Td>
                                 <AccountLink val={opLogs.ledger[ln].to} />
                               </Td>
-                              <Td>{`${roundFloat(opLogs.ledger[ln].am / 1000, 3)} ${opLogs.ledger[ln].as.toUpperCase()}`}</Td>
+                              <Td>{fmtmAmount(opLogs.ledger[ln].am, opLogs.ledger[ln].as.toUpperCase() as Coin)}</Td>
                             </Tr>
                           ))
                         ) : (
@@ -198,12 +200,14 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                 </TableContainer>
               </TabPanel>
               <TabPanel>
-                <ParticipatedMembers
-                  bvHex={base64UrlToHex(block && block.be_info.signature && block.be_info.signature.bv) ?? ''}
-                  sig={(block && block.be_info.signature && block.be_info.signature.sig) ?? ''}
-                  members={votedMembers.map((m) => m.account)}
-                  isLoading={isBlockLoading}
-                />
+                {block && block.be_info ? (
+                  <ParticipatedMembers
+                    bv={block.be_info.signature.bv}
+                    sig={block.be_info.signature.sig}
+                    members={epoch?.members || []}
+                    weights={epoch?.weights || []}
+                  />
+                ) : null}
               </TabPanel>
             </TabPanels>
           </Tabs>
