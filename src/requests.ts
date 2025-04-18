@@ -10,7 +10,6 @@ import {
   BridgeTx,
   L1ContractCallTx,
   ContractOutputTx,
-  EventsOp,
   TxHistory,
   EventHistoryItm,
   UserBalance,
@@ -119,10 +118,6 @@ export const fetchCallsByContractId = async (
       }`
     )
   ).json()
-}
-
-export const fetchEvents = async (cid: string): Promise<EventsOp> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_event?cid=${cid}`)).json()
 }
 
 export const fetchAccEventHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<EventHistoryItm[]> => {

@@ -1,5 +1,4 @@
-import BitSet from 'bitset'
-import { L1Transaction, UserBalance, WeightedMembers } from './types/HafApiResult'
+import { L1Transaction, UserBalance } from './types/HafApiResult'
 import {
   CallContractPayload,
   DepositPayload,
@@ -9,7 +8,8 @@ import {
   NewContractPayload,
   TransferPayload,
   XferWdPayload,
-  InterestPayload
+  InterestPayload,
+  Coin
 } from './types/Payloads'
 import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
 import { Ops } from './types/L1ApiResult'
@@ -67,6 +67,14 @@ export const validateHiveUsername = (value: string): string | null => {
     if (!(label.length >= 3)) return suffix + 'be longer'
   }
   return null
+}
+
+export const fmtAmount = (amount: number, asset: Coin) => {
+  return `${thousandSeperator(amount)} ${asset}`
+}
+
+export const fmtmAmount = (amount: number, asset: Coin) => {
+  return `${thousandSeperator(roundFloat(amount / 1000, 3))} ${asset}`
 }
 
 export const naiToString = (nai: NAI) => {
@@ -255,74 +263,6 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
     if (segments.length === pos + 1 && newIdx === 0) segments.pop()
   }
   return segments.join('/').trim().replace(/\/+$/, '')
-}
-
-export const getBitsetStrFromHex = (bv: string) => {
-  return BitSet.fromHexString(bv).toString(2)
-}
-
-export const getVotedMembers = (
-  bv: string,
-  members: WeightedMembers[],
-  weights: number[]
-): { votedMembers: WeightedMembers[]; votedWeight: number; totalWeight: number } => {
-  const bs = BitSet.fromHexString(bv)
-  const voted = []
-  let votedWeight = 0
-  let totalWeight = 0
-  for (const m in members) {
-    totalWeight += weights[m]
-    if (bs.get(Number(m)) === 1) {
-      voted.push(members[m])
-      votedWeight += weights[m]
-    }
-  }
-  return { votedMembers: voted, votedWeight, totalWeight }
-}
-
-export const base64UrlToHex = (base64url: string) => {
-  if (!base64url) return '0'
-  // Convert base64url to standard base64
-  let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
-
-  // Add padding if necessary
-  const padLength = (4 - (base64.length % 4)) % 4
-  base64 += '='.repeat(padLength)
-
-  // Decode base64 to binary string
-  const binaryString = atob(base64)
-
-  // Convert each byte to hex
-  let hex = ''
-  for (let i = 0; i < binaryString.length; i++) {
-    const byte = binaryString.charCodeAt(i)
-    hex += byte.toString(16).padStart(2, '0')
-  }
-
-  return hex
-}
-
-export const bitsGrid = (input: string) => {
-  let output = ''
-  let spaceCount = 0
-
-  for (let i = 0; i < input.length; i++) {
-    output += input[i]
-
-    // If this is an 8th character, add a space
-    if ((i + 1) % 8 === 0) {
-      output += ' '
-      spaceCount++
-    }
-
-    // If we've added 8 spaces, add a newline and reset the space counter
-    if (spaceCount === 8) {
-      output += '\n'
-      spaceCount = 0
-    }
-  }
-
-  return output
 }
 
 // https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go

@@ -5,7 +5,7 @@ import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
 import NewTxs from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
-// import PageNotFound from './components/pages/404'
+import PageNotFound from './components/pages/404'
 import { BlockBy } from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
@@ -16,13 +16,11 @@ import { Contract } from './components/pages/Contract'
 // import HiveBridgeOverview from './components/pages/bridge/Overview'
 // import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 // import { ContractOut } from './components/pages/ContractOut'
-// import { Event } from './components/pages/Event'
 import WitnessSchedule from './components/pages/Schedule'
 // import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
 // import { AddressDeposits } from './components/pages/address/Deposits'
 // import { AddressWithdrawals } from './components/pages/address/Withdrawals'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
-import { Maintenance } from './components/pages/Maintenance'
 
 const router = createBrowserRouter([
   {
@@ -116,10 +114,6 @@ const router = createBrowserRouter([
       //   element: <ContractOut />
       // },
       // {
-      //   path: '/event/:cid',
-      //   element: <Event />
-      // },
-      // {
       //   path: '/bridge/hive',
       //   element: <HiveBridgeOverview />
       // },
@@ -137,7 +131,7 @@ const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <Maintenance />
+        element: <PageNotFound />
       }
     ]
   }
