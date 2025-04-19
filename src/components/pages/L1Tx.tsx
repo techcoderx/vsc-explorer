@@ -132,7 +132,7 @@ const L1Tx = () => {
   const isValid = !!txid && /^[0-9a-fA-F]{40}$/i.test(txid)
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['vsc-l1-tx', txid],
-    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${txid!}`),
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${txid!}?include-virtual=true`),
     enabled: isValid
   })
   const { data: outData } = useQuery({

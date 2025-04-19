@@ -132,7 +132,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
       if (op.value.owner === multisigAccount)
         return {
           valid: true,
-          type: op.type,
+          type: 'interest',
           user: op.value.owner,
           payload: op.value
         }
