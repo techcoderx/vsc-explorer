@@ -202,6 +202,11 @@ export interface AccInfo {
   last_activity: string
 }
 
+export interface BridgeCounter {
+  deposits: number
+  withdrawals: number
+}
+
 /** Contract call short details */
 interface ContractCallDetailMinimal {
   contract_id: string

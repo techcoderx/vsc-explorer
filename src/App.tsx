@@ -14,7 +14,7 @@ import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
-// import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
+import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
 // import { ContractOut } from './components/pages/ContractOut'
 import WitnessSchedule from './components/pages/Schedule'
 // import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
@@ -114,17 +114,17 @@ const router = createBrowserRouter([
       //   element: <ContractOut />
       // },
       {
-        path: '/bridge',
+        path: '/bridge/hive',
         element: <HiveBridgeOverview />
       },
-      // {
-      //   path: '/bridge/hive/deposits/:page?',
-      //   element: <HiveDeposits />
-      // },
-      // {
-      //   path: '/bridge/hive/withdrawals/:page?',
-      //   element: <HiveWithdrawals />
-      // },
+      {
+        path: '/bridge/hive/deposits/:page?',
+        element: <HiveBridgeLatestTxs kind="d" />
+      },
+      {
+        path: '/bridge/hive/withdrawals/:page?',
+        element: <HiveBridgeLatestTxs kind="w" />
+      },
       {
         path: '/tools/verify/contract',
         element: <VerifyContract />

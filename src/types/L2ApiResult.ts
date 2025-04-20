@@ -83,7 +83,7 @@ export interface LedgerTx<T = TxTypes> {
   block_height: number
   timestamp: string
   from: string
-  owner: string
+  to: string
   type: T
   asset: CoinLower
   tx_id: string

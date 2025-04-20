@@ -4,32 +4,27 @@ import { abbreviateHash } from '../helpers'
 
 type TableLinkParams = { val: string; tooltip?: boolean; truncate?: number }
 
-const TheLink = ({ val, truncate, href }: TableLinkParams & { href: string }) => {
+const TheLink = ({ val, tooltip, truncate, href }: TableLinkParams & { href: string }) => {
+  const display = abbreviateHash(val, truncate, 0)
   return (
     <Link as={ReactRouterLink} to={href}>
-      {abbreviateHash(val, truncate, 0)}
+      {tooltip ? (
+        <Tooltip label={val} placement={'top'}>
+          {display}
+        </Tooltip>
+      ) : (
+        display
+      )}
     </Link>
   )
 }
 
 export const TxLink = ({ val, tooltip, truncate = 15 }: TableLinkParams) => {
   const href = '/tx/' + val
-  return tooltip ? (
-    <Tooltip label={val} placement={'top'}>
-      <TheLink val={val} truncate={truncate} href={href} />
-    </Tooltip>
-  ) : (
-    <TheLink val={val} truncate={truncate} href={href} />
-  )
+  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
 
 export const AccountLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
   const href = !val.startsWith('did:') ? `/@${val.replace('hive:', '')}` : `/address/${val}`
-  return tooltip ? (
-    <Tooltip label={val} placement={'top'}>
-      <TheLink val={val} truncate={truncate} href={href} />
-    </Tooltip>
-  ) : (
-    <TheLink val={val} truncate={truncate} href={href} />
-  )
+  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }

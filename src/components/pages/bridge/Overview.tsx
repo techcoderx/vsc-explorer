@@ -3,7 +3,6 @@ import {
   CardBody,
   CardHeader,
   Heading,
-  Link,
   Skeleton,
   Stack,
   Stat,
@@ -26,9 +25,9 @@ import { Link as ReactRouterLink } from 'react-router'
 import { fetchL1Rest, fetchLatestBridgeTxs, getBridgeTxCounts } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import { L1Balance } from '../../../types/L1ApiResult'
-import { abbreviateHash, fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
+import { fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
 import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
-import { TxLink } from '../../TableLink'
+import { AccountLink, TxLink } from '../../TableLink'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1.5px solid #e2e8f0'
@@ -56,7 +55,6 @@ const BridgeTxsTable = ({ txs }: { txs?: (LedgerTx<'deposit'> | LedgerActions<'w
 }
 
 const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw'> }) => {
-  const user = tx.type === 'deposit' ? tx.owner : tx.to
   return (
     <Tr _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
       <Td>
@@ -68,11 +66,7 @@ const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw
         </Tooltip>
       </Td>
       <Td>
-        <Tooltip label={user} placement={'top'}>
-          <Link as={ReactRouterLink} to={'/address/' + user}>
-            {abbreviateHash(user, 20, 0)}
-          </Link>
-        </Tooltip>
+        <AccountLink val={tx.to} tooltip={true} />
       </Td>
       <Td>{fmtmAmount(tx.amount, tx.asset)}</Td>
     </Tr>

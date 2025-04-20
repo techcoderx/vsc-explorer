@@ -15,10 +15,19 @@ import {
   UserBalance,
   Block,
   TxHeader,
-  WitnessStat
+  WitnessStat,
+  BridgeCounter
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { WitnessSchedule, Tx as L2TxGql, DagByCID, GqlResponse, LatestBridgeTxs } from './types/L2ApiResult'
+import {
+  WitnessSchedule,
+  Tx as L2TxGql,
+  DagByCID,
+  GqlResponse,
+  LatestBridgeTxs,
+  LedgerTx,
+  LedgerActions
+} from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
@@ -134,16 +143,6 @@ export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l1_accounts_by_pubkeys?pubkeys={"${pubkeys.join('","')}"}`)).json()
 }
 
-export const fetchLatestDeposits = async (last_id: number | null, count = 100): Promise<BridgeTx[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/list_latest_deposits?count=${count}${last_id ? '&last_id=' + last_id : ''}`)).json()
-}
-
-export const fetchLatestWithdrawals = async (last_id: number | null, count = 100): Promise<BridgeTx[]> => {
-  return await (
-    await fetch(`${hafVscApi}/rpc/list_latest_withdrawals?count=${count}${last_id ? '&last_id=' + last_id : ''}`)
-  ).json()
-}
-
 export const fetchDepositsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {
   return await (
     await fetch(
@@ -166,7 +165,7 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance
   return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
 }
 
-export const getBridgeTxCounts = async (): Promise<{ deposits: number; withdrawals: number }> => {
+export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {
   return await (await fetch(`${hafVscApi}/bridge/stats`)).json()
 }
 
@@ -178,7 +177,6 @@ export const fetchL1Rest = async <T>(route: string): Promise<T> => {
   return await (await fetch(`${hiveApi}${route}`)).json()
 }
 
-// TODO: Minfiy GraphQL queries
 const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => {
   return (await (
     await fetch(vscNodeApi, {
@@ -199,10 +197,7 @@ export const getWitnessSchedule = async (height: number): Promise<WitnessSchedul
   return gql<WitnessSchedule>(
     `
     query WitnessSchedule($height: Uint64!) {
-      witnessSchedule(height: $height) {
-        account
-        bn
-      }
+      witnessSchedule(height: $height) { account bn }
     }
     `,
     {
@@ -250,25 +245,8 @@ export const fetchLatestBridgeTxs = async (limit = 25): Promise<LatestBridgeTxs>
   const result = await gql<GqlResponse<LatestBridgeTxs>>(
     `
     query BridgeActivity($deposit: LedgerTxFilter, $withdrawal: LedgerActionsFilter) {
-      deposits: findLedgerTXs(filterOptions: $deposit) {
-        id
-        timestamp
-        type
-        from
-        owner
-        amount
-        asset
-      }
-      withdrawals: findLedgerActions(filterOptions: $withdrawal) {
-        id
-        action_id
-        timestamp
-        type
-        status
-        to
-        amount
-        asset
-      }
+      deposits: findLedgerTXs(filterOptions: $deposit) { id timestamp type from to: owner amount asset }
+      withdrawals: findLedgerActions(filterOptions: $withdrawal) { id action_id timestamp type status to amount asset }
     }`,
     {
       withdrawal: {
@@ -278,6 +256,40 @@ export const fetchLatestBridgeTxs = async (limit = 25): Promise<LatestBridgeTxs>
       deposit: {
         limit,
         byTypes: ['deposit']
+      }
+    }
+  )
+  return result.data
+}
+
+export const getDeposits = async (offset = 0, limit = 100): Promise<{ deposits: LedgerTx[] }> => {
+  const result = await gql<GqlResponse<{ deposits: LedgerTx[] }>>(
+    `
+    query BridgeActivity($deposit: LedgerTxFilter) {
+      deposits: findLedgerTXs(filterOptions: $deposit) { id timestamp from to: owner amount asset }
+    }`,
+    {
+      deposit: {
+        offset,
+        limit,
+        byTypes: ['deposit']
+      }
+    }
+  )
+  return result.data
+}
+
+export const getWithdrawals = async (offset = 0, limit = 100): Promise<{ withdrawals: LedgerActions[] }> => {
+  const result = await gql<GqlResponse<{ withdrawals: LedgerActions[] }>>(
+    `
+    query BridgeActivity($withdrawal: LedgerActionsFilter) {
+      withdrawals: findLedgerActions(filterOptions: $withdrawal) { id action_id timestamp status to amount asset }
+    }`,
+    {
+      withdrawal: {
+        offset,
+        limit,
+        byTypes: ['withdraw']
       }
     }
   )

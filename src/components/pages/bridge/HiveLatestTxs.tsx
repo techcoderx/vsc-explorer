@@ -1,13 +1,33 @@
-import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link, Badge, Icon } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
-import { fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
-import { abbreviateHash, thousandSeperator, timeAgo } from '../../../helpers'
-import { BridgeTx } from '../../../types/HafApiResult'
+import { getBridgeTxCounts, getDeposits, getWithdrawals } from '../../../requests'
+import { fmtmAmount, timeAgo } from '../../../helpers'
+import { BridgeCounter } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
-import { l1Explorer } from '../../../settings'
+import PageNotFound from '../404'
+import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
+import { AccountLink, TxLink } from '../../TableLink'
+import { themeColorScheme } from '../../../settings'
+import { FaCircleArrowRight } from 'react-icons/fa6'
 
 const count = 100
+const maxPage = 100
+
+interface Commons {
+  tally: BridgeCounter
+  pageNumber: number
+}
+
+const StatusBadge = ({ tx }: { tx: LedgerActions }) => {
+  if (tx.status === 'complete')
+    return (
+      <Link as={ReactRouterLink} to={'/tx/' + tx.action_id}>
+        <Badge colorScheme={'green'}>{tx.status}</Badge>
+      </Link>
+    )
+  else return <Badge colorScheme={themeColorScheme}>{tx.status}</Badge>
+}
 
 const TxsTable = ({
   type,
@@ -17,12 +37,12 @@ const TxsTable = ({
   currentPage,
   txCount
 }: {
-  type: string
-  txs?: BridgeTx[]
+  type: 'deposits' | 'withdrawals'
+  txs: (LedgerTx | LedgerActions)[]
   isLoading: boolean
   isSuccess: boolean
   currentPage: number
-  txCount?: number
+  txCount: number
 }) => {
   return (
     <>
@@ -30,12 +50,13 @@ const TxsTable = ({
         <Table variant={'simple'}>
           <Thead>
             <Tr>
-              <Th>ID</Th>
-              <Th>Age</Th>
-              <Th>Block Number</Th>
-              <Th>To User</Th>
               <Th>Tx ID</Th>
+              <Th>Age</Th>
+              {type === 'deposits' ? <Th>From User</Th> : null}
+              {type === 'deposits' ? <Th></Th> : null}
+              <Th>To User</Th>
               <Th>Amount</Th>
+              {type === 'withdrawals' ? <Th>Status</Th> : null}
             </Tr>
           </Thead>
           <Tbody>
@@ -51,39 +72,32 @@ const TxsTable = ({
               txs?.map((item, i) => (
                 <Tr key={i}>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/tx/' + item.tx_hash}>
-                      {item.id}
-                    </Link>
+                    <TxLink val={item.id} tooltip={true} />
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
-                    <Tooltip label={item.ts} placement="top">
-                      {timeAgo(item.ts)}
+                    <Tooltip label={item.timestamp} placement="top">
+                      {timeAgo(item.timestamp + 'Z')}
                     </Tooltip>
                   </Td>
+                  {type === 'deposits' ? (
+                    <Td>
+                      <AccountLink val={(item as LedgerTx).from} truncate={30} />
+                    </Td>
+                  ) : null}
+                  {type === 'deposits' ? (
+                    <Td>
+                      <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                    </Td>
+                  ) : null}
                   <Td>
-                    <Link as={ReactRouterLink} to={l1Explorer + '/b/' + item.block_num}>
-                      {item.block_num}
-                    </Link>
+                    <AccountLink val={item.to} truncate={30} tooltip={true} />
                   </Td>
-                  <Td>
-                    <Link as={ReactRouterLink} to={type === 'withdrawals' ? '/@' + item.to : '/address/' + item.to}>
-                      {type !== 'withdrawals' ? (
-                        <Tooltip label={item.to} placement={'top'}>
-                          {item.to.startsWith('hive:') ? item.to.replace('hive:', '') : abbreviateHash(item.to, 30, 0)}
-                        </Tooltip>
-                      ) : (
-                        item.to
-                      )}
-                    </Link>
-                  </Td>
-                  <Td>
-                    <Link as={ReactRouterLink} to={'/tx/' + item.tx_hash}>
-                      <Tooltip label={item.tx_hash} placement={'top'}>
-                        {abbreviateHash(item.tx_hash, 20, 0)}
-                      </Tooltip>
-                    </Link>
-                  </Td>
-                  <Td>{thousandSeperator(item.amount)}</Td>
+                  <Td>{fmtmAmount(item.amount, item.asset)}</Td>
+                  {type === 'withdrawals' ? (
+                    <Td>
+                      <StatusBadge tx={item as LedgerActions} />
+                    </Td>
+                  ) : null}
                 </Tr>
               ))
             ) : (
@@ -92,86 +106,81 @@ const TxsTable = ({
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination path={'/bridge/hive/' + type} currentPageNum={currentPage} maxPageNum={Math.ceil((txCount || 0) / count)} />
+      <Pagination
+        path={'/bridge/hive/' + type}
+        currentPageNum={currentPage}
+        maxPageNum={Math.min(maxPage, Math.ceil(txCount / count))}
+      />
     </>
   )
 }
 
-export const HiveDeposits = () => {
-  const { page } = useParams()
-  const pageNumber = parseInt(page || '1')
-  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
-  const { data: depositCount, isSuccess: isLatestTxSuccess } = useQuery({
-    queryKey: ['vsc-deposit-count'],
-    queryFn: async () => {
-      const latestRecord = await fetchLatestDeposits(null, 1)
-      return latestRecord.length > 0 ? latestRecord[0].id : 0
-    },
-    enabled: !invalidPage
-  })
+export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
+  const offset = (pageNumber - 1) * count
   const {
     data: deposits,
     isSuccess: isDepSuccess,
     isLoading: isDepLoading
   } = useQuery({
-    queryKey: ['vsc-list-deposits-hive', null, count],
-    queryFn: async () => fetchLatestDeposits(null, count),
-    enabled: !invalidPage && typeof depositCount === 'number'
+    queryKey: ['vsc-list-deposits-hive', offset, count],
+    queryFn: async () => getDeposits(offset, count)
   })
   return (
     <>
       <Text fontSize={'5xl'}>Hive Bridge Deposits</Text>
       <hr />
       <br />
-      <Text>Total {isLatestTxSuccess ? depositCount : 0} deposits</Text>
+      <Text>Total {tally.deposits} deposits</Text>
       <TxsTable
         type="deposits"
-        txs={deposits}
-        txCount={depositCount}
-        currentPage={pageNumber}
+        txs={deposits?.deposits || []}
         isLoading={isDepLoading}
         isSuccess={isDepSuccess}
+        currentPage={pageNumber}
+        txCount={tally.deposits}
       />
     </>
   )
 }
 
-export const HiveWithdrawals = () => {
-  const { page } = useParams()
-  const pageNumber = parseInt(page || '1')
-  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
-  const { data: withdrawalCount, isSuccess: isLatestTxSuccess } = useQuery({
-    queryKey: ['vsc-withdrawal-count'],
-    queryFn: async () => {
-      const latestRecord = await fetchLatestWithdrawals(null, 1)
-      return latestRecord.length > 0 ? latestRecord[0].id : 0
-    },
-    enabled: !invalidPage
-  })
-  const paginate = Math.max((withdrawalCount || 0) - (pageNumber - 1) * count, 0)
+export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
+  const offset = (pageNumber - 1) * count
   const {
     data: withdrawals,
     isSuccess: isWithdSuccess,
     isLoading: isWithdLoading
   } = useQuery({
-    queryKey: ['vsc-list-withdrawals-hive', paginate, count],
-    queryFn: async () => fetchLatestWithdrawals(paginate, count),
-    enabled: !invalidPage && typeof withdrawalCount === 'number'
+    queryKey: ['vsc-list-withdrawals-hive', offset, count],
+    queryFn: async () => getWithdrawals(offset, count)
   })
   return (
     <>
       <Text fontSize={'5xl'}>Hive Bridge Withdrawals</Text>
       <hr />
       <br />
-      <Text>Total {isLatestTxSuccess ? withdrawalCount : 0} withdrawals</Text>
+      <Text>Total {tally.withdrawals} withdrawals</Text>
       <TxsTable
         type="withdrawals"
-        txs={withdrawals}
-        txCount={withdrawalCount}
-        currentPage={pageNumber}
+        txs={withdrawals?.withdrawals || []}
         isLoading={isWithdLoading}
         isSuccess={isWithdSuccess}
+        currentPage={pageNumber}
+        txCount={tally.withdrawals}
       />
     </>
   )
+}
+
+export const HiveBridgeLatestTxs = ({ kind }: { kind: 'd' | 'w' }) => {
+  const { page } = useParams()
+  const pageNumber = parseInt(page || '1')
+  const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
+  const { data } = useQuery({ queryKey: ['vsc-bridge-tx-count'], queryFn: async () => getBridgeTxCounts() })
+  const tally: BridgeCounter = data || {
+    deposits: 0,
+    withdrawals: 0
+  }
+  if (invalidPage) return <PageNotFound />
+  else if (kind === 'd') return <HiveDeposits tally={tally} pageNumber={pageNumber} />
+  else return <HiveWithdrawals tally={tally} pageNumber={pageNumber} />
 }
