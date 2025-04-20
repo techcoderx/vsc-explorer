@@ -9,7 +9,8 @@ import {
   TransferPayload,
   XferWdPayload,
   InterestPayload,
-  Coin
+  Coin,
+  CoinLower
 } from './types/Payloads'
 import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
 import { Ops } from './types/L1ApiResult'
@@ -69,12 +70,12 @@ export const validateHiveUsername = (value: string): string | null => {
   return null
 }
 
-export const fmtAmount = (amount: number, asset: Coin) => {
-  return `${thousandSeperator(amount)} ${asset}`
+export const fmtAmount = (amount: number, asset: Coin | CoinLower) => {
+  return `${thousandSeperator(amount)} ${asset.toUpperCase()}`
 }
 
-export const fmtmAmount = (amount: number, asset: Coin) => {
-  return `${thousandSeperator(roundFloat(amount / 1000, 3))} ${asset}`
+export const fmtmAmount = (amount: number, asset: Coin | CoinLower) => {
+  return `${thousandSeperator(roundFloat(amount / 1000, 3))} ${asset.toUpperCase()}`
 }
 
 export const naiToString = (nai: NAI) => {

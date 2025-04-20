@@ -18,7 +18,7 @@ import {
   WitnessStat
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
-import { WitnessSchedule, Tx as L2TxGql, DagByCID, DagByCIDBatch } from './types/L2ApiResult'
+import { WitnessSchedule, Tx as L2TxGql, DagByCID, GqlResponse, LatestBridgeTxs } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
@@ -162,6 +162,14 @@ export const fetchWithdrawReqsByAddr = async (address: string, count: number = 1
   ).json()
 }
 
+export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance> => {
+  return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
+}
+
+export const getBridgeTxCounts = async (): Promise<{ deposits: number; withdrawals: number }> => {
+  return await (await fetch(`${hafVscApi}/bridge/stats`)).json()
+}
+
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
   return await (await fetch(`${hafVscApi}/search/${search_cid}`)).json()
 }
@@ -170,7 +178,8 @@ export const fetchL1Rest = async <T>(route: string): Promise<T> => {
   return await (await fetch(`${hiveApi}${route}`)).json()
 }
 
-const gql = async <T>(query: string, variables: { [key: string]: string } = {}) => {
+// TODO: Minfiy GraphQL queries
+const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => {
   return (await (
     await fetch(vscNodeApi, {
       method: 'POST',
@@ -184,10 +193,6 @@ const gql = async <T>(query: string, variables: { [key: string]: string } = {}) 
       })
     })
   ).json()) as T
-}
-
-export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance> => {
-  return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
 }
 
 export const getWitnessSchedule = async (height: number): Promise<WitnessSchedule> => {
@@ -237,8 +242,46 @@ export const getDagByCIDBatch = async <T>(cids: string[]): Promise<T[]> => {
   `
 
   // Execute query and map results to array
-  const result = await gql<DagByCIDBatch>(query, variables)
+  const result = await gql<GqlResponse>(query, variables)
   return cids.map((_, index) => JSON.parse(result.data[`d${index}`]))
+}
+
+export const fetchLatestBridgeTxs = async (limit = 25): Promise<LatestBridgeTxs> => {
+  const result = await gql<GqlResponse<LatestBridgeTxs>>(
+    `
+    query BridgeActivity($deposit: LedgerTxFilter, $withdrawal: LedgerActionsFilter) {
+      deposits: findLedgerTXs(filterOptions: $deposit) {
+        id
+        timestamp
+        type
+        from
+        owner
+        amount
+        asset
+      }
+      withdrawals: findLedgerActions(filterOptions: $withdrawal) {
+        id
+        action_id
+        timestamp
+        type
+        status
+        to
+        amount
+        asset
+      }
+    }`,
+    {
+      withdrawal: {
+        limit,
+        byTypes: ['withdraw']
+      },
+      deposit: {
+        limit,
+        byTypes: ['deposit']
+      }
+    }
+  )
+  return result.data
 }
 
 export const fetchL2TxGql = async (trx_id: string): Promise<L2TxGql> => {

@@ -144,26 +144,27 @@ export interface WeightedMembers {
   key: string
 }
 
-const txTypes = [
-  'announce_node',
-  'produce_block',
-  'create_contract',
-  'call',
-  'election_result',
-  'custom_json',
-  'transfer',
-  'withdraw',
-  'l1_transfer',
-  'consensus_stake',
-  'consensus_unstake',
-  'stake_hbd',
-  'unstake_hbd',
-  'transfer_to_savings',
-  'transfer_from_savings',
-  'fill_transfer_from_savings',
-  'interest'
-] as const
-export type TxTypes = (typeof txTypes)[number]
+export type TxTypes =
+  | 'announce_node'
+  | 'produce_block'
+  | 'create_contract'
+  | 'call'
+  | 'election_result'
+  | 'custom_json'
+  | 'transfer'
+  | 'withdraw'
+  | 'l1_transfer'
+  | 'consensus_stake'
+  | 'consensus_unstake'
+  | 'stake_hbd'
+  | 'unstake_hbd'
+  | 'transfer_to_savings'
+  | 'transfer_from_savings'
+  | 'fill_transfer_from_savings'
+  | 'interest'
+  | 'stake'
+  | 'unstake'
+  | 'deposit'
 
 export interface L1Transaction extends Item<number> {
   nonce: number

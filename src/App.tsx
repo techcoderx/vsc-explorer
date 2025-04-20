@@ -13,7 +13,7 @@ import L1Tx from './components/pages/L1Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { Contract } from './components/pages/Contract'
-// import HiveBridgeOverview from './components/pages/bridge/Overview'
+import HiveBridgeOverview from './components/pages/bridge/Overview'
 // import { HiveDeposits, HiveWithdrawals } from './components/pages/bridge/HiveLatestTxs'
 // import { ContractOut } from './components/pages/ContractOut'
 import WitnessSchedule from './components/pages/Schedule'
@@ -113,10 +113,10 @@ const router = createBrowserRouter([
       //   path: '/vsc-tx-output/:txid',
       //   element: <ContractOut />
       // },
-      // {
-      //   path: '/bridge/hive',
-      //   element: <HiveBridgeOverview />
-      // },
+      {
+        path: '/bridge',
+        element: <HiveBridgeOverview />
+      },
       // {
       //   path: '/bridge/hive/deposits/:page?',
       //   element: <HiveDeposits />

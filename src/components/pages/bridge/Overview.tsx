@@ -23,22 +23,23 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router'
-import { fetchL1Rest, fetchLatestDeposits, fetchLatestWithdrawals } from '../../../requests'
+import { fetchL1Rest, fetchLatestBridgeTxs, getBridgeTxCounts } from '../../../requests'
 import { multisigAccount, themeColorScheme } from '../../../settings'
-import { L1Account } from '../../../types/L1ApiResult'
-import { abbreviateHash, roundFloat, thousandSeperator, timeAgo } from '../../../helpers'
-import { BridgeTx } from '../../../types/HafApiResult'
+import { L1Balance } from '../../../types/L1ApiResult'
+import { abbreviateHash, fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
+import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
+import { TxLink } from '../../TableLink'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1.5px solid #e2e8f0'
 
-const BridgeTxsTable = ({ txs }: { txs?: BridgeTx[] }) => {
+const BridgeTxsTable = ({ txs }: { txs?: (LedgerTx<'deposit'> | LedgerActions<'withdraw'>)[] }) => {
   return (
     <TableContainer>
       <Table variant={'simple'}>
         <Thead>
           <Tr>
-            <Th>ID</Th>
+            <Th>Tx ID</Th>
             <Th>Age</Th>
             <Th>To User</Th>
             <Th>Amount</Th>
@@ -46,26 +47,7 @@ const BridgeTxsTable = ({ txs }: { txs?: BridgeTx[] }) => {
         </Thead>
         <Tbody>
           {txs?.map((tx, i) => (
-            <Tr key={i} _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
-              <Td>
-                <Link as={ReactRouterLink} to={'/tx/' + tx.tx_hash}>
-                  {tx.id}
-                </Link>
-              </Td>
-              <Td>
-                <Tooltip label={tx.ts} placement={'top'}>
-                  {timeAgo(tx.ts)}
-                </Tooltip>
-              </Td>
-              <Td>
-                <Link as={ReactRouterLink} to={'/address/' + tx.to}>
-                  <Tooltip label={tx.to} placement={'top'}>
-                    {tx.to.startsWith('hive:') ? tx.to.replace('hive:', '') : abbreviateHash(tx.to, 20, 0)}
-                  </Tooltip>
-                </Link>
-              </Td>
-              <Td>{thousandSeperator(tx.amount)}</Td>
-            </Tr>
+            <BridgeTxRow key={i} tx={tx} />
           ))}
         </Tbody>
       </Table>
@@ -73,18 +55,39 @@ const BridgeTxsTable = ({ txs }: { txs?: BridgeTx[] }) => {
   )
 }
 
+const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw'> }) => {
+  const user = tx.type === 'deposit' ? tx.owner : tx.to
+  return (
+    <Tr _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
+      <Td>
+        <TxLink val={tx.id} truncate={10} />
+      </Td>
+      <Td>
+        <Tooltip label={tx.timestamp} placement={'top'}>
+          {timeAgo(tx.timestamp + 'Z')}
+        </Tooltip>
+      </Td>
+      <Td>
+        <Tooltip label={user} placement={'top'}>
+          <Link as={ReactRouterLink} to={'/address/' + user}>
+            {abbreviateHash(user, 20, 0)}
+          </Link>
+        </Tooltip>
+      </Td>
+      <Td>{fmtmAmount(tx.amount, tx.asset)}</Td>
+    </Tr>
+  )
+}
+
 const HiveBridgeOverview = () => {
-  const { data: l1Acc, isSuccess: isL1AccSuccess } = useQuery({
+  const { data: l1Acc } = useQuery({
     queryKey: ['hive-account', multisigAccount],
-    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe-api/accounts/${multisigAccount}`)
+    queryFn: async () => fetchL1Rest<L1Balance>(`/balance-api/accounts/${multisigAccount}/balances`)
   })
-  const { data: deposits, isSuccess: isDepSuccess } = useQuery({
-    queryKey: ['vsc-list-deposits-hive', null, 10],
-    queryFn: async () => fetchLatestDeposits(null, 10)
-  })
-  const { data: withdrawals, isSuccess: isWithdSuccess } = useQuery({
-    queryKey: ['vsc-list-withdrawals-hive', null, 10],
-    queryFn: async () => fetchLatestWithdrawals(null, 10)
+  const { data: tally } = useQuery({ queryKey: ['vsc-bridge-tx-count'], queryFn: async () => getBridgeTxCounts() })
+  const { data } = useQuery({
+    queryKey: ['vsc-latest-bridge-txs'],
+    queryFn: async () => fetchLatestBridgeTxs()
   })
   return (
     <>
@@ -97,8 +100,8 @@ const HiveBridgeOverview = () => {
             <Stat>
               <StatLabel>HIVE TVL</StatLabel>
               <StatNumber>
-                {isL1AccSuccess && l1Acc.id ? (
-                  thousandSeperator(roundFloat(l1Acc.balance / 1000 + l1Acc.savings_balance / 1000, 3)) + ' HIVE'
+                {!!l1Acc ? (
+                  fmtmAmount(l1Acc.hive_balance + l1Acc.hive_savings + parseInt(l1Acc.vesting_balance_hive), 'HIVE')
                 ) : (
                   <Skeleton height={'20px'} maxW={'40px'} />
                 )}
@@ -107,31 +110,17 @@ const HiveBridgeOverview = () => {
             <Stat>
               <StatLabel>HBD TVL</StatLabel>
               <StatNumber>
-                {isL1AccSuccess && l1Acc.id ? (
-                  thousandSeperator(roundFloat(l1Acc.hbd_balance / 1000 + l1Acc.hbd_saving_balance / 1000, 3)) + ' HBD'
-                ) : (
-                  <Skeleton height={'20px'} maxW={'40px'} />
-                )}
+                {!!l1Acc ? fmtmAmount(l1Acc.hbd_balance + l1Acc.hbd_savings, 'HBD') : <Skeleton height={'20px'} maxW={'40px'} />}
               </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Deposit Txs</StatLabel>
-              <StatNumber>
-                {isDepSuccess ? (
-                  thousandSeperator(deposits.length > 0 ? deposits[0].id : 0)
-                ) : (
-                  <Skeleton height={'20px'} maxW={'40px'} />
-                )}
-              </StatNumber>
+              <StatNumber>{!!tally ? thousandSeperator(tally.deposits) : <Skeleton height={'20px'} maxW={'40px'} />}</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Withdrawal Txs</StatLabel>
               <StatNumber>
-                {isWithdSuccess ? (
-                  thousandSeperator(withdrawals.length > 0 ? withdrawals[0].id : 0)
-                ) : (
-                  <Skeleton height={'20px'} maxW={'40px'} />
-                )}
+                {!!tally ? thousandSeperator(tally.withdrawals) : <Skeleton height={'20px'} maxW={'40px'} />}
               </StatNumber>
             </Stat>
           </Stack>
@@ -144,7 +133,7 @@ const HiveBridgeOverview = () => {
             <Heading fontSize={'2xl'}>Latest Deposits</Heading>
           </CardHeader>
           <CardBody padding={'0'}>
-            <BridgeTxsTable txs={deposits} />
+            <BridgeTxsTable txs={data?.deposits || []} />
           </CardBody>
           <CardFooter paddingTop={'3'}>
             <Button as={ReactRouterLink} to={'/bridge/hive/deposits'} colorScheme={themeColorScheme}>
@@ -157,7 +146,7 @@ const HiveBridgeOverview = () => {
             <Heading fontSize={'2xl'}>Latest Withdrawals</Heading>
           </CardHeader>
           <CardBody padding={'0'}>
-            <BridgeTxsTable txs={withdrawals} />
+            <BridgeTxsTable txs={data?.withdrawals || []} />
           </CardBody>
           <CardFooter paddingTop={'3'}>
             <Button as={ReactRouterLink} to={'/bridge/hive/withdrawals'} colorScheme={themeColorScheme}>

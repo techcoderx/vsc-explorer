@@ -14,16 +14,14 @@ export type L1AccountAuthority = {
   witness_signing: string
 }
 
-export type L1Account = {
-  id: number
-  balance: number
-  savings_balance: number
+export type L1Balance = {
   hbd_balance: number
-  hbd_saving_balance: number
-  vesting_shares: number
-  owner: L1AccountAuths
-  active: L1AccountAuths
-  posting: L1AccountAuths
+  hive_balance: number
+  vesting_shares: string
+  vesting_balance_hive: string
+  hbd_savings: number
+  hive_savings: number
+  savings_withdraw_requests: number
 }
 
 export type Ops = CustomJson | AccUpdate | Transfers | Interest

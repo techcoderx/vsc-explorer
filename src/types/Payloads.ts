@@ -44,6 +44,7 @@ export type InterestPayload = {
 
 export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
 export type Coin = 'HIVE' | 'HBD'
+export type CoinLower = 'hive' | 'hbd'
 
 interface L1TxPayload {
   op: L2TxType

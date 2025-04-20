@@ -21,7 +21,7 @@ import { useState } from 'react'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
 import { fetchProps, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
-import { L1Account, L1TxHeader } from '../types/L1ApiResult'
+import { L1TxHeader } from '../types/L1ApiResult'
 
 interface SearchBarProps {
   miniBtn?: boolean
@@ -81,7 +81,7 @@ const useSearchResults = (query: string): SearchResultHook => {
     isError: isL1AccErr
   } = useQuery({
     queryKey: ['hive-account', query],
-    queryFn: async () => fetchL1Rest<L1Account>(`/hafbe-api/accounts/${query}`),
+    queryFn: async () => fetchL1Rest<{ id: number }>(`/hafbe-api/accounts/${query}`),
     enabled: queryType === SearchQueryType.L1Account
   })
   const {
