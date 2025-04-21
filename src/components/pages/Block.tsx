@@ -55,16 +55,6 @@ export const BlockBy = () => {
 }
 
 const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkId: boolean, blkNum: number) => {
-  // const l1BlockSuccess = !invalidBlkId && !isBlockLoading && !isBlockError && !block.error
-  // const {
-  //   data: l2BlockTxs,
-  //   isLoading: isL2BlockLoading,
-  //   isError: isL2BlockError
-  // } = useQuery({
-  //   queryKey: ['vsc-block-txs', blkNum],
-  //   queryFn: async () => fetchBlockTxs(blkNum),
-  //   enabled: !isBlockError && !isBlockLoading && !invalidBlkId
-  // })
   const { data: epoch } = useQuery({
     queryKey: ['vsc-epoch', block && !block.error && block.be_info ? block.be_info.epoch : -1],
     queryFn: async () => fetchEpoch(block && !block.error && block.be_info ? block.be_info.epoch : -1),

@@ -280,18 +280,6 @@ export interface ContractOut {
   errorType?: number
 }
 
-export interface ContractOutputTx extends ItemWithIdxBlk<string> {
-  contract_id: string
-  total_io_gas: number
-  outputs: {
-    src: 'hive' | 'vsc'
-    tx_id: string
-    op_pos?: number
-    output: ContractOut
-  }[]
-  error?: string
-}
-
 export interface EventItm {
   t: number
   tk: Coin

@@ -15,7 +15,6 @@ import Epoch from './components/pages/Epoch'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
-// import { ContractOut } from './components/pages/ContractOut'
 import WitnessSchedule from './components/pages/Schedule'
 // import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
 // import { AddressDeposits } from './components/pages/address/Deposits'
@@ -108,10 +107,6 @@ const router = createBrowserRouter([
       // {
       //   path: '/vsc-tx/:txid',
       //   element: <L2Tx />
-      // },
-      // {
-      //   path: '/vsc-tx-output/:txid',
-      //   element: <ContractOut />
       // },
       {
         path: '/bridge/hive',

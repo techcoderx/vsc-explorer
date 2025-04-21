@@ -9,7 +9,6 @@ import {
   Election,
   BridgeTx,
   L1ContractCallTx,
-  ContractOutputTx,
   TxHistory,
   EventHistoryItm,
   UserBalance,
@@ -56,10 +55,6 @@ export const fetchContractByID = async (contract_id: string): Promise<Contract> 
 export const fetchBlock = async (block_id: number | string, by: string = 'id'): Promise<Block> => {
   return await (await fetch(`${hafVscApi}/block/by-${by}/${block_id}`)).json()
 }
-
-// export const fetchBlockTxs = async (block_id: number): Promise<BlockTx[]> => {
-//   return await (await fetch(`${hafVscApi}/rpc/get_txs_in_block?blk_id=${block_id}`)).json()
-// }
 
 export const fetchWitness = async (username: string): Promise<Witness> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}/witness`)).json()
@@ -111,10 +106,6 @@ export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)).json()
 }
 
-export const fetchContractOut = async (trx_id: string): Promise<ContractOutputTx> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_contract_output?cid=${trx_id}`)).json()
-}
-
 export const fetchCallsByContractId = async (
   contract_id: string,
   count: number = 100,
@@ -137,10 +128,6 @@ export const fetchAccEventHistory = async (did: string, count: number = 100, las
       }`
     )
   ).json()
-}
-
-export const fetchMsOwners = async (pubkeys: string[]): Promise<string[]> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_l1_accounts_by_pubkeys?pubkeys={"${pubkeys.join('","')}"}`)).json()
 }
 
 export const fetchDepositsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {

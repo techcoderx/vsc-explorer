@@ -23,7 +23,6 @@ import {
   // fetchAccInfo,
   fetchL1AccInfo,
   fetchL1Rest,
-  // fetchMsOwners,
   fetchWitness,
   fetchWitnessStat,
   getL2BalanceByL1User
@@ -84,11 +83,6 @@ const L1User = () => {
     queryFn: async () => fetchAccHistory(user, count, last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
-  // const { data: msNames, isSuccess: isMsNamesSuccess } = useQuery({
-  //   queryKey: ['vsc-ms-names', 'sk_owner'],
-  //   queryFn: async () => fetchMsOwners(l1Acc!.owner.key_auths.map((a) => a[0])),
-  //   enabled: user === multisigAccount && !!l1Acc && !invalidParams && !isL1AccErr
-  // })
   const {
     data: l2Balance,
     isLoading: isL2BalLoading,
