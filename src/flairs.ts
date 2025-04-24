@@ -3,8 +3,8 @@ type Flairs = {
 }
 
 export const L1Accs: Flairs = {
-  'vsc.ms-8968d20c': 'Old Multisig Controller',
-  'vsc.gateway': 'Multisig Controller',
+  'vsc.ms-8968d20c': 'Old Multisig Gateway',
+  'vsc.gateway': 'Multisig Gateway',
   'vsc.network': 'Official Account',
   'vsc.dao': 'DAO Account'
 }
