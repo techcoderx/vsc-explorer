@@ -28,7 +28,7 @@ const WitnessSchedule = () => {
     queryKey: ['vsc-block', 'slot', currentSlot],
     queryFn: () => fetchBlock(currentSlot, 'slot'),
     enabled: !!currentSlot,
-    refetchInterval: 5000
+    refetchInterval: 3000
   })
   if (blockAtCurrentSlot && !blockAtCurrentSlot.error) blocksProduced.current[currentSlot] = blockAtCurrentSlot
   useEffect(() => {

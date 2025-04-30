@@ -102,14 +102,17 @@ const BlockResult = ({ out }: { out: Block }) => {
       <CardBody mt={'-25px'}>
         <Table margin={'0'} variant={'unstyled'}>
           <Tbody>
-            <TableRow
-              minimalSpace
-              isInCard
-              allCardBorders
-              label="Block Number"
-              value={out.be_info.block_id}
-              link={'/block/' + out.be_info.block_id}
-            />
+            <TableRow minimalSpace isInCard allCardBorders label="Block Number">
+              {out.be_info ? (
+                <Link as={ReactRouterLink} to={'/block/' + out.be_info.block_id}>
+                  {thousandSeperator(out.be_info.block_id)}
+                </Link>
+              ) : (
+                <Text fontStyle={'italic'} opacity={'0.7'}>
+                  Indexing...
+                </Text>
+              )}
+            </TableRow>
             <TableRow minimalSpace isInCard allCardBorders label="Block Hash" value={out.block} />
             <TableRow minimalSpace isInCard allCardBorders label="Participation">
               {out.be_info ? (
