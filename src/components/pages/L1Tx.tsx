@@ -18,7 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest } from '../../requests'
-import { parseOperation, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { makeL1TxIdWifIdx, parseOperation, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
 import { Block, Contract, Election, TxHeader } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
@@ -39,7 +39,8 @@ const ContractResult = ({ out }: { out: Contract }) => {
   )
 }
 
-const LedgerOpLogs = ({ out }: { out: TxHeader }) => {
+const LedgerOpLogs = ({ out, trx_id, opidx }: { out: TxHeader; trx_id: string; opidx: number }) => {
+  const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
   return (
     <>
       <CardHeader>
@@ -49,15 +50,17 @@ const LedgerOpLogs = ({ out }: { out: TxHeader }) => {
         <JsonToTableRecursive
           isInCard
           minimalSpace
-          json={out.ledger.map((l) => {
-            return {
-              from: l.from,
-              to: l.to,
-              amount: `${roundFloat(l.amount / 1000, 3)} ${l.asset.toUpperCase()}`,
-              type: l.type,
-              params: l.params
-            }
-          })}
+          json={out.ledger
+            .filter((l) => (opidx > 0 ? l.id.startsWith(idWifIdx) : l.id === idWifIdx))
+            .map((l) => {
+              return {
+                from: l.from,
+                to: l.to,
+                amount: `${roundFloat(l.amount / 1000, 3)} ${l.asset.toUpperCase()}`,
+                type: l.type,
+                params: l.params
+              }
+            })}
         />
       </CardBody>
     </>
@@ -226,7 +229,7 @@ const L1Tx = () => {
                     VscLedgerTxNames.includes(trx.type) &&
                     Array.isArray((outData[i] as TxHeader).ledger) &&
                     (outData[i] as TxHeader).ledger.length > 0 ? (
-                      <LedgerOpLogs out={outData[i] as TxHeader} />
+                      <LedgerOpLogs out={outData[i] as TxHeader} trx_id={txid!} opidx={i} />
                     ) : trx.type === 'create_contract' ? (
                       <ContractResult out={outData[i] as Contract} />
                     ) : trx.type === 'election_result' ? (

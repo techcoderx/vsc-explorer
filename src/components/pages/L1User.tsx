@@ -112,7 +112,7 @@ const L1User = () => {
         <Text fontSize={'xl'} margin={'10px 0px'}>
           Account does not exist
         </Text>
-      ) : isL1AccErr ? (
+      ) : isL1AccErr && (!l1Accv || l1Accv.name !== user) ? (
         <Text fontSize={'xl'} margin={'10px 0px'}>
           Failed to fetch L1 Hive account
         </Text>

@@ -278,3 +278,8 @@ export const availableRC = (bal: UserBalance, head_block_num?: number, is_hive_u
   }
   return { avail: max_rc - (bal.rc_used.amount - amt_ret), max: max_rc }
 }
+
+export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {
+  if (opidx === 0) return trx_id
+  return `${trx_id}-${opidx}`
+}
