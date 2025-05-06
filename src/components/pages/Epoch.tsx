@@ -16,10 +16,11 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Skeleton,
   Tooltip,
   TableContainer,
-  Flex
+  Flex,
+  Center,
+  Button
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
@@ -32,11 +33,18 @@ import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { InfoIcon } from '@chakra-ui/icons'
+import { useEffect, useRef, useState } from 'react'
+import { Block } from '../../types/HafApiResult'
+
+const blockBatch = 100
 
 const Epoch = () => {
   const { epochNum } = useParams()
   const epchNum = parseInt(epochNum!)
   const invalidEpochNum = isNaN(epchNum) || epchNum < 0
+  const blocks = useRef<Block[]>([])
+  const [blockCount, setBlockCount] = useState<number>(0)
+  const [blockEnd, setBlockEnd] = useState<boolean>(false)
   const {
     data: epoch,
     isLoading: isEpochLoading,
@@ -51,16 +59,15 @@ const Epoch = () => {
     queryFn: async () => fetchEpoch(epchNum - 1),
     enabled: !invalidEpochNum && epchNum > 0
   })
-  const {
-    data: blocks,
-    isLoading: isBlocksLoading,
-    isError: isBlocksError
-  } = useQuery({
-    queryKey: ['vsc-block-in-epoch', epchNum, 100, null],
-    queryFn: async () => fetchBlocksInEpoch(epchNum),
-    enabled: !invalidEpochNum
-  })
-  const blockCount = (blocks && blocks.length) ?? 0
+  useEffect(() => {
+    if (!invalidEpochNum) {
+      fetchBlocksInEpoch(epchNum, blockBatch).then((b) => {
+        blocks.current = b
+        setBlockCount(b.length)
+        if (b.length < blockBatch) setBlockEnd(true)
+      })
+    }
+  }, [])
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
   if (invalidEpochNum) return <PageNotFound />
   return (
@@ -123,60 +130,79 @@ const Epoch = () => {
           </Table>
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList>
-              <Tab>Blocks ({blockCount})</Tab>
+              <Tab>
+                Blocks ({blockCount}
+                {blockCount > 0 && !blockEnd && '+'})
+              </Tab>
               <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
-                {isBlocksLoading ? (
-                  <Skeleton height={'20px'} />
-                ) : isBlocksError || !Array.isArray(blocks) ? (
-                  <Text>Failed to load blocks in epoch</Text>
-                ) : (
-                  <TableContainer>
-                    <Table>
-                      <Thead>
-                        <Tr>
-                          <Th>Id</Th>
-                          <Th>Age</Th>
-                          <Th>Proposer</Th>
-                          {/* <Th>Txs</Th> */}
-                          <Th>Block Hash</Th>
-                          <Th>Voted</Th>
+                <TableContainer mb={'5'}>
+                  <Table>
+                    <Thead>
+                      <Tr>
+                        <Th>Id</Th>
+                        <Th>Age</Th>
+                        <Th>Proposer</Th>
+                        {/* <Th>Txs</Th> */}
+                        <Th>Block Hash</Th>
+                        <Th>Voted</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {blocks.current.map((item, i) => (
+                        <Tr key={i}>
+                          <Td>
+                            <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
+                              {item.be_info.block_id}
+                            </Link>
+                          </Td>
+                          <Td sx={{ whiteSpace: 'nowrap' }}>
+                            <Tooltip label={item.ts} placement="top">
+                              {timeAgo(item.ts)}
+                            </Tooltip>
+                          </Td>
+                          <Td>
+                            <Link as={ReactRouterLink} to={'/@' + item.proposer}>
+                              {item.proposer}
+                            </Link>
+                          </Td>
+                          {/* <Td>{item.txs}</Td> */}
+                          <Td>
+                            <Link as={ReactRouterLink} to={'/block/' + item.block}>
+                              {abbreviateHash(item.block)}
+                            </Link>
+                          </Td>
+                          <Td maxW={'200px'}>
+                            <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
+                          </Td>
                         </Tr>
-                      </Thead>
-                      <Tbody>
-                        {blocks.map((item, i) => (
-                          <Tr key={i}>
-                            <Td>
-                              <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
-                                {item.be_info.block_id}
-                              </Link>
-                            </Td>
-                            <Td sx={{ whiteSpace: 'nowrap' }}>
-                              <Tooltip label={item.ts} placement="top">
-                                {timeAgo(item.ts)}
-                              </Tooltip>
-                            </Td>
-                            <Td>
-                              <Link as={ReactRouterLink} to={'/@' + item.proposer}>
-                                {item.proposer}
-                              </Link>
-                            </Td>
-                            {/* <Td>{item.txs}</Td> */}
-                            <Td>
-                              <Link as={ReactRouterLink} to={'/block/' + item.block}>
-                                {abbreviateHash(item.block)}
-                              </Link>
-                            </Td>
-                            <Td maxW={'200px'}>
-                              <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
-                            </Td>
-                          </Tr>
-                        ))}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+                {!blockEnd && blocks.current.length > 0 && (
+                  <Center>
+                    <Button
+                      as={ReactRouterLink}
+                      colorScheme={themeColorScheme}
+                      onClick={(evt) => {
+                        evt.preventDefault()
+                        fetchBlocksInEpoch(
+                          epchNum,
+                          blockBatch,
+                          blocks.current[blocks.current.length - 1].be_info.block_id - 1
+                        ).then((b) => {
+                          b.forEach((blk) => blocks.current.push(blk))
+                          setBlockCount(blocks.current.length)
+                          if (b.length < blockBatch) setBlockEnd(true)
+                        })
+                      }}
+                    >
+                      Load More
+                    </Button>
+                  </Center>
                 )}
               </TabPanel>
               <TabPanel>
