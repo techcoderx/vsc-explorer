@@ -257,8 +257,8 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '/blocks'
       },
       {
-        label: 'Transactions (L1)',
-        subLabel: 'Latest VSC L1 operations',
+        label: 'Transactions',
+        subLabel: 'Latest VSC transactions',
         href: '/transactions'
       },
       {

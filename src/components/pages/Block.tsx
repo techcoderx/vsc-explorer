@@ -12,8 +12,7 @@ import {
   Thead,
   Th,
   Tr,
-  Td,
-  Icon
+  Td
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
@@ -23,13 +22,11 @@ import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, themeColorScheme } from '../../settings'
-// import { L2TxCard } from '../TxCard'
 import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { BlockHeader, OpLog } from '../../types/L2ApiResult'
-import { CheckXIcon } from '../CheckXIcon'
-import { FaCircleArrowRight } from 'react-icons/fa6'
+import { CheckXIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, TxLink } from '../TableLink'
 import { Coin } from '../../types/Payloads'
 
@@ -120,19 +117,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
               <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>
-              <TabPanel>
-                👀 Coming soon...
-                {/* {isL2BlockLoading ? <Text>Loading L2 block details...</Text> : null}
-            {l1BlockSuccess && !isL2BlockLoading && !isL2BlockError && !isL2BlockLoading ? (
-              <Flex direction={'column'} gap={'3'}>
-                {l2BlockTxs?.map((tx, i) => {
-                  return <L2TxCard key={i} id={i} ts={block!.ts} txid={tx.id} op={tx.tx_type} />
-                })}
-              </Flex>
-            ) : isL2BlockError ? (
-              <Text>Failed to load L2 block data</Text>
-            ) : null} */}
-              </TabPanel>
+              <TabPanel>👀 Coming soon...</TabPanel>
               <TabPanel>
                 <TableContainer>
                   <Table>
@@ -159,7 +144,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                                 <AccountLink val={opLogs.ledger[ln].fr} />
                               </Td>
                               <Td>
-                                <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                                <ToIcon />
                               </Td>
                               <Td>
                                 <AccountLink val={opLogs.ledger[ln].to} />

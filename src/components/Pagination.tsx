@@ -14,7 +14,20 @@ interface Wrapper {
   children: ReactNode
 }
 
-const LinkedBtn = ({ to, children }: Wrapper) => {
+export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
+  return (
+    <Button
+      zIndex={2}
+      bg={themeColor}
+      _hover={{ bg: themeColor }}
+      _light={{ borderColor: themeColor, bg: themeColorULight, _hover: { bg: themeColorULight } }}
+    >
+      {children}
+    </Button>
+  )
+}
+
+export const LinkedBtn = ({ to, children }: Wrapper) => {
   return (
     <Button padding="0 0">
       <Box
@@ -40,16 +53,7 @@ const Pagination = ({ path, currentPageNum, maxPageNum }: PaginationProps) => {
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>Previous</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={path + '/' + (currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
-        <Button
-          disabled
-          cursor="not-allowed"
-          zIndex="2"
-          bg={themeColor}
-          _hover={{ bg: themeColor }}
-          _light={{ borderColor: themeColor, bg: themeColorULight, _hover: { bg: themeColorULight } }}
-        >
-          {currentPageNum}
-        </Button>
+        <CurrentPageBtn>{currentPageNum}</CurrentPageBtn>
         {maxPageNum >= currentPageNum + 1 ? (
           <LinkedBtn to={path + '/' + (currentPageNum + 1)}>{currentPageNum + 1}</LinkedBtn>
         ) : null}

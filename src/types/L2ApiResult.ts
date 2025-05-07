@@ -1,6 +1,8 @@
 import { TxTypes } from './HafApiResult'
 import { CallContractPayload, XferWdPayload, CoinLower } from './Payloads'
 
+export type Status = 'UNCONFIRMED' | 'INCLUDED' | 'CONFIRMED' | 'FAILED'
+
 export interface GqlResponse<
   T = {
     [key: string]: string
@@ -103,19 +105,36 @@ export interface LedgerActions<T = TxTypes> {
   timestamp: string
 }
 
+interface TxDataFer {
+  type: 'consensus_stake' | 'consensus_unstake' | 'deposit' | 'stake_hbd' | 'transfer' | 'unstake_hbd' | 'withdraw'
+  to: string
+  from: string
+  amount: number
+  asset: 'hive' | 'hbd' | 'hbd_savings'
+  memo?: string
+}
+
+interface TxDataCall {
+  type: 'call'
+  op: string
+  contract_id: string
+  payload: any
+}
+
 export interface Txn {
   id: string
+  tx_id: string
   anchr_height: number
   anchr_index: number
   anchr_opidx: number
   anchr_ts: string
   type: 'hive' | 'vsc'
-  data: object
+  data: TxDataFer | TxDataCall
   first_seen: string
   nonce: number
   rc_limit: number
   required_auths: string[]
-  status: 'PENDING' | 'INCLUDED' | 'CONFIRMED'
+  status: Status
   ledger: LedgerOpLog[]
 }
 
@@ -126,7 +145,7 @@ export interface Tx {
         id: string
         first_seen: string // inaccurate upon reindex
         src: 'vsc'
-        status: 'UNCONFIRMED' | 'INCLUDED' | 'CONFIRMED'
+        status: Status
         sig_hash?: string // absent if graphql node was reindexed after the transaction
         data: CallContractPayload | XferWdPayload
       }[]

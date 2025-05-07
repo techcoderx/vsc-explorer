@@ -25,7 +25,8 @@ import {
   GqlResponse,
   LatestBridgeTxs,
   LedgerTx,
-  LedgerActions
+  LedgerActions,
+  Txn
 } from './types/L2ApiResult'
 
 export const fetchProps = async (): Promise<Props> => {
@@ -279,6 +280,13 @@ export const getWithdrawals = async (offset = 0, limit = 100): Promise<{ withdra
         byTypes: ['withdraw']
       }
     }
+  )
+  return result.data
+}
+
+export const fetchLatestL2Txns = async (): Promise<{ txns: Txn[] }> => {
+  const result = await gql<GqlResponse<{ txns: Txn[] }>>(
+    `{ txns: findTransaction { tx_id anchr_height anchr_opidx anchr_ts required_auths status data } }`
   )
   return result.data
 }

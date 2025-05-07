@@ -28,3 +28,8 @@ export const AccountLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) =>
   const href = !val.startsWith('did:') ? `/@${val.replace('hive:', '')}` : `/address/${val}`
   return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
+
+export const ContractLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
+  const href = '/contract/' + val
+  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
+}

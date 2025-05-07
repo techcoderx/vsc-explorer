@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
 import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
-import NewTxs from './components/pages/NewTxs'
+import { NewTxs, NewHiveTxs, NewVscTxs } from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
 import PageNotFound from './components/pages/404'
 import { BlockBy } from './components/pages/Block'
@@ -86,7 +86,17 @@ const router = createBrowserRouter([
       },
       {
         path: '/transactions',
-        element: <NewTxs />
+        element: <NewTxs />,
+        children: [
+          {
+            path: '/transactions',
+            element: <NewVscTxs />
+          },
+          {
+            path: '/transactions/hive',
+            element: <NewHiveTxs />
+          }
+        ]
       },
       {
         path: '/contracts',
