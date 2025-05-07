@@ -9,16 +9,15 @@ import PageNotFound from './components/pages/404'
 import { BlockBy } from './components/pages/Block'
 import L1User from './components/pages/L1User'
 import L1Tx from './components/pages/L1Tx'
-// import L2Tx from './components/pages/L2Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
 import WitnessSchedule from './components/pages/Schedule'
-// import { Address, AddressEvents, AddressTxs } from './components/pages/address/Address'
-// import { AddressDeposits } from './components/pages/address/Deposits'
-// import { AddressWithdrawals } from './components/pages/address/Withdrawals'
+import { Address, AddressTxs } from './components/pages/address/Address'
+import { AddressDeposits } from './components/pages/address/Deposits'
+import { AddressWithdrawals } from './components/pages/address/Withdrawals'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
 
 const router = createBrowserRouter([
@@ -30,32 +29,28 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home />
       },
-      // {
-      //   path: '/address/:addr',
-      //   element: <Address />,
-      //   children: [
-      //     {
-      //       path: '/address/:addr',
-      //       element: <AddressTxs />
-      //     },
-      //     {
-      //       path: '/address/:addr/txs/:page?',
-      //       element: <AddressTxs />
-      //     },
-      //     {
-      //       path: '/address/:addr/events/:page?',
-      //       element: <AddressEvents />
-      //     },
-      //     {
-      //       path: '/address/:addr/deposits/:page?',
-      //       element: <AddressDeposits />
-      //     },
-      //     {
-      //       path: '/address/:addr/withdrawals/:page?',
-      //       element: <AddressWithdrawals />
-      //     }
-      //   ]
-      // },
+      {
+        path: '/address/:addr',
+        element: <Address />,
+        children: [
+          {
+            path: '/address/:addr',
+            element: <AddressTxs />
+          },
+          {
+            path: '/address/:addr/txs/:page?',
+            element: <AddressTxs />
+          },
+          {
+            path: '/address/:addr/deposits/:page?',
+            element: <AddressDeposits />
+          },
+          {
+            path: '/address/:addr/withdrawals/:page?',
+            element: <AddressWithdrawals />
+          }
+        ]
+      },
       {
         path: '/witnesses',
         element: <Witnesses />
@@ -114,10 +109,6 @@ const router = createBrowserRouter([
         path: '/tx/:txid',
         element: <L1Tx />
       },
-      // {
-      //   path: '/vsc-tx/:txid',
-      //   element: <L2Tx />
-      // },
       {
         path: '/bridge/hive',
         element: <HiveBridgeOverview />

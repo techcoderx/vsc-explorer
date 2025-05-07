@@ -29,7 +29,7 @@ const StatusBadge = ({ tx }: { tx: LedgerActions }) => {
   else return <Badge colorScheme={themeColorScheme}>{tx.status}</Badge>
 }
 
-const TxsTable = ({
+export const BridgeTxsTable = ({
   type,
   txs,
   isLoading,
@@ -131,7 +131,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
       <hr />
       <br />
       <Text>Total {tally.deposits} deposits</Text>
-      <TxsTable
+      <BridgeTxsTable
         type="deposits"
         txs={deposits?.deposits || []}
         isLoading={isDepLoading}
@@ -159,7 +159,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
       <hr />
       <br />
       <Text>Total {tally.withdrawals} withdrawals</Text>
-      <TxsTable
+      <BridgeTxsTable
         type="withdrawals"
         txs={withdrawals?.withdrawals || []}
         isLoading={isWithdLoading}

@@ -242,30 +242,6 @@ export interface L2ContractCallTx extends ContractCallTx {
   input_src: 'vsc'
 }
 
-/** Call history */
-interface TxHistoryBase extends ItemWithIdxBlk<string> {
-  tx_type: L2TxType
-  nonce: number
-}
-
-interface CallContractTxHistory extends TxHistoryBase {
-  tx_type: 'call_contract'
-  details: ContractCallDetailMinimal
-}
-
-interface XferWdTxHistory extends TxHistoryBase {
-  tx_type: 'transfer' | 'withdraw'
-  details: {
-    to: string
-    from: string
-    memo?: string
-    token: Coin
-    amount: number
-  }
-}
-
-export type TxHistory = CallContractTxHistory | XferWdTxHistory
-
 export interface ContractOut {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ret?: any

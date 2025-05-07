@@ -1,9 +1,7 @@
-import { Box, Link, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tooltip } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useOutletContext, useParams, Link as ReactRouterLink } from 'react-router'
-import Pagination from '../../Pagination'
-import { fetchAccInfo, fetchDepositsByAddr } from '../../../requests'
-import { abbreviateHash, timeAgo, thousandSeperator } from '../../../helpers'
+import { useOutletContext, useParams } from 'react-router'
+import { getDeposits } from '../../../requests'
+import { BridgeTxsTable } from '../bridge/HiveLatestTxs'
 
 const count = 100
 
@@ -11,61 +9,19 @@ export const AddressDeposits = () => {
   const { addr } = useOutletContext<{ addr: string }>()
   const { page } = useParams()
   const pageNum = parseInt(page || '1')
-  const { data: activity } = useQuery({
-    queryKey: ['vsc-address-activity', addr],
-    queryFn: async () => fetchAccInfo(addr)
-  })
-  const lastNonce = (activity?.deposit_count || 0) - (pageNum - 1) * count
-  const { data: txs } = useQuery({
-    queryKey: ['vsc-address-deposits', addr, count, lastNonce],
-    queryFn: async () => fetchDepositsByAddr(addr, count, lastNonce),
-    staleTime: 60000
+  const offset = (pageNum - 1) * count
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ['vsc-list-deposits-hive', offset, count, addr],
+    queryFn: async () => getDeposits(offset, count, { byToFrom: addr })
   })
   return (
-    <Box>
-      <TableContainer mb={'4'}>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>Transaction ID</Th>
-              <Th>Age</Th>
-              <Th>Block</Th>
-              <Th>Amount</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {(txs || []).map((tx, i) => {
-              return (
-                <Tr key={i}>
-                  <Td>
-                    <Tooltip label={tx.tx_hash} placement={'top'}>
-                      <Link as={ReactRouterLink} to={'/tx/' + tx.tx_hash}>
-                        {abbreviateHash(tx.tx_hash, 25, 0)}
-                      </Link>
-                    </Tooltip>
-                  </Td>
-                  <Td>
-                    <Tooltip label={tx.ts} placement={'top'}>
-                      {timeAgo(tx.ts)}
-                    </Tooltip>
-                  </Td>
-                  <Td>
-                    <Link as={ReactRouterLink} to={'/block/' + tx.block_num}>
-                      {thousandSeperator(tx.block_num)}
-                    </Link>
-                  </Td>
-                  <Td>{tx.amount}</Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <Pagination
-        path={`/address/${addr}/deposits`}
-        currentPageNum={pageNum || 1}
-        maxPageNum={Math.ceil((activity?.deposit_count || 0) / count)}
-      />
-    </Box>
+    <BridgeTxsTable
+      type="deposits"
+      txs={data?.deposits || []}
+      isLoading={isLoading}
+      isSuccess={isSuccess}
+      currentPage={pageNum}
+      txCount={-1}
+    />
   )
 }

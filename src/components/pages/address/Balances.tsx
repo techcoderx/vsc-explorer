@@ -1,7 +1,7 @@
 import { Stack, Card, CardBody, CardHeader, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
+import { fmtmAmount } from '../../../helpers'
 import { getL2BalanceByL1User } from '../../../requests'
-import { roundFloat, thousandSeperator } from '../../../helpers'
 
 export const AddressBalanceCard = ({ addr }: { addr: string }) => {
   const { data: balance } = useQuery({
@@ -15,18 +15,24 @@ export const AddressBalanceCard = ({ addr }: { addr: string }) => {
       </CardHeader>
       <CardBody>
         <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'space-between'}>
-          <Stat>
+          <Stat my={'auto'}>
             <StatLabel>Hive</StatLabel>
-            <StatNumber>{thousandSeperator(roundFloat((balance?.hive || 0) / 1000, 3)) + ' HIVE'}</StatNumber>
+            <StatNumber>{fmtmAmount(balance?.hive || 0, 'hive')}</StatNumber>
           </Stat>
           <Stat>
-            <StatLabel>Liquid HBD</StatLabel>
-            <StatNumber>{thousandSeperator(roundFloat((balance?.hbd || 0) / 1000, 3)) + ' HBD'}</StatNumber>
+            <StatLabel>HBD</StatLabel>
+            <StatNumber>{fmtmAmount(balance?.hbd || 0, 'hbd')}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Staked HBD</StatLabel>
-            <StatNumber>🤔</StatNumber>
+            <StatNumber>{fmtmAmount(balance?.hbd_savings || 0, 'hbd')}</StatNumber>
           </Stat>
+          {balance && balance.hive_consensus > 0 && (
+            <Stat>
+              <StatLabel>Consensus Stake</StatLabel>
+              <StatNumber>{fmtmAmount(balance.hive_consensus, 'hive')}</StatNumber>
+            </Stat>
+          )}
         </Stack>
       </CardBody>
     </Card>

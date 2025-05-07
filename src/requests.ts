@@ -9,7 +9,6 @@ import {
   Election,
   BridgeTx,
   L1ContractCallTx,
-  TxHistory,
   EventHistoryItm,
   UserBalance,
   Block,
@@ -81,14 +80,6 @@ export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100,
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
-}
-
-export const fetchL2AccTxHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<TxHistory[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/get_l2_tx_history_by_did?did=${did}&count=${count}${last_nonce ? `&last_nonce=${last_nonce}` : ''}`
-    )
-  ).json()
 }
 
 export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
@@ -250,7 +241,7 @@ export const fetchLatestBridgeTxs = async (limit = 25): Promise<LatestBridgeTxs>
   return result.data
 }
 
-export const getDeposits = async (offset = 0, limit = 100): Promise<{ deposits: LedgerTx[] }> => {
+export const getDeposits = async (offset = 0, limit = 100, options?: object): Promise<{ deposits: LedgerTx[] }> => {
   const result = await gql<GqlResponse<{ deposits: LedgerTx[] }>>(
     `
     query BridgeActivity($deposit: LedgerTxFilter) {
@@ -258,6 +249,7 @@ export const getDeposits = async (offset = 0, limit = 100): Promise<{ deposits: 
     }`,
     {
       deposit: {
+        ...options,
         offset,
         limit,
         byTypes: ['deposit']
@@ -267,7 +259,7 @@ export const getDeposits = async (offset = 0, limit = 100): Promise<{ deposits: 
   return result.data
 }
 
-export const getWithdrawals = async (offset = 0, limit = 100): Promise<{ withdrawals: LedgerActions[] }> => {
+export const getWithdrawals = async (offset = 0, limit = 100, options?: object): Promise<{ withdrawals: LedgerActions[] }> => {
   const result = await gql<GqlResponse<{ withdrawals: LedgerActions[] }>>(
     `
     query BridgeActivity($withdrawal: LedgerActionsFilter) {
@@ -275,6 +267,7 @@ export const getWithdrawals = async (offset = 0, limit = 100): Promise<{ withdra
     }`,
     {
       withdrawal: {
+        ...options,
         offset,
         limit,
         byTypes: ['withdraw']
@@ -287,6 +280,20 @@ export const getWithdrawals = async (offset = 0, limit = 100): Promise<{ withdra
 export const fetchLatestL2Txns = async (): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
     `{ txns: findTransaction { tx_id anchr_height anchr_opidx anchr_ts required_auths status data } }`
+  )
+  return result.data
+}
+
+export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, options?: object): Promise<{ txns: Txn[] }> => {
+  const result = await gql<GqlResponse<{ txns: Txn[] }>>(
+    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { tx_id anchr_height anchr_opidx anchr_ts required_auths status data }}`,
+    {
+      opts: {
+        ...options,
+        offset,
+        limit
+      }
+    }
   )
   return result.data
 }

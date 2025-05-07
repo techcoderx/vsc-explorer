@@ -11,7 +11,6 @@ import {
   Link,
   Table,
   Tbody,
-  // Tr,
   Tag,
   Stack
 } from '@chakra-ui/react'
@@ -20,21 +19,20 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import {
   fetchAccHistory,
-  // fetchAccInfo,
   fetchL1AccInfo,
   fetchL1Rest,
   fetchWitness,
   fetchWitnessStat,
   getL2BalanceByL1User
 } from '../../requests'
-import { availableRC, describeL1TxBriefly, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { describeL1TxBriefly, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { TxCard } from '../TxCard'
 import TableRow from '../TableRow'
 import Pagination from '../Pagination'
 import { L1Accs as L1AccFlairs } from '../../flairs'
 import { L1AccountAuthority } from '../../types/L1ApiResult'
 import { themeColorScheme } from '../../settings'
-import { ProgressBarPct } from '../ProgressPercent'
+import { AddressRcInfo } from './address/RcInfo'
 
 const count = 50
 
@@ -46,11 +44,6 @@ const L1User = () => {
   const { data: l1Acc, isError: isL1AccErr } = useQuery({
     queryKey: ['hive-account', username],
     queryFn: async () => fetchL1Rest<L1AccountAuthority>(`/hafbe-api/accounts/${user}/authority`),
-    enabled: !invalidParams
-  })
-  const { data: headBlock } = useQuery({
-    queryKey: ['hive-headblock'],
-    queryFn: async () => fetchL1Rest<number>(`/hafah-api/headblock`),
     enabled: !invalidParams
   })
   const { data: witness, isSuccess: isWitSuccess } = useQuery({
@@ -83,16 +76,11 @@ const L1User = () => {
     queryFn: async () => fetchAccHistory(user, count, last_nonce),
     enabled: !!l1Accv && !invalidParams
   })
-  const {
-    data: l2Balance,
-    isLoading: isL2BalLoading,
-    isSuccess: isL2BalSuccess
-  } = useQuery({
+  const { data: l2Balance, isSuccess: isL2BalSuccess } = useQuery({
     queryKey: ['vsc-l2-balance-by-l1-user', user],
     queryFn: async () => getL2BalanceByL1User('hive:' + user!),
     enabled: !invalidParams
   })
-  const availRC = l2Balance ? availableRC(l2Balance, headBlock, true) : { avail: 0, max: 0 }
   if (invalidParams) return <PageNotFound />
   return (
     <>
@@ -119,60 +107,7 @@ const L1User = () => {
       ) : (
         <Flex direction={{ base: 'column', lg: 'row' }} marginTop="20px" gap="6">
           <VStack width={{ base: '100%', lg: 'ss' }} spacing={'6'}>
-            {/* {user === multisigAccount ? (
-              <Card width={'100%'}>
-                <CardHeader marginBottom="-15px">
-                  <Heading size={'md'} textAlign={'center'}>
-                    Multisig Key Holders ({l1Acc ? l1Acc.owner.weight_threshold : '...'}/
-                    {l1Acc ? l1Acc.owner.key_auths.length + l1Acc.owner.account_auths.length : '...'})
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Table variant={'unstyled'}>
-                    <Tbody>
-                      {!!msNames && isMsNamesSuccess && !!l1Acc ? (
-                        msNames
-                          .map((a, i) => (
-                            <Tr key={i}>
-                              <Link as={ReactRouterLink} to={'/@' + a}>
-                                {a}
-                              </Link>
-                            </Tr>
-                          ))
-                          .concat(
-                            l1Acc.owner.account_auths.map((a, i) => (
-                              <Tr key={i}>
-                                <Link as={ReactRouterLink} to={'/@' + a[0]}>
-                                  {a[0]}
-                                </Link>
-                                {a[1] > 1 ? ' (' + a[1] + ')' : ''}
-                              </Tr>
-                            ))
-                          )
-                      ) : (
-                        <Tr></Tr>
-                      )}
-                    </Tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            ) : ( */}
-            <Card width={'100%'}>
-              <CardHeader marginBottom={'-15px'}>
-                <Heading size={'md'} textAlign={'center'}>
-                  RC Info
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                {availRC.max > 0 ? (
-                  <ProgressBarPct val={(100 * availRC.avail) / availRC.max} fontSize="lg" height={'10px'} width={'100%'} />
-                ) : isL2BalLoading ? (
-                  <Text>Loading balances...</Text>
-                ) : (
-                  <Text>You have no RCs available. Please deposit HBD to obtain RCs.</Text>
-                )}
-              </CardBody>
-            </Card>
+            <AddressRcInfo addr={'hive:' + user} />
             <Card width={'100%'}>
               <CardHeader marginBottom={'-15px'}>
                 <Heading size={'md'} textAlign={'center'}>
