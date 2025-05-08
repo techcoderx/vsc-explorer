@@ -13,7 +13,7 @@ export const AddressRcInfo = ({ addr }: { addr: string }) => {
     queryKey: ['hive-headblock'],
     queryFn: async () => fetchL1Rest<number>(`/hafah-api/headblock`)
   })
-  const availRC = balance ? availableRC(balance, headBlock, true) : { avail: 0, max: 0 }
+  const availRC = balance ? availableRC(balance, headBlock, addr.startsWith('hive:')) : { avail: 0, max: 0 }
   return (
     <Card width={'100%'}>
       <CardHeader marginBottom={'-15px'}>
