@@ -19,6 +19,7 @@ import { Address, AddressTxs } from './components/pages/address/Address'
 import { AddressDeposits } from './components/pages/address/Deposits'
 import { AddressWithdrawals } from './components/pages/address/Withdrawals'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
+import { AddressWitness } from './components/pages/address/Witness'
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
           {
             path: '/address/:addr/withdrawals/:page?',
             element: <AddressWithdrawals />
+          },
+          {
+            path: '/address/:addr/witness',
+            element: <AddressWitness />
           }
         ]
       },

@@ -2,8 +2,8 @@ import { Text, Grid, Tab, Tabs, TabList, Box } from '@chakra-ui/react'
 import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
-import { fetchL2TxnsBy } from '../../../requests'
-import { getNextTabRoute } from '../../../helpers'
+import { fetchL2TxnsBy, fetchWitness } from '../../../requests'
+import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
 import { Txns } from '../../Transactions'
@@ -32,16 +32,21 @@ export const AddressTxs = () => {
   )
 }
 
-const tabNames = ['txs', 'deposits', 'withdrawals']
+const tabNames = ['txs', 'deposits', 'withdrawals', 'witness']
 
 export const Address = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { addr } = useParams()
-  const isL1 = addr!.startsWith('hive:')
+  const isL1 = addr!.startsWith('hive:') && validateHiveUsername(addr!.replace('hive:', '')) === null
   const validAddr = isL1 || addr!.startsWith('did:')
   const segments = pathname.split('/')
   const tabIndex = tabNames.indexOf(segments.length >= 4 ? segments[3] : tabNames[0])
+  const { data: witness } = useQuery({
+    queryKey: ['vsc-witness', addr!.replace('hive:', '')],
+    queryFn: async () => fetchWitness(addr!.replace('hive:', '')),
+    enabled: isL1
+  })
   if (!validAddr) return <PageNotFound />
   return (
     <>
@@ -72,6 +77,7 @@ export const Address = () => {
           <Tab>Transactions</Tab>
           <Tab>Deposits</Tab>
           <Tab>Withdrawals</Tab>
+          <Tab hidden={!isL1 || !witness || !!witness.error}>Witness</Tab>
         </TabList>
         <Box pt={'2'}>
           <Outlet context={{ addr }} />

@@ -80,6 +80,7 @@ export interface TxHeader {
 }
 
 export interface Witness {
+  error?: string
   id: number
   username: string
   consensus_did: string
