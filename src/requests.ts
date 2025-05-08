@@ -7,9 +7,6 @@ import {
   L2ContractCallTx,
   CIDSearchResult,
   Election,
-  BridgeTx,
-  L1ContractCallTx,
-  EventHistoryItm,
   UserBalance,
   Block,
   TxHeader,
@@ -86,58 +83,12 @@ export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}`)).json()
 }
 
-export const fetchAccInfo = async (username: string): Promise<AccInfo> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_l2_user?did=${username}`)).json()
-}
-
 export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | TxHeader | null)[]> => {
   return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
 }
 
 export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)).json()
-}
-
-export const fetchCallsByContractId = async (
-  contract_id: string,
-  count: number = 100,
-  last_id?: number
-): Promise<(L1ContractCallTx | L2ContractCallTx)[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/list_contract_calls_by_contract_id?contract_id=${contract_id}&count=${count}${
-        last_id ? `&last_id=${last_id}` : ''
-      }`
-    )
-  ).json()
-}
-
-export const fetchAccEventHistory = async (did: string, count: number = 100, last_nonce?: number): Promise<EventHistoryItm[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/get_event_history_by_account_name?account_name=${did}&count=${count}${
-        last_nonce ? `&last_nonce=${last_nonce}` : ''
-      }`
-    )
-  ).json()
-}
-
-export const fetchDepositsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/get_deposits_by_address?address=${address}&count=${count}${last_nonce ? '&last_nonce=' + last_nonce : ''}`
-    )
-  ).json()
-}
-
-export const fetchWithdrawReqsByAddr = async (address: string, count: number = 100, last_nonce?: number): Promise<BridgeTx[]> => {
-  return await (
-    await fetch(
-      `${hafVscApi}/rpc/get_withdrawal_requests_by_address?address=${address}&count=${count}${
-        last_nonce ? '&last_nonce=' + last_nonce : ''
-      }`
-    )
-  ).json()
 }
 
 export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance> => {

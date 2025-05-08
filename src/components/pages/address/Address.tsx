@@ -73,7 +73,7 @@ export const Address = () => {
         )}
       </Stack>
       <hr />
-      {addr !== multisigAccount && (
+      {addr !== 'hive:' + multisigAccount && (
         <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={'5'} mt={'4'}>
           <AddressBalanceCard addr={addr!} />
           <AddressRcInfo addr={addr!} />

@@ -265,24 +265,7 @@ export interface EventItm {
   owner: string
 }
 
-export interface EventHistoryItm extends Item<string> {
-  event_id: number
-  event_cid: string
-  tx_pos: number
-  pos_in_tx: number
-  event: EventItm
-}
-
 export interface CIDSearchResult {
   type?: string
   result?: string | number
-}
-
-export interface BridgeTx extends Item<number> {
-  tx_hash: string
-  to: string
-  amount: string
-  nonce: number
-  memo?: string
-  status: string
 }
