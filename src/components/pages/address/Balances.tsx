@@ -33,6 +33,12 @@ export const AddressBalanceCard = ({ addr }: { addr: string }) => {
               <StatNumber>{fmtmAmount(balance.hive_consensus, 'hive')}</StatNumber>
             </Stat>
           )}
+          {balance && balance.hive_unstaking > 0 && (
+            <Stat>
+              <StatLabel>Consensus Unstaking</StatLabel>
+              <StatNumber>{fmtmAmount(balance.hive_unstaking, 'hive')}</StatNumber>
+            </Stat>
+          )}
         </Stack>
       </CardBody>
     </Card>
