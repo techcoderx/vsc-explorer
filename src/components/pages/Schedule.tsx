@@ -78,7 +78,7 @@ const WitnessSchedule = () => {
                       }
                     >
                       <Td>
-                        <Link as={ReactRouterLink} to={'/@' + sch.account}>
+                        <Link as={ReactRouterLink} to={'/address/hive:' + sch.account}>
                           {sch.account}
                         </Link>
                       </Td>

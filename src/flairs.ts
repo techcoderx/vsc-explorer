@@ -1,10 +1,9 @@
-type Flairs = {
+export const Flairs: {
   [name: string]: string
-}
-
-export const L1Accs: Flairs = {
-  'vsc.ms-8968d20c': 'Old Multisig Gateway',
-  'vsc.gateway': 'Multisig Gateway',
-  'vsc.network': 'Official Account',
-  'vsc.dao': 'DAO Account'
+} = {
+  'hive:vsc.ms-8968d20c': 'Old Multisig Gateway',
+  'hive:vsc.gateway': 'Multisig Gateway',
+  'hive:vsc.network': 'Official Account',
+  'hive:vsc.dao': 'DAO Account',
+  'hive:techcoderx': 'VSC Blocks Dev'
 }

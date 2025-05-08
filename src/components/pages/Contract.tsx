@@ -125,7 +125,7 @@ export const Contract = () => {
                   isLoading={isLoading}
                 />
                 <TableRow label="Created in L1 Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
-                <TableRow label="Creator" value={contract.creator} link={'/@' + contract.creator} />
+                <TableRow label="Creator" value={contract.creator} link={'/address/hive:' + contract.creator} />
                 <TableRow label="Bytecode CID">
                   <Flex align={'center'} gap={'2'}>
                     <Text>{contract.code}</Text>
@@ -183,7 +183,7 @@ export const Contract = () => {
                               <Tooltip label={callerSumm.primary} placement={'top'}>
                                 <Link
                                   as={ReactRouterLink}
-                                  to={(tx.input_src === 'vsc' ? '/address/' : '/@') + callerSumm.primary}
+                                  to={(tx.input_src === 'vsc' ? '/address/' : '/address/hive:') + callerSumm.primary}
                                 >
                                   {abbreviateHash(callerSumm.primary, 20, 0)}
                                 </Link>

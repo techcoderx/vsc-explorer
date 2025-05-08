@@ -54,7 +54,7 @@ const NewContracts = () => {
                     </Link>
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + item.creator}>
+                    <Link as={ReactRouterLink} to={'/address/hive:' + item.creator}>
                       {item.creator}
                     </Link>
                   </Td>

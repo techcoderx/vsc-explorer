@@ -79,7 +79,7 @@ const Witnesses = () => {
                 <Tr key={i}>
                   <Td>{i + 1}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + item.username}>
+                    <Link as={ReactRouterLink} to={'/address/hive:' + item.username}>
                       {item.username}
                     </Link>
                   </Td>

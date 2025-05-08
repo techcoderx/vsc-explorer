@@ -71,7 +71,7 @@ const Blocks = () => {
                     </Tooltip>
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + item.proposer}>
+                    <Link as={ReactRouterLink} to={'/address/hive:' + item.proposer}>
                       {item.proposer}
                     </Link>
                   </Td>

@@ -98,7 +98,12 @@ const Epoch = () => {
                 isLoading={isEpochLoading}
                 link={l1Explorer + '/b/' + epoch?.block_height}
               />
-              <TableRow label="Proposer" value={epoch?.proposer} isLoading={isEpochLoading} link={'/@' + epoch?.proposer} />
+              <TableRow
+                label="Proposer"
+                value={epoch?.proposer}
+                isLoading={isEpochLoading}
+                link={'/address/hive:' + epoch?.proposer}
+              />
               <TableRow label="Election Data CID" value={epoch?.data} isLoading={isEpochLoading} />
               <TableRow label="Total Weight" value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
               {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
@@ -114,7 +119,7 @@ const Epoch = () => {
                   {epoch?.members.map((m, i) => {
                     return (
                       <GridItem key={i}>
-                        <Link as={ReactRouterLink} to={'/@' + m.account}>
+                        <Link as={ReactRouterLink} to={'/address/hive:' + m.account}>
                           {m.account}
                           <Text display={'inline'} fontSize={'small'}>
                             {' '}
@@ -164,7 +169,7 @@ const Epoch = () => {
                             </Tooltip>
                           </Td>
                           <Td>
-                            <Link as={ReactRouterLink} to={'/@' + item.proposer}>
+                            <Link as={ReactRouterLink} to={'/address/hive:' + item.proposer}>
                               {item.proposer}
                             </Link>
                           </Td>

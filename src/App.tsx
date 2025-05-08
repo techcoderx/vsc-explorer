@@ -20,6 +20,7 @@ import { AddressDeposits } from './components/pages/address/Deposits'
 import { AddressWithdrawals } from './components/pages/address/Withdrawals'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { AddressWitness } from './components/pages/address/Witness'
+import { AddressL1Ops } from './components/pages/address/L1Ops'
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
           {
             path: '/address/:addr/txs/:page?',
             element: <AddressTxs />
+          },
+          {
+            path: '/address/:addr/hiveops/:page?',
+            element: <AddressL1Ops />
           },
           {
             path: '/address/:addr/deposits/:page?',

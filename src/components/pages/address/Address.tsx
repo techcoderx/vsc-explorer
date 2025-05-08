@@ -1,12 +1,14 @@
-import { Text, Grid, Tab, Tabs, TabList, Box } from '@chakra-ui/react'
+import { Text, Grid, Tab, Tabs, TabList, Box, Stack, Tag } from '@chakra-ui/react'
 import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
+import { Flairs } from '../../../flairs'
 import { fetchL2TxnsBy, fetchWitness } from '../../../requests'
 import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
 import { Txns } from '../../Transactions'
+import { multisigAccount, themeColorScheme } from '../../../settings'
 
 const count = 100
 
@@ -32,7 +34,7 @@ export const AddressTxs = () => {
   )
 }
 
-const tabNames = ['txs', 'deposits', 'withdrawals', 'witness']
+const tabNames = ['txs', 'hiveops', 'deposits', 'withdrawals', 'witness']
 
 export const Address = () => {
   const navigate = useNavigate()
@@ -47,26 +49,36 @@ export const Address = () => {
     queryFn: async () => fetchWitness(addr!.replace('hive:', '')),
     enabled: isL1
   })
-  if (!validAddr) return <PageNotFound />
+  if (!addr || !validAddr) return <PageNotFound />
   return (
     <>
-      {isL1 ? (
-        <Text fontSize={'5xl'} mb={'4'}>
-          {addr!.replace('hive:', '@')}
-        </Text>
-      ) : (
-        <Box>
-          <Text fontSize={'5xl'}>Address</Text>
-          <Text fontSize={'2xl'} opacity={'0.7'} mb={'4'}>
-            {addr}
+      <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
+        {isL1 ? (
+          <Text fontSize={'5xl'} mb={'4'}>
+            {addr!.replace('hive:', '@')}
           </Text>
-        </Box>
-      )}
+        ) : (
+          <Box>
+            <Text fontSize={'5xl'}>Address</Text>
+            <Text fontSize={'2xl'} opacity={'0.7'} mb={'4'}>
+              {addr}
+            </Text>
+          </Box>
+        )}
+        {/* Note: Wrap with another HStack when there are more than one flair */}
+        {Flairs[addr] && (
+          <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
+            {Flairs[addr]}
+          </Tag>
+        )}
+      </Stack>
       <hr />
-      <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={'5'} mt={'4'}>
-        <AddressBalanceCard addr={addr!} />
-        <AddressRcInfo addr={addr!} />
-      </Grid>
+      {addr !== multisigAccount && (
+        <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={'5'} mt={'4'}>
+          <AddressBalanceCard addr={addr!} />
+          <AddressRcInfo addr={addr!} />
+        </Grid>
+      )}
       <Tabs
         mt={'7'}
         variant={'solid-rounded'}
@@ -75,6 +87,7 @@ export const Address = () => {
       >
         <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
           <Tab>Transactions</Tab>
+          <Tab hidden={!isL1}>L1 Ops</Tab>
           <Tab>Deposits</Tab>
           <Tab>Withdrawals</Tab>
           <Tab hidden={!isL1 || !witness || !!witness.error}>Witness</Tab>

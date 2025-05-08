@@ -207,7 +207,7 @@ const L1Tx = () => {
                     <Table margin={'-20px 0 0'} variant={'unstyled'}>
                       <Tbody>
                         <TableRow isInCard label="Timestamp" value={data.timestamp + ' (' + timeAgo(data.timestamp) + ')'} />
-                        <TableRow isInCard label="Username" value={trx.user} link={'/@' + trx.user} />
+                        <TableRow isInCard label="Username" value={trx.user} link={'/address/hive:' + trx.user} />
                         <TableRow isInCard label="Operation Type">
                           <Badge color={themeColor}>{trx.type}</Badge>
                         </TableRow>

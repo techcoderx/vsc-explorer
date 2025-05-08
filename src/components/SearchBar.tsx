@@ -128,7 +128,7 @@ const useSearchResults = (query: string): SearchResultHook => {
             ? [
                 {
                   type: SearchResultType.L1Account,
-                  href: '/@' + query
+                  href: '/address/hive:' + query
                 }
               ]
             : [])

@@ -25,7 +25,7 @@ export const TxLink = ({ val, tooltip, truncate = 15 }: TableLinkParams) => {
 }
 
 export const AccountLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
-  const href = !val.startsWith('did:') ? `/@${val.replace('hive:', '')}` : `/address/${val}`
+  const href = `/address/${val}`
   return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
 

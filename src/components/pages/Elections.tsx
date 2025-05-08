@@ -76,7 +76,7 @@ const Elections = () => {
                     )}
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/@' + epoch.proposer}>
+                    <Link as={ReactRouterLink} to={'/address/hive:' + epoch.proposer}>
                       {epoch.proposer}
                     </Link>
                   </Td>
