@@ -21,8 +21,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, Link as ReactRouterLink } from 'react-router'
 import TableRow from '../../TableRow'
 import { timeAgo, thousandSeperator } from '../../../helpers'
-import { fetchWitness, fetchWitnessStat } from '../../../requests'
+import { fetchBlocksByProposer, fetchWitness, fetchWitnessStat } from '../../../requests'
 import { Witness, WitnessStat } from '../../../types/HafApiResult'
+import { Blocks } from '../../tables/Blocks'
 
 export const StatCard = ({ label, children }: { label: string; children?: ReactNode }) => {
   return (
@@ -40,7 +41,7 @@ export const StatCard = ({ label, children }: { label: string; children?: ReactN
 export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: WitnessStat }) => {
   const [expMeta, setExpMeta] = useState(false)
   return !!witness && !witness.error ? (
-    <VStack width={'full'} spacing={'1'} mt={'3'}>
+    <VStack width={'full'} spacing={'1'}>
       {!!stats && (
         <Stack spacing={'3'} direction={'row'} w={'full'} overflow={'scroll'}>
           <StatCard label="Enabled">
@@ -120,5 +121,14 @@ export const AddressWitness = () => {
     queryKey: ['vsc-witness-stats', user],
     queryFn: async () => fetchWitnessStat(user)
   })
-  return <WitnessInfo witness={witness} stats={witnessStats} />
+  const { data: blocks, isLoading: isBlocksLoading } = useQuery({
+    queryKey: ['vsc-blocks-by-proposer', user, 100],
+    queryFn: async () => fetchBlocksByProposer(user, 100)
+  })
+  return (
+    <VStack w={'full'} mt={'3'} gap={'3'}>
+      <WitnessInfo witness={witness} stats={witnessStats} />
+      <Blocks blocks={blocks} isLoading={isBlocksLoading} />
+    </VStack>
+  )
 }

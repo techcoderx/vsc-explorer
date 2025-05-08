@@ -7,7 +7,7 @@ import { fetchL2TxnsBy, fetchWitness } from '../../../requests'
 import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
-import { Txns } from '../../Transactions'
+import { Txns } from '../../tables/Transactions'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 
 const count = 100

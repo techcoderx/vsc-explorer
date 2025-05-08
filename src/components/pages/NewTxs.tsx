@@ -4,7 +4,7 @@ import { Outlet, useLocation } from 'react-router'
 import { TxCard } from '../TxCard'
 import { fetchLatestTxs, fetchLatestL2Txns } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
-import { Txns } from '../Transactions'
+import { Txns } from '../tables/Transactions'
 import { CurrentPageBtn, LinkedBtn } from '../Pagination'
 
 export const NewHiveTxs = () => {

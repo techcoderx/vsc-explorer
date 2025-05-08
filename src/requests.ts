@@ -33,6 +33,14 @@ export const fetchBlocks = async (last_block_id: number, count = 50): Promise<Bl
   return await (await fetch(`${hafVscApi}/blocks?last_block_id=${last_block_id}&count=${count}`)).json()
 }
 
+export const fetchBlocksByProposer = async (proposer: string, count = 50, last_block_id?: number): Promise<Block[]> => {
+  return await (
+    await fetch(
+      `${hafVscApi}/blocks?proposer=${proposer}&count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`
+    )
+  ).json()
+}
+
 export const fetchWitnesses = async (): Promise<Witness[]> => {
   return await (await fetch(`${hafVscApi}/haf/witnesses`)).json()
 }

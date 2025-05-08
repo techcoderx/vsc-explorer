@@ -6,18 +6,12 @@ import {
   GridItem,
   Stack,
   Table,
-  Thead,
   Tbody,
-  Th,
-  Tr,
-  Td,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
-  Tooltip,
-  TableContainer,
   Flex,
   Center,
   Button
@@ -27,7 +21,7 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import { PrevNextBtns } from '../Pagination'
-import { abbreviateHash, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
@@ -35,6 +29,7 @@ import { ParticipatedMembers } from '../BlsAggMembers'
 import { InfoIcon } from '@chakra-ui/icons'
 import { useEffect, useRef, useState } from 'react'
 import { Block } from '../../types/HafApiResult'
+import { Blocks as BlocksTbl } from '../tables/Blocks'
 
 const blockBatch = 100
 
@@ -143,50 +138,7 @@ const Epoch = () => {
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
-                <TableContainer mb={'5'}>
-                  <Table>
-                    <Thead>
-                      <Tr>
-                        <Th>Id</Th>
-                        <Th>Age</Th>
-                        <Th>Proposer</Th>
-                        {/* <Th>Txs</Th> */}
-                        <Th>Block Hash</Th>
-                        <Th>Voted</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {blocks.current.map((item, i) => (
-                        <Tr key={i}>
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
-                              {item.be_info.block_id}
-                            </Link>
-                          </Td>
-                          <Td sx={{ whiteSpace: 'nowrap' }}>
-                            <Tooltip label={item.ts} placement="top">
-                              {timeAgo(item.ts)}
-                            </Tooltip>
-                          </Td>
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/address/hive:' + item.proposer}>
-                              {item.proposer}
-                            </Link>
-                          </Td>
-                          {/* <Td>{item.txs}</Td> */}
-                          <Td>
-                            <Link as={ReactRouterLink} to={'/block/' + item.block}>
-                              {abbreviateHash(item.block)}
-                            </Link>
-                          </Td>
-                          <Td maxW={'200px'}>
-                            <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
+                <BlocksTbl blocks={blocks.current} />
                 {!blockEnd && blocks.current.length > 0 && (
                   <Center>
                     <Button

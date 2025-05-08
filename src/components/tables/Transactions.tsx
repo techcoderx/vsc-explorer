@@ -1,9 +1,9 @@
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
-import { Txn, Status } from '../types/L2ApiResult'
-import { CheckXIcon, PendingIcon, ToIcon } from './CheckXIcon'
-import { AccountLink, ContractLink, TxLink } from './TableLink'
-import { abbreviateHash, fmtAmount, timeAgo } from '../helpers'
-import { Coin } from '../types/Payloads'
+import { Txn, Status } from '../../types/L2ApiResult'
+import { CheckXIcon, PendingIcon, ToIcon } from '../CheckXIcon'
+import { AccountLink, ContractLink, TxLink } from '../TableLink'
+import { abbreviateHash, fmtAmount, timeAgo } from '../../helpers'
+import { Coin } from '../../types/Payloads'
 
 export const StatusIcon = ({ status }: { status: Status }) => {
   switch (status) {
