@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, useParams } from 'react-router'
 import { getDeposits } from '../../../requests'
-import { BridgeTxsTable } from '../bridge/HiveLatestTxs'
+import { LedgerTxsTbl } from '../../tables/Ledgers'
 
 const count = 100
 
@@ -10,18 +10,13 @@ export const AddressDeposits = () => {
   const { page } = useParams()
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
-  const { data, isLoading, isSuccess } = useQuery({
+  const { data } = useQuery({
     queryKey: ['vsc-list-deposits-hive', offset, count, addr],
     queryFn: async () => getDeposits(offset, count, { byToFrom: addr })
   })
   return (
-    <BridgeTxsTable
-      type="deposits"
-      txs={data?.deposits || []}
-      isLoading={isLoading}
-      isSuccess={isSuccess}
-      currentPage={pageNum}
-      txCount={-1}
-    />
+    <>
+      <LedgerTxsTbl txs={data?.deposits || []} />
+    </>
   )
 }
