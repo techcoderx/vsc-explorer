@@ -48,7 +48,7 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
               </Td>
               <Td>{t.data.type === 'call' ? abbreviateHash(t.data.op, 20, 0) : t.data.type}</Td>
               <Td>
-                <AccountLink val={t.required_auths[0]} />
+                <AccountLink val={t.required_auths[0] ?? ''} />
               </Td>
               <Td>
                 <ToIcon />
