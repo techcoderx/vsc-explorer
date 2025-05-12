@@ -5,7 +5,7 @@ import { getBridgeTxCounts, getDeposits, getWithdrawals } from '../../../request
 import { BridgeCounter } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
 import PageNotFound from '../404'
-import { LedgerActionsTbl, LedgerTxsTbl } from '../../tables/Ledgers'
+import { LedgerWithdrawals, LedgerDeposits } from '../../tables/Ledgers'
 
 const count = 100
 const maxPage = 100
@@ -19,7 +19,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
   const offset = (pageNumber - 1) * count
   const { data: deposits } = useQuery({
     queryKey: ['vsc-list-deposits-hive', offset, count],
-    queryFn: async () => getDeposits(offset, count)
+    queryFn: async () => getDeposits(offset, count, { byTypes: ['deposit'] })
   })
   return (
     <>
@@ -27,7 +27,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
       <hr />
       <br />
       <Text>Total {tally.deposits} deposits</Text>
-      <LedgerTxsTbl txs={deposits?.deposits || []} />
+      <LedgerDeposits txs={deposits?.deposits || []} />
       <Pagination
         path={'/bridge/hive/deposits'}
         currentPageNum={pageNumber}
@@ -41,7 +41,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
   const offset = (pageNumber - 1) * count
   const { data: withdrawals } = useQuery({
     queryKey: ['vsc-list-withdrawals-hive', offset, count],
-    queryFn: async () => getWithdrawals(offset, count)
+    queryFn: async () => getWithdrawals(offset, count, { byTypes: ['withdraw'] })
   })
   return (
     <>
@@ -49,7 +49,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
       <hr />
       <br />
       <Text>Total {tally.withdrawals} withdrawals</Text>
-      <LedgerActionsTbl actions={withdrawals?.withdrawals || []} />
+      <LedgerWithdrawals actions={withdrawals?.withdrawals || []} />
       <Pagination
         path={'/bridge/hive/withdrawals'}
         currentPageNum={pageNumber}

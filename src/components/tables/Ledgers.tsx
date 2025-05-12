@@ -24,6 +24,48 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
           <Tr>
             <Th>Tx ID</Th>
             <Th>Age</Th>
+            <Th>Type</Th>
+            <Th>Amount</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {!!txs &&
+            txs.map((item, i) => {
+              const [id] = item.id.split('#')[0].split('-')
+              return (
+                <Tr key={i}>
+                  <Td>
+                    <TxLink val={id} tooltip={true} truncate={25} />
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.timestamp} placement="top">
+                      {timeAgo(item.timestamp + 'Z')}
+                    </Tooltip>
+                  </Td>
+                  <Td>{item.type}</Td>
+                  <Td>
+                    {fmtmAmount(
+                      item.amount,
+                      item.type === 'consensus_stake' || item.type === 'consensus_unstake' ? 'HIVE' : item.asset
+                    )}
+                  </Td>
+                </Tr>
+              )
+            })}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
+  return (
+    <TableContainer my={'3'}>
+      <Table variant={'simple'}>
+        <Thead>
+          <Tr>
+            <Th>Tx ID</Th>
+            <Th>Age</Th>
             <Th>From User</Th>
             <Th></Th>
             <Th>To User</Th>
@@ -61,6 +103,47 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
 }
 
 export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => {
+  return (
+    <TableContainer my={'3'}>
+      <Table variant={'simple'}>
+        <Thead>
+          <Tr>
+            <Th>Tx ID</Th>
+            <Th>Age</Th>
+            <Th>Type</Th>
+            <Th>Amount</Th>
+            <Th>Status</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {!!actions &&
+            actions.map((item, i) => {
+              const [id] = item.id.split('-')
+              return (
+                <Tr key={i}>
+                  <Td>
+                    <TxLink val={id} tooltip={true} />
+                  </Td>
+                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.timestamp} placement="top">
+                      {timeAgo(item.timestamp + 'Z')}
+                    </Tooltip>
+                  </Td>
+                  <Td>{item.type}</Td>
+                  <Td>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</Td>
+                  <Td>
+                    <StatusBadge tx={item as LedgerActions} />
+                  </Td>
+                </Tr>
+              )
+            })}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) => {
   return (
     <TableContainer my={'3'}>
       <Table variant={'simple'}>

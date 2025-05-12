@@ -16,8 +16,8 @@ import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
 import WitnessSchedule from './components/pages/Schedule'
 import { Address, AddressTxs } from './components/pages/address/Address'
-import { AddressDeposits } from './components/pages/address/Deposits'
-import { AddressWithdrawals } from './components/pages/address/Withdrawals'
+import { AddressDeposits, AddressLedgers } from './components/pages/address/LedgerTxs'
+import { AddressActions, AddressWithdrawals } from './components/pages/address/LedgerActions'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
@@ -46,6 +46,14 @@ const router = createBrowserRouter([
           {
             path: '/address/:addr/hiveops/:page?',
             element: <AddressL1Ops />
+          },
+          {
+            path: '/address/:addr/ledger/:page?',
+            element: <AddressLedgers />
+          },
+          {
+            path: '/address/:addr/actions/:page?',
+            element: <AddressActions />
           },
           {
             path: '/address/:addr/deposits/:page?',

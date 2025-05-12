@@ -204,14 +204,13 @@ export const getDeposits = async (offset = 0, limit = 100, options?: object): Pr
   const result = await gql<GqlResponse<{ deposits: LedgerTx[] }>>(
     `
     query BridgeActivity($deposit: LedgerTxFilter) {
-      deposits: findLedgerTXs(filterOptions: $deposit) { id timestamp from to: owner amount asset }
+      deposits: findLedgerTXs(filterOptions: $deposit) { id timestamp type from to: owner amount asset }
     }`,
     {
       deposit: {
         ...options,
         offset,
-        limit,
-        byTypes: ['deposit']
+        limit
       }
     }
   )
@@ -222,14 +221,13 @@ export const getWithdrawals = async (offset = 0, limit = 100, options?: object):
   const result = await gql<GqlResponse<{ withdrawals: LedgerActions[] }>>(
     `
     query BridgeActivity($withdrawal: LedgerActionsFilter) {
-      withdrawals: findLedgerActions(filterOptions: $withdrawal) { id action_id timestamp status to amount asset }
+      withdrawals: findLedgerActions(filterOptions: $withdrawal) { id action_id timestamp type status to amount asset }
     }`,
     {
       withdrawal: {
         ...options,
         offset,
-        limit,
-        byTypes: ['withdraw']
+        limit
       }
     }
   )

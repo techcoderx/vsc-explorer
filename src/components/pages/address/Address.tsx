@@ -34,7 +34,7 @@ export const AddressTxs = () => {
   )
 }
 
-const tabNames = ['txs', 'hiveops', 'deposits', 'withdrawals', 'witness']
+const tabNames = ['txs', 'hiveops', 'ledger', 'actions', 'deposits', 'withdrawals', 'witness']
 
 export const Address = () => {
   const navigate = useNavigate()
@@ -88,6 +88,8 @@ export const Address = () => {
         <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
           <Tab>Transactions</Tab>
           <Tab hidden={!isL1}>L1 Ops</Tab>
+          <Tab>Ledger Ops</Tab>
+          <Tab>Actions</Tab>
           <Tab>Deposits</Tab>
           <Tab>Withdrawals</Tab>
           <Tab hidden={!isL1 || !witness || !!witness.error}>Witness</Tab>
