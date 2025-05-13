@@ -6,14 +6,15 @@ import { AccountLink, TxLink } from '../TableLink'
 import { fmtmAmount, timeAgo } from '../../helpers'
 import { themeColorScheme } from '../../settings'
 
-const StatusBadge = ({ tx }: { tx: LedgerActions }) => {
-  if (tx.status === 'complete')
+const StatusBadge = ({ status, action_id }: { status: 'complete' | 'pending'; action_id?: string }) => {
+  const color = status === 'complete' ? 'green' : themeColorScheme
+  if (status === 'complete' && !!action_id)
     return (
-      <Link as={ReactRouterLink} to={'/tx/' + tx.action_id}>
-        <Badge colorScheme={'green'}>{tx.status}</Badge>
+      <Link as={ReactRouterLink} to={'/tx/' + action_id}>
+        <Badge colorScheme={color}>{status}</Badge>
       </Link>
     )
-  else return <Badge colorScheme={themeColorScheme}>{tx.status}</Badge>
+  else return <Badge colorScheme={color}>{status}</Badge>
 }
 
 export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
@@ -132,7 +133,10 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
                   <Td>{item.type}</Td>
                   <Td>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</Td>
                   <Td>
-                    <StatusBadge tx={item as LedgerActions} />
+                    <StatusBadge
+                      status={item.status}
+                      action_id={item.action_id !== item.id ? item.action_id.split('-')[0] : ''}
+                    />
                   </Td>
                 </Tr>
               )
@@ -173,7 +177,7 @@ export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) =>
                 </Td>
                 <Td>{fmtmAmount(item.amount, item.asset)}</Td>
                 <Td>
-                  <StatusBadge tx={item as LedgerActions} />
+                  <StatusBadge status={item.status} action_id={item.action_id} />
                 </Td>
               </Tr>
             ))}
