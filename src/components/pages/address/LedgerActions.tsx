@@ -11,7 +11,7 @@ export const AddressActions = () => {
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data } = useQuery({
-    queryKey: ['vsc-list-withdrawals-hive', offset, count, addr],
+    queryKey: ['vsc-list-actions-hive', offset, count, addr],
     queryFn: async () => getWithdrawals(offset, count, { byAccount: addr })
   })
   return (

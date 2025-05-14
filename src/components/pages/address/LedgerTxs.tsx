@@ -11,7 +11,7 @@ export const AddressLedgers = () => {
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data } = useQuery({
-    queryKey: ['vsc-list-deposits-hive', offset, count, addr],
+    queryKey: ['vsc-list-ledgers-hive', offset, count, addr],
     queryFn: async () => getDeposits(offset, count, { byToFrom: addr })
   })
   return (
