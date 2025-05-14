@@ -11,7 +11,8 @@ import {
   Block,
   TxHeader,
   WitnessStat,
-  BridgeCounter
+  BridgeCounter,
+  AddrTxStats
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import {
@@ -24,6 +25,7 @@ import {
   LedgerActions,
   Txn
 } from './types/L2ApiResult'
+import { useQuery } from '@tanstack/react-query'
 
 export const fetchProps = async (): Promise<Props> => {
   return await (await fetch(`${hafVscApi}/props`)).json()
@@ -105,6 +107,15 @@ export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance
 
 export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {
   return await (await fetch(`${hafVscApi}/bridge/stats`)).json()
+}
+
+export const useAddrTxStats = (addr: string, enabled: boolean = true) => {
+  const { data: addrStats } = useQuery<AddrTxStats>({
+    queryKey: ['vsc-addr-stat-counts', addr],
+    queryFn: async () => (await fetch(`${hafVscApi}/address/${addr}/stats`)).json(),
+    enabled
+  })
+  return addrStats
 }
 
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {

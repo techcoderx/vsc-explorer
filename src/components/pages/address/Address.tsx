@@ -3,12 +3,13 @@ import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'r
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
-import { fetchL2TxnsBy, fetchWitness } from '../../../requests'
+import { fetchL2TxnsBy, fetchWitness, useAddrTxStats } from '../../../requests'
 import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
 import { Txns } from '../../tables/Transactions'
 import { multisigAccount, themeColorScheme } from '../../../settings'
+import Pagination from '../../Pagination'
 
 const count = 100
 
@@ -22,14 +23,11 @@ export const AddressTxs = () => {
     queryFn: async () => fetchL2TxnsBy(offset, count, { byAccount: addr }),
     staleTime: 60000
   })
+  const stats = useAddrTxStats(addr)
   return (
     <Box>
       <Txns txs={txs?.txns || []} />
-      {/* <Pagination
-        path={`/address/${addr}/txs`}
-        currentPageNum={pageNum || 1}
-        maxPageNum={Math.ceil((activity?.tx_count || 0) / count)}
-      /> */}
+      <Pagination path={`/address/${addr}/txs`} currentPageNum={pageNum || 1} maxPageNum={Math.ceil((stats?.txs || 0) / count)} />
     </Box>
   )
 }

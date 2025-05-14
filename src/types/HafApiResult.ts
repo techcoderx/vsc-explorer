@@ -208,6 +208,14 @@ export interface BridgeCounter {
   withdrawals: number
 }
 
+export interface AddrTxStats {
+  txs: number
+  ledger_txs: number
+  ledger_actions: number
+  deposits: number
+  withdrawals: number
+}
+
 /** Contract call short details */
 interface ContractCallDetailMinimal {
   contract_id: string
