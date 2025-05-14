@@ -44,12 +44,7 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
                     </Tooltip>
                   </Td>
                   <Td>{item.type}</Td>
-                  <Td>
-                    {fmtmAmount(
-                      item.amount,
-                      item.type === 'consensus_stake' || item.type === 'consensus_unstake' ? 'HIVE' : item.asset
-                    )}
-                  </Td>
+                  <Td>{fmtmAmount(item.amount, item.asset)}</Td>
                 </Tr>
               )
             })}
@@ -131,7 +126,7 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
                     </Tooltip>
                   </Td>
                   <Td>{item.type}</Td>
-                  <Td>{fmtmAmount(item.amount, item.asset)}</Td>
+                  <Td>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</Td>
                   <Td>
                     <StatusBadge
                       status={item.status}
