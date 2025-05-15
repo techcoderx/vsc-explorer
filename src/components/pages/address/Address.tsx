@@ -3,7 +3,7 @@ import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'r
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
-import { fetchL2TxnsBy, fetchWitness, useAddrTxStats } from '../../../requests'
+import { fetchL2TxnsBy, getWitness, useAddrTxStats } from '../../../requests'
 import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
@@ -44,7 +44,7 @@ export const Address = () => {
   const tabIndex = tabNames.indexOf(segments.length >= 4 ? segments[3] : tabNames[0])
   const { data: witness } = useQuery({
     queryKey: ['vsc-witness', addr!.replace('hive:', '')],
-    queryFn: async () => fetchWitness(addr!.replace('hive:', '')),
+    queryFn: async () => getWitness(addr!.replace('hive:', '')),
     enabled: isL1
   })
   if (!addr || !validAddr) return <PageNotFound />
@@ -90,7 +90,7 @@ export const Address = () => {
           <Tab>Actions</Tab>
           <Tab>Deposits</Tab>
           <Tab>Withdrawals</Tab>
-          <Tab hidden={!isL1 || !witness || !!witness.error}>Witness</Tab>
+          <Tab hidden={!isL1 || !witness}>Witness</Tab>
         </TabList>
         <Box pt={'2'}>
           <Outlet context={{ addr }} />

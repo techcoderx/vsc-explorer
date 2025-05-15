@@ -20,6 +20,20 @@ export interface WitnessSchedule {
   }
 }
 
+export interface Witness {
+  height: number
+  ts: string
+  did_keys: {
+    t: 'consensus'
+    key: string
+  }[]
+  enabled: boolean
+  git_commit: string
+  peer_id: string
+  tx_id: string
+  gateway_key: string
+}
+
 export interface DagByCID {
   data: {
     getDagByCID: string

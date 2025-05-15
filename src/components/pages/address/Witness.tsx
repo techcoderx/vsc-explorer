@@ -21,8 +21,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, Link as ReactRouterLink } from 'react-router'
 import TableRow from '../../TableRow'
 import { timeAgo, thousandSeperator } from '../../../helpers'
-import { fetchBlocksByProposer, fetchWitness, fetchWitnessStat } from '../../../requests'
-import { Witness, WitnessStat } from '../../../types/HafApiResult'
+import { fetchBlocksByProposer, fetchWitnessStat, getWitness } from '../../../requests'
+import { WitnessStat } from '../../../types/HafApiResult'
+import { Witness } from '../../../types/L2ApiResult'
 import { Blocks } from '../../tables/Blocks'
 
 export const StatCard = ({ label, children }: { label: string; children?: ReactNode }) => {
@@ -40,7 +41,7 @@ export const StatCard = ({ label, children }: { label: string; children?: ReactN
 
 export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: WitnessStat }) => {
   const [expMeta, setExpMeta] = useState(false)
-  return !!witness && !witness.error ? (
+  return !!witness ? (
     <VStack width={'full'} spacing={'1'}>
       {!!stats && (
         <Stack spacing={'3'} direction={'row'} w={'full'} overflow={'scroll'}>
@@ -72,9 +73,14 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
             <TableContainer>
               <Table variant={'unstyled'}>
                 <Tbody>
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="ID" value={witness.id} />
                   <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID" value={witness.peer_id} />
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="Consensus DID Key" value={witness.consensus_did} />
+                  <TableRow
+                    isInCard
+                    minimalSpace
+                    minWidthLabel="115px"
+                    label="Consensus DID Key"
+                    value={witness.did_keys.find((k) => k.t === 'consensus')?.key}
+                  />
                   <TableRow isInCard minimalSpace minWidthLabel="115px" label="Gateway Key" value={witness.gateway_key} />
                   <TableRow
                     isInCard
@@ -85,16 +91,9 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
                     link={'https://github.com/vsc-eco/go-vsc-node/commit/' + witness.git_commit}
                   />
                   <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update">
-                    <Tooltip placement="top" label={witness.last_update_ts}>
-                      <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.last_update_tx}>
-                        {timeAgo(witness.last_update_ts)}
-                      </Link>
-                    </Tooltip>
-                  </TableRow>
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="First Seen">
-                    <Tooltip placement="top" label={witness.first_seen_ts}>
-                      <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.first_seen_tx}>
-                        {timeAgo(witness.first_seen_ts)}
+                    <Tooltip placement="top" label={witness.ts}>
+                      <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.tx_id}>
+                        {timeAgo(witness.ts)}
                       </Link>
                     </Tooltip>
                   </TableRow>
@@ -105,9 +104,9 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
         )}
       </Card>
     </VStack>
-  ) : !!witness && witness.error ? (
-    <Text>{witness.error}</Text>
-  ) : null
+  ) : (
+    <Text>Failed to load witness info</Text>
+  )
 }
 
 export const AddressWitness = () => {
@@ -115,7 +114,7 @@ export const AddressWitness = () => {
   const user = addr!.replace('hive:', '')
   const { data: witness } = useQuery({
     queryKey: ['vsc-witness', user],
-    queryFn: async () => fetchWitness(user)
+    queryFn: async () => getWitness(user)
   })
   const { data: witnessStats } = useQuery({
     queryKey: ['vsc-witness-stats', user],

@@ -1,6 +1,5 @@
 import {
   Props,
-  Witness,
   L1Transaction,
   Contract,
   AccInfo,
@@ -17,6 +16,7 @@ import {
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import {
   WitnessSchedule,
+  Witness,
   Tx as L2TxGql,
   DagByCID,
   GqlResponse,
@@ -61,10 +61,6 @@ export const fetchContractByID = async (contract_id: string): Promise<Contract> 
 
 export const fetchBlock = async (block_id: number | string, by: string = 'id'): Promise<Block> => {
   return await (await fetch(`${hafVscApi}/block/by-${by}/${block_id}`)).json()
-}
-
-export const fetchWitness = async (username: string): Promise<Witness> => {
-  return await (await fetch(`${hafVscApi}/haf/user/${username}/witness`)).json()
 }
 
 export const fetchWitnessStat = async (username: string): Promise<WitnessStat> => {
@@ -140,6 +136,16 @@ const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => 
       })
     })
   ).json()) as T
+}
+
+export const getWitness = async (user: string) => {
+  const result = await gql<GqlResponse<{ witness: Witness }>>(
+    `query GetWitness($account: String!) {
+      witness: getWitness(account: $account) { height ts did_keys { t key } enabled git_commit peer_id tx_id gateway_key }
+  }`,
+    { account: user }
+  )
+  return result.data.witness
 }
 
 export const getWitnessSchedule = async (height: number): Promise<WitnessSchedule> => {

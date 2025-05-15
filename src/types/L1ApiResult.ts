@@ -76,3 +76,11 @@ export interface L1TxHeader {
   code?: string
   message?: string
 }
+
+export interface L1BlockHeader {
+  previous: string
+  timestamp: string
+  witness: string
+  transaction_merkle_root: string
+  extensions: []
+}

@@ -79,24 +79,6 @@ export interface TxHeader {
   ledger: LedgerOpLog[]
 }
 
-export interface Witness {
-  error?: string
-  id: number
-  username: string
-  consensus_did: string
-  enabled: boolean
-  gateway_key: string
-  git_commit: string
-  peer_addrs: string[]
-  peer_id: string
-  protocol_version: number
-  version_id: string
-  first_seen_ts: string
-  first_seen_tx: string
-  last_update_ts: string
-  last_update_tx: string
-}
-
 export interface WitnessStat {
   _id: string
   block_count: number
