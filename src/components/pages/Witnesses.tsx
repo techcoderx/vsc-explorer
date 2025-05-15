@@ -1,10 +1,13 @@
-import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Link, Tooltip } from '@chakra-ui/react'
+import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Link, Tooltip, HStack, Box } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
 import { fetchEpoch, fetchProps, fetchWitnessStatMany } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
+import { useState } from 'react'
 
 const Witnesses = () => {
+  const [sort, setSort] = useState<string>('')
   const { data: prop, isLoading: isPropLd } = useQuery({
     queryKey: ['vsc-props'],
     queryFn: fetchProps
@@ -14,11 +17,15 @@ const Witnesses = () => {
     queryFn: async () => fetchEpoch(prop?.epoch || 0),
     enabled: !!prop
   })
-  // TODO: sort by weight option
-  const members =
+  let members =
     epoch?.members.map((m, i) => {
       return { ...m, weight: epoch.weights[i] }
     }) || []
+  if (sort === 'weight') {
+    members = members.sort((a, b) => b.weight - a.weight)
+  } else if (sort === 'weight_asc') {
+    members = members.sort((a, b) => a.weight - b.weight)
+  }
   const names = members.map((m) => m.account)
   const { data: stats } = useQuery({
     queryKey: ['vsc-witness-stats-many', ...names],
@@ -41,7 +48,17 @@ const Witnesses = () => {
             <Tr>
               <Th>Idx</Th>
               <Th>Username</Th>
-              <Th>Weight</Th>
+              <Th
+                cursor={'pointer'}
+                onClick={() => {
+                  setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
+                }}
+              >
+                <HStack>
+                  <Box>Weight</Box>
+                  {sort === 'weight' ? <FaAngleDown /> : sort === 'weight_asc' ? <FaAngleUp /> : <FaArrowsUpDown />}
+                </HStack>
+              </Th>
               <Th>Last Block</Th>
               <Th>Blocks Produced</Th>
               <Th>Last Epoch</Th>
@@ -67,7 +84,7 @@ const Witnesses = () => {
                       {m.account}
                     </Link>
                   </Td>
-                  <Td>{fmtmAmount(epoch.weights[i], 'HIVE')}</Td>
+                  <Td>{fmtmAmount(m.weight, 'HIVE')}</Td>
                   <Td>
                     {!!stats ? (
                       <Link as={ReactRouterLink} to={'/block/' + stats[i].last_block}>
