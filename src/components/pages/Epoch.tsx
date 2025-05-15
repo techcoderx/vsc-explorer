@@ -38,7 +38,7 @@ const Epoch = () => {
   const epchNum = parseInt(epochNum!)
   const invalidEpochNum = isNaN(epchNum) || epchNum < 0
   const blocks = useRef<Block[]>([])
-  const [blockCount, setBlockCount] = useState<number>(0)
+  const [_, setBlockCount] = useState<number>(0)
   const [blockEnd, setBlockEnd] = useState<boolean>(false)
   const {
     data: epoch,
@@ -106,6 +106,15 @@ const Epoch = () => {
                   <ProgressBarPct fontSize={'md'} val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
                 </TableRow>
               ) : null}
+              <TableRow label="Avg Block Votes">
+                <ProgressBarPct
+                  fontSize={'md'}
+                  val={
+                    (100 * (epoch?.blocks_info?.total_votes || 0)) /
+                    ((epoch?.blocks_info?.count || 1) * (epoch?.total_weight || 1))
+                  }
+                />
+              </TableRow>
               <TableRow label={`Elected Members (${epoch?.members.length})`} isLoading={isEpochLoading}>
                 <Grid
                   templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
@@ -130,10 +139,7 @@ const Epoch = () => {
           </Table>
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList>
-              <Tab>
-                Blocks ({blockCount}
-                {blockCount > 0 && !blockEnd && '+'})
-              </Tab>
+              <Tab>Blocks ({epoch?.blocks_info?.count || 0})</Tab>
               <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>

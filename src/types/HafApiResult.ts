@@ -138,6 +138,10 @@ export interface Election {
     eligible_weight: number
     voted_weight: number
   }
+  blocks_info?: {
+    count: number
+    total_votes: number
+  }
 }
 
 export interface WeightedMembers {
