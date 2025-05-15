@@ -83,10 +83,8 @@ export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
   return await (await fetch(`${hafVscApi}/epoch/${epoch_num}`)).json()
 }
 
-export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100, last_block_id?: number): Promise<Block[]> => {
-  return await (
-    await fetch(`${hafVscApi}/blocks?epoch=${epoch_num}&count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`)
-  ).json()
+export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100, offset: number = 0): Promise<Block[]> => {
+  return await (await fetch(`${hafVscApi}/blocks?epoch=${epoch_num}&count=${count}&offset=${offset}`)).json()
 }
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {

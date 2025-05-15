@@ -12,34 +12,29 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Flex,
-  Center,
-  Button
+  Flex
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
-import { PrevNextBtns } from '../Pagination'
+import Pagination, { PrevNextBtns } from '../Pagination'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { l1Explorer, themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { InfoIcon } from '@chakra-ui/icons'
-import { useEffect, useRef, useState } from 'react'
-import { Block } from '../../types/HafApiResult'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
 
 const blockBatch = 100
 
 const Epoch = () => {
-  const { epochNum } = useParams()
+  const { epochNum, page } = useParams()
+  const pageNum = parseInt(page || '1')
   const epchNum = parseInt(epochNum!)
   const invalidEpochNum = isNaN(epchNum) || epchNum < 0
-  const blocks = useRef<Block[]>([])
-  const [_, setBlockCount] = useState<number>(0)
-  const [blockEnd, setBlockEnd] = useState<boolean>(false)
+  const offset = (pageNum - 1) * blockBatch
   const {
     data: epoch,
     isLoading: isEpochLoading,
@@ -54,15 +49,11 @@ const Epoch = () => {
     queryFn: async () => fetchEpoch(epchNum - 1),
     enabled: !invalidEpochNum && epchNum > 0
   })
-  useEffect(() => {
-    if (!invalidEpochNum) {
-      fetchBlocksInEpoch(epchNum, blockBatch).then((b) => {
-        blocks.current = b
-        setBlockCount(b.length)
-        if (b.length < blockBatch) setBlockEnd(true)
-      })
-    }
-  }, [])
+  const { data: blocks } = useQuery({
+    queryKey: ['vsc-blocks-in-epoch', epchNum, blockBatch, offset],
+    queryFn: async () => fetchBlocksInEpoch(epchNum, blockBatch, offset),
+    enabled: !invalidEpochNum
+  })
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
   if (invalidEpochNum) return <PageNotFound />
   return (
@@ -142,31 +133,14 @@ const Epoch = () => {
               <Tab>Blocks ({epoch?.blocks_info?.count || 0})</Tab>
               <Tab>Participation</Tab>
             </TabList>
-            <TabPanels mt={'2'}>
+            <TabPanels>
               <TabPanel>
-                <BlocksTbl blocks={blocks.current} />
-                {!blockEnd && blocks.current.length > 0 && (
-                  <Center>
-                    <Button
-                      as={ReactRouterLink}
-                      colorScheme={themeColorScheme}
-                      onClick={(evt) => {
-                        evt.preventDefault()
-                        fetchBlocksInEpoch(
-                          epchNum,
-                          blockBatch,
-                          blocks.current[blocks.current.length - 1].be_info.block_id - 1
-                        ).then((b) => {
-                          b.forEach((blk) => blocks.current.push(blk))
-                          setBlockCount(blocks.current.length)
-                          if (b.length < blockBatch) setBlockEnd(true)
-                        })
-                      }}
-                    >
-                      Load More
-                    </Button>
-                  </Center>
-                )}
+                <BlocksTbl blocks={blocks} />
+                <Pagination
+                  currentPageNum={pageNum}
+                  maxPageNum={Math.ceil((epoch?.blocks_info?.count || 1) / blockBatch)}
+                  path={`/epoch/${epochNum}`}
+                />
               </TabPanel>
               <TabPanel>
                 {hasVotes ? (

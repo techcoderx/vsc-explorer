@@ -86,7 +86,7 @@ const router = createBrowserRouter([
         element: <Elections />
       },
       {
-        path: '/epoch/:epochNum',
+        path: '/epoch/:epochNum/:page?',
         element: <Epoch />
       },
       {
