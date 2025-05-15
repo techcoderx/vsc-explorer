@@ -3,6 +3,7 @@ import {
   L1Transaction,
   Contract,
   AccInfo,
+  Witness as WitnessHaf,
   L2ContractCallTx,
   CIDSearchResult,
   Election,
@@ -43,7 +44,7 @@ export const fetchBlocksByProposer = async (proposer: string, count = 50, last_b
   ).json()
 }
 
-export const fetchWitnesses = async (): Promise<Witness[]> => {
+export const fetchWitnesses = async (): Promise<WitnessHaf[]> => {
   return await (await fetch(`${hafVscApi}/haf/witnesses`)).json()
 }
 
