@@ -8,7 +8,7 @@ export const themeColorScheme = 'pink'
 export const hiveApi = 'https://techcoderx.com'
 export const hafVscApi = 'https://vsc.techcoderx.com/be-api/v1'
 export const vscNodeApi = 'https://vsc.techcoderx.com/api/v1/graphql'
-export const cvApi = 'https://vsc.techcoderx.com/be-api/v1'
+export const cvApi = 'https://vsc.techcoderx.com/cv-api/v1'
 export const l1Explorer = 'https://hivehub.dev'
 export const ipfsSubGw = (cid: string): string => 'https://' + cid + '.ipfs.dweb.link'
 

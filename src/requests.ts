@@ -68,6 +68,13 @@ export const fetchWitnessStat = async (username: string): Promise<WitnessStat> =
   return await (await fetch(`${hafVscApi}/witness/${username}/stats`)).json()
 }
 
+/**
+ * @param usernames Comma separated usernames
+ */
+export const fetchWitnessStatMany = async (usernames: string): Promise<WitnessStat[]> => {
+  return await (await fetch(`${hafVscApi}/witness/${usernames}/stats/many`)).json()
+}
+
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
   return await (await fetch(`${hafVscApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
 }

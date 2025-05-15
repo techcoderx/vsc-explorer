@@ -51,7 +51,7 @@ const Elections = () => {
           <Tbody>
             {isEpochsLoading ? (
               <Tr>
-                {[...Array(7)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                   <Td key={i}>
                     <Skeleton height="20px" />
                   </Td>
