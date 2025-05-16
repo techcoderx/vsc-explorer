@@ -32,8 +32,10 @@ const ContractResult = ({ out }: { out: Contract }) => {
       <CardHeader>
         <Heading fontSize={'xl'}>Deployed Contract</Heading>
       </CardHeader>
-      <CardBody>
-        <TableRow minimalSpace isInCard allCardBorders label="Contract ID" value={out.id} link={`/contract/${out.id}`} />
+      <CardBody mt={'-25px'}>
+        <Table variant={'unstyled'}>
+          <TableRow minimalSpace isInCard allCardBorders label="Contract ID" value={out.id} link={`/contract/${out.id}`} />
+        </Table>
       </CardBody>
     </>
   )
