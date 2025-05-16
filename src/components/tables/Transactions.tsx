@@ -46,16 +46,18 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                   {timeAgo(t.anchr_ts)}
                 </Tooltip>
               </Td>
-              <Td>{t.data.type === 'call' ? abbreviateHash(t.data.op, 20, 0) : t.data.type}</Td>
+              <Td>{t.data.type === 'call_contract' ? abbreviateHash(t.data.action, 20, 0) : t.data.type}</Td>
               <Td>
                 <AccountLink val={t.required_auths[0] ?? ''} />
               </Td>
               <Td>
                 <ToIcon />
               </Td>
-              <Td>{t.data.type === 'call' ? <ContractLink val={t.data.contract_id} /> : <AccountLink val={t.data.to} />}</Td>
               <Td>
-                {t.data.type === 'call'
+                {t.data.type === 'call_contract' ? <ContractLink val={t.data.contract_id} /> : <AccountLink val={t.data.to} />}
+              </Td>
+              <Td>
+                {t.data.type === 'call_contract'
                   ? '0 HIVE'
                   : fmtAmount(t.data.amount / (t.data.type === 'deposit' ? 1000 : 1), t.data.asset.toUpperCase() as Coin)}
               </Td>

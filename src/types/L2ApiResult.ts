@@ -129,10 +129,12 @@ interface TxDataFer {
 }
 
 interface TxDataCall {
-  type: 'call'
-  op: string
+  type: 'call_contract'
+  action: string
   contract_id: string
   payload: any
+  rc_limit: number
+  intents: []
 }
 
 export interface Txn {
