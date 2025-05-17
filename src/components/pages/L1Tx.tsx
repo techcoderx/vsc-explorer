@@ -20,9 +20,10 @@ import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest } from '../../requests'
 import { makeL1TxIdWifIdx, parseOperation, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { Block, Contract, Election, TxHeader } from '../../types/HafApiResult'
+import { Block, Election, TxHeader } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
+import { Contract } from '../../types/L2ApiResult'
 
 const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
 

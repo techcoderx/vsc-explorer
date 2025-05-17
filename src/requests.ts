@@ -1,7 +1,6 @@
 import {
   Props,
   L1Transaction,
-  Contract,
   AccInfo,
   L2ContractCallTx,
   CIDSearchResult,
@@ -23,6 +22,7 @@ import {
   LedgerTx,
   LedgerActions,
   Txn,
+  Contract,
   AddrBalance
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
@@ -47,12 +47,13 @@ export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
   return await (await fetch(`${hafVscApi}/haf/latest-ops/50/true`)).json()
 }
 
-export const fetchLatestContracts = async (): Promise<Contract[]> => {
-  return await (await fetch(`${hafVscApi}/contracts`)).json()
-}
-
-export const fetchContractByID = async (contract_id: string): Promise<Contract> => {
-  return await (await fetch(`${hafVscApi}/contract/${contract_id}`)).json()
+export const fetchContracts = async (opts: object): Promise<Contract[]> => {
+  return (
+    await gql<GqlResponse<{ contracts: Contract[] }>>(
+      `query Contracts($opts: FindContractFilter) { contracts: findContract(filterOptions: $opts) { id code creator owner tx_id creation_height creation_ts runtime }}`,
+      { opts }
+    )
+  ).data.contracts
 }
 
 export const fetchBlock = async (block_id: number | string, by: string = 'id'): Promise<Block> => {
@@ -191,6 +192,15 @@ export const getDagByCIDBatch = async <T>(cids: string[]): Promise<T[]> => {
   // Execute query and map results to array
   const result = await gql<GqlResponse>(query, variables)
   return cids.map((_, index) => JSON.parse(result.data[`d${index}`]))
+}
+
+export const useContracts = (opts: object) => {
+  const {
+    data: contracts,
+    isLoading,
+    isError
+  } = useQuery({ queryKey: ['vsc-contracts', opts], queryFn: () => fetchContracts(opts) })
+  return { contracts, isLoading, isError }
 }
 
 export const useAddrBalance = (acc: string) => {

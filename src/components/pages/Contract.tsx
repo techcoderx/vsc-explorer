@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react'
 import {
   Text,
   Heading,
@@ -13,14 +12,6 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  // Thead,
-  // Th,
-  // Tr,
-  // Td,
-  // Badge,
-  // Tooltip,
-  // Button,
-  // Center,
   Flex,
   Card,
   CardBody,
@@ -30,16 +21,16 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchContractByID } from '../../requests'
+import { fetchL2TxnsBy, useContracts } from '../../requests'
 import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
 // import { ParticipatedMembers } from '../BlsAggMembers'
-// import { L1ContractCallTx, L2ContractCallTx } from '../../types/HafApiResult'
 import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
+import { Txns } from '../tables/Transactions'
 
 // const callerSummary = (tx: L1ContractCallTx | L2ContractCallTx): { primary: string; add: number } => {
 //   return tx.input_src === 'vsc'
@@ -53,21 +44,10 @@ import { CopyButton } from '../CopyButton'
 // }
 
 export const Contract = () => {
-  // const [txCount, setTxCount] = useState(0)
-  // const [contractTxs, setContractTxs] = useState<(L1ContractCallTx | L2ContractCallTx)[]>([])
-  // const [contractTxEnd, setContractTxEnd] = useState(false)
   const { contractId } = useParams()
-  const invalidContractId = !contractId?.startsWith('vs4') && contractId?.length !== 68
-  const {
-    data: contract,
-    isLoading,
-    isSuccess,
-    isError
-  } = useQuery({
-    queryKey: ['vsc-contract', contractId],
-    queryFn: async () => fetchContractByID(contractId!),
-    enabled: !invalidContractId
-  })
+  const invalidContractId = !contractId?.startsWith('vsc1')
+  const { contracts: ct, isLoading, isError } = useContracts({ byId: contractId })
+  const contract = ct && ct.length > 0 ? ct[0] : null
   // const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
   // const { data: members } = useQuery({
   //   queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
@@ -89,16 +69,11 @@ export const Contract = () => {
     queryFn: async () => fetchSrcFiles(contractId!),
     enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
   })
-  // useEffect(() => {
-  //   if (contractId)
-  //     fetchCallsByContractId(contractId)
-  //       .then((txs) => {
-  //         setContractTxs(txs)
-  //         setTxCount(txs.length)
-  //         if (txs.length < 100) setContractTxEnd(true)
-  //       })
-  //       .catch(() => {})
-  // }, [])
+  const { data: txns } = useQuery({
+    queryKey: ['vsc-txs-contract', contractId],
+    queryFn: async () => fetchL2TxnsBy(0, 100, { byContract: contractId }),
+    enabled: !invalidContractId
+  })
   return (
     <>
       <Box marginBottom={'15px'}>
@@ -108,23 +83,23 @@ export const Contract = () => {
         </Text>
       </Box>
       {isLoading ? <Skeleton h={'20px'} mt={'20px'} /> : null}
-      {isSuccess && !contract.error ? (
+      {!!contract ? (
         <Box>
           <TableContainer>
             <Table>
               <Tbody>
-                {/* <TableRow
-                  label="Creation Timestamp"
-                  value={contract ? contract.created_at + ' (' + timeAgo(contract.created_at) + ')' : ''}
+                <TableRow
+                  label="Created At"
+                  value={contract ? contract.creation_ts + ' (' + timeAgo(contract.creation_ts) + ')' : ''}
                   isLoading={isLoading}
-                /> */}
+                />
                 <TableRow
                   label="Created In L1 Block"
                   value={contract.creation_height}
                   link={l1Explorer + '/b/' + contract.creation_height}
                   isLoading={isLoading}
                 />
-                <TableRow label="Created in L1 Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
+                <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
                 <TableRow label="Creator" value={contract.creator} link={'/address/hive:' + contract.creator} />
                 <TableRow label="Bytecode CID">
                   <Flex align={'center'} gap={'2'}>
@@ -134,6 +109,7 @@ export const Contract = () => {
                     ) : null}
                   </Flex>
                 </TableRow>
+                <TableRow label="Runtime" value={contract.runtime} />
               </Tbody>
             </Table>
           </TableContainer>
@@ -145,95 +121,7 @@ export const Contract = () => {
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
-                👀 Coming soon...
-                {/*<TableContainer>
-                  <Table mb={'5'}>
-                    <Thead>
-                      <Tr>
-                        <Th textAlign={'center'}>Source</Th>
-                        <Th>Transaction ID</Th>
-                        <Th>Age</Th>
-                        <Th>Action</Th>
-                        <Th>Sender</Th>
-                        <Th>Gas Used</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {contractTxs.map((tx, i) => {
-                        const callerSumm = callerSummary(tx)
-                        return (
-                          <Tr key={i}>
-                            <Td textAlign={'center'}>
-                              <Badge colorScheme={themeColorScheme}>{tx.input_src}</Badge>
-                            </Td>
-                            <Td>
-                              <Tooltip label={tx.input} placement={'top'}>
-                                <Link as={ReactRouterLink} to={(tx.input_src === 'hive' ? '/tx/' : '/vsc-tx/') + tx.input}>
-                                  {abbreviateHash(tx.input, 20, 0)}
-                                </Link>
-                              </Tooltip>
-                            </Td>
-                            <Td>
-                              <Tooltip label={tx.ts} placement={'top'}>
-                                {timeAgo(tx.ts)}
-                              </Tooltip>
-                            </Td>
-                            <Td>{tx.contract_action}</Td>
-                            <Td>
-                              <Tooltip label={callerSumm.primary} placement={'top'}>
-                                <Link
-                                  as={ReactRouterLink}
-                                  to={(tx.input_src === 'vsc' ? '/address/' : '/address/hive:') + callerSumm.primary}
-                                >
-                                  {abbreviateHash(callerSumm.primary, 20, 0)}
-                                </Link>
-                              </Tooltip>
-                              {callerSumm.add > 0 ? (
-                                <Text fontStyle={'italic'} opacity={'0.5'}>{` (+${callerSumm.add})`}</Text>
-                              ) : (
-                                ''
-                              )}
-                            </Td>
-                            <Td isNumeric>
-                              {typeof tx.io_gas === 'number' ? (
-                                thousandSeperator(tx.io_gas)
-                              ) : (
-                                <Text fontStyle={'italic'} opacity={'0.5'}>
-                                  Pending...
-                                </Text>
-                              )}
-                            </Td>
-                          </Tr>
-                        )
-                      })}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-                {!contractTxEnd && contractTxs.length > 0 ? (
-                  <Center>
-                    <Button
-                      as={ReactRouterLink}
-                      colorScheme={themeColorScheme}
-                      onClick={(evt) => {
-                        evt.preventDefault()
-                        fetchCallsByContractId(
-                          contractId!,
-                          100,
-                          (contractTxs[contractTxs.length - 1].id as unknown as number) - 1
-                        )
-                          .then((moarTxs) => {
-                            moarTxs.forEach((t) => contractTxs.push(t))
-                            setContractTxs(contractTxs)
-                            setTxCount(contractTxs.length)
-                            if (moarTxs.length < 100) setContractTxEnd(true)
-                          })
-                          .catch(() => {})
-                      }}
-                    >
-                      Load More
-                    </Button>
-                  </Center>
-                ) : null}*/}
+                <Txns txs={txns?.txns || []} />
               </TabPanel>
               <TabPanel>
                 👀 Coming soon...
@@ -354,11 +242,11 @@ export const Contract = () => {
             </TabPanels>
           </Tabs>
         </Box>
-      ) : isSuccess && contract.error ? (
-        <Text>{contract.error}</Text>
       ) : isError ? (
         <Text>Failed to fetch contract</Text>
-      ) : null}
+      ) : (
+        <Text>Contract does not exist</Text>
+      )}
     </>
   )
 }

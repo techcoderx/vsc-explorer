@@ -1,19 +1,10 @@
 import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Tooltip, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
-import { useQuery } from '@tanstack/react-query'
-import { abbreviateHash } from '../../helpers'
-import { fetchLatestContracts } from '../../requests'
-import { l1Explorer } from '../../settings'
+import { abbreviateHash, timeAgo } from '../../helpers'
+import { useContracts } from '../../requests'
 
 const NewContracts = () => {
-  const {
-    data: contracts,
-    isLoading: isContractsLoading,
-    isSuccess: isContractsSuccess
-  } = useQuery({
-    queryKey: ['vsc-latest-contracts'],
-    queryFn: fetchLatestContracts
-  })
+  const { contracts, isLoading } = useContracts({})
   return (
     <>
       <Text fontSize={'5xl'}>Latest Contracts</Text>
@@ -23,14 +14,15 @@ const NewContracts = () => {
           <Thead>
             <Tr>
               <Th>Contract Id</Th>
-              <Th>Created In Block</Th>
+              <Th>Age</Th>
               <Th>Creator</Th>
-              <Th>Created In Tx</Th>
+              <Th>Creation Tx</Th>
               <Th>Code</Th>
+              <Th>Runtime</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {isContractsLoading ? (
+            {isLoading ? (
               <Tr>
                 {[...Array(5)].map((_, i) => (
                   <Td key={i}>
@@ -38,20 +30,20 @@ const NewContracts = () => {
                   </Td>
                 ))}
               </Tr>
-            ) : isContractsSuccess ? (
+            ) : !!contracts ? (
               contracts.map((item, i) => (
                 <Tr key={i}>
                   <Td>
                     <Tooltip label={item.id} placement="top">
                       <Link as={ReactRouterLink} to={'/contract/' + item.id}>
-                        {abbreviateHash(item.id)}
+                        {abbreviateHash(item.id, 20, 0)}
                       </Link>
                     </Tooltip>
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
-                    <Link href={l1Explorer + '/b/' + item.creation_height} target="_blank">
-                      {item.creation_height}
-                    </Link>
+                    <Tooltip label={item.creation_ts} placement="top">
+                      {timeAgo(item.creation_ts)}
+                    </Tooltip>
                   </Td>
                   <Td>
                     <Link as={ReactRouterLink} to={'/address/hive:' + item.creator}>
@@ -61,7 +53,7 @@ const NewContracts = () => {
                   <Td>
                     <Tooltip label={item.tx_id} placement="top" sx={{ whiteSpace: 'nowrap' }}>
                       <Link as={ReactRouterLink} to={'/tx/' + item.tx_id}>
-                        {abbreviateHash(item.tx_id, 6, 6)}
+                        {abbreviateHash(item.tx_id, 15, 0)}
                       </Link>
                     </Tooltip>
                   </Td>
@@ -70,6 +62,7 @@ const NewContracts = () => {
                       {abbreviateHash(item.code)}
                     </Tooltip>
                   </Td>
+                  <Td>{item.runtime}</Td>
                 </Tr>
               ))
             ) : (

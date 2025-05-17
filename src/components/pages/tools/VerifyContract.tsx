@@ -39,7 +39,7 @@ import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import MultiFileInput from '../../MultiFileInput'
 import { isValidJSONStr } from '../../../helpers'
 import { cvInfo } from '../../../cvRequests'
-import { fetchContractByID } from '../../../requests'
+import { fetchContracts } from '../../../requests'
 
 const steps = [
   {
@@ -156,8 +156,8 @@ export const VerifyContract = () => {
         return toast({ title: 'Contract is already verified or being verified.', status: 'error' })
       }
       if (!verifInfo) {
-        const contractInf = await fetchContractByID(addr)
-        if (contractInf.error) {
+        const ct = await fetchContracts({ byId: addr })
+        if (!ct || ct.length === 0) {
           setIsSpinning(false)
           return toast({ title: 'Contract not found', status: 'error' })
         }

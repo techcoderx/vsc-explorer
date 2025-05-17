@@ -170,6 +170,19 @@ export interface AddrBalance {
   }
 }
 
+export interface Contract {
+  id: string
+  tx_id: string
+  creation_height: number
+  creation_ts: string
+  runtime: 'go' | 'assembly-script'
+  creator: string
+  owner: string
+  name: string
+  description: string
+  code: string
+}
+
 export interface Tx {
   data: {
     findTransaction: {

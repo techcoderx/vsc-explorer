@@ -152,18 +152,6 @@ export interface L1Transaction extends Item<number> {
     | { tx: CallContractPayload | XferWdPayload }
 }
 
-export interface Contract {
-  error?: string
-  id: string
-  tx_id: string
-  creation_height: number
-  creator: string
-  owner: string
-  name: string
-  description: string
-  code: string
-}
-
 export interface AccInfo {
   name: string
   tx_count: number
