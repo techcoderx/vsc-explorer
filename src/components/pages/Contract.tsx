@@ -26,35 +26,16 @@ import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
-// import { ParticipatedMembers } from '../BlsAggMembers'
 import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
 import { Txns } from '../tables/Transactions'
-
-// const callerSummary = (tx: L1ContractCallTx | L2ContractCallTx): { primary: string; add: number } => {
-//   return tx.input_src === 'vsc'
-//     ? { primary: tx.signers[0], add: tx.signers.length - 1 }
-//     : tx.input_src === 'hive'
-//     ? {
-//         primary: tx.signers.active.length > 0 ? tx.signers.active[0] : tx.signers.posting[0],
-//         add: tx.signers.active.length + tx.signers.posting.length - 1
-//       }
-//     : { primary: '', add: 0 }
-// }
 
 export const Contract = () => {
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { contracts: ct, isLoading, isError } = useContracts({ byId: contractId })
   const contract = ct && ct.length > 0 ? ct[0] : null
-  // const hasStorageProof = contract?.storage_proof.hash && contract?.storage_proof.sig && contract?.storage_proof.bv
-  // const { data: members } = useQuery({
-  //   queryKey: ['vsc-members-at-block', 'l2', contract?.created_in_l1_block],
-  //   queryFn: async () => fetchMembersAtBlock(contract!.created_in_l1_block),
-  //   enabled: !isError && !isLoading && !invalidContractId && !!hasStorageProof
-  // })
-  // const { votedMembers } = getVotedMembers((contract && contract.storage_proof.bv) ?? '0', members ?? [])
   const {
     data: verifInfo,
     error: verifError,
@@ -116,21 +97,11 @@ export const Contract = () => {
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>
-              <Tab>Storage Proof</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel>
                 <Txns txs={txns?.txns || []} />
-              </TabPanel>
-              <TabPanel>
-                👀 Coming soon...
-                {/* <ParticipatedMembers
-                  bvHex={contract.storage_proof.bv!}
-                  sig={contract.storage_proof.sig!}
-                  members={votedMembers.map((m) => m.username)}
-                  isLoading={isLoading}
-                /> */}
               </TabPanel>
               <TabPanel>
                 {verifInfo ? (
