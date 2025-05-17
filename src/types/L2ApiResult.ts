@@ -154,6 +154,22 @@ export interface Txn {
   ledger: LedgerOpLog[]
 }
 
+export interface AddrBalance {
+  bal: {
+    account: string
+    hbd: number
+    hbd_savings: number
+    hive: number
+    hive_consensus: number
+    consensus_unstaking: number
+  }
+  rc: {
+    account: string
+    amount: number
+    block_height: number
+  }
+}
+
 export interface Tx {
   data: {
     findTransaction: {

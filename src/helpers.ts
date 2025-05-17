@@ -1,4 +1,4 @@
-import { L1Transaction, UserBalance } from './types/HafApiResult'
+import { L1Transaction } from './types/HafApiResult'
 import {
   CallContractPayload,
   DepositPayload,
@@ -14,6 +14,7 @@ import {
 } from './types/Payloads'
 import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
 import { Ops } from './types/L1ApiResult'
+import { AddrBalance } from './types/L2ApiResult'
 
 export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
@@ -267,16 +268,16 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
 }
 
 // https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go
-export const availableRC = (bal: UserBalance, head_block_num?: number, is_hive_user: boolean = false) => {
+export const availableRC = ({ bal, rc }: AddrBalance, head_block_num?: number, is_hive_user: boolean = false) => {
   const max_rc = bal.hbd + (is_hive_user ? 5000 : 0)
   if (max_rc === 0) return { avail: 0, max: 0 }
   const RC_RETURN_PERIOD = 120 * 60 * 20
-  const diff = (head_block_num || bal.rc_used.block_height) - bal.rc_used.block_height
-  let amt_ret = (diff * bal.rc_used.amount) / RC_RETURN_PERIOD
-  if (amt_ret > bal.rc_used.amount) {
-    amt_ret = bal.rc_used.amount
+  const diff = (head_block_num || rc.block_height) - rc.block_height
+  let amt_ret = (diff * rc.amount) / RC_RETURN_PERIOD
+  if (amt_ret > rc.amount) {
+    amt_ret = rc.amount
   }
-  return { avail: max_rc - (bal.rc_used.amount - amt_ret), max: max_rc }
+  return { avail: max_rc - (rc.amount - amt_ret), max: max_rc }
 }
 
 export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {

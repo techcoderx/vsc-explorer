@@ -6,7 +6,6 @@ import {
   L2ContractCallTx,
   CIDSearchResult,
   Election,
-  UserBalance,
   Block,
   TxHeader,
   WitnessStat,
@@ -23,7 +22,8 @@ import {
   LatestBridgeTxs,
   LedgerTx,
   LedgerActions,
-  Txn
+  Txn,
+  AddrBalance
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 
@@ -96,10 +96,6 @@ export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election
 
 export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
   return await (await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)).json()
-}
-
-export const getL2BalanceByL1User = async (l1_user: string): Promise<UserBalance> => {
-  return await (await fetch(`${hafVscApi}/balance/${l1_user}`)).json()
 }
 
 export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {
@@ -195,6 +191,21 @@ export const getDagByCIDBatch = async <T>(cids: string[]): Promise<T[]> => {
   // Execute query and map results to array
   const result = await gql<GqlResponse>(query, variables)
   return cids.map((_, index) => JSON.parse(result.data[`d${index}`]))
+}
+
+export const useAddrBalance = (acc: string) => {
+  const { data: balance, isLoading } = useQuery({
+    queryKey: ['vsc-address-balance', acc],
+    queryFn: async () => {
+      return (
+        await gql<GqlResponse<AddrBalance>>(
+          `query AccBal($acc: String!) { bal: getAccountBalance(account: $acc) { hbd hbd_savings hive hive_consensus consensus_unstaking } rc: getAccountRC(account: $acc) { amount block_height }}`,
+          { acc }
+        )
+      ).data
+    }
+  })
+  return { balance, isLoading }
 }
 
 export const fetchLatestBridgeTxs = async (limit = 25): Promise<LatestBridgeTxs> => {

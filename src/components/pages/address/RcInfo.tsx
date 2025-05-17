@@ -2,13 +2,10 @@ import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { ProgressBarPct } from '../../ProgressPercent'
 import { availableRC } from '../../../helpers'
-import { fetchL1Rest, getL2BalanceByL1User } from '../../../requests'
+import { fetchL1Rest, useAddrBalance } from '../../../requests'
 
 export const AddressRcInfo = ({ addr }: { addr: string }) => {
-  const { data: balance, isLoading } = useQuery({
-    queryKey: ['vsc-address-balance', addr],
-    queryFn: async () => getL2BalanceByL1User(addr)
-  })
+  const { balance, isLoading } = useAddrBalance(addr)
   const { data: headBlock } = useQuery({
     queryKey: ['hive-headblock'],
     queryFn: async () => fetchL1Rest<number>(`/hafah-api/headblock`)

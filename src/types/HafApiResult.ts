@@ -87,22 +87,6 @@ export interface WitnessStat {
   last_epoch: number
 }
 
-export interface UserBalance {
-  account: string
-  block_height: number
-  hbd: number
-  hbd_avg: number
-  hbd_modify: number
-  hbd_savings: number
-  hive: number
-  hive_consensus: number
-  hive_unstaking: number
-  rc_used: {
-    block_height: number
-    amount: number
-  }
-}
-
 export interface Election {
   error?: string
   epoch: number
