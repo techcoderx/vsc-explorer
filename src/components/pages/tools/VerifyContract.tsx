@@ -128,7 +128,6 @@ export const VerifyContract = () => {
     md: 'horizontal'
   })
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
-  const [lang, _setLang] = useState('assemblyscript')
   const [license, setLicense] = useState<string>()
   const [deps, setDeps] = useState<string>()
   const [files, setFiles] = useState<File[]>([])
@@ -137,8 +136,8 @@ export const VerifyContract = () => {
   const toastRef = useRef<ToastId>()
   const nextClicked = async () => {
     let e = ''
-    if (!addr.startsWith('vs4')) {
-      e = "Contract address must start with 'vs4'"
+    if (!addr.startsWith('vsc1')) {
+      e = "Contract address must start with 'vsc1'"
     } else if (!license) {
       e = 'Please select a license'
     } else if (!deps || !isValidJSONStr(deps)) {
@@ -188,7 +187,7 @@ export const VerifyContract = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ license, lang, dependencies: JSON.parse(deps!) })
+        body: JSON.stringify({ license, dependencies: JSON.parse(deps!) })
       })
       if (createReq.status !== 200) {
         setIsSpinning(false)
@@ -307,17 +306,11 @@ export const VerifyContract = () => {
                       <FormLabel>Contract Address</FormLabel>
                       <Input
                         type="text"
-                        placeholder="vs4..."
+                        placeholder="vsc1..."
                         value={addr}
                         onChange={(e) => setAddr(e.target.value)}
                         focusBorderColor={themeColorLight}
                       />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>Language</FormLabel>
-                      <Select focusBorderColor={themeColorLight} disabled>
-                        <option value="assemblyscript">AssemblyScript</option>
-                      </Select>
                     </FormControl>
                     <FormControl>
                       <FormLabel>License</FormLabel>
