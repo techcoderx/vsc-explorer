@@ -269,15 +269,17 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
 
 // https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go
 export const availableRC = ({ bal, rc }: AddrBalance, head_block_num?: number, is_hive_user: boolean = false) => {
-  const max_rc = bal.hbd + (is_hive_user ? 5000 : 0)
+  const h = rc?.block_height || 0
+  const amt = rc?.amount || 0
+  const max_rc = (bal?.hbd || 0) + (is_hive_user ? 5000 : 0)
   if (max_rc === 0) return { avail: 0, max: 0 }
   const RC_RETURN_PERIOD = 120 * 60 * 20
-  const diff = (head_block_num || rc.block_height) - rc.block_height
-  let amt_ret = (diff * rc.amount) / RC_RETURN_PERIOD
-  if (amt_ret > rc.amount) {
-    amt_ret = rc.amount
+  const diff = (head_block_num || h) - h
+  let amt_ret = (diff * amt) / RC_RETURN_PERIOD
+  if (amt_ret > amt) {
+    amt_ret = amt
   }
-  return { avail: max_rc - (rc.amount - amt_ret), max: max_rc }
+  return { avail: max_rc - (amt - amt_ret), max: max_rc }
 }
 
 export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {

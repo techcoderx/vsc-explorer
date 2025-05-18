@@ -155,7 +155,7 @@ export interface Txn {
 }
 
 export interface AddrBalance {
-  bal: {
+  bal?: {
     account: string
     hbd: number
     hbd_savings: number
@@ -163,7 +163,7 @@ export interface AddrBalance {
     hive_consensus: number
     consensus_unstaking: number
   }
-  rc: {
+  rc?: {
     account: string
     amount: number
     block_height: number
