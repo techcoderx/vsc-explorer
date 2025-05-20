@@ -73,10 +73,6 @@ const router = createBrowserRouter([
         path: '/witnesses',
         element: <Witnesses />
       },
-      // {
-      //   path: '/witnesses/:page?',
-      //   element: <Witnesses />
-      // },
       {
         path: '/schedule',
         element: <WitnessSchedule />

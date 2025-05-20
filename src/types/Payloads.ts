@@ -42,7 +42,6 @@ export type InterestPayload = {
   interest: NAI
 }
 
-export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'transfer' | 'withdraw' | 'event'
 export type Coin = 'HIVE' | 'HBD'
 export type CoinLower = 'hive' | 'hbd'
 

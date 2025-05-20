@@ -2,7 +2,6 @@ import {
   Props,
   L1Transaction,
   AccInfo,
-  L2ContractCallTx,
   CIDSearchResult,
   Election,
   Block,
@@ -93,10 +92,6 @@ export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
 
 export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | TxHeader | null)[]> => {
   return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
-}
-
-export const fetchL2Tx = async (trx_id: string): Promise<L2ContractCallTx> => {
-  return await (await fetch(`${hafVscApi}/rpc/get_l2_tx?trx_id=${trx_id}`)).json()
 }
 
 export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {

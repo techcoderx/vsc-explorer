@@ -1,11 +1,9 @@
 import {
   BlockPayload,
   NewContractPayload,
-  L2TxType,
   CallContractPayload,
   DepositPayload,
   ElectionPayload,
-  Coin,
   TransferPayload,
   BLSSig,
   InterestPayload
@@ -19,17 +17,6 @@ export interface Props {
   transactions: number
   last_processed_block: number
   operations: number
-}
-
-interface Item<IdType extends number | string> {
-  id: IdType
-  ts: string
-  block_num: number
-}
-
-/** usually used for l2 items */
-interface ItemWithIdxBlk<IdType extends number | string> extends Item<IdType> {
-  idx_in_block: number
 }
 
 export interface Block {
@@ -136,7 +123,10 @@ export type TxTypes =
   | 'unstake'
   | 'deposit'
 
-export interface L1Transaction extends Item<number> {
+export interface L1Transaction {
+  id: number
+  ts: string
+  block_num: number
   nonce: number
   type: TxTypes
   l1_tx: string
@@ -171,63 +161,6 @@ export interface AddrTxStats {
   ledger_actions: number
   deposits: number
   withdrawals: number
-}
-
-/** Contract call short details */
-interface ContractCallDetailMinimal {
-  contract_id: string
-  action: string
-  io_gas?: number
-}
-
-/** For contract calls by contract id */
-interface ContractCallTx extends ItemWithIdxBlk<string>, ContractCallDetailMinimal {
-  input: string
-  output: string
-  contract_action: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any
-  contract_output?: ContractOut
-  error?: string
-  events?: EventItm[]
-}
-
-export interface L1ContractCallTx extends ContractCallTx {
-  signers: {
-    active: string[]
-    posting: string[]
-  }
-  tx_type: 'call_contract'
-  input_src: 'hive'
-}
-
-export interface L2ContractCallTx extends ContractCallTx {
-  nonce: number
-  signers: string[]
-  tx_type: L2TxType
-  input_src: 'vsc'
-}
-
-export interface ContractOut {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ret?: any
-  logs: string[]
-  IOGas: number
-  error?: {
-    msg: string
-    colm: number
-    file: string
-    line: number
-  }
-  errorType?: number
-}
-
-export interface EventItm {
-  t: number
-  tk: Coin
-  amt: number
-  memo?: string
-  owner: string
 }
 
 export interface CIDSearchResult {
