@@ -1,5 +1,5 @@
 import { TxTypes } from './HafApiResult'
-import { CallContractPayload, XferWdPayload, CoinLower } from './Payloads'
+import { CallContractPayload, CoinLower } from './Payloads'
 
 export type Status = 'UNCONFIRMED' | 'INCLUDED' | 'CONFIRMED' | 'FAILED'
 
@@ -192,7 +192,7 @@ export interface Tx {
         src: 'vsc'
         status: Status
         sig_hash?: string // absent if graphql node was reindexed after the transaction
-        data: CallContractPayload | XferWdPayload
+        data: CallContractPayload
       }[]
     }
   }

@@ -46,27 +46,12 @@ export type L2TxType = 'call_contract' | 'contract_output' | 'anchor_ref' | 'tra
 export type Coin = 'HIVE' | 'HBD'
 export type CoinLower = 'hive' | 'hbd'
 
-interface L1TxPayload {
-  op: L2TxType
-  payload: any
-}
-
-export interface CallContractPayload extends L1TxPayload {
-  op: 'call_contract'
+export interface CallContractPayload {
   contract_id: string
   action: string
   payload: any
-}
-
-export interface XferWdPayload extends L1TxPayload {
-  op: 'transfer' | 'withdraw'
-  payload: {
-    tk: Coin
-    to: string
-    from: string
-    memo?: string
-    amount: number
-  }
+  intents: []
+  rc_limit: number
 }
 
 export type NAI = {
@@ -78,14 +63,4 @@ export type NAI = {
 export type BLSSig = {
   sig: string
   bv: string
-}
-
-export const EventTypeNames: { [type: number]: string } = {
-  0: '',
-  110_001: 'Transfer',
-  110_002: 'Withdraw',
-  110_003: 'Deposit'
-  // 110_004: 'Stake HBD',
-  // 110_005: 'Unstake HBD',
-  // 110_006: 'Claim HBD'
 }

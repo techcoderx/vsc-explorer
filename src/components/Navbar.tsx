@@ -253,7 +253,7 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'Blocks',
-        subLabel: 'Latest VSC L2 blocks',
+        subLabel: 'Latest VSC blocks',
         href: '/blocks'
       },
       {

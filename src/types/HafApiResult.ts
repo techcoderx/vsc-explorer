@@ -3,7 +3,6 @@ import {
   NewContractPayload,
   L2TxType,
   CallContractPayload,
-  XferWdPayload,
   DepositPayload,
   ElectionPayload,
   Coin,
@@ -149,7 +148,7 @@ export interface L1Transaction extends Item<number> {
     | DepositPayload
     | TransferPayload
     | InterestPayload
-    | { tx: CallContractPayload | XferWdPayload }
+    | CallContractPayload
 }
 
 export interface AccInfo {

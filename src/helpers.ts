@@ -7,7 +7,6 @@ import {
   BlockPayload,
   NewContractPayload,
   TransferPayload,
-  XferWdPayload,
   InterestPayload,
   Coin,
   CoinLower
@@ -224,12 +223,8 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       result += ` collect ${naiToString((tx.payload as InterestPayload).interest)} interest`
       break
     case 'call':
-      const call = (tx.payload as { tx: CallContractPayload | XferWdPayload }).tx
-      if (call.op === 'call_contract')
-        result += 'call ' + abbreviateHash(call.action, 30, 0) + ' at contract ' + abbreviateHash(call.contract_id, 20, 0)
-      else if (call.op === 'transfer' || call.op === 'withdraw')
-        result +=
-          call.op + ' ' + call.payload.amount / 1000 + ' ' + call.payload.tk + ' to ' + abbreviateHash(call.payload.to, 20, 0)
+      const call = tx.payload as CallContractPayload
+      result += 'call ' + abbreviateHash(call.action, 30, 0) + ' at contract ' + abbreviateHash(call.contract_id, 20, 0)
       break
     default:
       result += tx.type.replace(/_/g, ' ')
