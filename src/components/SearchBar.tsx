@@ -80,8 +80,8 @@ const useSearchResults = (query: string): SearchResultHook => {
     isLoading: isL1AccLoading,
     isError: isL1AccErr
   } = useQuery({
-    queryKey: ['hive-account', query],
-    queryFn: async () => fetchL1Rest<{ id: number }>(`/hafbe-api/accounts/${query}`),
+    queryKey: ['hive-account', query.replace('hive:', '')],
+    queryFn: async () => fetchL1Rest<{ id: number }>(`/hafbe-api/accounts/${query.replace('hive:', '')}`),
     enabled: queryType === SearchQueryType.L1Account
   })
   const {
@@ -120,7 +120,10 @@ const useSearchResults = (query: string): SearchResultHook => {
         ],
         isLoading: isL1TxLoading
       }
-    } else if (validateHiveUsername(query) === null) {
+    } else if (
+      validateHiveUsername(query) === null ||
+      (query.startsWith('hive:') && validateHiveUsername(query.replace('hive:', '')) === null)
+    ) {
       setQueryType(SearchQueryType.L1Account)
       return {
         searchResult: [
@@ -128,7 +131,7 @@ const useSearchResults = (query: string): SearchResultHook => {
             ? [
                 {
                   type: SearchResultType.L1Account,
-                  href: '/address/hive:' + query
+                  href: '/address/hive:' + query.replace('hive:', '')
                 }
               ]
             : [])
