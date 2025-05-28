@@ -42,7 +42,7 @@ const Home = () => {
                 justify="center"
               >
                 <InfoBox
-                  title="Hive L1 Block Height"
+                  title="Hive Block Height"
                   prop={prop?.last_processed_block}
                   isLoading={isPropLoading}
                   isSuccess={isPropSuccess}
