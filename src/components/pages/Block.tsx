@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchBlock, fetchEpoch, getDagByCID, getDagByCIDBatch } from '../../requests'
+import { fetchBlock, fetchEpoch, getDagByCIDBatch, useDagByCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
@@ -57,11 +57,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     queryFn: async () => fetchEpoch(block && !block.error && block.be_info ? block.be_info.epoch : -1),
     enabled: !isBlockError && !isBlockLoading && !invalidBlkId && !block.error
   })
-  const { data: blockDag } = useQuery({
-    queryKey: ['dag-by-cid', (block && block.block) ?? ''],
-    queryFn: async () => getDagByCID<BlockHeader>(block.block),
-    enabled: !!block && !block.error
-  })
+  const { data: blockDag } = useDagByCID<BlockHeader>(block && block.block, !!block && !block.error)
   const blockTxIds = blockDag ? blockDag.txs.map((t) => t.id) : []
   const { data: txDags } = useQuery({
     queryKey: ['dag-by-cid-batch', ...blockTxIds],

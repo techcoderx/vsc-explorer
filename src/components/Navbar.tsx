@@ -283,6 +283,11 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'Verify Contract',
         subLabel: 'Submit contract source code for verification',
         href: '/tools/verify/contract'
+      },
+      {
+        label: 'DAG Inspector',
+        subLabel: 'View a DAG by CID stored by nodes',
+        href: '/tools/dag'
       }
     ]
   }

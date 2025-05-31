@@ -126,7 +126,8 @@ const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => 
         query: query,
         variables,
         extensions: {}
-      })
+      }),
+      signal: AbortSignal.timeout(10000)
     })
   ).json()) as T
 }
@@ -187,6 +188,16 @@ export const getDagByCIDBatch = async <T>(cids: string[]): Promise<T[]> => {
   // Execute query and map results to array
   const result = await gql<GqlResponse>(query, variables)
   return cids.map((_, index) => JSON.parse(result.data[`d${index}`]))
+}
+
+export const useDagByCID = <T>(cid: string, enabled = true, retry = true) => {
+  return useQuery({
+    queryKey: ['dag-by-cid', cid],
+    queryFn: async () => getDagByCID<T>(cid),
+    refetchOnWindowFocus: false,
+    retry,
+    enabled
+  })
 }
 
 export const useContracts = (opts: object) => {

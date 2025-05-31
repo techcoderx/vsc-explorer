@@ -19,6 +19,7 @@ import { Address, AddressTxs } from './components/pages/address/Address'
 import { AddressDeposits, AddressLedgers } from './components/pages/address/LedgerTxs'
 import { AddressActions, AddressWithdrawals } from './components/pages/address/LedgerActions'
 import { VerifyContract } from './components/pages/tools/VerifyContract'
+import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
 
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
       {
         path: '/tools/verify/contract',
         element: <VerifyContract />
+      },
+      {
+        path: '/tools/dag',
+        element: <DagInspector />
       },
       {
         path: '*',
