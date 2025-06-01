@@ -5,7 +5,6 @@ import {
   CIDSearchResult,
   Election,
   Block,
-  TxHeader,
   WitnessStat,
   BridgeCounter,
   AddrTxStats
@@ -14,7 +13,6 @@ import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import {
   WitnessSchedule,
   Witness,
-  Tx as L2TxGql,
   DagByCID,
   GqlResponse,
   LatestBridgeTxs,
@@ -90,7 +88,7 @@ export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
   return await (await fetch(`${hafVscApi}/haf/user/${username}`)).json()
 }
 
-export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | TxHeader | null)[]> => {
+export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | Txn | null)[]> => {
   return await (await fetch(`${hafVscApi}/tx/${trx_id}/output`)).json()
 }
 
@@ -298,32 +296,4 @@ export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, opti
     }
   )
   return result.data
-}
-
-export const fetchL2TxGql = async (trx_id: string): Promise<L2TxGql> => {
-  return gql<L2TxGql>(
-    `
-  query L2Tx($trx_id: String!) {
-    findTransaction(
-      filterOptions: {byId: $trx_id}
-    ) {
-      txs {
-        first_seen
-        id
-        src
-        status
-        sig_hash
-        data {
-          op
-          contract_id
-          action
-          payload
-        }
-      }
-    }
-  }`,
-    {
-      trx_id
-    }
-  )
 }

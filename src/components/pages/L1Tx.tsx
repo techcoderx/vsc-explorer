@@ -17,13 +17,13 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchL1Rest } from '../../requests'
+import { fetchL1TxOutput, fetchL1Rest, useDagByCID } from '../../requests'
 import { makeL1TxIdWifIdx, parseOperation, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
-import { Block, Election, TxHeader } from '../../types/HafApiResult'
+import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { Contract } from '../../types/L2ApiResult'
+import { Contract, ContractOutput, Txn } from '../../types/L2ApiResult'
 
 const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
 
@@ -42,7 +42,18 @@ const ContractResult = ({ out }: { out: Contract }) => {
   )
 }
 
-const LedgerOpLogs = ({ out, trx_id, opidx }: { out: TxHeader; trx_id: string; opidx: number }) => {
+const CallResult = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: number }) => {
+  return (
+    <>
+      {!!out.ledger && Array.isArray(out.ledger) && out.ledger.length > 0 && (
+        <LedgerOpLogs out={out} trx_id={trx_id} opidx={opidx} />
+      )}
+      {!!out.output && <ContractOut id={out.output.id} index={out.output.index} />}
+    </>
+  )
+}
+
+const LedgerOpLogs = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: number }) => {
   const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
   return (
     <>
@@ -65,6 +76,26 @@ const LedgerOpLogs = ({ out, trx_id, opidx }: { out: TxHeader; trx_id: string; o
               }
             })}
         />
+      </CardBody>
+    </>
+  )
+}
+
+const ContractOut = ({ id, index }: { id: string; index: number }) => {
+  const { data: dag } = useDagByCID<ContractOutput>(id)
+  return (
+    <>
+      <CardHeader>
+        <Heading fontSize={'xl'}>Contract Output</Heading>
+      </CardHeader>
+      <CardBody mt={'-6'}>
+        <Table margin={'0'} variant={'unstyled'}>
+          <Tbody>
+            <TableRow minimalSpace isInCard allCardBorders label="Output CID" value={id} link={`/tools/dag?cid=${id}`} />
+            <TableRow minimalSpace isInCard allCardBorders label="Success" value={dag?.results[index].ok ? 'true' : 'false'} />
+            <TableRow minimalSpace isInCard allCardBorders label="Result" value={dag?.results[index].ret} />
+          </Tbody>
+        </Table>
       </CardBody>
     </>
   )
@@ -216,7 +247,7 @@ const L1Tx = () => {
                         </TableRow>
                         {outData && outData[i] && VscLedgerTxNames.includes(trx.type) ? (
                           <TableRow isInCard label="Status">
-                            <Badge color={themeColor}>{(outData[i] as TxHeader).status}</Badge>
+                            <Badge color={themeColor}>{(outData[i] as Txn).status}</Badge>
                           </TableRow>
                         ) : null}
                       </Tbody>
@@ -229,10 +260,8 @@ const L1Tx = () => {
                     <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
                   </CardBody>
                   {outData && outData[i] ? (
-                    VscLedgerTxNames.includes(trx.type) &&
-                    Array.isArray((outData[i] as TxHeader).ledger) &&
-                    (outData[i] as TxHeader).ledger.length > 0 ? (
-                      <LedgerOpLogs out={outData[i] as TxHeader} trx_id={txid!} opidx={i} />
+                    VscLedgerTxNames.includes(trx.type) ? (
+                      <CallResult out={outData[i] as Txn} trx_id={txid!} opidx={i} />
                     ) : trx.type === 'create_contract' ? (
                       <ContractResult out={outData[i] as Contract} />
                     ) : trx.type === 'election_result' ? (

@@ -43,28 +43,6 @@ export interface Block {
   }
 }
 
-export interface LedgerOpLog {
-  to: string
-  from: string
-  amount: number
-  asset: string
-  memo: string
-  type: string
-  id: string
-  bidx: number
-  opidx: number
-  blockheight: number
-  params?: object
-}
-
-export interface TxHeader {
-  id: string
-  status: string
-  nonce: number
-  rc_limit: number
-  ledger: LedgerOpLog[]
-}
-
 export interface WitnessStat {
   _id: string
   block_count: number

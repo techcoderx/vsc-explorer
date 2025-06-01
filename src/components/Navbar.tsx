@@ -286,7 +286,7 @@ const NAV_ITEMS: Array<NavItem> = [
       },
       {
         label: 'DAG Inspector',
-        subLabel: 'View a DAG by CID stored by nodes',
+        subLabel: 'View a DAG by CID pinned by nodes',
         href: '/tools/dag'
       }
     ]

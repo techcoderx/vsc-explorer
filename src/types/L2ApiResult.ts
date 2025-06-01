@@ -1,5 +1,5 @@
 import { TxTypes } from './HafApiResult'
-import { CallContractPayload, CoinLower } from './Payloads'
+import { CoinLower } from './Payloads'
 
 export type Status = 'UNCONFIRMED' | 'INCLUDED' | 'CONFIRMED' | 'FAILED'
 
@@ -84,6 +84,7 @@ export interface OpLog {
 }
 
 export interface LedgerOpLog<T = TxTypes> {
+  id: string
   to: string
   from: string
   amount: number
@@ -152,6 +153,10 @@ export interface Txn {
   required_auths: string[]
   status: Status
   ledger: LedgerOpLog[]
+  output?: {
+    id: string
+    index: number
+  }
 }
 
 export interface AddrBalance {
@@ -183,17 +188,16 @@ export interface Contract {
   code: string
 }
 
-export interface Tx {
-  data: {
-    findTransaction: {
-      txs: {
-        id: string
-        first_seen: string // inaccurate upon reindex
-        src: 'vsc'
-        status: Status
-        sig_hash?: string // absent if graphql node was reindexed after the transaction
-        data: CallContractPayload
-      }[]
-    }
+export interface ContractOutput {
+  contract_id: string
+  inputs: string[]
+  metadata: {
+    current_size: number
+    max_size: number
   }
+  results: {
+    ok: boolean
+    ret: string
+  }[]
+  state_merkle: string
 }
