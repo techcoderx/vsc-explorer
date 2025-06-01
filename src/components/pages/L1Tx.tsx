@@ -48,7 +48,7 @@ const CallResult = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: n
       {!!out.ledger && Array.isArray(out.ledger) && out.ledger.length > 0 && (
         <LedgerOpLogs out={out} trx_id={trx_id} opidx={opidx} />
       )}
-      {!!out.output && <ContractOut id={out.output.id} index={out.output.index} />}
+      {!!out.output && <ContractOut id={out.output.id} trx_id={trx_id} opidx={opidx} />}
     </>
   )
 }
@@ -81,23 +81,27 @@ const LedgerOpLogs = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx:
   )
 }
 
-const ContractOut = ({ id, index }: { id: string; index: number }) => {
+const ContractOut = ({ id, trx_id, opidx }: { id: string; trx_id: string; opidx: number }) => {
+  const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
   const { data: dag } = useDagByCID<ContractOutput>(id)
+  const outputIdx = !!dag ? dag.inputs.indexOf(idWifIdx) : -1
   return (
-    <>
-      <CardHeader>
-        <Heading fontSize={'xl'}>Contract Output</Heading>
-      </CardHeader>
-      <CardBody mt={'-6'}>
-        <Table margin={'0'} variant={'unstyled'}>
-          <Tbody>
-            <TableRow minimalSpace isInCard allCardBorders label="Output CID" value={id} link={`/tools/dag?cid=${id}`} />
-            <TableRow minimalSpace isInCard allCardBorders label="Success" value={dag?.results[index].ok ? 'true' : 'false'} />
-            <TableRow minimalSpace isInCard allCardBorders label="Result" value={dag?.results[index].ret} />
-          </Tbody>
-        </Table>
-      </CardBody>
-    </>
+    outputIdx > -1 && (
+      <>
+        <CardHeader>
+          <Heading fontSize={'xl'}>Contract Output</Heading>
+        </CardHeader>
+        <CardBody mt={'-6'}>
+          <Table margin={'0'} variant={'unstyled'}>
+            <Tbody>
+              <TableRow minimalSpace isInCard allCardBorders label="Output CID" value={id} link={`/tools/dag?cid=${id}`} />
+              <TableRow minimalSpace isInCard allCardBorders label="Success" value={dag?.results[outputIdx].ok.toString()} />
+              <TableRow minimalSpace isInCard allCardBorders label="Result" value={dag?.results[outputIdx].ret} />
+            </Tbody>
+          </Table>
+        </CardBody>
+      </>
+    )
   )
 }
 
