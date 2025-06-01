@@ -90,7 +90,12 @@ const Epoch = () => {
                 isLoading={isEpochLoading}
                 link={'/address/hive:' + epoch?.proposer}
               />
-              <TableRow label="Election Data CID" value={epoch?.data} isLoading={isEpochLoading} />
+              <TableRow
+                label="Election Data CID"
+                value={epoch?.data}
+                link={'/tools/dag?cid=' + epoch?.data}
+                isLoading={isEpochLoading}
+              />
               <TableRow label="Total Weight" value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
               {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
                 <TableRow label="Participation">

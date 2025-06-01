@@ -98,7 +98,12 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                 isLoading={isBlockLoading}
                 link={'/address/hive:' + block?.proposer}
               />
-              <TableRow label="Block Hash" value={block?.block} isLoading={isBlockLoading} />
+              <TableRow
+                label="Block Hash"
+                value={block?.block}
+                link={'/tools/dag?cid=' + block?.block}
+                isLoading={isBlockLoading}
+              />
               <TableRow label="Participation" isLoading={isBlockLoading}>
                 {block && block.be_info ? (
                   <ProgressBarPct fontSize={'md'} val={(block.be_info.voted_weight / block.be_info.eligible_weight) * 100} />
