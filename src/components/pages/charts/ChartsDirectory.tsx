@@ -1,0 +1,64 @@
+import { Card, CardBody, Flex, Grid, Image, Text } from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router'
+import { themeColor } from '../../../settings'
+
+const metrics = [
+  {
+    title: 'Blocks',
+    icon: '/img/block.svg',
+    href: '#'
+  },
+  {
+    title: 'Transactions',
+    icon: '/img/transaction.svg',
+    href: '#'
+  },
+  {
+    title: 'Addresses',
+    icon: '/img/wallet.svg',
+    href: '#'
+  },
+  {
+    title: 'Contracts',
+    icon: '/img/contract.svg',
+    href: '#'
+  },
+  {
+    title: 'Witnesses',
+    icon: '/img/witness.svg',
+    href: '#'
+  },
+  {
+    title: 'Bridge',
+    icon: '/img/bridge.svg',
+    href: '/charts/bridge'
+  }
+]
+
+export const ChartsDirectory = () => {
+  return (
+    <Flex direction={'column'} gap={'3'}>
+      <Text fontSize={'5xl'}>Network Charts</Text>
+      <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={'3'}>
+        {metrics.map((m, i) => (
+          <Card
+            as={ReactRouterLink}
+            to={m.href}
+            key={i}
+            _hover={{ borderColor: themeColor, borderWidth: '0.5px' }}
+            _light={{ _hover: { borderWidth: '1px' } }}
+          >
+            <CardBody textAlign={'center'}>
+              <Flex direction={'column'} gap={'5'}>
+                <Image src={m.icon} width={'36'} height={'36'} mx={'auto'} my={'3'} />
+                <Text fontSize={'xl'} fontWeight={'bold'}>
+                  {m.title}
+                </Text>
+              </Flex>
+            </CardBody>
+          </Card>
+        ))}
+      </Grid>
+    </Flex>
+  )
+}

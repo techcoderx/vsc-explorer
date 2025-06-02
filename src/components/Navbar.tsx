@@ -273,6 +273,10 @@ const NAV_ITEMS: Array<NavItem> = [
     href: '/bridge/hive'
   },
   {
+    label: 'Charts',
+    href: '/charts'
+  },
+  {
     label: 'Tools',
     children: [
       // {

@@ -84,3 +84,11 @@ export interface L1BlockHeader {
   transaction_merkle_root: string
   extensions: []
 }
+
+export interface BalHistory {
+  date: string
+  balance: {
+    balance: string
+    savings_balance: string
+  }
+}
