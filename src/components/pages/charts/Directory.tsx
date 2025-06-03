@@ -1,4 +1,4 @@
-import { Card, CardBody, Flex, Grid, Image, Text } from '@chakra-ui/react'
+import { Card, CardBody, Flex, Grid, Image, Text, useToast } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { themeColor } from '../../../settings'
 
@@ -36,6 +36,7 @@ const metrics = [
 ]
 
 export const ChartsDirectory = () => {
+  const toast = useToast()
   return (
     <Flex direction={'column'} gap={'3'}>
       <Text fontSize={'5xl'}>Network Charts</Text>
@@ -45,6 +46,15 @@ export const ChartsDirectory = () => {
             as={ReactRouterLink}
             to={m.href}
             key={i}
+            onClick={(evt) => {
+              if (m.href === '#') {
+                evt.preventDefault()
+                toast({
+                  title: 'Soon 🔜',
+                  status: 'info'
+                })
+              }
+            }}
             _hover={{ borderColor: themeColor, borderWidth: '0.5px' }}
             _light={{ _hover: { borderWidth: '1px' } }}
           >

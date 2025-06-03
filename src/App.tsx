@@ -22,7 +22,7 @@ import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
-import { ChartsDirectory } from './components/pages/charts/ChartsDirectory'
+import { ChartsDirectory } from './components/pages/charts/Directory'
 import { BridgeStats } from './components/pages/charts/Bridge'
 
 const router = createBrowserRouter([
