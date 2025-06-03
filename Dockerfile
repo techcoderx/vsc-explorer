@@ -13,4 +13,5 @@ RUN rm /etc/nginx/conf.d/default.conf
 RUN mkdir -p /html
 COPY --from=build /app/dist/index.html /html/
 COPY --from=build /app/dist/assets /html/assets/
+COPY --from=build /app/dist/img /html/img/
 COPY ./docker/nginx.conf /etc/nginx/conf.d/
