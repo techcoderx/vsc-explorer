@@ -279,14 +279,14 @@ export const getWithdrawals = async (offset = 0, limit = 100, options?: object):
 
 export const fetchLatestL2Txns = async (): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
-    `{ txns: findTransaction { tx_id anchr_height anchr_opidx anchr_ts required_auths status data } }`
+    `{ txns: findTransaction { id anchr_height anchr_ts required_auths status ops { type, data }} }`
   )
   return result.data
 }
 
 export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, options?: object): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
-    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { tx_id anchr_height anchr_opidx anchr_ts required_auths status data }}`,
+    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths status ops { type, data }}}`,
     {
       opts: {
         ...options,

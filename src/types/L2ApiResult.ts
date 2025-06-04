@@ -84,7 +84,6 @@ export interface OpLog {
 }
 
 export interface LedgerOpLog<T = TxTypes> {
-  id: string
   to: string
   from: string
   amount: number
@@ -121,32 +120,48 @@ export interface LedgerActions<T = TxTypes> {
 }
 
 interface TxDataFer {
-  type: 'consensus_stake' | 'consensus_unstake' | 'deposit' | 'stake_hbd' | 'transfer' | 'unstake_hbd' | 'withdraw'
-  to: string
-  from: string
-  amount: number
-  asset: 'hive' | 'hbd' | 'hbd_savings'
-  memo?: string
+  type: 'consensus_stake' | 'consensus_unstake' | 'stake_hbd' | 'transfer' | 'unstake_hbd' | 'withdraw'
+  index: number
+  data: {
+    to: string
+    from: string
+    amount: string
+    asset: 'hive' | 'hbd' | 'hbd_savings'
+    memo?: string
+  }
+}
+
+interface TxDataDeposit {
+  type: 'deposit'
+  index: number
+  data: {
+    to: string
+    from: string
+    amount: number
+    asset: 'hive' | 'hbd'
+    memo?: string
+  }
 }
 
 interface TxDataCall {
   type: 'call_contract'
-  action: string
-  contract_id: string
-  payload: any
-  rc_limit: number
-  intents: []
+  index: number
+  data: {
+    action: string
+    contract_id: string
+    payload: any
+    rc_limit: number
+    intents: []
+  }
 }
 
 export interface Txn {
   id: string
-  tx_id: string
   anchr_height: number
   anchr_index: number
-  anchr_opidx: number
   anchr_ts: string
   type: 'hive' | 'vsc'
-  data: TxDataFer | TxDataCall
+  ops: (TxDataFer | TxDataDeposit | TxDataCall)[]
   first_seen: string
   nonce: number
   rc_limit: number
