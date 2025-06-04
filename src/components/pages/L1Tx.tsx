@@ -17,13 +17,13 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchL1Rest, useDagByCID } from '../../requests'
-import { makeL1TxIdWifIdx, parseOperation, roundFloat, thousandSeperator, timeAgo } from '../../helpers'
+import { fetchL1TxOutput, fetchL1Rest } from '../../requests'
+import { parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { Contract, ContractOutput, Txn } from '../../types/L2ApiResult'
+import { Contract, Txn } from '../../types/L2ApiResult'
 
 const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
 
@@ -42,6 +42,7 @@ const ContractResult = ({ out }: { out: Contract }) => {
   )
 }
 
+/*
 const CallResult = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: number }) => {
   return (
     <>
@@ -81,6 +82,7 @@ const LedgerOpLogs = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx:
   )
 }
 
+
 const ContractOut = ({ id, trx_id, opidx }: { id: string; trx_id: string; opidx: number }) => {
   const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
   const { data: dag } = useDagByCID<ContractOutput>(id)
@@ -104,6 +106,7 @@ const ContractOut = ({ id, trx_id, opidx }: { id: string; trx_id: string; opidx:
     )
   )
 }
+*/
 
 const ElectionResult = ({ out }: { out: Election }) => {
   return (
@@ -264,9 +267,7 @@ const L1Tx = () => {
                     <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
                   </CardBody>
                   {outData && outData[i] ? (
-                    VscLedgerTxNames.includes(trx.type) ? (
-                      <CallResult out={outData[i] as Txn} trx_id={txid!} opidx={i} />
-                    ) : trx.type === 'create_contract' ? (
+                    trx.type === 'create_contract' ? (
                       <ContractResult out={outData[i] as Contract} />
                     ) : trx.type === 'election_result' ? (
                       <ElectionResult out={outData[i] as Election} />
