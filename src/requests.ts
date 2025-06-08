@@ -297,3 +297,17 @@ export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, opti
   )
   return result.data
 }
+
+export const fetchL2TxnsDetailed = async (id: string): Promise<{ txns: Txn[] }> => {
+  const result = await gql<GqlResponse<{ txns: Txn[] }>>(
+    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths status ops { type, index, data } rc_limit ledger { type from to amount asset memo params } ledger_actions { type status to amount asset memo data } }}`,
+    {
+      opts: {
+        byId: id,
+        offset: 0,
+        limit: 1
+      }
+    }
+  )
+  return result.data
+}

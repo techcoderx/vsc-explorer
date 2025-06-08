@@ -90,7 +90,9 @@ export interface LedgerOpLog<T = TxTypes> {
   asset: CoinLower
   memo: string
   type: T
-  params: null
+  params?: {
+    epoch: number
+  }
 }
 
 export interface LedgerTx<T = TxTypes> {
@@ -114,7 +116,9 @@ export interface LedgerActions<T = TxTypes> {
   to: string
   memo: string
   type: T
-  params?: object
+  params?: {
+    epoch: number
+  }
   block_height: number
   timestamp: string
 }
@@ -168,6 +172,7 @@ export interface Txn {
   required_auths: string[]
   status: Status
   ledger: LedgerOpLog[]
+  ledger_actions: LedgerActions[]
   output?: {
     id: string
     index: number

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import {
   Text,
   Box,
@@ -11,21 +12,142 @@ import {
   CardHeader,
   CardBody,
   Badge,
-  Flex
+  Flex,
+  Tooltip,
+  Tag,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  TableContainer,
+  Thead,
+  Tr,
+  Th,
+  Td,
+  Icon
 } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchL1Rest } from '../../requests'
-import { parseOperation, thousandSeperator, timeAgo } from '../../helpers'
-import { l1Explorer, l1ExplorerName, themeColor, themeColorScheme } from '../../settings'
+import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed } from '../../requests'
+import { fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
+import { l1Explorer, l1ExplorerName, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
 import { Contract, Txn } from '../../types/L2ApiResult'
+import { StatusBadge } from '../tables/Ledgers'
+import { AccountLink } from '../TableLink'
+import { FaCircleArrowRight } from 'react-icons/fa6'
 
-const VscLedgerTxNames = ['call', 'transfer', 'withdraw', 'consensus_stake', 'consensus_unstake', 'stake_hbd', 'unstake_hbd']
+const cardBorder = '1px solid rgb(255,255,255,0.16)'
+const cardBorderLight = '1px solid #e2e8f0'
+const CardTr = ({ children }: { children: ReactNode }) => (
+  <Tr
+    _dark={{
+      borderTop: cardBorder,
+      borderBottom: cardBorder
+    }}
+    _light={{
+      borderTop: cardBorderLight,
+      borderBottom: cardBorderLight
+    }}
+  >
+    {children}
+  </Tr>
+)
+const MinTd = ({ children }: { children: ReactNode }) => <Td py={'2'}>{children}</Td>
+
+const TxOut = ({ txn }: { txn: Txn }) => (
+  <Accordion allowToggle>
+    <AccordionItem>
+      <AccordionButton>
+        <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+          Ledger Operations ({txn.ledger.length})
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+      <AccordionPanel>
+        <TableContainer>
+          <Table variant={'unstyled'}>
+            <Thead>
+              <Tr>
+                <Th>Type</Th>
+                <Th>From</Th>
+                <Th></Th>
+                <Th>To</Th>
+                <Th>Amount</Th>
+                <Th>Memo</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {txn.ledger.map((item, i) => {
+                return (
+                  <CardTr key={i}>
+                    <MinTd>{item.type}</MinTd>
+                    <MinTd>
+                      <AccountLink val={item.from} />
+                    </MinTd>
+                    <MinTd>
+                      <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                    </MinTd>
+                    <MinTd>
+                      <AccountLink val={item.to} />
+                    </MinTd>
+                    <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
+                    <MinTd>{item.memo}</MinTd>
+                  </CardTr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </AccordionPanel>
+    </AccordionItem>
+    <AccordionItem>
+      <AccordionButton>
+        <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+          Ledger Actions ({txn.ledger_actions.length})
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+      <AccordionPanel>
+        <TableContainer>
+          <Table variant={'unstyled'}>
+            <Thead>
+              <Tr>
+                <Th>Type</Th>
+                <Th>To</Th>
+                <Th>Amount</Th>
+                <Th>Status</Th>
+                <Th>Memo</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {txn.ledger_actions.map((item, i) => {
+                return (
+                  <CardTr key={i}>
+                    <MinTd>{item.type}</MinTd>
+                    <MinTd>
+                      <AccountLink val={item.to} />
+                    </MinTd>
+                    <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
+                    <MinTd>
+                      <StatusBadge status={item.status} />
+                    </MinTd>
+                    <MinTd>{item.memo}</MinTd>
+                  </CardTr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </AccordionPanel>
+    </AccordionItem>
+  </Accordion>
+)
 
 const ContractResult = ({ out }: { out: Contract }) => {
   return (
@@ -33,7 +155,7 @@ const ContractResult = ({ out }: { out: Contract }) => {
       <CardHeader>
         <Heading fontSize={'xl'}>Deployed Contract</Heading>
       </CardHeader>
-      <CardBody mt={'-25px'}>
+      <CardBody mt={'-6'}>
         <Table variant={'unstyled'}>
           <TableRow minimalSpace isInCard allCardBorders label="Contract ID" value={out.id} link={`/contract/${out.id}`} />
         </Table>
@@ -42,79 +164,13 @@ const ContractResult = ({ out }: { out: Contract }) => {
   )
 }
 
-/*
-const CallResult = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: number }) => {
-  return (
-    <>
-      {!!out.ledger && Array.isArray(out.ledger) && out.ledger.length > 0 && (
-        <LedgerOpLogs out={out} trx_id={trx_id} opidx={opidx} />
-      )}
-      {!!out.output && <ContractOut id={out.output.id} trx_id={trx_id} opidx={opidx} />}
-    </>
-  )
-}
-
-const LedgerOpLogs = ({ out, trx_id, opidx }: { out: Txn; trx_id: string; opidx: number }) => {
-  const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
-  return (
-    <>
-      <CardHeader>
-        <Heading fontSize={'xl'}>Ledger Operations</Heading>
-      </CardHeader>
-      <CardBody mt={'-25px'}>
-        <JsonToTableRecursive
-          isInCard
-          minimalSpace
-          json={out.ledger
-            .filter((l) => (opidx > 0 ? l.id.startsWith(idWifIdx) : l.id === idWifIdx))
-            .map((l) => {
-              return {
-                from: l.from,
-                to: l.to,
-                amount: `${roundFloat(l.amount / 1000, 3)} ${l.asset.toUpperCase()}`,
-                type: l.type,
-                params: l.params
-              }
-            })}
-        />
-      </CardBody>
-    </>
-  )
-}
-
-
-const ContractOut = ({ id, trx_id, opidx }: { id: string; trx_id: string; opidx: number }) => {
-  const idWifIdx = makeL1TxIdWifIdx(trx_id, opidx)
-  const { data: dag } = useDagByCID<ContractOutput>(id)
-  const outputIdx = !!dag ? dag.inputs.indexOf(idWifIdx) : -1
-  return (
-    outputIdx > -1 && (
-      <>
-        <CardHeader>
-          <Heading fontSize={'xl'}>Contract Output</Heading>
-        </CardHeader>
-        <CardBody mt={'-6'}>
-          <Table margin={'0'} variant={'unstyled'}>
-            <Tbody>
-              <TableRow minimalSpace isInCard allCardBorders label="Output CID" value={id} link={`/tools/dag?cid=${id}`} />
-              <TableRow minimalSpace isInCard allCardBorders label="Success" value={dag?.results[outputIdx].ok.toString()} />
-              <TableRow minimalSpace isInCard allCardBorders label="Result" value={dag?.results[outputIdx].ret} />
-            </Tbody>
-          </Table>
-        </CardBody>
-      </>
-    )
-  )
-}
-*/
-
 const ElectionResult = ({ out }: { out: Election }) => {
   return (
     <>
       <CardHeader>
         <Heading fontSize={'xl'}>Proposed Election Result</Heading>
       </CardHeader>
-      <CardBody mt={'-25px'}>
+      <CardBody mt={'-6'}>
         <Table margin={'0'} variant={'unstyled'}>
           <Tbody>
             <TableRow minimalSpace isInCard allCardBorders label="Epoch" value={out.epoch} link={'/epoch/' + out.epoch} />
@@ -143,7 +199,7 @@ const BlockResult = ({ out }: { out: Block }) => {
       <CardHeader>
         <Heading fontSize={'xl'}>Proposed Block</Heading>
       </CardHeader>
-      <CardBody mt={'-25px'}>
+      <CardBody mt={'-6'}>
         <Table margin={'0'} variant={'unstyled'}>
           <Tbody>
             <TableRow minimalSpace isInCard allCardBorders label="Block Number">
@@ -187,12 +243,18 @@ const L1Tx = () => {
     queryFn: async () => fetchL1TxOutput(txid!),
     enabled: isValid
   })
+  const vscTx = useQuery({
+    queryKey: ['vsc-tx', txid],
+    queryFn: async () => fetchL2TxnsDetailed(txid!),
+    enabled: isValid
+  }).data?.txns
+  const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : data?.timestamp ?? ''
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
   return (
     <>
       <Box marginBottom={'15px'}>
-        <Text fontSize={'5xl'}>Hive L1 Transaction</Text>
+        <Text fontSize={'5xl'}>Hive Transaction</Text>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
@@ -210,7 +272,12 @@ const L1Tx = () => {
               </Text>
               <Link href={l1Explorer + '/b/' + data.block_num} target="_blank" fontSize={'xl'}>
                 {'#' + thousandSeperator(data.block_num)}
-              </Link>
+              </Link>{' '}
+              <Tooltip placement="top" label={timestamp}>
+                <Text fontSize={'xl'} display={'inline'}>
+                  ({timeAgo(timestamp)})
+                </Text>
+              </Tooltip>
             </Box>
           ) : (
             <Text fontSize={'xl'} marginTop={'10px'}>
@@ -231,6 +298,27 @@ const L1Tx = () => {
       >
         View in {l1ExplorerName}
       </Button>
+      {Array.isArray(vscTx) && vscTx.length > 0 && (
+        <Card mb={'6'}>
+          <CardHeader>
+            <Flex gap={'3'} direction={'row'}>
+              <Heading fontSize={'2xl'} display={'inline'}>
+                VSC Transaction
+              </Heading>
+              <Tag
+                colorScheme={vscTx[0].status === 'CONFIRMED' ? 'green' : vscTx[0].status === 'FAILED' ? 'red' : themeColorScheme}
+              >
+                {vscTx[0].status.toUpperCase()}
+              </Tag>
+            </Flex>
+          </CardHeader>
+          {(vscTx[0].ledger.length > 0 || vscTx[0].ledger_actions.length > 0) && (
+            <CardBody mt={'-6'}>
+              <TxOut txn={vscTx[0]} />
+            </CardBody>
+          )}
+        </Card>
+      )}
       {isLoading ? (
         <Card w="100%">
           <CardBody>Loading VSC Operations...</CardBody>
@@ -244,26 +332,21 @@ const L1Tx = () => {
               </CardHeader>
               {trx.valid ? (
                 <>
-                  <CardBody>
-                    <Table margin={'-20px 0 0'} variant={'unstyled'}>
+                  <CardBody mt={'-6'}>
+                    <Table variant={'unstyled'}>
                       <Tbody>
                         <TableRow isInCard label="Timestamp" value={data.timestamp + ' (' + timeAgo(data.timestamp) + ')'} />
                         <TableRow isInCard label="Username" value={trx.user} link={'/address/hive:' + trx.user} />
                         <TableRow isInCard label="Operation Type">
-                          <Badge color={themeColor}>{trx.type}</Badge>
+                          <Badge colorScheme={themeColorScheme}>{trx.type}</Badge>
                         </TableRow>
-                        {outData && outData[i] && VscLedgerTxNames.includes(trx.type) ? (
-                          <TableRow isInCard label="Status">
-                            <Badge color={themeColor}>{(outData[i] as Txn).status}</Badge>
-                          </TableRow>
-                        ) : null}
                       </Tbody>
                     </Table>
                   </CardBody>
                   <CardHeader>
                     <Heading fontSize={'xl'}>Payload</Heading>
                   </CardHeader>
-                  <CardBody marginTop={'-25px'}>
+                  <CardBody marginTop={'-6'}>
                     <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
                   </CardBody>
                   {outData && outData[i] ? (
@@ -277,7 +360,7 @@ const L1Tx = () => {
                   ) : null}
                 </>
               ) : (
-                <CardBody mt={'-25px'}>
+                <CardBody mt={'-6'}>
                   <Text fontStyle={'italic'}>This operation is not related to VSC.</Text>
                 </CardBody>
               )}

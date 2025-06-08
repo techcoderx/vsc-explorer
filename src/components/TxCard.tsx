@@ -1,7 +1,7 @@
 import { Badge, Card, CardBody, Text, Tooltip } from '@chakra-ui/react'
 import { Link } from 'react-router'
 import { ReactNode } from 'react'
-import { themeColor, themeColorLight } from '../settings'
+import { themeColor, themeColorScheme } from '../settings'
 import { timeAgo } from '../helpers'
 
 type Attr = {
@@ -23,7 +23,7 @@ export const TxCard = ({ children, ts, txid }: Attr) => {
       <CardBody margin={'-5px'}>
         <Text style={{ display: 'inline', marginRight: '5px' }}>{children}</Text>
         <Tooltip label={ts} placement="top">
-          <Badge color={themeColorLight} style={{}}>
+          <Badge colorScheme={themeColorScheme} style={{}}>
             {timeAgo(ts)}
           </Badge>
         </Tooltip>

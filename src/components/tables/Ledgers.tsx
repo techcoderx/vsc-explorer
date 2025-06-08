@@ -6,7 +6,7 @@ import { AccountLink, TxLink } from '../TableLink'
 import { fmtmAmount, timeAgo } from '../../helpers'
 import { themeColorScheme } from '../../settings'
 
-const StatusBadge = ({ status, action_id }: { status: 'complete' | 'pending'; action_id?: string }) => {
+export const StatusBadge = ({ status, action_id }: { status: 'complete' | 'pending'; action_id?: string }) => {
   const color = status === 'complete' ? 'green' : themeColorScheme
   if (status === 'complete' && !!action_id)
     return (
