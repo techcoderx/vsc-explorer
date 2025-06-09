@@ -60,6 +60,26 @@ const CardTr = ({ children }: { children: ReactNode }) => (
 )
 const MinTd = ({ children }: { children: ReactNode }) => <Td py={'2'}>{children}</Td>
 
+const TxOverview = ({ txn }: { txn: Txn }) => (
+  <Card mb={'6'}>
+    <CardHeader>
+      <Flex gap={'3'} direction={'row'}>
+        <Heading fontSize={'2xl'} display={'inline'}>
+          VSC Transaction
+        </Heading>
+        <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
+          {txn.status.toUpperCase()}
+        </Tag>
+      </Flex>
+    </CardHeader>
+    {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && (
+      <CardBody mt={'-6'}>
+        <TxOut txn={txn} />
+      </CardBody>
+    )}
+  </Card>
+)
+
 const TxOut = ({ txn }: { txn: Txn }) => (
   <Accordion allowToggle>
     <AccordionItem>
@@ -323,27 +343,7 @@ const L1Tx = () => {
       >
         View in {l1ExplorerName}
       </Button>
-      {Array.isArray(vscTx) && vscTx.length > 0 && (
-        <Card mb={'6'}>
-          <CardHeader>
-            <Flex gap={'3'} direction={'row'}>
-              <Heading fontSize={'2xl'} display={'inline'}>
-                VSC Transaction
-              </Heading>
-              <Tag
-                colorScheme={vscTx[0].status === 'CONFIRMED' ? 'green' : vscTx[0].status === 'FAILED' ? 'red' : themeColorScheme}
-              >
-                {vscTx[0].status.toUpperCase()}
-              </Tag>
-            </Flex>
-          </CardHeader>
-          {(vscTx[0].ledger.length > 0 || vscTx[0].ledger_actions.length > 0 || !!vscTx[0].output) && (
-            <CardBody mt={'-6'}>
-              <TxOut txn={vscTx[0]} />
-            </CardBody>
-          )}
-        </Card>
-      )}
+      {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} />}
       {isLoading ? (
         <Card w="100%">
           <CardBody>Loading VSC Operations...</CardBody>
