@@ -146,6 +146,31 @@ const TxOut = ({ txn }: { txn: Txn }) => (
         </TableContainer>
       </AccordionPanel>
     </AccordionItem>
+    {!!txn.output && (
+      <AccordionItem>
+        <AccordionButton>
+          <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+            Call Output
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+        <AccordionPanel px={'0'}>
+          <Table variant={'unstyled'}>
+            <Tbody>
+              <TableRow
+                minimalSpace
+                isInCard
+                allCardBorders
+                label="Output CID"
+                value={txn.output.id}
+                link={`/tools/dag?cid=${txn.output.id}`}
+              />
+              <TableRow minimalSpace isInCard allCardBorders label="Index" value={txn.output.index} />
+            </Tbody>
+          </Table>
+        </AccordionPanel>
+      </AccordionItem>
+    )}
   </Accordion>
 )
 
@@ -312,7 +337,7 @@ const L1Tx = () => {
               </Tag>
             </Flex>
           </CardHeader>
-          {(vscTx[0].ledger.length > 0 || vscTx[0].ledger_actions.length > 0) && (
+          {(vscTx[0].ledger.length > 0 || vscTx[0].ledger_actions.length > 0 || !!vscTx[0].output) && (
             <CardBody mt={'-6'}>
               <TxOut txn={vscTx[0]} />
             </CardBody>
