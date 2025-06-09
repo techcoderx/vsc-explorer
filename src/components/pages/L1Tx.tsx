@@ -69,7 +69,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
         </Box>
         <AccordionIcon />
       </AccordionButton>
-      <AccordionPanel>
+      <AccordionPanel px={'0'}>
         <TableContainer>
           <Table variant={'unstyled'}>
             <Thead>
@@ -113,7 +113,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
         </Box>
         <AccordionIcon />
       </AccordionButton>
-      <AccordionPanel>
+      <AccordionPanel px={'0'}>
         <TableContainer>
           <Table variant={'unstyled'}>
             <Thead>
