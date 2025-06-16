@@ -6,27 +6,27 @@ const metrics = [
   {
     title: 'Blocks',
     icon: '/img/block.svg',
-    href: '#'
+    href: '/charts/blocks'
   },
   {
     title: 'Transactions',
     icon: '/img/transaction.svg',
-    href: '#'
+    href: '/charts/txs'
   },
   {
     title: 'Addresses',
     icon: '/img/wallet.svg',
-    href: '#'
+    href: '/charts/addresses'
   },
   {
     title: 'Contracts',
     icon: '/img/contract.svg',
-    href: '#'
+    href: '/charts/contracts'
   },
   {
     title: 'Witnesses',
     icon: '/img/witness.svg',
-    href: '#'
+    href: '/charts/witnesses'
   },
   {
     title: 'Bridge',

@@ -7,7 +7,8 @@ import {
   Block,
   WitnessStat,
   BridgeCounter,
-  AddrTxStats
+  AddrTxStats,
+  NetworkStat
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import {
@@ -103,6 +104,20 @@ export const useAddrTxStats = (addr: string, enabled: boolean = true) => {
     enabled
   })
   return addrStats
+}
+
+export const useNetworkStats = (enabled: boolean = true) => {
+  const { data } = useQuery<NetworkStat[]>({
+    queryKey: ['vsc-network-stats'],
+    queryFn: async (): Promise<NetworkStat[]> => {
+      const result: NetworkStat[] = await (await fetch(`${hafVscApi}/network/stats/daily`)).json()
+      return result.map((v) => {
+        return { ...v, date: new Date(parseInt(v._id.$date.$numberLong)).toISOString().split('T')[0] }
+      })
+    },
+    enabled
+  })
+  return data
 }
 
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {

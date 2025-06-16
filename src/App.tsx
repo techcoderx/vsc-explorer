@@ -23,7 +23,12 @@ import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
 import { ChartsDirectory } from './components/pages/charts/Directory'
-import { BridgeStats } from './components/pages/charts/Bridge'
+import { BridgeCharts } from './components/pages/charts/Bridge'
+import { BlocksCharts } from './components/pages/charts/Blocks'
+import { TxCharts } from './components/pages/charts/Transactions'
+import { AddressCharts } from './components/pages/charts/Addresses'
+import { ContractsCharts } from './components/pages/charts/Contracts'
+import { WitnessCharts } from './components/pages/charts/Witnesses'
 
 const router = createBrowserRouter([
   {
@@ -143,8 +148,28 @@ const router = createBrowserRouter([
         element: <ChartsDirectory />
       },
       {
+        path: '/charts/blocks',
+        element: <BlocksCharts />
+      },
+      {
+        path: '/charts/txs',
+        element: <TxCharts />
+      },
+      {
+        path: '/charts/addresses',
+        element: <AddressCharts />
+      },
+      {
+        path: '/charts/contracts',
+        element: <ContractsCharts />
+      },
+      {
         path: '/charts/bridge',
-        element: <BridgeStats />
+        element: <BridgeCharts />
+      },
+      {
+        path: '/charts/witnesses',
+        element: <WitnessCharts />
       },
       {
         path: '/tools/verify/contract',

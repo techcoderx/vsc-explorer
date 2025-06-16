@@ -145,3 +145,27 @@ export interface CIDSearchResult {
   type?: string
   result?: string | number
 }
+
+export interface NetworkStat {
+  _id: {
+    $date: {
+      $numberLong: string
+    }
+  }
+  date: string
+  txs: number
+  // ledger_txs: number
+  // ledger_actions: number
+  deposits: number
+  deposits_hive: number
+  deposits_hbd: number
+  withdrawals: number
+  withdrawals_hive: number
+  withdrawals_hbd: number
+  blocks: number
+  witnesses: number
+  contracts: number
+  active_stake: number
+  active_l1_addresses: number
+  active_l2_addresses: number
+}
