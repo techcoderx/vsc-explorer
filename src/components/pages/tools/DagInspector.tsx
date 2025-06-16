@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, Spinner, Text, useToast } from '@chakra-ui/react'
+import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, Spinner, Text, useToast } from '@chakra-ui/react'
 import { useSearchParams } from 'react-router'
 import { themeColorLight, themeColorScheme } from '../../../settings'
 import { useDagByCID } from '../../../requests'
 import JsonToTableRecursive from '../../JsonTableRecursive'
+import { CopyButton } from '../../CopyButton'
 
 export const DagInspector = () => {
   const [searchParams] = useSearchParams()
@@ -50,6 +51,9 @@ export const DagInspector = () => {
       </HStack>
       {!!dag && (
         <Card>
+          <Box position={'absolute'} top={'3'} right={'3'}>
+            <CopyButton text={JSON.stringify(dag, null, 2)} />
+          </Box>
           <CardHeader>
             <Heading fontSize={'xl'}>DAG content</Heading>
           </CardHeader>
