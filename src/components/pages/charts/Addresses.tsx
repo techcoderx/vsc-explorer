@@ -49,7 +49,7 @@ export const AddressCharts = () => {
       <hr />
       <Card my={'6'}>
         <CardHeader>
-          <Heading fontSize={'xl'}>Daily Active Users</Heading>
+          <Heading fontSize={'xl'}>Daily Active Addresses</Heading>
           <Text>Number of daily unique transacting addresses</Text>
         </CardHeader>
         <CardBody mt={'-6'}>
