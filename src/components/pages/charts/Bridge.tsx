@@ -119,6 +119,11 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats() || []
+  const [hiddenLines, setHiddenLines] = useState<{ deposits: boolean; withdrawals: boolean; net: boolean }>({
+    deposits: false,
+    withdrawals: false,
+    net: false
+  })
   useEffect(() => {
     import('recharts').then((module) => setRecharts(module))
   }, [])
@@ -138,7 +143,7 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
   if (!recharts) {
     return <Box>Loading recharts...</Box>
   }
-  const { Bar, Brush, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } = recharts
+  const { Bar, Brush, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } = recharts
   return (
     <ResponsiveContainer width="100%">
       <ComposedChart data={netFlowStats} margin={{ top: 10, right: 20, left: 20, bottom: 10 }} stackOffset="sign">
@@ -158,9 +163,42 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
             border: '1px solid #333'
           }}
         />
-        <Bar stackId={'a'} dataKey={`${coin.toLowerCase()}Deposits`} name={`${coin} Inflows`} fill="#8884d8" />
-        <Bar stackId={'a'} dataKey={`${coin.toLowerCase()}Withdrawals`} name={`${coin} Outflows`} fill="#82ca9d" />
-        <Line type="monotone" dataKey={`${coin.toLowerCase()}Net`} name={`${coin} Net Flow`} dot={false} stroke="#fbb6ce" />
+        <Legend
+          verticalAlign="top"
+          height={36}
+          onClick={(e: any) => {
+            if (typeof e.dataKey === 'string') {
+              const k = e.dataKey.replace(coin.toLowerCase(), '').toLowerCase() as 'deposits' | 'withdrawals' | 'net'
+              if (typeof hiddenLines[k] === 'boolean')
+                setHiddenLines((prev) => ({
+                  ...prev,
+                  [k]: !prev[k]
+                }))
+            }
+          }}
+        />
+        <Bar
+          stackId={'a'}
+          dataKey={`${coin.toLowerCase()}Deposits`}
+          name={`${coin} Inflows`}
+          fill="#8884d8"
+          hide={hiddenLines.deposits}
+        />
+        <Bar
+          stackId={'a'}
+          dataKey={`${coin.toLowerCase()}Withdrawals`}
+          name={`${coin} Outflows`}
+          fill="#82ca9d"
+          hide={hiddenLines.withdrawals}
+        />
+        <Line
+          type="monotone"
+          dataKey={`${coin.toLowerCase()}Net`}
+          name={`${coin} Net Flow`}
+          dot={false}
+          stroke="#fbb6ce"
+          hide={hiddenLines.net}
+        />
         <Brush dataKey={'date'} height={30} stroke="#8884d8" fill="transparent" />
       </ComposedChart>
     </ResponsiveContainer>
