@@ -44,7 +44,7 @@ const DailyBlocks = () => {
 export const BlocksCharts = () => {
   return (
     <>
-      <Text fontSize={'5xl'}>Bridge Charts</Text>
+      <Text fontSize={'5xl'}>Blocks Charts</Text>
       <hr />
       <Card my={'6'}>
         <CardHeader>
