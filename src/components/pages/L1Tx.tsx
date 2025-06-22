@@ -25,7 +25,10 @@ import {
   Tr,
   Th,
   Td,
-  Icon
+  Icon,
+  TableCellProps,
+  Grid,
+  GridItem
 } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -44,8 +47,9 @@ import { FaCircleArrowRight } from 'react-icons/fa6'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1px solid #e2e8f0'
-const CardTr = ({ children }: { children: ReactNode }) => (
-  <Tr
+const MinTd = ({ children, ...props }: { children: ReactNode } & TableCellProps) => (
+  <Td
+    py={'2'}
     _dark={{
       borderTop: cardBorder,
       borderBottom: cardBorder
@@ -54,14 +58,14 @@ const CardTr = ({ children }: { children: ReactNode }) => (
       borderTop: cardBorderLight,
       borderBottom: cardBorderLight
     }}
+    {...props}
   >
     {children}
-  </Tr>
+  </Td>
 )
-const MinTd = ({ children }: { children: ReactNode }) => <Td py={'2'}>{children}</Td>
 
 const TxOverview = ({ txn }: { txn: Txn }) => (
-  <Card mb={'6'}>
+  <Card>
     <CardHeader>
       <Flex gap={'3'} direction={'row'}>
         <Heading fontSize={'2xl'} display={'inline'}>
@@ -74,6 +78,37 @@ const TxOverview = ({ txn }: { txn: Txn }) => (
     </CardHeader>
     {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && (
       <CardBody mt={'-6'}>
+        <Table mb={'-1px'}>
+          <Tbody>
+            <Tr>
+              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                Required Auths
+              </MinTd>
+              <MinTd py={'2.5'}>
+                <Grid
+                  templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
+                  gap={3}
+                >
+                  {txn.required_auths.map((a, i) => {
+                    return (
+                      <GridItem key={i}>
+                        <Link as={ReactRouterLink} to={'/address/' + a}>
+                          {a}
+                        </Link>
+                      </GridItem>
+                    )
+                  })}
+                </Grid>
+              </MinTd>
+            </Tr>
+            <Tr>
+              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                RC Used
+              </MinTd>
+              <MinTd>🤔 / {txn.rc_limit} (👀%)</MinTd>
+            </Tr>
+          </Tbody>
+        </Table>
         <TxOut txn={txn} />
       </CardBody>
     )}
@@ -105,7 +140,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
             <Tbody>
               {txn.ledger.map((item, i) => {
                 return (
-                  <CardTr key={i}>
+                  <Tr key={i}>
                     <MinTd>{item.type}</MinTd>
                     <MinTd>
                       <AccountLink val={item.from} />
@@ -118,7 +153,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
                     </MinTd>
                     <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
                     <MinTd>{item.memo}</MinTd>
-                  </CardTr>
+                  </Tr>
                 )
               })}
             </Tbody>
@@ -148,7 +183,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
             <Tbody>
               {txn.ledger_actions.map((item, i) => {
                 return (
-                  <CardTr key={i}>
+                  <Tr key={i}>
                     <MinTd>{item.type}</MinTd>
                     <MinTd>
                       <AccountLink val={item.to} />
@@ -158,7 +193,7 @@ const TxOut = ({ txn }: { txn: Txn }) => (
                       <StatusBadge status={item.status} />
                     </MinTd>
                     <MinTd>{item.memo}</MinTd>
-                  </CardTr>
+                  </Tr>
                 )
               })}
             </Tbody>
@@ -275,37 +310,38 @@ const BlockResult = ({ out }: { out: Block }) => {
   )
 }
 
+export const Tx = () => {
+  const { txid } = useParams()
+  const isValidL1 = !!txid && /^[0-9a-fA-F]{40}$/i.test(txid)
+  if (isValidL1) return <L1Tx />
+  else return <L2Tx />
+}
+
 const L1Tx = () => {
   const { txid } = useParams()
-  const isValid = !!txid && /^[0-9a-fA-F]{40}$/i.test(txid)
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['vsc-l1-tx', txid],
-    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${txid!}?include-virtual=true`),
-    enabled: isValid
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${txid!}?include-virtual=true`)
   })
   const { data: outData } = useQuery({
     queryKey: ['vsc-l1-tx-output', txid],
-    queryFn: async () => fetchL1TxOutput(txid!),
-    enabled: isValid
+    queryFn: async () => fetchL1TxOutput(txid!)
   })
   const vscTx = useQuery({
     queryKey: ['vsc-tx', txid],
-    queryFn: async () => fetchL2TxnsDetailed(txid!),
-    enabled: isValid
+    queryFn: async () => fetchL2TxnsDetailed(txid!)
   }).data?.txns
   const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : data?.timestamp ?? ''
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
   return (
     <>
-      <Box marginBottom={'15px'}>
+      <Box mb={'3'}>
         <Text fontSize={'5xl'}>Hive Transaction</Text>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
-        {!isValid ? (
-          <Text>Invalid transaction ID</Text>
-        ) : isSuccess && data.code && data.message ? (
+        {isSuccess && data.code && data.message ? (
           <Text fontSize={'xl'} marginTop={'10px'}>
             {data.message}
           </Text>
@@ -343,14 +379,14 @@ const L1Tx = () => {
       >
         View in {l1ExplorerName}
       </Button>
-      {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} />}
-      {isLoading ? (
-        <Card w="100%">
-          <CardBody>Loading VSC Operations...</CardBody>
-        </Card>
-      ) : isSuccess && !data.code ? (
-        <Flex gap="6" direction="column">
-          {parsedOps.map((trx, i) => (
+      <Flex gap="6" direction="column">
+        {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} />}
+        {isLoading ? (
+          <Card w="100%">
+            <CardBody>Loading VSC Operations...</CardBody>
+          </Card>
+        ) : isSuccess && !data.code ? (
+          parsedOps.map((trx, i) => (
             <Card key={i}>
               <CardHeader>
                 <Heading fontSize={'2xl'}>Operation #{i}</Heading>
@@ -390,11 +426,66 @@ const L1Tx = () => {
                 </CardBody>
               )}
             </Card>
-          ))}
-        </Flex>
-      ) : null}
+          ))
+        ) : null}
+      </Flex>
     </>
   )
 }
 
-export default L1Tx
+const L2Tx = () => {
+  const { txid } = useParams()
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['vsc-tx', txid],
+    queryFn: async () => fetchL2TxnsDetailed(txid!)
+  })
+  const exists = !!data && Array.isArray(data.txns) && data.txns.length > 0
+  const tx = exists ? data.txns[0] : null
+  return (
+    <>
+      <Box mb={'3'}>
+        <Text fontSize={'5xl'}>Transaction</Text>
+        <Text fontSize={'2xl'} opacity={'0.7'}>
+          {txid}
+        </Text>
+        {isLoading ? (
+          <Skeleton h={'6'} />
+        ) : isError ? (
+          <Text fontSize={'xl'}>Failed to load transaction</Text>
+        ) : !tx ? (
+          <Text fontSize={'xl'}>Transaction does not exist</Text>
+        ) : (
+          <Box marginTop={'10px'}>
+            <Text fontSize={'xl'} display={'inline'}>
+              Anchored in L1 block{' '}
+            </Text>
+            <Link href={l1Explorer + '/b/' + tx.anchr_height} target="_blank" fontSize={'xl'}>
+              {'#' + thousandSeperator(tx.anchr_height)}
+            </Link>{' '}
+            <Tooltip placement="top" label={tx.anchr_ts}>
+              <Text fontSize={'xl'} display={'inline'}>
+                ({timeAgo(tx.anchr_ts)})
+              </Text>
+            </Tooltip>
+          </Box>
+        )}
+      </Box>
+      <hr />
+      {!!tx && (
+        <Flex mt={'3'} gap="6" direction="column">
+          <TxOverview txn={tx} />
+          {tx.ops.map((op, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+              </CardHeader>
+              <CardBody mt={'-6'}>
+                <JsonToTableRecursive isInCard minimalSpace json={op} />
+              </CardBody>
+            </Card>
+          ))}
+        </Flex>
+      )}
+    </>
+  )
+}

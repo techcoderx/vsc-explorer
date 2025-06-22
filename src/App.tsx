@@ -8,7 +8,7 @@ import NewContracts from './components/pages/NewContracts'
 import PageNotFound from './components/pages/404'
 import { BlockBy } from './components/pages/Block'
 import L1User from './components/pages/L1User'
-import L1Tx from './components/pages/L1Tx'
+import { Tx } from './components/pages/L1Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
 import { Contract } from './components/pages/Contract'
@@ -129,7 +129,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/tx/:txid',
-        element: <L1Tx />
+        element: <Tx />
       },
       {
         path: '/bridge/hive',

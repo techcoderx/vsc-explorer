@@ -45,7 +45,6 @@ export const DagInspector = () => {
       })
     setCidToQuery(cid)
   }
-  console.log(JSON.stringify(dag, null, 2))
   return (
     <>
       <Text fontSize={'5xl'}>DAG Inspector</Text>
