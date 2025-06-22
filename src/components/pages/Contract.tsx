@@ -12,6 +12,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Tag,
   Flex,
   Card,
   CardBody,
@@ -26,6 +27,7 @@ import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
+import { Flairs } from '../../flairs'
 import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
@@ -58,12 +60,19 @@ export const Contract = () => {
   })
   return (
     <>
-      <Box marginBottom={'15px'}>
-        <Text fontSize={'5xl'}>Contract</Text>
-        <Text fontSize={'2xl'} opacity={'0.7'}>
-          {contractId}
-        </Text>
-      </Box>
+      <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
+        <Box mb={'4'}>
+          <Text fontSize={'5xl'}>Contract</Text>
+          <Text fontSize={'2xl'} opacity={'0.7'}>
+            {contractId}
+          </Text>
+        </Box>
+        {Flairs[contractId!] && (
+          <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
+            {Flairs[contractId!]}
+          </Tag>
+        )}
+      </Stack>
       <hr />
       {isLoading ? <Skeleton h={'20px'} mt={'20px'} /> : null}
       {!!contract ? (
