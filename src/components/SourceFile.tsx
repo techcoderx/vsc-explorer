@@ -6,8 +6,6 @@ export const SourceFile = ({ content }: { content: string }) => {
     <Box
       as="pre"
       padding="2"
-      mt="3"
-      mb="3"
       borderRadius="md"
       overflow="auto"
       border="1px solid"

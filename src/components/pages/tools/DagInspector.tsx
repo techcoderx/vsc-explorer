@@ -1,14 +1,30 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, Spinner, Text, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Spinner,
+  Switch,
+  Text,
+  useToast
+} from '@chakra-ui/react'
 import { useSearchParams } from 'react-router'
 import { themeColorLight, themeColorScheme } from '../../../settings'
 import { useDagByCID } from '../../../requests'
 import JsonToTableRecursive from '../../JsonTableRecursive'
 import { CopyButton } from '../../CopyButton'
+import { SourceFile } from '../../SourceFile'
 
 export const DagInspector = () => {
   const [searchParams] = useSearchParams()
   const toast = useToast()
+  const [rawJson, setRawJson] = useState<boolean>(false)
   const [cid, setCid] = useState<string>(searchParams.get('cid') || '')
   const [cidToQuery, setCidToQuery] = useState<string>(searchParams.get('cid') || '')
   const { data: dag, isLoading, isError } = useDagByCID<object>(cidToQuery, !!cidToQuery, false)
@@ -29,6 +45,7 @@ export const DagInspector = () => {
       })
     setCidToQuery(cid)
   }
+  console.log(JSON.stringify(dag, null, 2))
   return (
     <>
       <Text fontSize={'5xl'}>DAG Inspector</Text>
@@ -55,10 +72,20 @@ export const DagInspector = () => {
             <CopyButton text={JSON.stringify(dag, null, 2)} />
           </Box>
           <CardHeader>
-            <Heading fontSize={'xl'}>DAG content</Heading>
+            <HStack gap={'4'}>
+              <Heading fontSize={'xl'}>DAG content</Heading>
+              <HStack gap={'2'}>
+                <Switch colorScheme={themeColorScheme} isChecked={rawJson} onChange={() => setRawJson((v) => !v)} />
+                <Text>Raw JSON</Text>
+              </HStack>
+            </HStack>
           </CardHeader>
           <CardBody mt={'-6'}>
-            <JsonToTableRecursive json={dag} isInCard minimalSpace />
+            {rawJson ? (
+              <SourceFile content={JSON.stringify(dag, null, 2)} />
+            ) : (
+              <JsonToTableRecursive json={dag} isInCard minimalSpace />
+            )}
           </CardBody>
         </Card>
       )}
