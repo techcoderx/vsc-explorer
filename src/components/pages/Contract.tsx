@@ -30,6 +30,7 @@ import { cvInfo, fetchSrcFiles } from '../../cvRequests'
 import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
 import { Txns } from '../tables/Transactions'
+import { AddressBalanceCard } from './address/Balances'
 
 export const Contract = () => {
   const { contractId } = useParams()
@@ -63,45 +64,50 @@ export const Contract = () => {
           {contractId}
         </Text>
       </Box>
+      <hr />
       {isLoading ? <Skeleton h={'20px'} mt={'20px'} /> : null}
       {!!contract ? (
-        <Box>
-          <TableContainer>
-            <Table>
-              <Tbody>
-                <TableRow
-                  label="Created At"
-                  value={contract ? contract.creation_ts + ' (' + timeAgo(contract.creation_ts) + ')' : ''}
-                  isLoading={isLoading}
-                />
-                <TableRow
-                  label="Created In L1 Block"
-                  value={contract.creation_height}
-                  link={l1Explorer + '/b/' + contract.creation_height}
-                  isLoading={isLoading}
-                />
-                <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
-                <TableRow label="Creator" value={contract.creator} link={'/address/hive:' + contract.creator} />
-                <TableRow label="Bytecode CID">
-                  <Flex align={'center'} gap={'2'}>
-                    <Text>{contract.code}</Text>
-                    {verifInfo && verifInfo.status === 'success' ? (
-                      <CheckCircleIcon color={themeColorScheme} aria-label="Contract source code verified" />
-                    ) : null}
-                  </Flex>
-                </TableRow>
-                <TableRow label="Runtime" value={contract.runtime} />
-              </Tbody>
-            </Table>
-          </TableContainer>
+        <Box mt={'4'}>
+          <AddressBalanceCard addr={contract.id} />
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>
+              <Tab>Info</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
-              <TabPanel>
+              <TabPanel pt={'2'} px={'0'}>
                 <Txns txs={txns?.txns || []} />
+              </TabPanel>
+              <TabPanel px={'0'}>
+                <TableContainer>
+                  <Table>
+                    <Tbody>
+                      <TableRow
+                        label="Created At"
+                        value={contract ? contract.creation_ts + ' (' + timeAgo(contract.creation_ts) + ')' : ''}
+                        isLoading={isLoading}
+                      />
+                      <TableRow
+                        label="Created In L1 Block"
+                        value={contract.creation_height}
+                        link={l1Explorer + '/b/' + contract.creation_height}
+                        isLoading={isLoading}
+                      />
+                      <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
+                      <TableRow label="Creator" value={contract.creator} link={'/address/hive:' + contract.creator} />
+                      <TableRow label="Bytecode CID">
+                        <Flex align={'center'} gap={'2'}>
+                          <Text>{contract.code}</Text>
+                          {verifInfo && verifInfo.status === 'success' ? (
+                            <CheckCircleIcon color={themeColorScheme} aria-label="Contract source code verified" />
+                          ) : null}
+                        </Flex>
+                      </TableRow>
+                      <TableRow label="Runtime" value={contract.runtime} />
+                    </Tbody>
+                  </Table>
+                </TableContainer>
               </TabPanel>
               <TabPanel>
                 {verifInfo ? (
