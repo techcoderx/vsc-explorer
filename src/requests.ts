@@ -223,6 +223,28 @@ export const useContracts = (opts: object) => {
   return { contracts, isLoading, isError }
 }
 
+export const useContract = (contract_id: string, enabled = true) => {
+  return useQuery({
+    queryKey: ['vsc-contract', contract_id],
+    queryFn: async () => {
+      return await gql<GqlResponse<{ contract: Contract[]; txns: Txn[]; outputs: ContractOutput[] }>>(
+        `
+query Contract($opt1: FindContractFilter, $opt2: TransactionFilter, $opt3: ContractOutputFilter) {
+  contract: findContract(filterOptions: $opt1) { id code creator owner tx_id creation_height creation_ts runtime }
+  txns: findTransaction(filterOptions: $opt2) { id anchr_height anchr_ts required_auths status ops { type data }}
+  outputs: findContractOutput(filterOptions: $opt3) { id timestamp contract_id inputs results { ret ok }}
+}`,
+        {
+          opt1: { byId: contract_id, offset: 0, limit: 1 },
+          opt2: { byContract: contract_id, offset: 0, limit: 100 },
+          opt3: { byContract: contract_id, offset: 0, limit: 100 }
+        }
+      )
+    },
+    enabled
+  })
+}
+
 export const useAddrBalance = (acc: string) => {
   const { data: balance, isLoading } = useQuery({
     queryKey: ['vsc-address-balance', acc],
@@ -324,14 +346,6 @@ export const fetchL2TxnsDetailed = async (id: string): Promise<{ txns: Txn[] }> 
         limit: 1
       }
     }
-  )
-  return result.data
-}
-
-export const fetchContractOutput = async (opts?: object): Promise<{ outputs: ContractOutput[] }> => {
-  const result = await gql<GqlResponse<{ outputs: ContractOutput[] }>>(
-    `query FindContractOutput($opts: ContractOutputFilter) { outputs: findContractOutput(filterOptions: $opts) { id timestamp contract_id inputs results { ret ok }}}`,
-    { opts }
   )
   return result.data
 }

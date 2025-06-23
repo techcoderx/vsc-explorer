@@ -22,7 +22,7 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchContractOutput, fetchL2TxnsBy, useContracts } from '../../requests'
+import { useContract } from '../../requests'
 import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
@@ -38,7 +38,10 @@ import { ContractOutputTbl } from '../tables/ContractOutput'
 export const Contract = () => {
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vsc1')
-  const { contracts: ct, isLoading, isError } = useContracts({ byId: contractId })
+  const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
+  const ct = data?.data.contract
+  const txns = data?.data.txns
+  const outputs = data?.data.outputs
   const contract = ct && ct.length > 0 ? ct[0] : null
   const {
     data: verifInfo,
@@ -53,16 +56,6 @@ export const Contract = () => {
     queryKey: ['vsc-cv-files', contractId],
     queryFn: async () => fetchSrcFiles(contractId!),
     enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
-  })
-  const { data: txns } = useQuery({
-    queryKey: ['vsc-txs-contract', contractId],
-    queryFn: async () => fetchL2TxnsBy(0, 100, { byContract: contractId }),
-    enabled: !invalidContractId
-  })
-  const { data: outputs } = useQuery({
-    queryKey: ['vsc-contract-outputs-by-contract', contractId],
-    queryFn: async () => fetchContractOutput({ byContract: contractId, offset: 0, limit: 100 }),
-    enabled: !invalidContractId
   })
   return (
     <>
@@ -93,10 +86,10 @@ export const Contract = () => {
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel pt={'2'} px={'0'}>
-                <Txns txs={txns?.txns || []} />
+                <Txns txs={txns || []} />
               </TabPanel>
               <TabPanel px={'0'} pt={'2'}>
-                <ContractOutputTbl outputs={outputs?.outputs || []} />
+                <ContractOutputTbl outputs={outputs || []} />
               </TabPanel>
               <TabPanel px={'0'}>
                 <TableContainer>
@@ -240,9 +233,9 @@ export const Contract = () => {
         </Box>
       ) : isError ? (
         <Text>Failed to fetch contract</Text>
-      ) : (
+      ) : !isLoading ? (
         <Text>Contract does not exist</Text>
-      )}
+      ) : null}
     </>
   )
 }
