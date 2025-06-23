@@ -46,16 +46,16 @@ const StorageProof = ({ contract }: { contract: ContractType }) => {
     isLoading: mbLoading,
     isError: mbErr
   } = useQuery({
-    queryKey: ['vsc-members-at-l1-block', contract?.creation_height],
-    queryFn: async () => fetchMembersAtL1Block(contract?.creation_height || 0)
+    queryKey: ['vsc-members-at-l1-block', contract.creation_height],
+    queryFn: async () => fetchMembersAtL1Block(contract.creation_height)
   })
   const {
     data: deployTx,
     isLoading: deployTxLoading,
     isError: deployTxErr
   } = useQuery({
-    queryKey: ['vsc-l1-tx', contract?.tx_id],
-    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract?.tx_id}?include-virtual=true`)
+    queryKey: ['vsc-l1-tx', contract.tx_id],
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract.tx_id}?include-virtual=true`)
   })
   const proofSig = useMemo(() => {
     if (!!deployTx) {
