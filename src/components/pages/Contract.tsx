@@ -22,7 +22,7 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { useContract } from '../../requests'
+import { fetchL1Rest, fetchMembersAtL1Block, useContract } from '../../requests'
 import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
@@ -34,6 +34,10 @@ import { CopyButton } from '../CopyButton'
 import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
+import { L1TxHeader } from '../../types/L1ApiResult'
+import { useMemo } from 'react'
+import { BLSSig } from '../../types/Payloads'
+import { ParticipatedMembers } from '../BlsAggMembers'
 
 export const Contract = () => {
   const { contractId } = useParams()
@@ -57,6 +61,42 @@ export const Contract = () => {
     queryFn: async () => fetchSrcFiles(contractId!),
     enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
   })
+  const {
+    data: members,
+    isLoading: mbLoading,
+    isError: mbErr
+  } = useQuery({
+    queryKey: ['vsc-members-at-l1-block', contract?.creation_height],
+    queryFn: async () => fetchMembersAtL1Block(contract?.creation_height || 0),
+    enabled: !!contract
+  })
+  const {
+    data: deployTx,
+    isLoading: deployTxLoading,
+    isError: deployTxErr
+  } = useQuery({
+    queryKey: ['vsc-l1-tx', contract?.tx_id],
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract?.tx_id}?include-virtual=true`),
+    enabled: !!contract
+  })
+  const proofSig = useMemo(() => {
+    if (!!deployTx) {
+      for (let op in deployTx.transaction_json.operations) {
+        if (deployTx.transaction_json.operations[op].type === 'custom_json_operation') {
+          const json = JSON.parse(deployTx.transaction_json.operations[op].value.json)
+          if (
+            json.code === contract!.code &&
+            typeof json.storage_proof === 'object' &&
+            typeof json.storage_proof.signature === 'object' &&
+            typeof json.storage_proof.signature.sig === 'string' &&
+            typeof json.storage_proof.signature.bv === 'string'
+          ) {
+            return json.storage_proof.signature as BLSSig
+          }
+        }
+      }
+    }
+  }, [deployTx])
   return (
     <>
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
@@ -82,6 +122,7 @@ export const Contract = () => {
               <Tab>Transactions</Tab>
               <Tab>Outputs</Tab>
               <Tab>Info</Tab>
+              <Tab>Storage Proof</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
@@ -120,6 +161,20 @@ export const Contract = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+              </TabPanel>
+              <TabPanel>
+                {deployTxLoading || mbLoading ? (
+                  <Text>Loading deployment tx...</Text>
+                ) : deployTxErr || mbErr ? (
+                  <Text>Failed to load deployment tx</Text>
+                ) : (
+                  <ParticipatedMembers
+                    members={members?.election.members || []}
+                    weights={members?.election.weights || []}
+                    sig={proofSig?.sig || ''}
+                    bv={proofSig?.bv || '0'}
+                  />
+                )}
               </TabPanel>
               <TabPanel>
                 {verifInfo ? (

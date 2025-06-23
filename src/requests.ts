@@ -8,7 +8,8 @@ import {
   WitnessStat,
   BridgeCounter,
   AddrTxStats,
-  NetworkStat
+  NetworkStat,
+  WeightedMembers
 } from './types/HafApiResult'
 import { hafVscApi, hiveApi, vscNodeApi } from './settings'
 import {
@@ -346,6 +347,15 @@ export const fetchL2TxnsDetailed = async (id: string): Promise<{ txns: Txn[] }> 
         limit: 1
       }
     }
+  )
+  return result.data
+}
+
+type MemAtBlk = { election: { members: WeightedMembers[]; weights: number[] } }
+export const fetchMembersAtL1Block = async (height: number): Promise<MemAtBlk> => {
+  const result = await gql<GqlResponse<MemAtBlk>>(
+    `query MembersAtBlock($height: Uint64) { election: electionByBlockHeight(blockHeight: $height) { members { account } weights }}`,
+    { height }
   )
   return result.data
 }
