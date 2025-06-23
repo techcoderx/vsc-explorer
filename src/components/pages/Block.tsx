@@ -25,10 +25,11 @@ import { l1Explorer, themeColorScheme } from '../../settings'
 import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
-import { BlockHeader, OpLog } from '../../types/L2ApiResult'
+import { BlockHeader, ContractOutput, ContractOutputDag, OpLog } from '../../types/L2ApiResult'
 import { CheckXIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, TxLink } from '../TableLink'
 import { Coin } from '../../types/Payloads'
+import { ContractOutputTbl } from '../tables/ContractOutput'
 
 export const BlockBy = () => {
   const { blockId } = useParams()
@@ -61,10 +62,17 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   const blockTxIds = blockDag ? blockDag.txs.map((t) => t.id) : []
   const { data: txDags } = useQuery({
     queryKey: ['dag-by-cid-batch', ...blockTxIds],
-    queryFn: async () => getDagByCIDBatch<OpLog>(blockTxIds),
+    queryFn: async () => getDagByCIDBatch<OpLog | ContractOutputDag>(blockTxIds),
     enabled: !!blockDag
   })
+  const outputIds = blockDag ? blockDag.txs.filter((t) => t.type === 2) : []
   const opLogs = txDags?.find((d) => d.__t === 'vsc-oplog')
+  const outputs: ContractOutput[] | undefined = txDags
+    ?.filter((d) => d.__t === 'vsc-output')
+    .map((v, i) => {
+      return { ...v, id: outputIds[i].id, timestamp: block.ts, block_height: (block.be_info && block.be_info.block_id) ?? -1 }
+    })
+  console.log(outputs)
   if (invalidBlkId) return <PageNotFound />
   return (
     <>
@@ -120,6 +128,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
             <TabList>
               <Tab>Transactions</Tab>
               <Tab>Op Logs</Tab>
+              {Array.isArray(outputs) && outputs.length > 0 && <Tab>Contract Outputs</Tab>}
               <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>
@@ -180,6 +189,11 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                   </Table>
                 </TableContainer>
               </TabPanel>
+              {Array.isArray(outputs) && outputs.length > 0 && (
+                <TabPanel pt={'1'}>
+                  <ContractOutputTbl outputs={outputs ?? []} />
+                </TabPanel>
+              )}
               <TabPanel>
                 {block && block.be_info ? (
                   <ParticipatedMembers

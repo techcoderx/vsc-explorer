@@ -208,19 +208,27 @@ export interface Contract {
   code: string
 }
 
-export interface ContractOutput {
-  id: string
-  block_height: number
-  timestamp: string
+interface ContractOutputBase {
   contract_id: string
   inputs: string[]
-  metadata: {
-    current_size: number
-    max_size: number
-  }
   results: {
     ok: boolean
     ret: string
   }[]
   state_merkle: string
+}
+
+export interface ContractOutput extends ContractOutputBase {
+  id: string
+  block_height: number
+  timestamp: string
+}
+
+export interface ContractOutputDag extends ContractOutputBase {
+  __t: 'vsc-output'
+  __v: '0.1'
+  metadata: {
+    current_size: number
+    max_size: number
+  }
 }
