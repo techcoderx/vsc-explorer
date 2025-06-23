@@ -72,7 +72,6 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     .map((v, i) => {
       return { ...v, id: outputIds[i].id, timestamp: block.ts, block_height: (block.be_info && block.be_info.block_id) ?? -1 }
     })
-  console.log(outputs)
   if (invalidBlkId) return <PageNotFound />
   return (
     <>
