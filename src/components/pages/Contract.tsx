@@ -38,6 +38,56 @@ import { L1TxHeader } from '../../types/L1ApiResult'
 import { useMemo } from 'react'
 import { BLSSig } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
+import { Contract as ContractType } from '../../types/L2ApiResult'
+
+const StorageProof = ({ contract }: { contract: ContractType }) => {
+  const {
+    data: members,
+    isLoading: mbLoading,
+    isError: mbErr
+  } = useQuery({
+    queryKey: ['vsc-members-at-l1-block', contract?.creation_height],
+    queryFn: async () => fetchMembersAtL1Block(contract?.creation_height || 0)
+  })
+  const {
+    data: deployTx,
+    isLoading: deployTxLoading,
+    isError: deployTxErr
+  } = useQuery({
+    queryKey: ['vsc-l1-tx', contract?.tx_id],
+    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract?.tx_id}?include-virtual=true`)
+  })
+  const proofSig = useMemo(() => {
+    if (!!deployTx) {
+      for (let op in deployTx.transaction_json.operations) {
+        if (deployTx.transaction_json.operations[op].type === 'custom_json_operation') {
+          const json = JSON.parse(deployTx.transaction_json.operations[op].value.json)
+          if (
+            json.code === contract!.code &&
+            typeof json.storage_proof === 'object' &&
+            typeof json.storage_proof.signature === 'object' &&
+            typeof json.storage_proof.signature.sig === 'string' &&
+            typeof json.storage_proof.signature.bv === 'string'
+          ) {
+            return json.storage_proof.signature as BLSSig
+          }
+        }
+      }
+    }
+  }, [deployTx])
+  return deployTxLoading || mbLoading ? (
+    <Text>Loading deployment tx...</Text>
+  ) : deployTxErr || mbErr ? (
+    <Text>Failed to load deployment tx</Text>
+  ) : (
+    <ParticipatedMembers
+      members={members?.election.members || []}
+      weights={members?.election.weights || []}
+      sig={proofSig?.sig || ''}
+      bv={proofSig?.bv || '0'}
+    />
+  )
+}
 
 export const Contract = () => {
   const { contractId } = useParams()
@@ -61,42 +111,7 @@ export const Contract = () => {
     queryFn: async () => fetchSrcFiles(contractId!),
     enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
   })
-  const {
-    data: members,
-    isLoading: mbLoading,
-    isError: mbErr
-  } = useQuery({
-    queryKey: ['vsc-members-at-l1-block', contract?.creation_height],
-    queryFn: async () => fetchMembersAtL1Block(contract?.creation_height || 0),
-    enabled: !!contract
-  })
-  const {
-    data: deployTx,
-    isLoading: deployTxLoading,
-    isError: deployTxErr
-  } = useQuery({
-    queryKey: ['vsc-l1-tx', contract?.tx_id],
-    queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract?.tx_id}?include-virtual=true`),
-    enabled: !!contract
-  })
-  const proofSig = useMemo(() => {
-    if (!!deployTx) {
-      for (let op in deployTx.transaction_json.operations) {
-        if (deployTx.transaction_json.operations[op].type === 'custom_json_operation') {
-          const json = JSON.parse(deployTx.transaction_json.operations[op].value.json)
-          if (
-            json.code === contract!.code &&
-            typeof json.storage_proof === 'object' &&
-            typeof json.storage_proof.signature === 'object' &&
-            typeof json.storage_proof.signature.sig === 'string' &&
-            typeof json.storage_proof.signature.bv === 'string'
-          ) {
-            return json.storage_proof.signature as BLSSig
-          }
-        }
-      }
-    }
-  }, [deployTx])
+
   return (
     <>
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
@@ -162,20 +177,7 @@ export const Contract = () => {
                   </Table>
                 </TableContainer>
               </TabPanel>
-              <TabPanel>
-                {deployTxLoading || mbLoading ? (
-                  <Text>Loading deployment tx...</Text>
-                ) : deployTxErr || mbErr ? (
-                  <Text>Failed to load deployment tx</Text>
-                ) : (
-                  <ParticipatedMembers
-                    members={members?.election.members || []}
-                    weights={members?.election.weights || []}
-                    sig={proofSig?.sig || ''}
-                    bv={proofSig?.bv || '0'}
-                  />
-                )}
-              </TabPanel>
+              <TabPanel>{!!contract && <StorageProof contract={contract} />}</TabPanel>
               <TabPanel>
                 {verifInfo ? (
                   verifInfo.status === 'success' ? (
