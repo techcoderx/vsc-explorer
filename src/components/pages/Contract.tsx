@@ -22,7 +22,7 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchL2TxnsBy, useContracts } from '../../requests'
+import { fetchContractOutput, fetchL2TxnsBy, useContracts } from '../../requests'
 import TableRow from '../TableRow'
 import { timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
@@ -33,6 +33,7 @@ import { SourceFile } from '../SourceFile'
 import { CopyButton } from '../CopyButton'
 import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
+import { ContractOutputTbl } from '../tables/ContractOutput'
 
 export const Contract = () => {
   const { contractId } = useParams()
@@ -58,6 +59,11 @@ export const Contract = () => {
     queryFn: async () => fetchL2TxnsBy(0, 100, { byContract: contractId }),
     enabled: !invalidContractId
   })
+  const { data: outputs } = useQuery({
+    queryKey: ['vsc-contract-outputs-by-contract', contractId],
+    queryFn: async () => fetchContractOutput({ byContract: contractId, offset: 0, limit: 100 }),
+    enabled: !invalidContractId
+  })
   return (
     <>
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
@@ -81,12 +87,16 @@ export const Contract = () => {
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>
+              <Tab>Outputs</Tab>
               <Tab>Info</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel pt={'2'} px={'0'}>
                 <Txns txs={txns?.txns || []} />
+              </TabPanel>
+              <TabPanel px={'0'} pt={'2'}>
+                <ContractOutputTbl outputs={outputs?.outputs || []} />
               </TabPanel>
               <TabPanel px={'0'}>
                 <TableContainer>

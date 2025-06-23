@@ -209,6 +209,9 @@ export interface Contract {
 }
 
 export interface ContractOutput {
+  id: string
+  block_height: number
+  timestamp: string
   contract_id: string
   inputs: string[]
   metadata: {

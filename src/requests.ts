@@ -21,7 +21,8 @@ import {
   LedgerActions,
   Txn,
   Contract,
-  AddrBalance
+  AddrBalance,
+  ContractOutput
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 
@@ -323,6 +324,14 @@ export const fetchL2TxnsDetailed = async (id: string): Promise<{ txns: Txn[] }> 
         limit: 1
       }
     }
+  )
+  return result.data
+}
+
+export const fetchContractOutput = async (opts?: object): Promise<{ outputs: ContractOutput[] }> => {
+  const result = await gql<GqlResponse<{ outputs: ContractOutput[] }>>(
+    `query FindContractOutput($opts: ContractOutputFilter) { outputs: findContractOutput(filterOptions: $opts) { id timestamp contract_id inputs results { ret ok }}}`,
+    { opts }
   )
   return result.data
 }
