@@ -23,10 +23,10 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
-      <Text fontSize={'5xl'}>Hive Bridge Deposits</Text>
+      <Text fontSize={'5xl'}>Hive Asset Maps</Text>
       <hr />
       <br />
-      <Text>Total {tally.deposits} deposits</Text>
+      <Text>Total {tally.deposits} maps</Text>
       <LedgerDeposits txs={deposits?.deposits || []} />
       <Pagination
         path={'/bridge/hive/deposits'}
@@ -45,10 +45,10 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
-      <Text fontSize={'5xl'}>Hive Bridge Withdrawals</Text>
+      <Text fontSize={'5xl'}>Hive Asset Unmaps</Text>
       <hr />
       <br />
-      <Text>Total {tally.withdrawals} withdrawals</Text>
+      <Text>Total {tally.withdrawals} unmaps</Text>
       <LedgerWithdrawals actions={withdrawals?.withdrawals || []} />
       <Pagination
         path={'/bridge/hive/withdrawals'}

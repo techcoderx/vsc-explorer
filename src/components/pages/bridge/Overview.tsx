@@ -108,11 +108,11 @@ const HiveBridgeOverview = () => {
               </StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Deposit Txs</StatLabel>
+              <StatLabel>Map Txs</StatLabel>
               <StatNumber>{!!tally ? thousandSeperator(tally.deposits) : <Skeleton height={'20px'} maxW={'40px'} />}</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Withdrawal Txs</StatLabel>
+              <StatLabel>Unmap Txs</StatLabel>
               <StatNumber>
                 {!!tally ? thousandSeperator(tally.withdrawals) : <Skeleton height={'20px'} maxW={'40px'} />}
               </StatNumber>
@@ -124,7 +124,7 @@ const HiveBridgeOverview = () => {
       <Stack direction={{ base: 'column', xl: 'row' }} justifyContent={'space-between'} mt={'4'} spacing={'4'}>
         <Card width={'100%'}>
           <CardHeader>
-            <Heading fontSize={'2xl'}>Latest Deposits</Heading>
+            <Heading fontSize={'2xl'}>Latest Maps</Heading>
           </CardHeader>
           <CardBody padding={'0'}>
             <BridgeTxsTable txs={data?.deposits || []} />
@@ -137,7 +137,7 @@ const HiveBridgeOverview = () => {
         </Card>
         <Card width={'100%'}>
           <CardHeader>
-            <Heading fontSize={'2xl'}>Latest Withdrawals</Heading>
+            <Heading fontSize={'2xl'}>Latest Unmaps</Heading>
           </CardHeader>
           <CardBody padding={'0'}>
             <BridgeTxsTable txs={data?.withdrawals || []} />

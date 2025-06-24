@@ -29,7 +29,7 @@ const metrics = [
     href: '/charts/witnesses'
   },
   {
-    title: 'Bridge',
+    title: 'NAM',
     icon: '/img/bridge.svg',
     href: '/charts/bridge'
   }

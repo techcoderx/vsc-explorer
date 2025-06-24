@@ -88,8 +88,8 @@ export const Address = () => {
           <Tab hidden={!isL1}>L1 Ops</Tab>
           <Tab>Ledger Ops</Tab>
           <Tab>Actions</Tab>
-          <Tab>Deposits</Tab>
-          <Tab>Withdrawals</Tab>
+          <Tab>Maps</Tab>
+          <Tab>Unmaps</Tab>
           <Tab hidden={!isL1 || !witness}>Witness</Tab>
         </TabList>
         <Box pt={'2'}>

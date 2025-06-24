@@ -208,7 +208,7 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
 export const BridgeCharts = () => {
   return (
     <>
-      <Text fontSize={'5xl'}>Bridge Charts</Text>
+      <Text fontSize={'5xl'}>Native Asset Mapping (NAM) Charts</Text>
       <hr />
       <Card my={'6'}>
         <CardHeader>
