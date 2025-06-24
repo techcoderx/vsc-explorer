@@ -85,7 +85,7 @@ const HiveBridgeOverview = () => {
   })
   return (
     <>
-      <Text fontSize={'5xl'}>Hive Bridge Overview</Text>
+      <Text fontSize={'5xl'}>Hive Asset Mapping Overview</Text>
       <hr />
       <br />
       <Card mb={'4'}>
