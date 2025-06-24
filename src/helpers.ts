@@ -79,7 +79,7 @@ export const fmtmAmount = (amount: number, asset: Coin | CoinLower) => {
 }
 
 export const naiToString = (nai: NAI) => {
-  let result = (parseInt(nai.amount) / Math.pow(10, nai.precision)).toString() + ' '
+  let result = thousandSeperator(parseInt(nai.amount) / Math.pow(10, nai.precision)) + ' '
   if (nai.nai === '@@000000021') result += 'HIVE'
   else if (nai.nai === '@@000000013') result += 'HBD'
   return result
@@ -180,13 +180,15 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
       break
     case 'l1_transfer':
       if ((tx.payload as DepositPayload).to === multisigAccount) {
-        result += ` deposited ${naiToString((tx.payload as DepositPayload).amount)}`
+        result += ` mapped ${naiToString((tx.payload as DepositPayload).amount)}`
       } else {
-        result += ` withdrawn ${naiToString((tx.payload as DepositPayload).amount)}`
+        result += ` unmapped ${naiToString((tx.payload as DepositPayload).amount)}`
       }
       break
     case 'withdraw':
-      result += `withdraw ${(tx.payload as TransferPayload).amount} ${(tx.payload as TransferPayload).asset.toUpperCase()}${
+      result += `unmap ${thousandSeperator((tx.payload as TransferPayload).amount)} ${(
+        tx.payload as TransferPayload
+      ).asset.toUpperCase()}${
         (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
       }`
       break
