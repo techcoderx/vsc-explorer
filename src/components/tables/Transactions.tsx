@@ -1,9 +1,10 @@
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { Table, TableContainer, Tbody, Td, Text, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
 import { Txn, Status } from '../../types/L2ApiResult'
 import { CheckXIcon, PendingIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, ContractLink, TxLink } from '../TableLink'
 import { abbreviateHash, fmtAmount, timeAgo } from '../../helpers'
-import { Coin } from '../../types/Payloads'
+import { Coin, CoinLower } from '../../types/Payloads'
+import { TxIntentAllowance } from '../../types/L2ApiResult'
 
 export const StatusIcon = ({ status }: { status: Status }) => {
   switch (status) {
@@ -14,6 +15,32 @@ export const StatusIcon = ({ status }: { status: Status }) => {
     default:
       return <PendingIcon />
   }
+}
+
+export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[] }) => {
+  const totalHive = intents.reduce((pv, v) => (v.args.token === 'hive' ? pv + parseFloat(v.args.limit) : pv), 0)
+  const totalHbd = intents.reduce((pv, v) => (v.args.token === 'hbd' ? pv + parseFloat(v.args.limit) : pv), 0)
+  const totalStakedHbd = intents.reduce((pv, v) => (v.args.token === 'hbd_savings' ? pv + parseFloat(v.args.limit) : pv), 0)
+  const first: [CoinLower, number] | null =
+    totalHive > 0
+      ? ['hive', totalHive]
+      : totalHbd > 0
+      ? ['hbd', totalHbd]
+      : totalStakedHbd > 0
+      ? ['hbd_savings', totalStakedHbd]
+      : null
+  let tokenCount = 0
+  totalHive > 0 && (tokenCount += 1)
+  totalHbd > 0 && (tokenCount += 1)
+  totalStakedHbd > 0 && (tokenCount += 1)
+  return first !== null ? (
+    <Text>
+      {fmtAmount(first[1], first[0])}
+      {tokenCount > 1 ? <i> (+{tokenCount - 1})</i> : ''}
+    </Text>
+  ) : (
+    <Text>0 HIVE</Text>
+  )
 }
 
 export const Txns = ({ txs }: { txs: Txn[] }) => {
@@ -62,11 +89,15 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                   {o.type === 'call_contract' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}
                 </Td>
                 <Td>
-                  {o.type === 'call_contract'
-                    ? '0 HIVE'
-                    : o.type === 'deposit'
-                    ? fmtAmount(o.data.amount / 1000, o.data.asset.toUpperCase() as Coin)
-                    : fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)}
+                  {o.type === 'call_contract' ? (
+                    <AmountIntentAllowance
+                      intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
+                    />
+                  ) : o.type === 'deposit' ? (
+                    fmtAmount(o.data.amount / 1000, o.data.asset.toUpperCase() as Coin)
+                  ) : (
+                    fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)
+                  )}
                 </Td>
               </Tr>
             ))

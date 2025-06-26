@@ -43,7 +43,7 @@ export type InterestPayload = {
 }
 
 export type Coin = 'HIVE' | 'HBD'
-export type CoinLower = 'hive' | 'hbd'
+export type CoinLower = 'hive' | 'hbd' | 'hbd_savings'
 
 export interface CallContractPayload {
   contract_id: string

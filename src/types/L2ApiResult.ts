@@ -123,6 +123,14 @@ export interface LedgerActions<T = TxTypes> {
   timestamp: string
 }
 
+export interface TxIntentAllowance {
+  args: {
+    limit: string
+    token: CoinLower
+  }
+  type: 'transfer.allow'
+}
+
 interface TxDataFer {
   type: 'consensus_stake' | 'consensus_unstake' | 'stake_hbd' | 'transfer' | 'unstake_hbd' | 'withdraw'
   index: number
@@ -155,7 +163,7 @@ interface TxDataCall {
     contract_id: string
     payload: any
     rc_limit: number
-    intents: []
+    intents: TxIntentAllowance[]
   }
 }
 
