@@ -1,6 +1,6 @@
 import { Link, Tooltip } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
-import { abbreviateHash } from '../helpers'
+import { abbreviateHash, validateHiveUsername } from '../helpers'
 
 type TableLinkParams = { val: string; tooltip?: boolean; truncate?: number }
 
@@ -25,6 +25,8 @@ export const TxLink = ({ val, tooltip, truncate = 15 }: TableLinkParams) => {
 }
 
 export const AccountLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
+  if (val.startsWith('vsc') && validateHiveUsername(val) !== null)
+    return <ContractLink val={val} tooltip={tooltip} truncate={truncate} />
   const href = `/address/${val}`
   return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
