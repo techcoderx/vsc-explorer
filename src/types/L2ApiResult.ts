@@ -187,6 +187,7 @@ export interface AddrBalance {
     hive: number
     hive_consensus: number
     consensus_unstaking: number
+    pending_hbd_unstaking: number
   }
   rc?: {
     account: string

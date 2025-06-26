@@ -23,6 +23,12 @@ export const AddressBalanceCard = ({ addr }: { addr: string }) => {
             <StatLabel>Staked HBD</StatLabel>
             <StatNumber>{fmtmAmount(balance?.bal?.hbd_savings || 0, 'hbd')}</StatNumber>
           </Stat>
+          {balance && balance.bal && balance.bal.pending_hbd_unstaking > 0 && (
+            <Stat>
+              <StatLabel>HBD Unstaking</StatLabel>
+              <StatNumber>{fmtmAmount(balance.bal.pending_hbd_unstaking, 'hbd')}</StatNumber>
+            </Stat>
+          )}
           {balance && balance.bal && balance.bal?.hive_consensus > 0 && (
             <Stat>
               <StatLabel>Consensus Stake</StatLabel>

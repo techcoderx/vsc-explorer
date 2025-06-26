@@ -252,7 +252,7 @@ export const useAddrBalance = (acc: string) => {
     queryFn: async () => {
       return (
         await gql<GqlResponse<AddrBalance>>(
-          `query AccBal($acc: String!) { bal: getAccountBalance(account: $acc) { hbd hbd_savings hive hive_consensus consensus_unstaking } rc: getAccountRC(account: $acc) { amount block_height }}`,
+          `query AccBal($acc: String!) { bal: getAccountBalance(account: $acc) { hbd hbd_savings hive hive_consensus consensus_unstaking pending_hbd_unstaking } rc: getAccountRC(account: $acc) { amount block_height }}`,
           { acc }
         )
       ).data
