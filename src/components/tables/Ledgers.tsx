@@ -26,6 +26,9 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
             <Th>Tx ID</Th>
             <Th>Age</Th>
             <Th>Type</Th>
+            <Th>From</Th>
+            <Th></Th>
+            <Th>To</Th>
             <Th>Amount</Th>
           </Tr>
         </Thead>
@@ -44,6 +47,15 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
                     </Tooltip>
                   </Td>
                   <Td>{item.type}</Td>
+                  <Td>
+                    <AccountLink val={item.from} />
+                  </Td>
+                  <Td>
+                    <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                  </Td>
+                  <Td>
+                    <AccountLink val={item.to} />
+                  </Td>
                   <Td>{fmtmAmount(item.amount, item.asset)}</Td>
                 </Tr>
               )
@@ -81,13 +93,13 @@ export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
                   </Tooltip>
                 </Td>
                 <Td>
-                  <AccountLink val={(item as LedgerTx).from} truncate={30} />
+                  <AccountLink val={(item as LedgerTx).from} />
                 </Td>
                 <Td>
                   <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
                 </Td>
                 <Td>
-                  <AccountLink val={item.to} truncate={30} tooltip={true} />
+                  <AccountLink val={item.to} tooltip={true} />
                 </Td>
                 <Td>{fmtmAmount(item.amount, item.asset)}</Td>
               </Tr>
@@ -107,6 +119,7 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
             <Th>Tx ID</Th>
             <Th>Age</Th>
             <Th>Type</Th>
+            <Th>To User</Th>
             <Th>Amount</Th>
             <Th>Status</Th>
           </Tr>
@@ -126,6 +139,9 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
                     </Tooltip>
                   </Td>
                   <Td>{item.type}</Td>
+                  <Td>
+                    <AccountLink val={item.to} />
+                  </Td>
                   <Td>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</Td>
                   <Td>
                     <StatusBadge
