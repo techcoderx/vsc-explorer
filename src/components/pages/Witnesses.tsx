@@ -2,38 +2,32 @@ import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Link, 
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
-import { fetchEpoch, fetchProps, fetchWitnessStatMany } from '../../requests'
+import { fetchEpoch, fetchWitnessesStats } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const Witnesses = () => {
   const [sort, setSort] = useState<string>('')
-  const { data: prop, isLoading: isPropLd } = useQuery({
-    queryKey: ['vsc-props'],
-    queryFn: fetchProps
-  })
-  const { data: epoch, isLoading } = useQuery({
-    queryKey: ['vsc-epoch', prop?.epoch || 0],
-    queryFn: async () => fetchEpoch(prop?.epoch || 0),
-    enabled: !!prop
-  })
-  let members =
-    epoch?.members.map((m, i) => {
-      return { ...m, weight: epoch.weights[i] }
-    }) || []
-  if (sort === 'weight') {
-    members = members.sort((a, b) => b.weight - a.weight)
-  } else if (sort === 'weight_asc') {
-    members = members.sort((a, b) => a.weight - b.weight)
-  }
-  const names = members.map((m) => m.account)
-  const { data: stats } = useQuery({
-    queryKey: ['vsc-witness-stats-many', ...names],
-    queryFn: async () => fetchWitnessStatMany(names.join(',')),
-    enabled: names.length > 0
+  const { data: epoch } = useQuery({
+    queryKey: ['vsc-epoch', -1],
+    queryFn: async () => fetchEpoch(-1)
   })
   const participation =
     (100 * (epoch?.blocks_info?.total_votes || 0)) / ((epoch?.blocks_info?.count || 1) * (epoch?.total_weight || 1))
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ['vsc-witnesses-stats'],
+    queryFn: async () => fetchWitnessesStats()
+  })
+  const statsUnsorted = useMemo(() => stats?.filter(() => true), [stats])
+  const statsSorted = useMemo(() => {
+    if (sort === 'weight') {
+      return (stats || []).sort((a, b) => b.weight - a.weight)
+    } else if (sort === 'weight_asc') {
+      return (stats || []).sort((a, b) => a.weight - b.weight)
+    } else {
+      return statsUnsorted
+    }
+  }, [stats, sort])
   return (
     <>
       <Text fontSize={'5xl'}>Witnesses</Text>
@@ -67,7 +61,7 @@ const Witnesses = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {isPropLd || isLoading ? (
+            {isLoading ? (
               <Tr>
                 {[...Array(8)].map((_, i) => (
                   <Td key={i}>
@@ -75,43 +69,31 @@ const Witnesses = () => {
                   </Td>
                 ))}
               </Tr>
-            ) : !!epoch ? (
-              members.map((m, i) => (
+            ) : !!statsSorted ? (
+              statsSorted.map((m, i) => (
                 <Tr key={i}>
                   <Td>{i + 1}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/address/hive:' + m.account}>
-                      {m.account}
+                    <Link as={ReactRouterLink} to={'/address/hive:' + m._id}>
+                      {m._id}
                     </Link>
                   </Td>
                   <Td>{fmtmAmount(m.weight, 'HIVE')}</Td>
                   <Td>
-                    {!!stats ? (
-                      <Link as={ReactRouterLink} to={'/block/' + stats[i].last_block}>
-                        {thousandSeperator(stats[i].last_block || 0)}
-                      </Link>
-                    ) : (
-                      <Skeleton h={'20px'} />
-                    )}
+                    <Link as={ReactRouterLink} to={'/block/' + m.last_block}>
+                      {thousandSeperator(m.last_block || 0)}
+                    </Link>
                   </Td>
-                  <Td>{!!stats ? thousandSeperator(stats[i].block_count || 0) : <Skeleton h={'20px'} />}</Td>
+                  <Td>{thousandSeperator(m.block_count || 0)}</Td>
                   <Td>
-                    {!!stats ? (
-                      !!stats[i].last_epoch ? (
-                        <Link as={ReactRouterLink} to={'/epoch/' + stats[i].last_epoch}>
-                          {thousandSeperator(stats[i].last_epoch)}
-                        </Link>
-                      ) : (
-                        'N/A'
-                      )
-                    ) : (
-                      <Skeleton h={'20px'} />
-                    )}
+                    <Link as={ReactRouterLink} to={'/epoch/' + m.last_epoch}>
+                      {thousandSeperator(m.last_epoch)}
+                    </Link>
                   </Td>
-                  <Td>{!!stats ? thousandSeperator(stats[i].election_count || 0) : <Skeleton h={'20px'} />}</Td>
+                  <Td>{thousandSeperator(m.election_count || 0)}</Td>
                   <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
-                    <Tooltip placement="top" label={m.key}>
-                      {abbreviateHash(m.key, 20, 0)}
+                    <Tooltip placement="top" label={m.did_key}>
+                      {abbreviateHash(m.did_key, 20, 0)}
                     </Tooltip>
                   </Td>
                 </Tr>
