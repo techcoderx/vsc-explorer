@@ -18,7 +18,8 @@ import {
   Tbody,
   Tooltip,
   CardFooter,
-  Button
+  Button,
+  Link
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router'
@@ -121,7 +122,7 @@ const HiveBridgeOverview = () => {
         </CardBody>
       </Card>
       <hr />
-      <Stack direction={{ base: 'column', xl: 'row' }} justifyContent={'space-between'} mt={'4'} spacing={'4'}>
+      <Stack direction={{ base: 'column', xl: 'row' }} justifyContent={'space-between'} my={'4'} spacing={'4'}>
         <Card width={'100%'}>
           <CardHeader>
             <Heading fontSize={'2xl'}>Latest Maps</Heading>
@@ -149,6 +150,11 @@ const HiveBridgeOverview = () => {
           </CardFooter>
         </Card>
       </Stack>
+      <Text>
+        <Link as={ReactRouterLink} target="_blank" to={'https://peakd.com/vsc/@vsc.network/introducing-native-asset-mapping'}>
+          Learn more about native asset mapping here.
+        </Link>
+      </Text>
     </>
   )
 }
