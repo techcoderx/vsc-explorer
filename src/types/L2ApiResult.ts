@@ -241,3 +241,24 @@ export interface ContractOutputDag extends ContractOutputBase {
     max_size: number
   }
 }
+
+export interface OffchainTx {
+  __t: 'vsc-tx'
+  __v: '0.2'
+  headers: {
+    intents: TxIntentAllowance[]
+    net_id: 'vsc-mainnet'
+    nonce: number
+    rc_limit: number
+    required_auths: string[]
+    type: 1
+  }
+  tx: {
+    payload: string
+    required_auths: {
+      active: string[]
+      posting: string[]
+    }
+    type: TxDataFer['type'] | TxDataCall['type']
+  }[]
+}
