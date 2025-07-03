@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchBlock, fetchEpoch, getDagByCIDBatch, useDagByCID } from '../../requests'
+import { fetchBlock, fetchEpoch, fetchL2TxnsBy, getDagByCIDBatch, useDagByCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
@@ -25,11 +25,20 @@ import { l1Explorer, themeColorScheme } from '../../settings'
 import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
-import { BlockHeader, ContractOutput, ContractOutputDag, OpLog } from '../../types/L2ApiResult'
+import { BlockHeader, ContractOutput, ContractOutputDag, OffchainTx, OpLog } from '../../types/L2ApiResult'
 import { CheckXIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, TxLink } from '../TableLink'
 import { Coin } from '../../types/Payloads'
 import { ContractOutputTbl } from '../tables/ContractOutput'
+import { Txns } from '../tables/Transactions'
+
+const BlockTxs = ({ txIds }: { txIds: string[] }) => {
+  const { data } = useQuery({
+    queryKey: ['vsc-tx-multi', ...txIds],
+    queryFn: async () => fetchL2TxnsBy(0, 100, { byIds: txIds })
+  })
+  return <Txns txs={data?.txns || []} />
+}
 
 export const BlockBy = () => {
   const { blockId } = useParams()
@@ -62,9 +71,10 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   const blockTxIds = blockDag ? blockDag.txs.map((t) => t.id) : []
   const { data: txDags } = useQuery({
     queryKey: ['dag-by-cid-batch', ...blockTxIds],
-    queryFn: async () => getDagByCIDBatch<OpLog | ContractOutputDag>(blockTxIds),
+    queryFn: async () => getDagByCIDBatch<OffchainTx | OpLog | ContractOutputDag>(blockTxIds),
     enabled: !!blockDag
   })
+  const txIds = blockDag ? blockDag.txs.filter((t) => t.type === 1).map((v) => v.id) : []
   const outputIds = blockDag ? blockDag.txs.filter((t) => t.type === 2) : []
   const opLogs = txDags?.find((d) => d.__t === 'vsc-oplog')
   const outputs: ContractOutput[] | undefined = txDags
@@ -131,7 +141,9 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
               <Tab>Participation</Tab>
             </TabList>
             <TabPanels mt={'2'}>
-              <TabPanel>👀 Coming soon...</TabPanel>
+              <TabPanel pt={'1'}>
+                <BlockTxs txIds={txIds} />
+              </TabPanel>
               <TabPanel>
                 <TableContainer>
                   <Table>
