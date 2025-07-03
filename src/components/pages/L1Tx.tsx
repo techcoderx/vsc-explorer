@@ -471,8 +471,11 @@ const L2Tx = () => {
         )}
       </Box>
       <hr />
+      <Button as={ReactRouterLink} my={'5'} colorScheme={themeColorScheme} variant={'outline'} to={`/tools/dag?cid=${txid}`}>
+        View in DAG Inspector
+      </Button>
       {!!tx && (
-        <Flex mt={'3'} gap="6" direction="column">
+        <Flex gap="6" direction="column">
           <TxOverview txn={tx} />
           {tx.ops.map((op, i) => (
             <Card key={i}>
