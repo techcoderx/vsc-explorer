@@ -76,42 +76,41 @@ const TxOverview = ({ txn }: { txn: Txn }) => (
         </Tag>
       </Flex>
     </CardHeader>
-    {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && (
-      <CardBody mt={'-6'}>
-        <Table mb={'-1px'}>
-          <Tbody>
-            <Tr>
-              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
-                Required Auths
-              </MinTd>
-              <MinTd py={'2.5'}>
-                <Grid
-                  templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
-                  gap={3}
-                >
-                  {txn.required_auths.map((a, i) => {
-                    return (
-                      <GridItem key={i}>
-                        <Link as={ReactRouterLink} to={'/address/' + a}>
-                          {a}
-                        </Link>
-                      </GridItem>
-                    )
-                  })}
-                </Grid>
-              </MinTd>
-            </Tr>
-            <Tr>
-              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
-                RC Used
-              </MinTd>
-              <MinTd>🤔 / {txn.rc_limit} (👀%)</MinTd>
-            </Tr>
-          </Tbody>
-        </Table>
-        <TxOut txn={txn} />
-      </CardBody>
-    )}
+
+    <CardBody mt={'-6'}>
+      <Table mb={'-1px'}>
+        <Tbody>
+          <Tr>
+            <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+              Required Auths
+            </MinTd>
+            <MinTd py={'2.5'}>
+              <Grid
+                templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
+                gap={3}
+              >
+                {txn.required_auths.map((a, i) => {
+                  return (
+                    <GridItem key={i}>
+                      <Link as={ReactRouterLink} to={'/address/' + a}>
+                        {a}
+                      </Link>
+                    </GridItem>
+                  )
+                })}
+              </Grid>
+            </MinTd>
+          </Tr>
+          <Tr>
+            <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+              RC Used
+            </MinTd>
+            <MinTd>🤔 / {txn.rc_limit} (👀%)</MinTd>
+          </Tr>
+        </Tbody>
+      </Table>
+      {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && <TxOut txn={txn} />}
+    </CardBody>
   </Card>
 )
 
