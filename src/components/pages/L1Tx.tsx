@@ -64,55 +64,75 @@ const MinTd = ({ children, ...props }: { children: ReactNode } & TableCellProps)
   </Td>
 )
 
-const TxOverview = ({ txn }: { txn: Txn }) => (
-  <Card>
-    <CardHeader>
-      <Flex gap={'3'} direction={'row'}>
-        <Heading fontSize={'2xl'} display={'inline'}>
-          VSC Transaction
-        </Heading>
-        <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
-          {txn.status.toUpperCase()}
-        </Tag>
-      </Flex>
-    </CardHeader>
+const RC_COSTS = {
+  deposit: 0,
+  transfer: 100,
+  withdraw: 200,
+  stake_hbd: 200,
+  unstake_hbd: 200,
+  consensus_stake: 100,
+  consensus_unstake: 100,
+  call_contract: 0 // FIXME: use real RC usage
+}
 
-    <CardBody mt={'-6'}>
-      <Table mb={'-1px'}>
-        <Tbody>
-          <Tr>
-            <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
-              Required Auths
-            </MinTd>
-            <MinTd py={'2.5'}>
-              <Grid
-                templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
-                gap={3}
-              >
-                {txn.required_auths.map((a, i) => {
-                  return (
-                    <GridItem key={i}>
-                      <Link as={ReactRouterLink} to={'/address/' + a}>
-                        {a}
-                      </Link>
-                    </GridItem>
-                  )
-                })}
-              </Grid>
-            </MinTd>
-          </Tr>
-          <Tr>
-            <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
-              RC Used
-            </MinTd>
-            <MinTd>🤔 / {txn.rc_limit} (👀%)</MinTd>
-          </Tr>
-        </Tbody>
-      </Table>
-      {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && <TxOut txn={txn} />}
-    </CardBody>
-  </Card>
-)
+const TxOverview = ({ txn }: { txn: Txn }) => {
+  const rcUsed =
+    txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract')
+      ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0)
+      : 0
+  return (
+    <Card>
+      <CardHeader>
+        <Flex gap={'3'} direction={'row'}>
+          <Heading fontSize={'2xl'} display={'inline'}>
+            VSC Transaction
+          </Heading>
+          <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
+            {txn.status.toUpperCase()}
+          </Tag>
+        </Flex>
+      </CardHeader>
+
+      <CardBody mt={'-6'}>
+        <Table mb={'-1px'}>
+          <Tbody>
+            <Tr>
+              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                Required Auths
+              </MinTd>
+              <MinTd py={'2.5'}>
+                <Grid
+                  templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
+                  gap={3}
+                >
+                  {txn.required_auths.map((a, i) => {
+                    return (
+                      <GridItem key={i}>
+                        <Link as={ReactRouterLink} to={'/address/' + a}>
+                          {a}
+                        </Link>
+                      </GridItem>
+                    )
+                  })}
+                </Grid>
+              </MinTd>
+            </Tr>
+            <Tr>
+              <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                RC Used
+              </MinTd>
+              <MinTd>
+                {rcUsed > 0 ? rcUsed : '🤔'} / {txn.rc_limit} (
+                {txn.rc_limit > 0 ? Math.round((100 * rcUsed) / txn.rc_limit) : '👀'}%)
+              </MinTd>
+            </Tr>
+          </Tbody>
+        </Table>
+        {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && <TxOut txn={txn} />}
+      </CardBody>
+    </Card>
+  )
+}
 
 const TxOut = ({ txn }: { txn: Txn }) => (
   <Accordion allowToggle>
