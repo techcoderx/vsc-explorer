@@ -35,7 +35,8 @@ import { Txns } from '../tables/Transactions'
 const BlockTxs = ({ txIds }: { txIds: string[] }) => {
   const { data } = useQuery({
     queryKey: ['vsc-tx-multi', ...txIds],
-    queryFn: async () => fetchL2TxnsBy(0, 100, { byIds: txIds })
+    queryFn: async () => fetchL2TxnsBy(0, 100, { byIds: txIds }),
+    enabled: txIds.length > 0
   })
   return <Txns txs={data?.txns || []} />
 }
