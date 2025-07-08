@@ -267,8 +267,8 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
 // https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go
 export const availableRC = ({ bal, rc }: AddrBalance, head_block_num?: number, is_hive_user: boolean = false) => {
   const h = rc?.block_height || 0
-  const amt = rc?.amount || 0
   const max_rc = (bal?.hbd || 0) + (is_hive_user ? 5000 : 0)
+  const amt = !!rc && !!rc.amount ? max_rc - rc.amount : 0
   if (max_rc === 0) return { avail: 0, max: 0 }
   const RC_RETURN_PERIOD = 120 * 60 * 20
   const diff = (head_block_num || h) - h
