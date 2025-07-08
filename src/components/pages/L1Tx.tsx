@@ -75,7 +75,7 @@ const RC_COSTS = {
   call_contract: 0 // FIXME: use real RC usage
 }
 
-const TxOverview = ({ txn }: { txn: Txn }) => {
+const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
   const rcUsed =
     txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract')
       ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0)
@@ -127,6 +127,14 @@ const TxOverview = ({ txn }: { txn: Txn }) => {
                   {txn.rc_limit > 0 ? Math.round((100 * rcUsed) / txn.rc_limit) : '👀'}%)
                 </MinTd>
               </Tr>
+              {type === 'vsc' && (
+                <Tr>
+                  <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                    Nonce
+                  </MinTd>
+                  <MinTd>{txn.nonce}</MinTd>
+                </Tr>
+              )}
             </Tbody>
           </Table>
         </TableContainer>
@@ -401,7 +409,7 @@ const L1Tx = () => {
         View in {l1ExplorerName}
       </Button>
       <Flex gap="6" direction="column">
-        {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} />}
+        {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (
           <Card w="100%">
             <CardBody>Loading VSC Operations...</CardBody>
@@ -497,7 +505,7 @@ const L2Tx = () => {
       </Button>
       {!!tx && (
         <Flex gap="6" direction="column">
-          <TxOverview txn={tx} />
+          <TxOverview txn={tx} type="vsc" />
           {tx.ops.map((op, i) => (
             <Card key={i}>
               <CardHeader>
