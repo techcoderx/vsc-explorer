@@ -102,7 +102,7 @@ export const ParticipatedMembers = ({
             {votedMembers.map((m, i) => {
               return (
                 <GridItem key={i}>
-                  <Link as={ReactRouterLink} to={'/address/hive:' + m}>
+                  <Link as={ReactRouterLink} to={'/address/hive:' + m.account}>
                     {m.account}
                   </Link>
                 </GridItem>
