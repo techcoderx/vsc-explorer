@@ -13,7 +13,6 @@ import {
 } from './types/Payloads'
 import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
 import { Ops } from './types/L1ApiResult'
-import { AddrBalance } from './types/L2ApiResult'
 
 export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
@@ -262,21 +261,6 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
     if (segments.length === pos + 1 && newIdx === 0) segments.pop()
   }
   return segments.join('/').trim().replace(/\/+$/, '')
-}
-
-// https://github.com/vsc-eco/go-vsc-node/blob/main/modules/rc-system/rc-system.go
-export const availableRC = ({ bal, rc }: AddrBalance, head_block_num?: number, is_hive_user: boolean = false) => {
-  const h = rc?.block_height || 0
-  const max_rc = (bal?.hbd || 0) + (is_hive_user ? 5000 : 0)
-  const amt = !!rc && !!rc.amount ? max_rc - rc.amount : 0
-  if (max_rc === 0) return { avail: 0, max: 0 }
-  const RC_RETURN_PERIOD = 120 * 60 * 20
-  const diff = (head_block_num || h) - h
-  let amt_ret = (diff * amt) / RC_RETURN_PERIOD
-  if (amt_ret > amt) {
-    amt_ret = amt
-  }
-  return { avail: max_rc - (amt - amt_ret), max: max_rc }
 }
 
 export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {

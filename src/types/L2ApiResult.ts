@@ -200,7 +200,7 @@ export interface AddrBalance {
   rc?: {
     account: string
     amount: number
-    block_height: number
+    max_rcs: number
   }
 }
 
