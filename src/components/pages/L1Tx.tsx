@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 import {
   Text,
   Box,
@@ -28,7 +28,8 @@ import {
   Icon,
   TableCellProps,
   Grid,
-  GridItem
+  GridItem,
+  Spinner
 } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -44,6 +45,7 @@ import { Contract, Txn } from '../../types/L2ApiResult'
 import { StatusBadge } from '../tables/Ledgers'
 import { AccountLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1px solid #e2e8f0'
@@ -75,6 +77,11 @@ const RC_COSTS = {
   call_contract: 0 // FIXME: use real RC usage
 }
 
+const shouldRefetch = (txn?: Txn | null) =>
+  !!txn &&
+  (txn.status === 'UNCONFIRMED' || txn.status === 'INCLUDED') &&
+  (!txn.anchr_ts || Math.abs(new Date().getTime() - new Date(txn.anchr_ts + 'Z').getTime()) < 3600000)
+
 const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
   const rcUsed =
     txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract')
@@ -88,6 +95,13 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
             VSC Transaction
           </Heading>
           <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
+            {txn.status === 'CONFIRMED' ? (
+              <CheckIcon mr={'1.5'} />
+            ) : txn.status === 'FAILED' ? (
+              <CloseIcon fontSize={'xs'} mr={'1.5'} />
+            ) : (
+              <Spinner size={'sm'} mr={'1.5'} />
+            )}
             {txn.status.toUpperCase()}
           </Tag>
         </Flex>
@@ -356,13 +370,25 @@ const L1Tx = () => {
     queryKey: ['vsc-l1-tx-output', txid],
     queryFn: async () => fetchL1TxOutput(txid!)
   })
-  const vscTx = useQuery({
+  const { data: t, refetch } = useQuery({
     queryKey: ['vsc-tx', txid],
     queryFn: async () => fetchL2TxnsDetailed(txid!)
-  }).data?.txns
+  })
+  const vscTx = t?.txns
   const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : data?.timestamp ?? ''
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
+  const intervalRef = useRef<number>()
+  useEffect(() => {
+    if (shouldRefetch(!!vscTx && vscTx.length > 0 ? vscTx[0] : null)) {
+      intervalRef.current = setInterval(() => {
+        refetch()
+      }, 5000)
+    } else {
+      clearInterval(intervalRef.current)
+    }
+    return () => clearInterval(intervalRef.current)
+  }, [t])
   return (
     <>
       <Box mb={'3'}>
@@ -464,12 +490,23 @@ const L1Tx = () => {
 
 const L2Tx = () => {
   const { txid } = useParams()
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['vsc-tx', txid],
     queryFn: async () => fetchL2TxnsDetailed(txid!)
   })
   const exists = !!data && Array.isArray(data.txns) && data.txns.length > 0
   const tx = exists ? data.txns[0] : null
+  const intervalRef = useRef<number>()
+  useEffect(() => {
+    if (shouldRefetch(tx)) {
+      intervalRef.current = setInterval(() => {
+        refetch()
+      }, 5000)
+    } else {
+      clearInterval(intervalRef.current)
+    }
+    return () => clearInterval(intervalRef.current)
+  }, [data])
   return (
     <>
       <Box mb={'3'}>
@@ -483,7 +520,7 @@ const L2Tx = () => {
           <Text fontSize={'xl'}>Failed to load transaction</Text>
         ) : !tx ? (
           <Text fontSize={'xl'}>Transaction does not exist</Text>
-        ) : (
+        ) : !!tx.anchr_ts ? (
           <Box marginTop={'10px'}>
             <Text fontSize={'xl'} display={'inline'}>
               Anchored in L1 block{' '}
@@ -497,7 +534,7 @@ const L2Tx = () => {
               </Text>
             </Tooltip>
           </Box>
-        )}
+        ) : null}
       </Box>
       <hr />
       <Button as={ReactRouterLink} my={'5'} colorScheme={themeColorScheme} variant={'outline'} to={`/tools/dag?cid=${txid}`}>
