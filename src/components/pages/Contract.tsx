@@ -131,7 +131,7 @@ export const Contract = () => {
       {isLoading ? <Skeleton h={'20px'} mt={'20px'} /> : null}
       {!!contract ? (
         <Box mt={'4'}>
-          <AddressBalanceCard addr={contract.id} />
+          <AddressBalanceCard addr={'contract:' + contract.id} />
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
             <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>

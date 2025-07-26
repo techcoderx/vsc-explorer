@@ -25,13 +25,13 @@ export const TxLink = ({ val, tooltip, truncate = 15 }: TableLinkParams) => {
 }
 
 export const AccountLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
-  if (val.startsWith('vsc') && validateHiveUsername(val) !== null)
+  if (val.startsWith('contract:') || (val.startsWith('vsc') && validateHiveUsername(val) !== null))
     return <ContractLink val={val} tooltip={tooltip} truncate={truncate} />
   const href = `/address/${val}`
   return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
 
 export const ContractLink = ({ val, tooltip, truncate = 20 }: TableLinkParams) => {
-  const href = '/contract/' + val
+  const href = '/contract/' + val.replace('contract:', '')
   return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
 }
