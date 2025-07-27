@@ -20,7 +20,7 @@ export const AddressBalanceCard = ({ addr }: { addr: string }) => {
             <StatNumber>{fmtmAmount(balance?.bal?.hbd || 0, 'hbd')}</StatNumber>
           </Stat>
           <Stat>
-            <StatLabel>Staked HBD</StatLabel>
+            <StatLabel>Liquid Staked HBD</StatLabel>
             <StatNumber>{fmtmAmount(balance?.bal?.hbd_savings || 0, 'hbd')}</StatNumber>
           </Stat>
           {balance && balance.bal && balance.bal.pending_hbd_unstaking > 0 && (
