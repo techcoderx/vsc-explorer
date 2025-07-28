@@ -152,7 +152,7 @@ const useSearchResults = (query: string): SearchResultHook => {
         searchResult: [
           {
             type: SearchResultType.EvmAddress,
-            href: `/address/${EVM_DID_PREFIX}'${query.replace(EVM_DID_PREFIX, '')}`
+            href: `/address/${EVM_DID_PREFIX}${query.replace(EVM_DID_PREFIX, '')}`
           }
         ],
         isLoading: false
