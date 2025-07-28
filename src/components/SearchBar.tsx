@@ -282,6 +282,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
               <Input
                 placeholder="Search account, block, transaction..."
                 focusBorderColor={themeColorLight}
+                spellCheck={false}
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 onKeyDown={(event) => {
