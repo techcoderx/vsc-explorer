@@ -18,6 +18,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { isAddress } from 'viem'
 import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
 import { fetchProps, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
@@ -41,6 +42,7 @@ enum SearchQueryType {
   Number,
   L1Account,
   L1Transaction,
+  EvmAddress,
   CID
 }
 
@@ -48,10 +50,13 @@ enum SearchResultType {
   Address = 'Address',
   Block = 'Block',
   L1Account = 'L1 Account',
+  EvmAddress = 'Ethereum Address',
   Transaction = 'Transaction',
   Epoch = 'Epoch',
   Contract = 'Contract'
 }
+
+const EVM_DID_PREFIX = 'did:pkh:eip155:1:'
 
 const useQueryType = (): [SearchQueryType | undefined, (v: SearchQueryType) => void] => {
   const [queryType, setQueryType] = useState<SearchQueryType>()
@@ -137,6 +142,20 @@ const useSearchResults = (query: string): SearchResultHook => {
             : [])
         ],
         isLoading: isL1AccLoading
+      }
+    } else if (
+      (query.startsWith(EVM_DID_PREFIX + '0x') && isAddress(query.replace(EVM_DID_PREFIX, ''))) ||
+      (query.startsWith('0x') && isAddress(query))
+    ) {
+      setQueryType(SearchQueryType.EvmAddress)
+      return {
+        searchResult: [
+          {
+            type: SearchResultType.EvmAddress,
+            href: `/address/${EVM_DID_PREFIX}'${query.replace(EVM_DID_PREFIX, '')}`
+          }
+        ],
+        isLoading: false
       }
     } else if (!isNaN(parseInt(query)) && parseInt(query) >= 0) {
       setQueryType(SearchQueryType.Number)
