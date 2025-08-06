@@ -40,6 +40,7 @@ import MultiFileInput from '../../MultiFileInput'
 import { isValidJSONStr } from '../../../helpers'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
+import { PageTitle } from '../../PageTitle'
 
 const steps = [
   {
@@ -237,6 +238,7 @@ export const VerifyContract = () => {
   }
   return (
     <>
+      <PageTitle title="Verify Contract" />
       <Text fontSize={'5xl'}>Verify Contract</Text>
       <Text mb={'6'}>
         Submit contract source code to VSC Blocks to verify that the resulting compiled bytecode matches the deployed contract

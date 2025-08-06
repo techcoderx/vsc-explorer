@@ -2,11 +2,13 @@ import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Toolti
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
+import { PageTitle } from '../PageTitle'
 
 const NewContracts = () => {
   const { contracts, isLoading } = useContracts({})
   return (
     <>
+      <PageTitle title="Latest Contracts" />
       <Text fontSize={'5xl'}>Latest Contracts</Text>
       <hr />
       <TableContainer marginTop={'15px'}>

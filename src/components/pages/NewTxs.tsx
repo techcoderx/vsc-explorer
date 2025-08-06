@@ -6,6 +6,7 @@ import { fetchLatestTxs, fetchLatestL2Txns } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
 import { CurrentPageBtn, LinkedBtn } from '../Pagination'
+import { PageTitle } from '../PageTitle'
 
 export const NewHiveTxs = () => {
   const { data: txs } = useQuery({
@@ -39,6 +40,7 @@ export const NewTxs = () => {
   const location = useLocation()
   return (
     <>
+      <PageTitle title="Latest Transactions" />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Box my={'auto'} py={'1'}>

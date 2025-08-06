@@ -1,6 +1,7 @@
 import { Card, CardBody, Flex, Grid, Image, Text, useToast } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { themeColor } from '../../../settings'
+import { PageTitle } from '../../PageTitle'
 
 const metrics = [
   {
@@ -39,6 +40,7 @@ export const ChartsDirectory = () => {
   const toast = useToast()
   return (
     <Flex direction={'column'} gap={'3'}>
+      <PageTitle title="Network Charts Directory" />
       <Text fontSize={'5xl'}>Network Charts</Text>
       <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={'3'}>
         {metrics.map((m, i) => (

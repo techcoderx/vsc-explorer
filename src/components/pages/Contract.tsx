@@ -24,7 +24,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import { fetchL1Rest, fetchMembersAtL1Block, useContract } from '../../requests'
 import TableRow from '../TableRow'
-import { timeAgo } from '../../helpers'
+import { abbreviateHash, timeAgo } from '../../helpers'
 import { cvApi, l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
@@ -39,6 +39,7 @@ import { useMemo } from 'react'
 import { BLSSig } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { Contract as ContractType } from '../../types/L2ApiResult'
+import { PageTitle } from '../PageTitle'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -114,6 +115,7 @@ export const Contract = () => {
 
   return (
     <>
+      <PageTitle title={`Contract ${abbreviateHash(contractId || '', 18, 0)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Box mb={'4'}>
           <Text fontSize={'5xl'}>Contract</Text>

@@ -26,6 +26,7 @@ import { l1Explorer, themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { InfoIcon } from '@chakra-ui/icons'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
+import { PageTitle } from '../PageTitle'
 
 const blockBatch = 100
 
@@ -58,6 +59,7 @@ const Epoch = () => {
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
+      <PageTitle title={`Epoch #${thousandSeperator(epchNum)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize="5xl">Epoch #{thousandSeperator(epchNum)}</Text>
         <PrevNextBtns toPrev={epchNum > 0 ? '/epoch/' + (epchNum! - 1) : undefined} toNext={'/epoch/' + (epchNum! + 1)} />

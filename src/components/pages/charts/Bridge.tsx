@@ -7,6 +7,7 @@ import { fetchL1Rest, useNetworkStats } from '../../../requests'
 import { multisigAccount } from '../../../settings'
 import { roundFloat, thousandSeperator } from '../../../helpers'
 import { Coin } from '../../../types/Payloads'
+import { PageTitle } from '../../PageTitle'
 
 type TotalTVL = {
   date: string
@@ -208,6 +209,7 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
 export const BridgeCharts = () => {
   return (
     <>
+      <PageTitle title="Native Asset Mapping (NAM) Charts" />
       <Text fontSize={'5xl'}>Native Asset Mapping (NAM) Charts</Text>
       <hr />
       <Card my={'6'}>

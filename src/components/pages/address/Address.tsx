@@ -4,12 +4,13 @@ import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
 import { fetchL2TxnsBy, getWitness, useAddrTxStats } from '../../../requests'
-import { getNextTabRoute, validateHiveUsername } from '../../../helpers'
+import { abbreviateHash, getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
 import { Txns } from '../../tables/Transactions'
 import { multisigAccount, themeColorScheme } from '../../../settings'
 import Pagination from '../../Pagination'
+import { PageTitle } from '../../PageTitle'
 
 const count = 100
 
@@ -50,6 +51,7 @@ export const Address = () => {
   if (!addr || !validAddr) return <PageNotFound />
   return (
     <>
+      <PageTitle title={`${abbreviateHash(addr, 26, 0)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         {isL1 ? (
           <Text fontSize={'5xl'} mb={'4'}>

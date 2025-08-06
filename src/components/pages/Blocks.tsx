@@ -6,6 +6,7 @@ import { Blocks as BlocksTbl } from '../tables/Blocks'
 import Pagination from '../Pagination'
 import { fetchProps, fetchBlocks } from '../../requests'
 import { thousandSeperator } from '../../helpers'
+import { PageTitle } from '../PageTitle'
 
 const count = 50
 
@@ -29,6 +30,7 @@ const Blocks = () => {
 
   return (
     <>
+      <PageTitle title="Latest Blocks" />
       <Text fontSize={'5xl'}>Latest Blocks</Text>
       <hr />
       <br />

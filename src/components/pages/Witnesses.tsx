@@ -5,6 +5,7 @@ import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
 import { fetchEpoch, fetchWitnessesStats } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
 import { useMemo, useState } from 'react'
+import { PageTitle } from '../PageTitle'
 
 const Witnesses = () => {
   const [sort, setSort] = useState<string>('')
@@ -30,6 +31,7 @@ const Witnesses = () => {
   }, [stats, sort])
   return (
     <>
+      <PageTitle title="Witnesses" />
       <Text fontSize={'5xl'}>Witnesses</Text>
       <hr />
       <br />

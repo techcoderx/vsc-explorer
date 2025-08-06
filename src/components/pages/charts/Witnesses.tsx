@@ -3,6 +3,7 @@ import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@c
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { roundFloat, thousandSeperator } from '../../../helpers'
+import { PageTitle } from '../../PageTitle'
 
 const DailyActiveWitnesses = () => {
   const { colorMode } = useColorMode()
@@ -81,6 +82,7 @@ const ActiveStake = () => {
 export const WitnessCharts = () => {
   return (
     <>
+      <PageTitle title="Witness Charts" />
       <Text fontSize={'5xl'}>Witness Charts</Text>
       <hr />
       <Card my={'6'}>

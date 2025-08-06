@@ -36,7 +36,7 @@ import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed } from '../../requests'
-import { fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
@@ -46,6 +46,7 @@ import { StatusBadge } from '../tables/Ledgers'
 import { AccountLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
+import { PageTitle } from '../PageTitle'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1px solid #e2e8f0'
@@ -391,6 +392,7 @@ const L1Tx = () => {
   }, [t])
   return (
     <>
+      <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
         <Text fontSize={'5xl'}>Hive Transaction</Text>
         <Text fontSize={'2xl'} opacity={'0.7'}>
@@ -509,6 +511,7 @@ const L2Tx = () => {
   }, [data])
   return (
     <>
+      <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
         <Text fontSize={'5xl'}>Transaction</Text>
         <Text fontSize={'2xl'} opacity={'0.7'}>

@@ -20,6 +20,7 @@ import { useDagByCID } from '../../../requests'
 import JsonToTableRecursive from '../../JsonTableRecursive'
 import { CopyButton } from '../../CopyButton'
 import { SourceFile } from '../../SourceFile'
+import { PageTitle } from '../../PageTitle'
 
 export const DagInspector = () => {
   const [searchParams] = useSearchParams()
@@ -47,6 +48,7 @@ export const DagInspector = () => {
   }
   return (
     <>
+      <PageTitle title="DAG Inspector" />
       <Text fontSize={'5xl'}>DAG Inspector</Text>
       <Text mb={'6'}>View the contents of a DAG by CID pinned by nodes.</Text>
       <HStack gap={'3'} mb={'6'}>

@@ -6,6 +6,7 @@ import { l1Explorer, themeColorScheme, hafVscApi } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
 import { abbreviateHash, thousandSeperator } from '../../helpers'
 import { Block } from '../../types/HafApiResult'
+import { PageTitle } from '../PageTitle'
 
 const WitnessSchedule = () => {
   const [expSchedule, setExpSchedule] = useState(false)
@@ -49,6 +50,7 @@ const WitnessSchedule = () => {
   }, [])
   return (
     <>
+      <PageTitle title="Schedule" />
       <Text fontSize={'5xl'}>Schedule</Text>
       <hr />
       <br />

@@ -3,6 +3,7 @@ import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@c
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { thousandSeperator } from '../../../helpers'
+import { PageTitle } from '../../PageTitle'
 
 const DailyContracts = () => {
   const { colorMode } = useColorMode()
@@ -44,6 +45,7 @@ const DailyContracts = () => {
 export const ContractsCharts = () => {
   return (
     <>
+      <PageTitle title="Contracts Charts" />
       <Text fontSize={'5xl'}>Contracts Charts</Text>
       <hr />
       <Card my={'6'}>

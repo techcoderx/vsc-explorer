@@ -6,6 +6,7 @@ import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
+import { PageTitle } from '../PageTitle'
 
 const count = 100
 
@@ -31,6 +32,7 @@ const Elections = () => {
   if (invalidPage) return <PageNotFound />
   return (
     <>
+      <PageTitle title="Elections" />
       <Text fontSize={'5xl'}>Elections</Text>
       <hr />
       <br />

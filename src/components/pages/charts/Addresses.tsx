@@ -3,6 +3,7 @@ import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@c
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { thousandSeperator } from '../../../helpers'
+import { PageTitle } from '../../PageTitle'
 
 const DailyActiveUsers = () => {
   const { colorMode } = useColorMode()
@@ -45,6 +46,7 @@ const DailyActiveUsers = () => {
 export const AddressCharts = () => {
   return (
     <>
+      <PageTitle title="Address Charts" />
       <Text fontSize={'5xl'}>Address Charts</Text>
       <hr />
       <Card my={'6'}>

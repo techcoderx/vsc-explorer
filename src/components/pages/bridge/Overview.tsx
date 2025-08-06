@@ -29,6 +29,7 @@ import { L1Balance } from '../../../types/L1ApiResult'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
 import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
 import { AccountLink, TxLink } from '../../TableLink'
+import { PageTitle } from '../../PageTitle'
 
 const cardBorder = '1.5px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1.5px solid #e2e8f0'
@@ -86,6 +87,7 @@ const HiveBridgeOverview = () => {
   })
   return (
     <>
+      <PageTitle title="Hive Asset Mapping Overview" />
       <Text fontSize={'5xl'}>Hive Asset Mapping Overview</Text>
       <hr />
       <br />

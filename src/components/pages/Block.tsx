@@ -31,6 +31,7 @@ import { AccountLink, TxLink } from '../TableLink'
 import { Coin } from '../../types/Payloads'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import { Txns } from '../tables/Transactions'
+import { PageTitle } from '../PageTitle'
 
 const BlockTxs = ({ txIds }: { txIds: string[] }) => {
   const { data } = useQuery({
@@ -86,6 +87,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   if (invalidBlkId) return <PageNotFound />
   return (
     <>
+      <PageTitle title={`Block #${thousandSeperator(blkNum)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize="5xl">Block #{thousandSeperator(blkNum)}</Text>
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/' + (blkNum! - 1) : undefined} toNext={'/block/' + (blkNum! + 1)} />

@@ -6,6 +6,7 @@ import { BridgeCounter } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
 import PageNotFound from '../404'
 import { LedgerWithdrawals, LedgerDeposits } from '../../tables/Ledgers'
+import { PageTitle } from '../../PageTitle'
 
 const count = 100
 const maxPage = 100
@@ -23,6 +24,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
+      <PageTitle title="Hive Asset Maps" />
       <Text fontSize={'5xl'}>Hive Asset Maps</Text>
       <hr />
       <br />
@@ -45,6 +47,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
+      <PageTitle title="Hive Asset Unmaps" />
       <Text fontSize={'5xl'}>Hive Asset Unmaps</Text>
       <hr />
       <br />
