@@ -82,15 +82,23 @@ const Witnesses = () => {
                   </Td>
                   <Td>{fmtmAmount(m.weight, 'HIVE')}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/block/' + m.last_block}>
-                      {thousandSeperator(m.last_block || 0)}
-                    </Link>
+                    {m.last_block ? (
+                      <Link as={ReactRouterLink} to={'/block/' + m.last_block}>
+                        {thousandSeperator(m.last_block || 0)}
+                      </Link>
+                    ) : (
+                      'N/A'
+                    )}
                   </Td>
                   <Td>{thousandSeperator(m.block_count || 0)}</Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/epoch/' + m.last_epoch}>
-                      {thousandSeperator(m.last_epoch)}
-                    </Link>
+                    {m.last_epoch ? (
+                      <Link as={ReactRouterLink} to={'/epoch/' + m.last_epoch}>
+                        {thousandSeperator(m.last_epoch)}
+                      </Link>
+                    ) : (
+                      'N/A'
+                    )}
                   </Td>
                   <Td>{thousandSeperator(m.election_count || 0)}</Td>
                   <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
