@@ -4,7 +4,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, validateHiveUsername } from '../helpers'
 import { FaEthereum, FaHive, FaFileContract } from 'react-icons/fa6'
 
-type TableLinkParams = { val: string; tooltip?: boolean; truncate?: number; icon?: ReactNode }
+type TableLinkParams = { val: string; truncate?: number; icon?: ReactNode }
 
 const iconByAddr = (addr: string) => {
   if (addr.startsWith('hive:')) return <FaHive />
@@ -12,7 +12,8 @@ const iconByAddr = (addr: string) => {
 }
 
 const rmPrefix = (addr: string) => {
-  return addr.replace('hive:', '').replace('did:pkh:eip155:1:', '')
+  const sections = addr.split(':')
+  return sections[sections.length - 1]
 }
 
 const TheLink = ({ val, truncate, href, icon }: TableLinkParams & { href: string }) => {
@@ -29,19 +30,19 @@ const TheLink = ({ val, truncate, href, icon }: TableLinkParams & { href: string
   )
 }
 
-export const TxLink = ({ val, tooltip, truncate = 15 }: TableLinkParams) => {
+export const TxLink = ({ val, truncate = 15 }: TableLinkParams) => {
   const href = '/tx/' + val
-  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} />
+  return <TheLink val={val} truncate={truncate} href={href} />
 }
 
-export const AccountLink = ({ val, tooltip, truncate = 16 }: TableLinkParams) => {
+export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
   if (val.startsWith('contract:') || (val.startsWith('vsc') && validateHiveUsername(val) !== null))
-    return <ContractLink val={val} tooltip={tooltip} truncate={truncate} />
+    return <ContractLink val={val} truncate={truncate} />
   const href = `/address/${val}`
-  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} icon={iconByAddr(val)} />
+  return <TheLink val={val} truncate={truncate} href={href} icon={iconByAddr(val)} />
 }
 
-export const ContractLink = ({ val, tooltip, truncate = 16 }: TableLinkParams) => {
+export const ContractLink = ({ val, truncate = 16 }: TableLinkParams) => {
   const href = '/contract/' + val.replace('contract:', '')
-  return <TheLink val={val} tooltip={tooltip} truncate={truncate} href={href} icon={<FaFileContract />} />
+  return <TheLink val={val} truncate={truncate} href={href} icon={<FaFileContract />} />
 }

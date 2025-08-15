@@ -68,7 +68,7 @@ const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw
         </Tooltip>
       </Td>
       <Td>
-        <AccountLink val={tx.to} tooltip={true} />
+        <AccountLink val={tx.to} />
       </Td>
       <Td>{fmtmAmount(tx.amount, tx.asset)}</Td>
     </Tr>

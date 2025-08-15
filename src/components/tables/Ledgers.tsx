@@ -39,7 +39,7 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
               return (
                 <Tr key={i}>
                   <Td>
-                    <TxLink val={id} tooltip={true} truncate={25} />
+                    <TxLink val={id} truncate={25} />
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
                     <Tooltip label={item.timestamp} placement="top">
@@ -85,7 +85,7 @@ export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
             txs.map((item, i) => (
               <Tr key={i}>
                 <Td>
-                  <TxLink val={item.id} tooltip={true} />
+                  <TxLink val={item.id} />
                 </Td>
                 <Td sx={{ whiteSpace: 'nowrap' }}>
                   <Tooltip label={item.timestamp} placement="top">
@@ -99,7 +99,7 @@ export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
                   <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
                 </Td>
                 <Td>
-                  <AccountLink val={item.to} tooltip={true} />
+                  <AccountLink val={item.to} />
                 </Td>
                 <Td>{fmtmAmount(item.amount, item.asset)}</Td>
               </Tr>
@@ -131,7 +131,7 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
               return (
                 <Tr key={i}>
                   <Td>
-                    <TxLink val={id} tooltip={true} />
+                    <TxLink val={id} />
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
                     <Tooltip label={item.timestamp} placement="top">
@@ -176,7 +176,7 @@ export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) =>
             actions.map((item, i) => (
               <Tr key={i}>
                 <Td>
-                  <TxLink val={item.id} tooltip={true} />
+                  <TxLink val={item.id} />
                 </Td>
                 <Td sx={{ whiteSpace: 'nowrap' }}>
                   <Tooltip label={item.timestamp} placement="top">
@@ -184,7 +184,7 @@ export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) =>
                   </Tooltip>
                 </Td>
                 <Td>
-                  <AccountLink val={item.to} truncate={30} tooltip={true} />
+                  <AccountLink val={item.to} truncate={30} />
                 </Td>
                 <Td>{fmtmAmount(item.amount, item.asset)}</Td>
                 <Td>
