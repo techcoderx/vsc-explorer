@@ -53,7 +53,7 @@ const NewContracts = () => {
                     </Link>
                   </Td>
                   <Td>
-                    <Tooltip label={item.tx_id} placement="top" sx={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip label={item.tx_id} placement="top">
                       <Link as={ReactRouterLink} to={'/tx/' + item.tx_id}>
                         {abbreviateHash(item.tx_id, 15, 0)}
                       </Link>
