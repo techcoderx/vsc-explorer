@@ -131,7 +131,7 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
               return (
                 <Tr key={i}>
                   <Td>
-                    <TxLink val={id} />
+                    <TxLink val={id.split(':')[0]} />
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
                     <Tooltip label={item.timestamp} placement="top">
@@ -176,7 +176,7 @@ export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) =>
             actions.map((item, i) => (
               <Tr key={i}>
                 <Td>
-                  <TxLink val={item.id} />
+                  <TxLink val={item.id.split(':')[0]} />
                 </Td>
                 <Td sx={{ whiteSpace: 'nowrap' }}>
                   <Tooltip label={item.timestamp} placement="top">

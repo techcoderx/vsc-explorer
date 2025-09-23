@@ -43,9 +43,9 @@ export const ContractOutputTbl = ({ outputs }: { outputs: ContractOutput[] }) =>
                       </Tooltip>
                     ) : null}
                   </Td>
-                  <Td>{j === 0 ? <ContractLink val={out.contract_id} tooltip /> : null}</Td>
+                  <Td>{j === 0 ? <ContractLink val={out.contract_id} /> : null}</Td>
                   <Td>
-                    <TxLink val={input.split('-')[0]} tooltip />
+                    <TxLink val={input.split('-')[0]} />
                   </Td>
                   <Td>
                     <Tooltip placement="top" label={out.results[j].ret}>

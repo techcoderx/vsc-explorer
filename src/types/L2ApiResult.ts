@@ -178,6 +178,7 @@ export interface Txn {
   nonce: number
   rc_limit: number
   required_auths: string[]
+  required_posting_auths: string[]
   status: Status
   ledger: LedgerOpLog[]
   ledger_actions: LedgerActions[]

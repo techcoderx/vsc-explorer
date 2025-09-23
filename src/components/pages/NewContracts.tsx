@@ -3,6 +3,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
 import { PageTitle } from '../PageTitle'
+import { AccountLink } from '../TableLink'
 
 const NewContracts = () => {
   const { contracts, isLoading } = useContracts({})
@@ -48,9 +49,7 @@ const NewContracts = () => {
                     </Tooltip>
                   </Td>
                   <Td>
-                    <Link as={ReactRouterLink} to={'/address/hive:' + item.creator}>
-                      {item.creator}
-                    </Link>
+                    <AccountLink val={item.creator} />
                   </Td>
                   <Td>
                     <Tooltip label={item.tx_id} placement="top">

@@ -60,7 +60,7 @@ const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw
   return (
     <Tr _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
       <Td>
-        <TxLink val={tx.id} truncate={10} />
+        <TxLink val={tx.id.split(':')[0]} truncate={10} />
       </Td>
       <Td>
         <Tooltip label={tx.timestamp} placement={'top'}>

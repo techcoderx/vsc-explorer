@@ -229,7 +229,7 @@ export const useContract = (contract_id: string, enabled = true) => {
         `
 query Contract($opt1: FindContractFilter, $opt2: TransactionFilter, $opt3: ContractOutputFilter) {
   contract: findContract(filterOptions: $opt1) { id code creator owner tx_id creation_height creation_ts runtime }
-  txns: findTransaction(filterOptions: $opt2) { id anchr_height anchr_ts required_auths status ops { type data }}
+  txns: findTransaction(filterOptions: $opt2) { id anchr_height anchr_ts required_auths required_posting_auths status ops { type data }}
   outputs: findContractOutput(filterOptions: $opt3) { id timestamp contract_id inputs results { ret ok }}
 }`,
         {
@@ -315,14 +315,14 @@ export const getWithdrawals = async (offset = 0, limit = 100, options?: object):
 
 export const fetchLatestL2Txns = async (): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
-    `{ txns: findTransaction { id anchr_height anchr_ts required_auths status ops { type, data }} }`
+    `{ txns: findTransaction { id anchr_height anchr_ts required_auths required_posting_auths status ops { type, data }} }`
   )
   return result.data
 }
 
 export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, options?: object): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
-    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths status ops { type, data }}}`,
+    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths required_posting_auths status ops { type, data }}}`,
     {
       opts: {
         ...options,
@@ -336,7 +336,7 @@ export const fetchL2TxnsBy = async (offset: number = 0, limit: number = 50, opti
 
 export const fetchL2TxnsDetailed = async (id: string): Promise<{ txns: Txn[] }> => {
   const result = await gql<GqlResponse<{ txns: Txn[] }>>(
-    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths nonce status ops { type, index, data } rc_limit ledger { type from to amount asset memo params } ledger_actions { type status to amount asset memo data } output { id index } }}`,
+    `query AccHistory ($opts: TransactionFilter) { txns: findTransaction(filterOptions: $opts) { id anchr_height anchr_ts required_auths required_posting_auths nonce status ops { type, index, data } rc_limit ledger { type from to amount asset memo params } ledger_actions { type status to amount asset memo data } output { id index } }}`,
     {
       opts: {
         byId: id,

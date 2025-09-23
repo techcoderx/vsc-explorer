@@ -40,6 +40,7 @@ import { BLSSig } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { Contract as ContractType } from '../../types/L2ApiResult'
 import { PageTitle } from '../PageTitle'
+import { AccountLink } from '../TableLink'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -165,7 +166,12 @@ export const Contract = () => {
                         isLoading={isLoading}
                       />
                       <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
-                      <TableRow label="Creator" value={contract.creator} link={'/address/hive:' + contract.creator} />
+                      <TableRow label="Creator">
+                        <AccountLink val={contract.creator} />
+                      </TableRow>
+                      <TableRow label="Owner">
+                        <AccountLink val={contract.owner} />
+                      </TableRow>
                       <TableRow label="Bytecode CID">
                         <Flex align={'center'} gap={'2'}>
                           <Text>{contract.code}</Text>

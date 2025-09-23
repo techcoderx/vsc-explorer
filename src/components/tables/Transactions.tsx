@@ -78,7 +78,9 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                 <Td>
                   <AccountLink
                     val={
-                      o.type === 'deposit' ? o.data.from : t.required_auths[0] ?? (o.type !== 'call_contract' ? o.data.from : '')
+                      o.type === 'deposit'
+                        ? o.data.from
+                        : t.required_auths[0] ?? (o.type !== 'call_contract' ? o.data.from : t.required_posting_auths[0] ?? '')
                     }
                   />
                 </Td>
