@@ -12,23 +12,12 @@ import {
   Link,
   Stack,
   StackDivider,
-  Step,
-  Stepper,
-  StepIndicator,
-  StepStatus,
-  StepDescription,
-  StepIcon,
-  StepNumber,
-  StepTitle,
-  StepSeparator,
   Text,
   useSteps,
   FormControl,
   FormLabel,
   Select,
-  Textarea,
   Input,
-  useBreakpointValue,
   useToast,
   Spinner,
   ToastId
@@ -36,38 +25,52 @@ import {
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
 import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
-import MultiFileInput from '../../MultiFileInput'
-import { isValidJSONStr } from '../../../helpers'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
 
-const steps = [
-  {
-    title: 'Notice',
-    description: 'Read This First'
+const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
+  '0.39.0': {
+    go: '1.25.0',
+    llvm: '19.1.2',
+    img_digest: 'sha256:0e51d243c1b84ec650f2dcd1cce3a09bb09730e1134771aeace2240ade4b32f5'
   },
-  {
-    title: 'Contract Info',
-    description: 'Particulars'
-  },
-  {
-    title: 'Upload',
-    description: 'Source Code'
+  '0.38.0': {
+    go: '1.24.4',
+    llvm: '19.1.2',
+    img_digest: 'sha256:98447dff0e56426b98f96a1d47ac7c1d82d27e3cd630cba81732cfc13c9a410f'
   }
+}
+
+const wasmStripTools = [
+  ['', 'N/A'],
+  ['wabt', 'Wabt (v1.0.37)'],
+  ['wasm-tools', 'Wasm Tools (v1.239.0)']
 ]
 
 const notice = [
   {
     title: 'Language',
-    body: <Text>The contract verifier supports AssemblyScript (AS) source files only. Other languages are WIP.</Text>
+    body: <Text>The contract verifier supports contracts written in Go only.</Text>
   },
   {
     title: 'Compiler Options',
     body: (
       <Text>
         There is currently no way to set custom compiler options yet. The verifier uses{' '}
-        <Code>--optimize --exportRuntime --runPasses asyncify</Code> for AS contracts.
+        <Code>-gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown</Code> for Go contracts.
+      </Text>
+    )
+  },
+  {
+    title: 'Environment',
+    body: (
+      <Text>
+        Contracts are compiled using the official{' '}
+        <Link href="https://hub.docker.com/r/tinygo/tinygo" target="_blank">
+          TinyGo Docker image
+        </Link>
+        .
       </Text>
     )
   },
@@ -75,74 +78,45 @@ const notice = [
     title: 'Entrypoint',
     body: (
       <Text>
-        The entrypoint filename must be <Code>index.ts</Code> for AS contracts. Please ensure that this file exists and exports
-        all public methods.
+        The entrypoint filename must be <Code>contract/main.go</Code> for Go contracts. Please ensure that this file exists as
+        part of the main package.
       </Text>
     )
   },
   {
-    title: 'Folder Structure',
-    body: (
-      <Text>
-        All source code files must not be located in any sub-folders. See example in{' '}
-        <Link href="https://github.com/vsc-eco/btc-relay/tree/main/assembly" target="_blank">
-          BTC relay contract
-        </Link>
-        .
-      </Text>
-    )
+    title: 'Dependencies',
+    body: <Text>The contract verifier does not support importing external packages outside of Go standard library for now.</Text>
   },
   {
     title: 'Experimental',
     body: (
       <Text>
-        This tool is currently <b>experimental</b> and some issues may be expected. User authentication is disabled for now. Use
-        at your own risk.
+        This tool is currently <b>experimental</b> and some issues are to be expected. Use at your own risk.
       </Text>
     )
   }
-]
-
-const licenses = [
-  'MIT',
-  'Apache-2.0',
-  'GPL-3.0-only',
-  'GPL-3.0-or-later',
-  'LGPL-3.0-only',
-  'LGPL-3.0-or-later',
-  'AGPL-3.0-only',
-  'AGPL-3.0-or-later',
-  'MPL 2.0',
-  'BSL-1.0',
-  'WTFPL',
-  'Unlicense'
 ]
 
 export const VerifyContract = () => {
   const [searchParams] = useSearchParams()
   const { activeStep: stage, setActiveStep: setStage } = useSteps({
     index: searchParams.get('skipnotice') === '1' ? 1 : 0,
-    count: steps.length
-  })
-  const stepOrient: 'vertical' | 'horizontal' | undefined = useBreakpointValue({
-    base: 'vertical',
-    md: 'horizontal'
+    count: 2
   })
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
-  const [license, setLicense] = useState<string>()
-  const [deps, setDeps] = useState<string>()
-  const [files, setFiles] = useState<File[]>([])
+  const [repoUrl, setRepoUrl] = useState<string>('')
+  const [gitBranch, setGitBranch] = useState<string>('')
+  const [tinygoVersion, setTinyGoVersion] = useState<string>()
+  const [wasmStripTool, setWasmStripTool] = useState<string>()
   const [isSpinning, setIsSpinning] = useState(false)
   const toast = useToast()
   const toastRef = useRef<ToastId>()
-  const nextClicked = async () => {
+  const submitClicked = async () => {
     let e = ''
     if (!addr.startsWith('vsc1')) {
       e = "Contract address must start with 'vsc1'"
-    } else if (!license) {
-      e = 'Please select a license'
-    } else if (!deps || !isValidJSONStr(deps)) {
-      e = 'Dependencies must be a valid JSON'
+    } else if (!repoUrl.startsWith('https://github.com/')) {
+      e = 'Repository URL must be a GitHub link'
     }
     if (e) {
       return toast({ title: e, status: 'error' })
@@ -166,16 +140,6 @@ export const VerifyContract = () => {
       setIsSpinning(false)
       return toast({ title: 'Failed to call backend for contract verification status', status: 'error' })
     }
-    setIsSpinning(false)
-    setStage(2)
-  }
-  const submitClicked = async () => {
-    if (files.length === 0)
-      return toast({
-        title: 'Please choose a file',
-        status: 'error'
-      })
-    setIsSpinning(true)
     toastRef.current = toast({
       title: 'Submitting verification request...',
       description: '(1/3) Preparing request...',
@@ -188,37 +152,11 @@ export const VerifyContract = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ license, dependencies: JSON.parse(deps!) })
+        body: JSON.stringify({})
       })
       if (createReq.status !== 200) {
         setIsSpinning(false)
         let e = await createReq.json()
-        toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
-        return
-      }
-      for (let f in files) {
-        toast.update(toastRef.current, {
-          description: `(2/3) Uploading file ${parseInt(f) + 1} of ${files.length}: ${files[f].name}`
-        })
-        const fd = new FormData()
-        fd.append('file', files[f])
-        fd.append('filename', files[f].name)
-        const uploadReq = await fetch(`${cvApi}/verify/${addr}/upload`, {
-          method: 'POST',
-          body: fd
-        })
-        if (uploadReq.status !== 200) {
-          setIsSpinning(false)
-          let e = await uploadReq.json()
-          toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
-          return
-        }
-      }
-      toast.update(toastRef.current, { description: '(3/3) Finalizing upload...' })
-      const finalizeReq = await fetch(`${cvApi}/verify/${addr}/complete`, { method: 'POST' })
-      if (finalizeReq.status !== 200) {
-        setIsSpinning(false)
-        let e = await finalizeReq.json()
         toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
         return
       }
@@ -246,29 +184,6 @@ export const VerifyContract = () => {
       </Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
-          <Stepper
-            size="lg"
-            index={stage}
-            colorScheme={themeColorScheme}
-            orientation={stepOrient}
-            height={stepOrient === 'vertical' ? '200px' : undefined}
-            gap={stepOrient === 'vertical' ? 0 : undefined}
-          >
-            {steps.map((s, index) => (
-              <Step key={index}>
-                <StepIndicator>
-                  <StepStatus complete={<StepIcon />} incomplete={<StepNumber />} active={<StepNumber />} />
-                </StepIndicator>
-
-                <Box flexShrink="0">
-                  <StepTitle>{s.title}</StepTitle>
-                  <StepDescription>{s.description}</StepDescription>
-                </Box>
-
-                <StepSeparator />
-              </Step>
-            ))}
-          </Stepper>
           {stage === 0 ? (
             <Box>
               <Card mb={'3'}>
@@ -315,28 +230,52 @@ export const VerifyContract = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>License</FormLabel>
+                      <FormLabel>GitHub Repository URL</FormLabel>
+                      <Input
+                        type="text"
+                        placeholder="https://github.com/..."
+                        value={repoUrl}
+                        onChange={(e) => setRepoUrl(e.target.value)}
+                        focusBorderColor={themeColorLight}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Git Branch</FormLabel>
+                      <Input
+                        type="text"
+                        placeholder={'default branch'}
+                        value={gitBranch}
+                        onChange={(e) => setGitBranch(e.target.value)}
+                        focusBorderColor={themeColorLight}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>TinyGo Version</FormLabel>
                       <Select
                         focusBorderColor={themeColorLight}
-                        placeholder="Choose a license..."
-                        value={license}
-                        onChange={(e) => setLicense(e.target.value)}
+                        value={tinygoVersion}
+                        onChange={(e) => setTinyGoVersion(e.target.value)}
                       >
-                        {licenses.map((l, i) => (
-                          <option key={i} value={l}>
-                            {l}
+                        {Object.keys(tinygoVersions).map((val, i) => (
+                          <option key={i} value={val}>
+                            v{val} (Go: v{tinygoVersions[val].go})
                           </option>
                         ))}
                       </Select>
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Dependencies</FormLabel>
-                      <Textarea
+                      <FormLabel>WASM Strip Tool</FormLabel>
+                      <Select
                         focusBorderColor={themeColorLight}
-                        placeholder="Copy dependencies from package.json here"
-                        value={deps}
-                        onChange={(e) => setDeps(e.target.value)}
-                      ></Textarea>
+                        value={wasmStripTool}
+                        onChange={(e) => setWasmStripTool(e.target.value)}
+                      >
+                        {wasmStripTools.map((val, i) => (
+                          <option key={i} value={val[0]}>
+                            {val[1]}
+                          </option>
+                        ))}
+                      </Select>
                     </FormControl>
                   </Stack>
                 </CardBody>
@@ -344,27 +283,6 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme} onClick={nextClicked} disabled={isSpinning}>
-                    <Flex gap={'2'} align={'center'}>
-                      <Spinner size={'sm'} hidden={!isSpinning} />
-                      <Text>Next</Text>
-                    </Flex>
-                  </Button>
-                </Stack>
-              </Center>
-            </Box>
-          ) : stage === 2 ? (
-            <Box>
-              <Card mb={'3'}>
-                <CardBody>
-                  <FormControl>
-                    <MultiFileInput files={files} setFiles={setFiles} accept=".ts" onChange={(f) => setFiles(f)} />
-                  </FormControl>
-                </CardBody>
-              </Card>
-              <Center>
-                <Stack direction="row" gap="3">
-                  <Button onClick={() => setStage(1)}>Previous</Button>
                   <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning}>
                     <Flex gap={'2'} align={'center'}>
                       <Spinner size={'sm'} hidden={!isSpinning} />
@@ -374,7 +292,7 @@ export const VerifyContract = () => {
                 </Stack>
               </Center>
             </Box>
-          ) : stage === 3 ? (
+          ) : stage === 2 ? (
             <Flex direction="column" gap={'5'} align={'center'}>
               <Text fontSize={'9xl'}>🎉</Text>
               <Text>
