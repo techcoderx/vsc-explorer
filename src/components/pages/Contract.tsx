@@ -2,7 +2,6 @@ import {
   Text,
   Heading,
   Box,
-  Link,
   Skeleton,
   Table,
   TableContainer,
@@ -25,12 +24,10 @@ import { useParams } from 'react-router'
 import { fetchL1Rest, fetchMembersAtL1Block, useContract } from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, timeAgo } from '../../helpers'
-import { cvApi, l1Explorer } from '../../settings'
+import { l1Explorer } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
-import { cvInfo, fetchSrcFiles } from '../../cvRequests'
-import { SourceFile } from '../SourceFile'
-import { CopyButton } from '../CopyButton'
+import { cvInfo } from '../../cvRequests'
 import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
@@ -107,11 +104,6 @@ export const Contract = () => {
     queryKey: ['vsc-cv-verif-info', contractId],
     queryFn: async () => cvInfo(contractId!),
     enabled: !invalidContractId
-  })
-  const { data: verifFiles } = useQuery({
-    queryKey: ['vsc-cv-files', contractId],
-    queryFn: async () => fetchSrcFiles(contractId!),
-    enabled: !invalidContractId && !!verifInfo && verifInfo.status === 'success'
   })
 
   return (
@@ -195,8 +187,8 @@ export const Contract = () => {
                         <Heading fontSize={'md'}>Contract source code verified</Heading>
                       </Flex>
                       <Text m={'5px 0'}>
-                        VSC Blocks has verified that the source code below matches the deployed bytecode for the contract. This
-                        does not mean the contract is safe to interact with.
+                        VSC Blocks has verified that the source code provided to us matches the deployed bytecode for the
+                        contract. This does not mean the contract is safe to interact with.
                       </Text>
                       <Card mt={'5'} mb={'5'}>
                         <CardBody>
@@ -204,49 +196,43 @@ export const Contract = () => {
                             <Table variant={'unstyled'}>
                               <Tbody>
                                 <TableRow label="Language" value={verifInfo.lang} isInCard minimalSpace />
-                                <TableRow label="License" value={verifInfo.license} isInCard minimalSpace />
+                                {!!verifInfo.license ? (
+                                  <TableRow label="License" value={verifInfo.license} isInCard minimalSpace />
+                                ) : null}
                                 <TableRow label="Verified At" isInCard minimalSpace>
                                   {verifInfo.verified_ts + ' (' + timeAgo(verifInfo.verified_ts) + ')'}
+                                </TableRow>
+                                <TableRow label="Submitted By" isInCard minimalSpace>
+                                  <AccountLink val={'hive:' + verifInfo.verifier} />
+                                </TableRow>
+                                <TableRow
+                                  label="Repository"
+                                  value={`${verifInfo.repo_name} (${verifInfo.git_commit.slice(0, 8)})`}
+                                  link={`https://github.com/${verifInfo.repo_name}/tree/${verifInfo.git_commit}`}
+                                  isInCard
+                                  minimalSpace
+                                />
+                                <TableRow
+                                  label="TinyGo Version"
+                                  value={`v${verifInfo.tinygo_version} (Go: v${verifInfo.go_version})`}
+                                  link={`https://hub.docker.com/layers/tinygo/tinygo/${verifInfo.tinygo_version}`}
+                                  isInCard
+                                  minimalSpace
+                                />
+                                <TableRow label="Exports" isInCard minimalSpace>
+                                  <Flex gap={3}>
+                                    {verifInfo.exports.map((method, i) => (
+                                      <Tag colorScheme={themeColorScheme} key={i}>
+                                        {method}
+                                      </Tag>
+                                    ))}
+                                  </Flex>
                                 </TableRow>
                               </Tbody>
                             </Table>
                           </TableContainer>
                         </CardBody>
                       </Card>
-                      <Stack direction="row" justifyContent="space-between" align="flex-end">
-                        <Box fontSize={'lg'}>
-                          <b>Dependencies</b>
-                          {!!verifInfo.lockfile ? (
-                            <Box display={'inline'}>
-                              {' ('}
-                              <Link href={`${cvApi}/contract/${contractId}/files/cat/${verifInfo.lockfile}`} target="_blank">
-                                View lockfile
-                              </Link>
-                              {')'}
-                            </Box>
-                          ) : (
-                            ''
-                          )}
-                        </Box>
-                        <CopyButton text={JSON.stringify(verifInfo.dependencies, null, 2)} />
-                      </Stack>
-                      <SourceFile content={JSON.stringify(verifInfo.dependencies, null, 2)} />
-                      {!!verifFiles
-                        ? verifFiles.map((f, i) => (
-                            <Box key={i} mt="3" mb="3">
-                              <Stack direction="row" justifyContent="space-between" align="flex-end">
-                                <Text fontSize={'lg'}>
-                                  <b>
-                                    File {i + 1} of {verifFiles.length}:
-                                  </b>{' '}
-                                  {f.name}
-                                </Text>
-                                <CopyButton text={f.content} />
-                              </Stack>
-                              <SourceFile content={f.content} />
-                            </Box>
-                          ))
-                        : null}
                     </>
                   ) : verifInfo.status === 'queued' ? (
                     <Flex align={'center'} gap={'2'}>
