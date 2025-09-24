@@ -20,7 +20,9 @@ import {
   Input,
   useToast,
   Spinner,
-  ToastId
+  ToastId,
+  useDisclosure,
+  Icon
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
@@ -28,6 +30,9 @@ import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
+import { useAioha } from '@aioha/react-provider'
+import { AiohaModal } from '../Aioha'
+import { FaWallet } from 'react-icons/fa6'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.39.0': {
@@ -91,7 +96,8 @@ const notice = [
     title: 'Experimental',
     body: (
       <Text>
-        This tool is currently <b>experimental</b> and some issues are to be expected. Use at your own risk.
+        This tool is currently <b>experimental</b> and some issues are to be expected. It is only available for whitelisted users
+        for now.
       </Text>
     )
   }
@@ -99,6 +105,7 @@ const notice = [
 
 export const VerifyContract = () => {
   const [searchParams] = useSearchParams()
+  const { user } = useAioha()
   const { activeStep: stage, setActiveStep: setStage } = useSteps({
     index: searchParams.get('skipnotice') === '1' ? 1 : 0,
     count: 2
@@ -111,6 +118,7 @@ export const VerifyContract = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const toast = useToast()
   const toastRef = useRef<ToastId>()
+  const walletDisclosure = useDisclosure()
   const submitClicked = async () => {
     let e = ''
     if (!addr.startsWith('vsc1')) {
@@ -220,6 +228,19 @@ export const VerifyContract = () => {
                 <CardBody>
                   <Stack direction={'column'} gap={'3'}>
                     <FormControl>
+                      <FormLabel>Username</FormLabel>
+                      <Button _focus={{ boxShadow: 'none' }} onClick={walletDisclosure.onOpen}>
+                        {!!user ? (
+                          <Flex gap={'2'} alignItems={'center'}>
+                            <Icon as={FaWallet} />
+                            <Text>{user}</Text>
+                          </Flex>
+                        ) : (
+                          <Text>Connect Wallet</Text>
+                        )}
+                      </Button>
+                    </FormControl>
+                    <FormControl>
                       <FormLabel>Contract Address</FormLabel>
                       <Input
                         type="text"
@@ -306,6 +327,7 @@ export const VerifyContract = () => {
           ) : null}
         </Stack>
       </Center>
+      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} />
     </>
   )
 }

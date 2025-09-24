@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useAioha } from '@aioha/react-provider'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
@@ -188,6 +190,14 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
+  const { aioha } = useAioha()
+  useEffect(() => {
+    aioha.setup({
+      hiveauth: {
+        name: 'VSC Blocks'
+      }
+    })
+  }, [])
   return (
     <>
       <RouterProvider router={router} />
