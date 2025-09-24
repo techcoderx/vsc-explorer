@@ -25,7 +25,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { themeColorLight, themeColorScheme } from '../../settings'
+import { themeColorLight, themeColorScheme } from '../settings'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -74,7 +74,7 @@ const ProvidersSeq: Providers[] = [Providers.Keychain, Providers.PeakVault, Prov
 export const AiohaModal = ({ displayed, onClose }: { displayed: boolean; onClose: () => void }) => {
   const { aioha, user } = useAioha()
   const { colorMode } = useColorMode()
-  const [page, setPage] = useState(2)
+  const [page, setPage] = useState(1)
   const [selectedProv, setSelectedProv] = useState<Providers | null>(null)
   const [usernameInput, setUsernameInput] = useState<string>('')
   const [inProgress, setInProgress] = useState<boolean>(false)

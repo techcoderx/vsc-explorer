@@ -31,7 +31,7 @@ import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
 import { useAioha } from '@aioha/react-provider'
-import { AiohaModal } from '../Aioha'
+import { AiohaModal } from '../../Aioha'
 import { FaWallet } from 'react-icons/fa6'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
