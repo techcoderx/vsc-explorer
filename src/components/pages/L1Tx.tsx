@@ -379,7 +379,7 @@ const L1Tx = () => {
   const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : data?.timestamp ?? ''
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
-  const intervalRef = useRef<number>()
+  const intervalRef = useRef<NodeJS.Timeout>()
   useEffect(() => {
     if (shouldRefetch(!!vscTx && vscTx.length > 0 ? vscTx[0] : null)) {
       intervalRef.current = setInterval(() => {
@@ -498,7 +498,7 @@ const L2Tx = () => {
   })
   const exists = !!data && Array.isArray(data.txns) && data.txns.length > 0
   const tx = exists ? data.txns[0] : null
-  const intervalRef = useRef<number>()
+  const intervalRef = useRef<NodeJS.Timeout>()
   useEffect(() => {
     if (shouldRefetch(tx)) {
       intervalRef.current = setInterval(() => {
