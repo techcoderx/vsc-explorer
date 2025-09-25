@@ -13,6 +13,7 @@ import {
 } from './types/Payloads'
 import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
 import { Ops } from './types/L1ApiResult'
+import { fetchL1Rest } from './requests'
 
 export const timeAgo = (date: string, one: boolean = false): string => {
   const now = new Date().getTime()
@@ -82,6 +83,13 @@ export const naiToString = (nai: NAI) => {
   if (nai.nai === '@@000000021') result += 'HIVE'
   else if (nai.nai === '@@000000013') result += 'HBD'
   return result
+}
+
+export const generateMessageToSign = async (username: string) => {
+  const headBlock = await fetchL1Rest<{ blocks_result: [{ block_num: number; hash: string }] }>(
+    '/hafbe-api/block-search?page-size=1&direction=desc'
+  )
+  return `${username}:vsc_cv_login:hive:${headBlock.blocks_result[0].block_num}:${headBlock.blocks_result[0].hash}`
 }
 
 export const parseOperation = (op: Ops): { valid: false } | { valid: true; type: string; user: string; payload: object } => {

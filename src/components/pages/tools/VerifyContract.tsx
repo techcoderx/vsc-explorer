@@ -21,18 +21,18 @@ import {
   useToast,
   Spinner,
   ToastId,
-  useDisclosure,
-  Icon
+  useDisclosure
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
+import { useAioha } from '@aioha/react-provider'
+import { KeyTypes } from '@aioha/aioha'
 import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
-import { useAioha } from '@aioha/react-provider'
 import { AiohaModal } from '../../Aioha'
-import { FaWallet } from 'react-icons/fa6'
+import { generateMessageToSign } from '../../../helpers'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.39.0': {
@@ -105,7 +105,7 @@ const notice = [
 
 export const VerifyContract = () => {
   const [searchParams] = useSearchParams()
-  const { user } = useAioha()
+  const { aioha, user } = useAioha()
   const { activeStep: stage, setActiveStep: setStage } = useSteps({
     index: searchParams.get('skipnotice') === '1' ? 1 : 0,
     count: 2
@@ -113,8 +113,8 @@ export const VerifyContract = () => {
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
   const [repoUrl, setRepoUrl] = useState<string>('')
   const [gitBranch, setGitBranch] = useState<string>('')
-  const [tinygoVersion, setTinyGoVersion] = useState<string>()
-  const [wasmStripTool, setWasmStripTool] = useState<string>()
+  const [tinygoVersion, setTinyGoVersion] = useState<string>('0.39.0')
+  const [wasmStripTool, setWasmStripTool] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const toast = useToast()
   const toastRef = useRef<ToastId>()
@@ -125,6 +125,15 @@ export const VerifyContract = () => {
       e = "Contract address must start with 'vsc1'"
     } else if (!repoUrl.startsWith('https://github.com/')) {
       e = 'Repository URL must be a GitHub link'
+    }
+    const repoId = repoUrl.replace('https://github.com/', '')
+    const repoIdParts = repoId.split('/')
+    if (repoIdParts.length !== 2) {
+      e = 'Invalid GitHub repository URL'
+    } else if (repoIdParts[0].length > 39 || !/^[A-Za-z0-9-]+$/.test(repoIdParts[0])) {
+      e = 'Invalid Github user'
+    } else if (repoIdParts[1].length > 100 || !/^[A-Za-z0-9._-]+$/.test(repoIdParts[1])) {
+      e = 'Invalid Github repo name'
     }
     if (e) {
       return toast({ title: e, status: 'error' })
@@ -148,19 +157,60 @@ export const VerifyContract = () => {
       setIsSpinning(false)
       return toast({ title: 'Failed to call backend for contract verification status', status: 'error' })
     }
+    try {
+      let fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
+      if (fetchedRepo.status !== 200) {
+        return toast({ title: 'Failed to fetch repository info with status code ' + fetchedRepo.status, status: 'error' })
+      }
+      if (gitBranch.length > 0) {
+        let fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
+        if (fetchedBranch.status !== 200) {
+          return toast({ title: 'Failed to fetch branch info with status code ' + fetchedBranch.status, status: 'error' })
+        }
+      }
+    } catch {
+      setIsSpinning(false)
+      return toast({ title: 'Failed to validate repository', status: 'error' })
+    }
     toastRef.current = toast({
       title: 'Submitting verification request...',
-      description: '(1/3) Preparing request...',
+      description: 'Approve message signature request in wallet when prompted',
       status: 'loading',
       duration: null
     })
     try {
+      let msgToSign = await generateMessageToSign(user!)
+      let sign = await aioha.signMessage(msgToSign, KeyTypes.Posting)
+      if (!sign.success) {
+        toast.update(toastRef.current, { title: 'Signature Error', description: sign.error, status: 'error', duration: 15000 })
+        return
+      }
+      const authReq = await fetch(`${cvApi}/login`, {
+        method: 'POST',
+        body: `${msgToSign}:${sign.result}`
+      })
+      if (authReq.status !== 200) {
+        toast.update(toastRef.current, {
+          title: 'Error',
+          description: (await authReq.json()).error,
+          status: 'error',
+          duration: 15000
+        })
+        return
+      }
+      const authResult = await authReq.json()
       let createReq = await fetch(`${cvApi}/verify/${addr}/new`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authResult.access_token}`
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+          repo_url: repoUrl,
+          repo_branch: gitBranch.length > 0 ? gitBranch : undefined,
+          tinygo_version: tinygoVersion,
+          strip_tool: wasmStripTool.length > 0 ? wasmStripTool : undefined
+        })
       })
       if (createReq.status !== 200) {
         setIsSpinning(false)
@@ -175,7 +225,7 @@ export const VerifyContract = () => {
         duration: 30000
       })
       setIsSpinning(false)
-      setStage(3)
+      setStage(2)
     } catch {
       setIsSpinning(false)
       toast.update(toastRef.current, { title: 'Error', description: 'Unknown error occurred', status: 'error', duration: 15000 })
@@ -230,14 +280,7 @@ export const VerifyContract = () => {
                     <FormControl>
                       <FormLabel>Username</FormLabel>
                       <Button _focus={{ boxShadow: 'none' }} onClick={walletDisclosure.onOpen}>
-                        {!!user ? (
-                          <Flex gap={'2'} alignItems={'center'}>
-                            <Icon as={FaWallet} />
-                            <Text>{user}</Text>
-                          </Flex>
-                        ) : (
-                          <Text>Connect Wallet</Text>
-                        )}
+                        {user ?? 'Connect Wallet'}
                       </Button>
                     </FormControl>
                     <FormControl>
@@ -304,7 +347,11 @@ export const VerifyContract = () => {
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
-                  <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning}>
+                  <Button
+                    colorScheme={themeColorScheme}
+                    onClick={submitClicked}
+                    disabled={isSpinning || !user || addr.length === 0 || repoUrl.length === 0}
+                  >
                     <Flex gap={'2'} align={'center'}>
                       <Spinner size={'sm'} hidden={!isSpinning} />
                       <Text>Submit</Text>

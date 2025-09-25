@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { useAioha } from '@aioha/react-provider'
+import { Aioha } from '@aioha/aioha'
+import { AiohaProvider } from '@aioha/react-provider'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
@@ -189,8 +190,9 @@ const router = createBrowserRouter([
   }
 ])
 
+const aioha = new Aioha()
+
 const App = () => {
-  const { aioha } = useAioha()
   useEffect(() => {
     aioha.setup({
       hiveauth: {
@@ -199,9 +201,9 @@ const App = () => {
     })
   }, [])
   return (
-    <>
+    <AiohaProvider aioha={aioha}>
       <RouterProvider router={router} />
-    </>
+    </AiohaProvider>
   )
 }
 
