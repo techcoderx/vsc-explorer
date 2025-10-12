@@ -16,15 +16,22 @@ import {
   Card,
   CardBody,
   Spinner,
-  Stack
+  Stack,
+  Input,
+  HStack,
+  Button,
+  VStack,
+  Alert,
+  AlertIcon,
+  AlertDescription
 } from '@chakra-ui/react'
 import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { fetchL1Rest, fetchMembersAtL1Block, useContract } from '../../requests'
+import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useContract } from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, timeAgo } from '../../helpers'
-import { l1Explorer } from '../../settings'
+import { l1Explorer, themeColorLight } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
 import { cvInfo } from '../../cvRequests'
@@ -32,7 +39,7 @@ import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { BLSSig } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { Contract as ContractType } from '../../types/L2ApiResult'
@@ -88,6 +95,61 @@ const StorageProof = ({ contract }: { contract: ContractType }) => {
   )
 }
 
+const ReadState = ({ contractId }: { contractId: string }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [key, setKey] = useState('')
+  const [val, setVal] = useState('')
+  const [err, setErr] = useState('')
+  const read = async () => {
+    setIsLoading(true)
+    setErr('')
+    try {
+      const sk = await getStateKeys(contractId, [key])
+      if (!sk.data) {
+        setErr('gql error while getting state key')
+      } else {
+        setVal(sk.data.state[key])
+      }
+    } catch (e) {
+      setErr('Failed to fetch state key')
+    }
+    setIsLoading(false)
+  }
+  return (
+    <VStack gap={'4'} w={'full'}>
+      <HStack gap={'3'} w={'full'}>
+        <Input
+          type="text"
+          placeholder="Key"
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+          onKeyDown={(e) => (e.key === 'Enter' ? read() : null)}
+          focusBorderColor={themeColorLight}
+        />
+        <Button colorScheme={themeColorScheme} onClick={read} disabled={isLoading}>
+          <Flex gap={'2'} align={'center'}>
+            <Spinner size={'sm'} hidden={!isLoading} />
+            <Text>Read</Text>
+          </Flex>
+        </Button>
+      </HStack>
+      {!!err && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertDescription>{err}</AlertDescription>
+        </Alert>
+      )}
+      {!!val && (
+        <Card w={'full'}>
+          <CardBody>
+            <Text>{val}</Text>
+          </CardBody>
+        </Card>
+      )}
+    </VStack>
+  )
+}
+
 export const Contract = () => {
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vsc1')
@@ -133,6 +195,7 @@ export const Contract = () => {
               <Tab>Outputs</Tab>
               <Tab>Info</Tab>
               <Tab>Storage Proof</Tab>
+              <Tab>Read State</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
@@ -178,6 +241,9 @@ export const Contract = () => {
                 </TableContainer>
               </TabPanel>
               <TabPanel>{!!contract && <StorageProof contract={contract} />}</TabPanel>
+              <TabPanel>
+                <ReadState contractId={contract.id} />
+              </TabPanel>
               <TabPanel>
                 {verifInfo ? (
                   verifInfo.status === 'success' ? (

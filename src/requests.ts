@@ -167,6 +167,13 @@ export const getWitnessSchedule = async (height: number): Promise<WitnessSchedul
   )
 }
 
+export const getStateKeys = async (contractId: string, keys: string[]) => {
+  return gql<{ data: { state: { [k: string]: string } } }>(
+    `query State($contractId: String!, $keys: [String!]!){state: getStateByKeys(contractId: $contractId, keys: $keys)}`,
+    { contractId, keys }
+  )
+}
+
 export const getDagByCID = async <T>(cid: string): Promise<T> => {
   const query = `
     query DagByCID($cid: String!) {
