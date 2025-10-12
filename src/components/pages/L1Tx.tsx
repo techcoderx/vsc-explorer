@@ -35,15 +35,15 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed } from '../../requests'
+import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch } from '../../requests'
 import { abbreviateHash, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { Contract, Txn } from '../../types/L2ApiResult'
+import { Contract, ContractOutputDag, Txn } from '../../types/L2ApiResult'
 import { StatusBadge } from '../tables/Ledgers'
-import { AccountLink } from '../TableLink'
+import { AccountLink, ContractLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { PageTitle } from '../PageTitle'
@@ -77,6 +77,70 @@ const RC_COSTS = {
   consensus_unstake: 100,
   call_contract: 0 // FIXME: use real RC usage
 }
+
+const CallOutputs = ({
+  success,
+  outputs,
+  outContents
+}: {
+  success: boolean
+  outputs: { id: string; index: number[] }[]
+  outContents: ContractOutputDag[]
+}) => {
+  return (
+    <TableContainer>
+      <Table variant={'unstyled'}>
+        <Thead>
+          <Tr>
+            <Th>Output ID</Th>
+            <Th>Contract ID</Th>
+            <Th>Index</Th>
+            {!success && <Th>Error Symbol</Th>}
+            {!success && <Th>Error Message</Th>}
+            {success && <Th>Output</Th>}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {outputs.map((out, i) =>
+            out.index.map((o, j) => (
+              <Tr key={`${i}-${j}`}>
+                <MinTd>
+                  {j === 0 && (
+                    <Link as={ReactRouterLink} to={`/tools/dag?cid=${out.id}`}>
+                      {abbreviateHash(out.id, 20, 0)}
+                    </Link>
+                  )}
+                </MinTd>
+                <MinTd>{j === 0 && <ContractLink val={outContents[i].contract_id} />}</MinTd>
+                <MinTd>{o}</MinTd>
+                {!success && <MinTd>{outContents[i].results[o].err}</MinTd>}
+                {!success && <MinTd>{outContents[i].results[o].errMsg}</MinTd>}
+                {success && (
+                  <MinTd>
+                    {!!outContents[i].results[o].ret ? (
+                      outContents[i].results[o].ret
+                    ) : (
+                      <Text opacity={'0.7'}>
+                        <i>Empty</i>
+                      </Text>
+                    )}
+                  </MinTd>
+                )}
+              </Tr>
+            ))
+          )}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+const CallLog = ({ contractId, idx, log }: { contractId: string; idx: number; log: string }) => (
+  <Tr>
+    <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
+    <MinTd>{log}</MinTd>
+  </Tr>
+)
 
 const shouldRefetch = (txn?: Txn | null) =>
   !!txn &&
@@ -159,119 +223,159 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
   )
 }
 
-const TxOut = ({ txn }: { txn: Txn }) => (
-  <Accordion allowToggle>
-    <AccordionItem>
-      <AccordionButton>
-        <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-          Ledger Operations ({txn.ledger.length})
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-      <AccordionPanel px={'0'}>
-        <TableContainer>
-          <Table variant={'unstyled'}>
-            <Thead>
-              <Tr>
-                <Th>Type</Th>
-                <Th>From</Th>
-                <Th></Th>
-                <Th>To</Th>
-                <Th>Amount</Th>
-                <Th>Memo</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {txn.ledger.map((item, i) => {
-                return (
-                  <Tr key={i}>
-                    <MinTd>{item.type}</MinTd>
-                    <MinTd>
-                      <AccountLink val={item.from} />
-                    </MinTd>
-                    <MinTd>
-                      <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
-                    </MinTd>
-                    <MinTd>
-                      <AccountLink val={item.to} />
-                    </MinTd>
-                    <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
-                    <MinTd>{item.memo}</MinTd>
-                  </Tr>
-                )
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </AccordionPanel>
-    </AccordionItem>
-    <AccordionItem>
-      <AccordionButton>
-        <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-          Ledger Actions ({txn.ledger_actions.length})
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-      <AccordionPanel px={'0'}>
-        <TableContainer>
-          <Table variant={'unstyled'}>
-            <Thead>
-              <Tr>
-                <Th>Type</Th>
-                <Th>To</Th>
-                <Th>Amount</Th>
-                <Th>Status</Th>
-                <Th>Memo</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {txn.ledger_actions.map((item, i) => {
-                return (
-                  <Tr key={i}>
-                    <MinTd>{item.type}</MinTd>
-                    <MinTd>
-                      <AccountLink val={item.to} />
-                    </MinTd>
-                    <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
-                    <MinTd>
-                      <StatusBadge status={item.status} />
-                    </MinTd>
-                    <MinTd>{item.memo}</MinTd>
-                  </Tr>
-                )
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </AccordionPanel>
-    </AccordionItem>
-    {!!txn.output && (
+const TxOut = ({ txn }: { txn: Txn }) => {
+  const { data: outContents } = useQuery({
+    queryKey: ['vsc-tx-outputs', txn.id],
+    queryFn: () => getDagByCIDBatch<ContractOutputDag>(txn.output!.map((o) => o.id)),
+    enabled: (txn.status === 'CONFIRMED' || txn.status === 'FAILED') && !!txn.output && txn.output.length > 0
+  })
+  const logCount =
+    txn.status === 'CONFIRMED' && !!outContents && !!txn.output
+      ? txn.output.reduce(
+          (pv, val, idx) =>
+            pv +
+            val.index.reduce(
+              (pv2, val2) => pv2 + (!!outContents[idx].results[val2].logs ? outContents[idx].results[val2].logs?.length : 0),
+              0
+            ),
+          0
+        )
+      : 0
+  return (
+    <Accordion allowToggle>
       <AccordionItem>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-            Call Output
+            Ledger Operations ({txn.ledger.length})
           </Box>
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel px={'0'}>
-          <Table variant={'unstyled'}>
-            <Tbody>
-              <TableRow
-                minimalSpace
-                isInCard
-                allCardBorders
-                label="Output CID"
-                value={txn.output.id}
-                link={`/tools/dag?cid=${txn.output.id}`}
-              />
-              <TableRow minimalSpace isInCard allCardBorders label="Index" value={txn.output.index} />
-            </Tbody>
-          </Table>
+          <TableContainer>
+            <Table variant={'unstyled'}>
+              <Thead>
+                <Tr>
+                  <Th>Type</Th>
+                  <Th>From</Th>
+                  <Th></Th>
+                  <Th>To</Th>
+                  <Th>Amount</Th>
+                  <Th>Memo</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {txn.ledger.map((item, i) => {
+                  return (
+                    <Tr key={i}>
+                      <MinTd>{item.type}</MinTd>
+                      <MinTd>
+                        <AccountLink val={item.from} />
+                      </MinTd>
+                      <MinTd>
+                        <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                      </MinTd>
+                      <MinTd>
+                        <AccountLink val={item.to} />
+                      </MinTd>
+                      <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
+                      <MinTd>{item.memo}</MinTd>
+                    </Tr>
+                  )
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </AccordionPanel>
       </AccordionItem>
-    )}
-  </Accordion>
-)
+      <AccordionItem>
+        <AccordionButton>
+          <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+            Ledger Actions ({txn.ledger_actions.length})
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+        <AccordionPanel px={'0'}>
+          <TableContainer>
+            <Table variant={'unstyled'}>
+              <Thead>
+                <Tr>
+                  <Th>Type</Th>
+                  <Th>To</Th>
+                  <Th>Amount</Th>
+                  <Th>Status</Th>
+                  <Th>Memo</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {txn.ledger_actions.map((item, i) => {
+                  return (
+                    <Tr key={i}>
+                      <MinTd>{item.type}</MinTd>
+                      <MinTd>
+                        <AccountLink val={item.to} />
+                      </MinTd>
+                      <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
+                      <MinTd>
+                        <StatusBadge status={item.status} />
+                      </MinTd>
+                      <MinTd>{item.memo}</MinTd>
+                    </Tr>
+                  )
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </AccordionPanel>
+      </AccordionItem>
+      {!!txn.output && !!outContents && txn.status !== 'UNCONFIRMED' && txn.status !== 'INCLUDED' && (
+        <AccordionItem>
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+              Call Outputs
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel px={'0'}>
+            <CallOutputs success={txn.status === 'CONFIRMED'} outputs={txn.output} outContents={outContents} />
+          </AccordionPanel>
+        </AccordionItem>
+      )}
+      {!!txn.output && !!outContents && txn.status === 'CONFIRMED' && (
+        <AccordionItem>
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+              Logs ({logCount})
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel px={'0'}>
+            {logCount > 0 && (
+              <TableContainer>
+                <Table variant={'unstyled'}>
+                  <Thead>
+                    <Tr>
+                      <Th>Contract ID</Th>
+                      <Th>Log</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {txn.output.map((out, i) =>
+                      out.index.map((o, j) =>
+                        outContents[i].results[o].logs!.map((log, k) => (
+                          <CallLog key={`${i}-${j}-${k}`} contractId={outContents[i].contract_id} idx={i} log={log} />
+                        ))
+                      )
+                    )}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            )}
+          </AccordionPanel>
+        </AccordionItem>
+      )}
+    </Accordion>
+  )
+}
 
 const ContractResult = ({ out }: { out: Contract }) => {
   return (

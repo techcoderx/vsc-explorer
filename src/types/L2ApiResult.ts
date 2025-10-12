@@ -184,8 +184,8 @@ export interface Txn {
   ledger_actions: LedgerActions[]
   output?: {
     id: string
-    index: number
-  }
+    index: number[]
+  }[]
 }
 
 export interface AddrBalance {
@@ -222,6 +222,9 @@ interface ContractOutputBase {
   contract_id: string
   inputs: string[]
   results: {
+    err?: string
+    errMsg?: string
+    logs?: string[]
     ok: boolean
     ret: string
   }[]
