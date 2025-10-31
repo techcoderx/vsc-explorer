@@ -72,7 +72,7 @@ const WitnessSchedule = () => {
             <Tr>
               <Th>Username</Th>
               <Th>L1 Block</Th>
-              <Th>VSC Block</Th>
+              <Th>Magi Block</Th>
             </Tr>
           </Thead>
           <Tbody>

@@ -237,7 +237,7 @@ export const VerifyContract = () => {
       <PageTitle title="Verify Contract" />
       <Text fontSize={'5xl'}>Verify Contract</Text>
       <Text mb={'6'}>
-        Submit contract source code to VSC Blocks to verify that the resulting compiled bytecode matches the deployed contract
+        Submit contract source code to Magi Blocks to verify that the resulting compiled bytecode matches the deployed contract
         bytecode.
       </Text>
       <Center>

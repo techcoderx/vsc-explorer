@@ -196,7 +196,7 @@ const App = () => {
   useEffect(() => {
     aioha.setup({
       hiveauth: {
-        name: 'VSC Blocks'
+        name: 'Magi Blocks'
       }
     })
   }, [])

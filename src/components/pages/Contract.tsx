@@ -253,7 +253,7 @@ export const Contract = () => {
                         <Heading fontSize={'md'}>Contract source code verified</Heading>
                       </Flex>
                       <Text m={'5px 0'}>
-                        VSC Blocks has verified that the source code provided to us matches the deployed bytecode for the
+                        Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the
                         contract. This does not mean the contract is safe to interact with.
                       </Text>
                       <Card mt={'5'} mb={'5'}>

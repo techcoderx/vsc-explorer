@@ -95,7 +95,7 @@ export const AiohaModal = ({ displayed, onClose }: { displayed: boolean; onClose
     setError('')
     setInProgress(true)
     const login = await aioha.login(selectedProv!, usernameInput, {
-      msg: 'VSC Blocks Login',
+      msg: 'Magi Blocks Login',
       keyType: KeyTypes.Posting
     })
     if (!login.success) {

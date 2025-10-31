@@ -157,7 +157,7 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
       <CardHeader>
         <Flex gap={'3'} direction={'row'}>
           <Heading fontSize={'2xl'} display={'inline'}>
-            VSC Transaction
+            Magi Transaction
           </Heading>
           <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
             {txn.status === 'CONFIRMED' ? (
@@ -544,7 +544,7 @@ const L1Tx = () => {
         {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (
           <Card w="100%">
-            <CardBody>Loading VSC Operations...</CardBody>
+            <CardBody>Loading Magi Operations...</CardBody>
           </Card>
         ) : isSuccess && !data.code ? (
           parsedOps.map((trx, i) => (
@@ -583,7 +583,7 @@ const L1Tx = () => {
                 </>
               ) : (
                 <CardBody mt={'-6'}>
-                  <Text fontStyle={'italic'}>This operation is not related to VSC.</Text>
+                  <Text fontStyle={'italic'}>This operation is not related to Magi.</Text>
                 </CardBody>
               )}
             </Card>

@@ -6,32 +6,32 @@ import { PageTitle } from '../../PageTitle'
 const metrics = [
   {
     title: 'Blocks',
-    icon: '/img/block.svg',
+    icon: '/img/stats/block.svg',
     href: '/charts/blocks'
   },
   {
     title: 'Transactions',
-    icon: '/img/transaction.svg',
+    icon: '/img/stats/transaction.svg',
     href: '/charts/txs'
   },
   {
     title: 'Addresses',
-    icon: '/img/wallet.svg',
+    icon: '/img/stats/wallet.svg',
     href: '/charts/addresses'
   },
   {
     title: 'Contracts',
-    icon: '/img/contract.svg',
+    icon: '/img/stats/contract.svg',
     href: '/charts/contracts'
   },
   {
     title: 'Witnesses',
-    icon: '/img/witness.svg',
+    icon: '/img/stats/witness.svg',
     href: '/charts/witnesses'
   },
   {
     title: 'NAM',
-    icon: '/img/bridge.svg',
+    icon: '/img/stats/bridge.svg',
     href: '/charts/bridge'
   }
 ]

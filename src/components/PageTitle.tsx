@@ -5,10 +5,10 @@ export const PageTitle = ({ title }: { title: string }) => {
   const location = useLocation()
 
   useEffect(() => {
-    document.title = `${title} | VSC Blocks`
+    document.title = `${title} | Magi Blocks`
 
     return () => {
-      document.title = 'VSC Blocks'
+      document.title = 'Magi Blocks'
     }
   }, [location, title])
 

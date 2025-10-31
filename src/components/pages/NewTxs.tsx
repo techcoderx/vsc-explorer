@@ -46,9 +46,9 @@ export const NewTxs = () => {
         <Box my={'auto'} py={'1'}>
           <ButtonGroup size="md" isAttached variant={'outline'} float={'right'}>
             {location.pathname !== '/transactions' ? (
-              <LinkedBtn to={'/transactions'}>VSC</LinkedBtn>
+              <LinkedBtn to={'/transactions'}>Magi</LinkedBtn>
             ) : (
-              <CurrentPageBtn>VSC</CurrentPageBtn>
+              <CurrentPageBtn>Magi</CurrentPageBtn>
             )}
             {location.pathname !== '/transactions/hive' ? (
               <LinkedBtn to={'/transactions/hive'}>Hive</LinkedBtn>

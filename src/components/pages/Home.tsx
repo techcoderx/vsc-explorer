@@ -48,7 +48,7 @@ const Home = () => {
                   isSuccess={isPropSuccess}
                 />
                 <InfoBox
-                  title="VSC Block Height"
+                  title="Magi Block Height"
                   prop={prop?.l2_block_height}
                   isLoading={isPropLoading}
                   isSuccess={isPropSuccess}

@@ -1,6 +1,6 @@
-# VSC Explorer
+# Magi Explorer
 
-Block explorer for [VSC](https://vsc.eco), a Hive L2 smart contract platform.
+Block explorer for [Magi](https://vsc.eco), a Hive L2 smart contract platform.
 
 ## Required Dependencies
 

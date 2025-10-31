@@ -53,7 +53,7 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <ReactRouterLink to="/">VSC Blocks</ReactRouterLink>
+            <ReactRouterLink to="/">Magi Blocks</ReactRouterLink>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -253,12 +253,12 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'Blocks',
-        subLabel: 'Latest VSC blocks',
+        subLabel: 'Latest Magi blocks',
         href: '/blocks'
       },
       {
         label: 'Transactions',
-        subLabel: 'Latest VSC transactions',
+        subLabel: 'Latest Magi transactions',
         href: '/transactions'
       },
       {
@@ -281,7 +281,7 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       // {
       //   label: 'Broadcast Transaction',
-      //   subLabel: 'Sign and broadcast a VSC transaction'
+      //   subLabel: 'Sign and broadcast a Magi transaction'
       // },
       {
         label: 'Verify Contract',
