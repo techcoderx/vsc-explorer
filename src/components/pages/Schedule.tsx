@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
-import { l1Explorer, themeColorScheme, hafVscApi } from '../../settings'
+import { l1Explorer, themeColorScheme, beApi } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
 import { abbreviateHash, thousandSeperator } from '../../helpers'
 import { Block } from '../../types/HafApiResult'
@@ -43,7 +43,7 @@ const WitnessSchedule = () => {
   }, [blockAtCurrentSlot])
   useEffect(() => {
     const fb = async () => {
-      const blocks: Block[] = await (await fetch(`${hafVscApi}/blocks?count=50`)).json()
+      const blocks: Block[] = await (await fetch(`${beApi}/blocks?count=50`)).json()
       for (let b in blocks) blocksProduced.current[blocks[b].slot_height] = blocks[b]
     }
     fb()
