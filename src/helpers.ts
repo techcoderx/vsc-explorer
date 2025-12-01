@@ -99,7 +99,10 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
         let user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
         try {
           let payload = JSON.parse(op.value.json)
-          if (typeof payload === 'object' && (payload.net_id === NETWORK_ID || user === multisigAccount)) {
+          if (
+            typeof payload === 'object' &&
+            (payload.net_id === NETWORK_ID || user === multisigAccount || op.value.id === 'vsc.tss_commitment')
+          ) {
             return {
               valid: true,
               type: op.value.id.replace('vsc.', ''),
