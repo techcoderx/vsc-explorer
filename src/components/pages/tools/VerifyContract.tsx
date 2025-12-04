@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
-import { useAioha } from '@aioha/react-provider'
+import { useAioha } from '@aioha/providers/react'
 import { KeyTypes } from '@aioha/aioha'
 import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import { cvInfo } from '../../../cvRequests'

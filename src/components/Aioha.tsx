@@ -1,4 +1,4 @@
-import { useAioha } from '@aioha/react-provider'
+import { useAioha } from '@aioha/providers/react'
 import { KeyTypes, Providers } from '@aioha/aioha'
 import {
   Alert,
@@ -61,6 +61,17 @@ const ProviderInfo: {
   },
   [Providers.HiveSigner]: {
     name: 'HiveSigner', // not used
+    icon: ''
+  },
+  [Providers.MetaMaskSnap]: {
+    name: 'MetaMask',
+    // badge: 'Hive Snap',
+    icon: '/img/aioha/metamask.svg'
+    // url: 'https://snaps.metamask.io/snap/npm/hiveio/metamask-snap',
+    // discovery: true
+  },
+  [Providers.ViewOnly]: {
+    name: 'View Only',
     icon: ''
   },
   [Providers.Custom]: {

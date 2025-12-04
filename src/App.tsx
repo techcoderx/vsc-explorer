@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Aioha } from '@aioha/aioha'
-import { AiohaProvider } from '@aioha/react-provider'
+import { AiohaProvider } from '@aioha/providers/react'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
