@@ -52,6 +52,10 @@ export const isValidJSONStr = (str: string) => {
   return true
 }
 
+export const utf8ToHex = (val: string) => {
+  return new TextEncoder().encode(val).reduce((a, c) => a + c.toString(16).padStart(2, '0'), '')
+}
+
 export const validateHiveUsername = (value: string): string | null => {
   let suffix = 'Hive username must '
   if (!value) return suffix + 'not be empty.'

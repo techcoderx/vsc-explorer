@@ -21,6 +21,8 @@ import {
   HStack,
   Button,
   VStack,
+  Radio,
+  RadioGroup,
   Alert,
   AlertIcon,
   AlertDescription
@@ -30,7 +32,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useContract } from '../../requests'
 import TableRow from '../TableRow'
-import { abbreviateHash, timeAgo } from '../../helpers'
+import { abbreviateHash, timeAgo, utf8ToHex } from '../../helpers'
 import { l1Explorer, themeColorLight } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
@@ -97,6 +99,7 @@ const StorageProof = ({ contract }: { contract: ContractType }) => {
 
 const ReadState = ({ contractId }: { contractId: string }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [format, setFormat] = useState('0')
   const [key, setKey] = useState('')
   const [val, setVal] = useState('')
   const [err, setErr] = useState('')
@@ -140,9 +143,19 @@ const ReadState = ({ contractId }: { contractId: string }) => {
         </Alert>
       )}
       {!!val && (
+        <Box alignItems={'left'} w={'full'} px={'1'}>
+          <RadioGroup onChange={setFormat} value={format} colorScheme={themeColorScheme}>
+            <Stack direction={'row'}>
+              <Radio value="0">UTF-8</Radio>
+              <Radio value="1">Hex</Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
+      )}
+      {!!val && (
         <Card w={'full'}>
           <CardBody>
-            <Text>{val}</Text>
+            <Text>{format === '0' ? val : utf8ToHex(val)}</Text>
           </CardBody>
         </Card>
       )}

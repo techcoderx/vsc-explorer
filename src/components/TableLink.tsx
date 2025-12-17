@@ -46,5 +46,5 @@ export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
 export const ContractLink = ({ val, truncate = 16 }: TableLinkParams) => {
   const id = val.replace('contract:', '')
   const href = '/contract/' + id
-  return <TheLink val={val} ttVal={Flairs[val]} truncate={truncate} href={href} icon={<FaFileContract />} />
+  return <TheLink val={val} ttVal={Flairs[id]} truncate={truncate} href={href} icon={<FaFileContract />} />
 }
