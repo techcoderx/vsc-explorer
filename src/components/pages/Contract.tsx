@@ -203,7 +203,7 @@ export const Contract = () => {
         <Box mt={'4'}>
           <AddressBalanceCard addr={'contract:' + contract.id} />
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-            <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
+            <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>
               <Tab>Outputs</Tab>
               <Tab>Info</Tab>

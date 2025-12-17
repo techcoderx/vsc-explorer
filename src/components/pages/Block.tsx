@@ -137,7 +137,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
           </Table>
 
           <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-            <TabList>
+            <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
               <Tab>Transactions</Tab>
               <Tab>Op Logs</Tab>
               {Array.isArray(outputs) && outputs.length > 0 && <Tab>Contract Outputs</Tab>}

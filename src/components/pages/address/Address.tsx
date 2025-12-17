@@ -85,7 +85,7 @@ export const Address = () => {
         index={tabIndex}
         onChange={(newIdx: number) => navigate(getNextTabRoute(tabNames, segments, newIdx), { preventScrollReset: true })}
       >
-        <TabList overflow={'scroll'} whiteSpace={'nowrap'}>
+        <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
           <Tab>Transactions</Tab>
           <Tab hidden={!isL1}>L1 Ops</Tab>
           <Tab>Ledger Ops</Tab>

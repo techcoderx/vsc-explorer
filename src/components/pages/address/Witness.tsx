@@ -44,7 +44,7 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
   return !!witness ? (
     <VStack width={'full'} spacing={'1'}>
       {!!stats && (
-        <Stack spacing={'3'} direction={'row'} w={'full'} overflow={'scroll'}>
+        <Stack spacing={'3'} direction={'row'} w={'full'} overflowX={'scroll'}>
           <StatCard label="Enabled">
             <Badge colorScheme={witness.enabled ? 'green' : 'red'} fontSize={'18'}>
               {witness.enabled.toString()}
