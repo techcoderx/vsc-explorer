@@ -3,8 +3,9 @@ import { HStack, Link, Tooltip } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, validateHiveUsername } from '../helpers'
 import { FaEthereum, FaHive, FaFileContract } from 'react-icons/fa6'
+import { Flairs } from '../flairs'
 
-type TableLinkParams = { val: string; truncate?: number; icon?: ReactNode }
+type TableLinkParams = { val: string; ttVal?: string; truncate?: number; icon?: ReactNode }
 
 const iconByAddr = (addr: string) => {
   if (addr.startsWith('hive:')) return <FaHive />
@@ -16,8 +17,8 @@ const rmPrefix = (addr: string) => {
   return sections[sections.length - 1]
 }
 
-const TheLink = ({ val, truncate, href, icon }: TableLinkParams & { href: string }) => {
-  const display = abbreviateHash(rmPrefix(val), truncate, 0)
+const TheLink = ({ val, ttVal, truncate, href, icon }: TableLinkParams & { href: string }) => {
+  const display = ttVal ?? abbreviateHash(rmPrefix(val), truncate, 0)
   return (
     <Link as={ReactRouterLink} to={href}>
       <HStack gap={'1.5'}>
@@ -43,6 +44,7 @@ export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
 }
 
 export const ContractLink = ({ val, truncate = 16 }: TableLinkParams) => {
-  const href = '/contract/' + val.replace('contract:', '')
-  return <TheLink val={val} truncate={truncate} href={href} icon={<FaFileContract />} />
+  const id = val.replace('contract:', '')
+  const href = '/contract/' + id
+  return <TheLink val={val} ttVal={Flairs[val]} truncate={truncate} href={href} icon={<FaFileContract />} />
 }

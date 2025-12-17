@@ -3,7 +3,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
 import { PageTitle } from '../PageTitle'
-import { AccountLink } from '../TableLink'
+import { AccountLink, ContractLink } from '../TableLink'
 
 const NewContracts = () => {
   const { contracts, isLoading } = useContracts({})
@@ -37,11 +37,7 @@ const NewContracts = () => {
               contracts.map((item, i) => (
                 <Tr key={i}>
                   <Td>
-                    <Tooltip label={item.id} placement="top">
-                      <Link as={ReactRouterLink} to={'/contract/' + item.id}>
-                        {abbreviateHash(item.id, 20, 0)}
-                      </Link>
-                    </Tooltip>
+                    <ContractLink val={item.id} truncate={20} />
                   </Td>
                   <Td sx={{ whiteSpace: 'nowrap' }}>
                     <Tooltip label={item.creation_ts} placement="top">
