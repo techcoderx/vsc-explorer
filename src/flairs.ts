@@ -11,5 +11,6 @@ export const Flairs: {
   vsc1Bak1RGMgUxvLriSCoLJWZ5Ghp26ci2CiSk: 'First Go Contract',
   vsc1BgfucQVHwYBHuK2yMEv4AhYua9rtQ45Uoe: 'Ōkinoko Esukurō',
   vsc1BVLuXCWC1UShtDBenWJ2B6NWpnyV2T637n: 'Ōkinoko Ināro',
-  vsc1Ba9AyyUcMnYVoDVsjoJztnPFHNxQwWBPsb: 'Ōkinoko ShinDAO'
+  vsc1Ba9AyyUcMnYVoDVsjoJztnPFHNxQwWBPsb: 'Ōkinoko ShinDAO',
+  vsc1BiM4NC1yeGPCjmq8FC3utX8dByizjcCBk7: 'Ōkinoko Takara'
 }
