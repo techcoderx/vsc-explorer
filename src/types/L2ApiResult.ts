@@ -138,7 +138,7 @@ interface TxDataFer {
     to: string
     from: string
     amount: string
-    asset: 'hive' | 'hbd' | 'hbd_savings'
+    asset: CoinLower
     memo?: string
   }
 }

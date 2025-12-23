@@ -1,4 +1,5 @@
 export interface CvInfo {
+  error?: string
   address: string
   code: string
   similar_match?: string

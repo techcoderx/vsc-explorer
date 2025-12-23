@@ -21,18 +21,20 @@ import {
   useToast,
   Spinner,
   ToastId,
-  useDisclosure
+  useDisclosure,
+  Icon
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
 import { useAioha } from '@aioha/providers/react'
-import { KeyTypes } from '@aioha/aioha'
+import { KeyTypes, Providers } from '@aioha/aioha'
 import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
 import { AiohaModal } from '../../Aioha'
 import { generateMessageToSign } from '../../../helpers'
+import { FaHive } from 'react-icons/fa6'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.39.0': {
@@ -105,7 +107,7 @@ const notice = [
 
 export const VerifyContract = () => {
   const [searchParams] = useSearchParams()
-  const { aioha, user } = useAioha()
+  const { aioha, user, provider } = useAioha()
   const { activeStep: stage, setActiveStep: setStage } = useSteps({
     index: searchParams.get('skipnotice') === '1' ? 1 : 0,
     count: 2
@@ -279,7 +281,11 @@ export const VerifyContract = () => {
                   <Stack direction={'column'} gap={'3'}>
                     <FormControl>
                       <FormLabel>Username</FormLabel>
-                      <Button _focus={{ boxShadow: 'none' }} onClick={walletDisclosure.onOpen}>
+                      <Button
+                        _focus={{ boxShadow: 'none' }}
+                        onClick={walletDisclosure.onOpen}
+                        leftIcon={user ? <Icon as={FaHive} fontSize={'lg'} /> : undefined}
+                      >
                         {user ?? 'Connect Wallet'}
                       </Button>
                     </FormControl>
@@ -350,11 +356,13 @@ export const VerifyContract = () => {
                   <Button
                     colorScheme={themeColorScheme}
                     onClick={submitClicked}
-                    disabled={isSpinning || !user || addr.length === 0 || repoUrl.length === 0}
+                    disabled={
+                      isSpinning || !user || addr.length === 0 || repoUrl.length === 0 || provider === Providers.MetaMaskSnap
+                    }
                   >
                     <Flex gap={'2'} align={'center'}>
                       <Spinner size={'sm'} hidden={!isSpinning} />
-                      <Text>Submit</Text>
+                      <Text>{provider === Providers.MetaMaskSnap ? 'Unsupported Wallet' : 'Submit'}</Text>
                     </Flex>
                   </Button>
                 </Stack>
@@ -374,7 +382,11 @@ export const VerifyContract = () => {
           ) : null}
         </Stack>
       </Center>
-      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} />
+      <AiohaModal
+        displayed={walletDisclosure.isOpen}
+        onClose={walletDisclosure.onClose}
+        disabledProviders={[Providers.MetaMaskSnap]}
+      />
     </>
   )
 }

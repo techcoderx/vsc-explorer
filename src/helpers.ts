@@ -89,6 +89,17 @@ export const naiToString = (nai: NAI) => {
   return result
 }
 
+export const magiAssetDisplay = (asset: CoinLower): string => {
+  switch (asset) {
+    case 'hive':
+      return 'HIVE'
+    case 'hbd':
+      return 'HBD'
+    case 'hbd_savings':
+      return 'sHBD'
+  }
+}
+
 export const generateMessageToSign = async (username: string) => {
   const headBlock = await fetchL1Rest<{ blocks_result: [{ block_num: number; hash: string }] }>(
     '/hafbe-api/block-search?page-size=1&direction=desc'

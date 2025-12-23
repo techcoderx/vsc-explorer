@@ -25,14 +25,23 @@ import {
   RadioGroup,
   Alert,
   AlertIcon,
-  AlertDescription
+  AlertDescription,
+  FormControl,
+  FormLabel,
+  useDisclosure,
+  Select,
+  Icon,
+  useToast,
+  Link,
+  FormHelperText,
+  useBreakpointValue
 } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionIcon, WarningIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon, QuestionIcon, WarningIcon, AddIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router'
-import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useContract } from '../../requests'
+import { useParams, useNavigate } from 'react-router'
+import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useAddrBalance, useContract } from '../../requests'
 import TableRow from '../TableRow'
-import { abbreviateHash, timeAgo, utf8ToHex } from '../../helpers'
+import { abbreviateHash, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
 import { l1Explorer, themeColorLight } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
@@ -41,12 +50,16 @@ import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { useMemo, useState } from 'react'
-import { BLSSig } from '../../types/Payloads'
+import { useMemo, useRef, useState } from 'react'
+import { BLSSig, CoinLower } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { Contract as ContractType } from '../../types/L2ApiResult'
 import { PageTitle } from '../PageTitle'
 import { AccountLink } from '../TableLink'
+import { useAioha } from '@aioha/providers/react'
+import { AiohaModal } from '../Aioha'
+import { KeyTypes } from '@aioha/aioha'
+import { FaHive } from 'react-icons/fa6'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -163,6 +176,192 @@ const ReadState = ({ contractId }: { contractId: string }) => {
   )
 }
 
+const CallContract = ({ contractId }: { contractId: string }) => {
+  const { data: verifInfo } = useQuery({
+    queryKey: ['vsc-cv-verif-info', contractId],
+    queryFn: async () => cvInfo(contractId!),
+    enabled: !!contractId
+  })
+  const walletDisclosure = useDisclosure()
+  const toast = useToast()
+  const navigate = useNavigate()
+  const { aioha, user } = useAioha()
+  const { balance } = useAddrBalance('hive:' + user)
+  const [methodName, setMethodName] = useState('')
+  const [payload, setPayload] = useState('')
+  const [rcLimit, setRcLimit] = useState('')
+  const [keyType, setKeyType] = useState(KeyTypes.Posting)
+  const [newIntentAmt, setNewIntentAmt] = useState('')
+  const [newIntentToken, setNewIntentToken] = useState<CoinLower>('hive')
+  const intents = useRef({ hive: 0, hbd: 0, hbd_savings: 0 })
+  const [_, setIntentCleared] = useState(false)
+  const addIntent = () => {
+    const amt = parseFloat(newIntentAmt)
+    if (!user || !balance || !balance.bal) {
+      return toast({ title: 'Wallet not connected or balances could not be loaded', status: 'error' })
+    } else if (isNaN(amt) || amt <= 0) {
+      return toast({ title: 'Amount must be greater than 0', status: 'error' })
+    } else if (Math.round(amt * 1000) > balance.bal[newIntentToken]) {
+      return toast({ title: 'Insufficient balance', status: 'error' })
+    }
+    intents.current[newIntentToken] = amt
+    setNewIntentAmt('')
+  }
+  const rmIntent = () => {
+    intents.current = { hive: 0, hbd: 0, hbd_savings: 0 }
+    setIntentCleared((p) => !p)
+  }
+  const call = async () => {
+    const rcLimitInt = parseInt(rcLimit)
+    if (isNaN(rcLimitInt) || rcLimitInt < 100) {
+      return toast({ title: 'RC limit must be greater than or equal to 100', status: 'error' })
+    }
+    const intentsArr = Object.keys(intents.current)
+      .filter((a) => intents.current[a as CoinLower] > 0)
+      .map((a) => {
+        return {
+          type: 'transfer.allow',
+          args: {
+            limit: intents.current[a as CoinLower].toFixed(3),
+            token: a
+          }
+        }
+      })
+    const callResult = await aioha.vscCallContract(contractId, methodName, payload, rcLimitInt, intentsArr)
+    if (!callResult.success) {
+      return toast({ title: callResult.error, status: 'error' })
+    } else {
+      return toast({
+        title: 'Transaction broadcasted successfully',
+        status: 'success',
+        description: (
+          <Link
+            onClick={(evt) => {
+              evt.preventDefault()
+              navigate('/tx/' + callResult.result)
+            }}
+          >
+            View transaction
+          </Link>
+        )
+      })
+    }
+  }
+  return (
+    <>
+      <Card>
+        <CardBody>
+          <Stack direction={'column'} gap={'3'}>
+            <FormControl>
+              <FormLabel>Username</FormLabel>
+              <Button
+                _focus={{ boxShadow: 'none' }}
+                onClick={walletDisclosure.onOpen}
+                leftIcon={user ? <Icon as={FaHive} fontSize={'lg'} /> : undefined}
+              >
+                {user ?? 'Connect Wallet'}
+              </Button>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Method</FormLabel>
+              {!verifInfo || !!verifInfo.error || !Array.isArray(verifInfo.exports) || verifInfo.exports.length === 0 ? (
+                <Input
+                  type="text"
+                  value={methodName}
+                  onChange={(e) => setMethodName(e.target.value)}
+                  focusBorderColor={themeColorLight}
+                />
+              ) : (
+                <Select
+                  focusBorderColor={themeColorLight}
+                  value={methodName}
+                  onChange={(e) => setMethodName(e.target.value as KeyTypes)}
+                >
+                  {verifInfo.exports.map((exp, i) => (
+                    <option key={i} value={exp}>
+                      {exp}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormControl>
+            <FormControl>
+              <FormLabel>Payload</FormLabel>
+              <Input
+                type="text"
+                value={payload}
+                onChange={(e) => setPayload(e.target.value)}
+                focusBorderColor={themeColorLight}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Intents</FormLabel>
+              <Stack direction={useBreakpointValue({ base: 'column', sm: 'row' })}>
+                <Stack direction={'row'}>
+                  <Input
+                    type="number"
+                    value={newIntentAmt}
+                    onChange={(e) => setNewIntentAmt(e.target.value)}
+                    focusBorderColor={themeColorLight}
+                    maxW={useBreakpointValue({ base: undefined, sm: '56' })}
+                    textAlign={'right'}
+                    placeholder={!!balance && !!balance.bal ? `Balance: ${balance.bal[newIntentToken] / 1000}` : undefined}
+                  />
+                  <Select
+                    value={newIntentToken}
+                    onChange={(e) => setNewIntentToken(e.target.value as CoinLower)}
+                    focusBorderColor={themeColorLight}
+                    width="auto"
+                    minW={'24'}
+                  >
+                    <option value="hive">HIVE</option>
+                    <option value="hbd">HBD</option>
+                    <option value="hbd_savings">sHBD</option>
+                  </Select>
+                </Stack>
+                <Stack direction={'row'}>
+                  <Button variant={'outline'} colorScheme={themeColorScheme} onClick={addIntent}>
+                    <AddIcon fontSize={'sm'} />
+                  </Button>
+                  <Button variant={'outline'} colorScheme={themeColorScheme} onClick={rmIntent}>
+                    Clear All
+                  </Button>
+                </Stack>
+              </Stack>
+              <FormHelperText>
+                Current Allowance: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
+              </FormHelperText>
+            </FormControl>
+            {/** TODO: Estimate RC usage by simulating call */}
+            <FormControl>
+              <FormLabel>RC Limit</FormLabel>
+              <Input
+                type="number"
+                min={100}
+                value={rcLimit}
+                onChange={(e) => setRcLimit(e.target.value)}
+                focusBorderColor={themeColorLight}
+                maxW={'56'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Key Type</FormLabel>
+              <Select focusBorderColor={themeColorLight} value={keyType} onChange={(e) => setKeyType(e.target.value as KeyTypes)}>
+                <option value={KeyTypes.Posting}>Posting</option>
+                <option value={KeyTypes.Active}>Active</option>
+              </Select>
+            </FormControl>
+          </Stack>
+          <Button colorScheme={themeColorScheme} mt={'5'} onClick={call}>
+            Call Contract
+          </Button>
+        </CardBody>
+      </Card>
+      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} initPage={0} />
+    </>
+  )
+}
+
 export const Contract = () => {
   const { contractId } = useParams()
   const invalidContractId = !contractId?.startsWith('vsc1')
@@ -209,6 +408,7 @@ export const Contract = () => {
               <Tab>Info</Tab>
               <Tab>Storage Proof</Tab>
               <Tab>Read State</Tab>
+              <Tab>Call Contract</Tab>
               <Tab>Source Code</Tab>
             </TabList>
             <TabPanels mt={'2'}>
@@ -254,8 +454,11 @@ export const Contract = () => {
                 </TableContainer>
               </TabPanel>
               <TabPanel>{!!contract && <StorageProof contract={contract} />}</TabPanel>
-              <TabPanel>
+              <TabPanel px={0}>
                 <ReadState contractId={contract.id} />
+              </TabPanel>
+              <TabPanel px={0}>
+                <CallContract contractId={contract.id} />
               </TabPanel>
               <TabPanel>
                 {verifInfo ? (

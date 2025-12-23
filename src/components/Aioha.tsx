@@ -20,13 +20,14 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Stack,
   Text,
   useColorMode,
   VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { themeColorLight, themeColorScheme } from '../settings'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -80,12 +81,28 @@ const ProviderInfo: {
   }
 }
 
-const ProvidersSeq: Providers[] = [Providers.Keychain, Providers.PeakVault, Providers.HiveAuth, Providers.Ledger] // in this particular order
+const ProvidersSeq: Providers[] = [
+  Providers.Keychain,
+  Providers.PeakVault,
+  Providers.MetaMaskSnap,
+  Providers.HiveAuth,
+  Providers.Ledger
+] // in this particular order
 
-export const AiohaModal = ({ displayed, onClose }: { displayed: boolean; onClose: () => void }) => {
+export const AiohaModal = ({
+  displayed,
+  onClose,
+  initPage = 1, // set to 0 to show evm/hive wallet selection
+  disabledProviders = []
+}: {
+  displayed: boolean
+  onClose: () => void
+  initPage?: number
+  disabledProviders?: Providers[]
+}) => {
   const { aioha, user } = useAioha()
   const { colorMode } = useColorMode()
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(initPage)
   const [selectedProv, setSelectedProv] = useState<Providers | null>(null)
   const [usernameInput, setUsernameInput] = useState<string>('')
   const [inProgress, setInProgress] = useState<boolean>(false)
@@ -107,7 +124,10 @@ export const AiohaModal = ({ displayed, onClose }: { displayed: boolean; onClose
     setInProgress(true)
     const login = await aioha.login(selectedProv!, usernameInput, {
       msg: 'Magi Blocks Login',
-      keyType: KeyTypes.Posting
+      keyType: KeyTypes.Posting,
+      metamask: {
+        validateUser: true
+      }
     })
     if (!login.success) {
       setError(login.error)
@@ -128,10 +148,29 @@ export const AiohaModal = ({ displayed, onClose }: { displayed: boolean; onClose
         <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         <ModalBody>
           {!user ? (
-            page === 1 ? (
-              <VStack gap={'3'}>
+            page === 0 ? (
+              <Stack direction={'column'} gap={'3'}>
+                <Button leftIcon={<Icon fontSize={'2xl'} as={FaHive} />} onClick={() => setPage(1)}>
+                  <Text textAlign={'left'} w={'full'}>
+                    Hive
+                  </Text>
+                </Button>
+                <Button leftIcon={<Icon fontSize={'2xl'} as={FaEthereum} />} disabled>
+                  <Text textAlign={'left'} w={'full'}>
+                    Ethereum [WIP]
+                  </Text>
+                </Button>
+              </Stack>
+            ) : page === 1 ? (
+              <VStack gap={'3'} alignItems={'flex-start'}>
+                {initPage === 0 && (
+                  <Button leftIcon={<Icon as={FaChevronLeft} />} variant={'outline'} onClick={() => setPage(0)}>
+                    Back
+                  </Button>
+                )}
                 {ProvidersSeq.map(
                   (prov, i) =>
+                    !disabledProviders.includes(prov) &&
                     aioha.isProviderEnabled(prov) && (
                       <Button
                         key={i}
