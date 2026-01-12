@@ -113,6 +113,10 @@ const router = createBrowserRouter([
             element: <NewVscTxs />
           },
           {
+            path: '/transactions/magi/:page?',
+            element: <NewVscTxs />
+          },
+          {
             path: '/transactions/hive',
             element: <NewHiveTxs />
           }

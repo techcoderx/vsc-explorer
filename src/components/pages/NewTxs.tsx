@@ -1,11 +1,11 @@
 import { Text, Flex, ButtonGroup, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { Outlet, useLocation } from 'react-router'
+import { Outlet, useLocation, useParams } from 'react-router'
 import { TxCard } from '../TxCard'
-import { fetchLatestTxs, fetchLatestL2Txns } from '../../requests'
+import { fetchLatestTxs, fetchL2TxnsBy, fetchProps } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
-import { CurrentPageBtn, LinkedBtn } from '../Pagination'
+import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
 
 export const NewHiveTxs = () => {
@@ -28,12 +28,31 @@ export const NewHiveTxs = () => {
   )
 }
 
+const count = 100
+
 export const NewVscTxs = () => {
+  const { page } = useParams()
+  const pageNum = parseInt(page || '1')
+  const offset = (pageNum - 1) * count
   const { data: txs } = useQuery({
-    queryKey: ['vsc-latest-tsx'],
-    queryFn: fetchLatestL2Txns
+    queryKey: ['vsc-latest-tsx', offset, count],
+    queryFn: () => fetchL2TxnsBy(offset, count)
   })
-  return txs ? <Txns txs={txs.txns} /> : null
+  const { data: prop } = useQuery({
+    queryKey: ['vsc-props'],
+    queryFn: fetchProps
+  })
+  console.log(prop)
+  return !!txs && !!txs.txns ? (
+    <>
+      <Txns txs={txs.txns} />
+      <Pagination
+        path={'/transactions/magi'}
+        currentPageNum={pageNum}
+        maxPageNum={Math.min(100, Math.ceil((prop?.transactions || 0) / 100))}
+      />
+    </>
+  ) : null
 }
 
 export const NewTxs = () => {
@@ -45,7 +64,7 @@ export const NewTxs = () => {
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Box my={'auto'} py={'1'}>
           <ButtonGroup size="md" isAttached variant={'outline'} float={'right'}>
-            {location.pathname !== '/transactions' ? (
+            {location.pathname !== '/transactions' && !location.pathname.startsWith('/transactions/magi') ? (
               <LinkedBtn to={'/transactions'}>Magi</LinkedBtn>
             ) : (
               <CurrentPageBtn>Magi</CurrentPageBtn>
