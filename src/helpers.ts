@@ -116,7 +116,10 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
           let payload = JSON.parse(op.value.json)
           if (
             typeof payload === 'object' &&
-            (payload.net_id === NETWORK_ID || user === multisigAccount || op.value.id === 'vsc.tss_commitment')
+            (payload.net_id === NETWORK_ID ||
+              user === multisigAccount ||
+              op.value.id === 'vsc.tss_commitment' ||
+              op.value.id === 'vsc.tss_sign')
           ) {
             return {
               valid: true,
