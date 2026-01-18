@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { timeAgo, thousandSeperator } from '../../src/helpers'
+import { timeAgo, thousandSeperator } from '../src/helpers'
 
 describe('helpers', () => {
   describe('timeAgo', () => {

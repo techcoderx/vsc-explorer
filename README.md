@@ -1,6 +1,6 @@
 # Magi Explorer
 
-Block explorer for [Magi](https://vsc.eco), a Hive L2 smart contract platform.
+Block explorer for [Magi](https://magi.eco), a Hive L2 smart contract platform.
 
 ## Required Dependencies
 
@@ -38,10 +38,10 @@ pnpm run preview
 
 #### Build image
 ```sh
-docker build -t vsc-blocks .
+docker build -t magi-blocks .
 ```
 
 #### Run container
 ```sh
-docker run -d --rm -p 8080:8080 --name=vsc-blocks vsc-blocks
+docker run -d --rm -p 8080:8080 --name=magi-blocks magi-blocks
 ```
