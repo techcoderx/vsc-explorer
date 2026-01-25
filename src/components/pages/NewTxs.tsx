@@ -42,7 +42,6 @@ export const NewVscTxs = () => {
     queryKey: ['vsc-props'],
     queryFn: fetchProps
   })
-  console.log(prop)
   return !!txs && !!txs.txns ? (
     <>
       <Txns txs={txs.txns} />

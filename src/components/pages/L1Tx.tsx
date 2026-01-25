@@ -361,8 +361,8 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                   <Tbody>
                     {txn.output.map((out, i) =>
                       out.index.map((o, j) =>
-                        outContents[i].results[o].logs!.map((log, k) => (
-                          <CallLog key={`${i}-${j}-${k}`} contractId={outContents[i].contract_id} idx={i} log={log} />
+                        outContents[i].results[o].logs?.map((log, k) => (
+                          <CallLog key={`${i}-${j}-${k}`} contractId={outContents[i].contract_id} idx={j} log={log} />
                         ))
                       )
                     )}
@@ -480,7 +480,7 @@ const L1Tx = () => {
     queryFn: async () => fetchL2TxnsDetailed(txid!)
   })
   const vscTx = t?.txns
-  const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : data?.timestamp ?? ''
+  const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : (data?.timestamp ?? '')
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
   const intervalRef = useRef<NodeJS.Timeout>()
