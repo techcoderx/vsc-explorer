@@ -11,7 +11,7 @@ import {
   Coin,
   CoinLower
 } from './types/Payloads'
-import { multisigAccount, NETWORK_ID, NETWORK_ID_ANNOUNCE } from './settings'
+import { multisigAccount, NETWORK_ID } from './settings'
 import { Ops } from './types/L1ApiResult'
 import { fetchL1Rest } from './requests'
 
@@ -114,13 +114,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
         let user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
         try {
           let payload = JSON.parse(op.value.json)
-          if (
-            typeof payload === 'object' &&
-            (payload.net_id === NETWORK_ID ||
-              user === multisigAccount ||
-              op.value.id === 'vsc.tss_commitment' ||
-              op.value.id === 'vsc.tss_sign')
-          ) {
+          if (typeof payload === 'object') {
             return {
               valid: true,
               type: op.value.id.replace('vsc.', ''),
@@ -141,10 +135,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
             user: op.value.account,
             payload: op.value
           }
-        } else if (
-          typeof jm.vsc_node === 'object' &&
-          (jm.vsc_node.net_id === NETWORK_ID || jm.vsc_node.net_id === NETWORK_ID_ANNOUNCE)
-        ) {
+        } else if (typeof jm.vsc_node === 'object' && jm.vsc_node.net_id === NETWORK_ID) {
           return {
             valid: true,
             type: 'announce_node',
