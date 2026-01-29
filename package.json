@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aioha/aioha": "^1.8.0",
+    "@aioha/aioha": "^1.8.1",
     "@aioha/providers": "^1.8.0",
     "@chakra-ui/anatomy": "^2.3.4",
     "@chakra-ui/icons": "^2.2.4",
