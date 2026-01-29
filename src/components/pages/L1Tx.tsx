@@ -36,7 +36,7 @@ import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch } from '../../requests'
-import { abbreviateHash, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
+import { abbreviateHash, beL1BlockUrl, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { l1Explorer, l1ExplorerName, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
@@ -512,7 +512,7 @@ const L1Tx = () => {
               <Text fontSize={'xl'} display={'inline'}>
                 Included in L1 block{' '}
               </Text>
-              <Link href={l1Explorer + '/b/' + data.block_num} target="_blank" fontSize={'xl'}>
+              <Link href={beL1BlockUrl(data.block_num)} target="_blank" fontSize={'xl'}>
                 {'#' + thousandSeperator(data.block_num)}
               </Link>{' '}
               <Tooltip placement="top" label={timestamp}>
@@ -632,7 +632,7 @@ const L2Tx = () => {
             <Text fontSize={'xl'} display={'inline'}>
               Anchored in L1 block{' '}
             </Text>
-            <Link href={l1Explorer + '/b/' + tx.anchr_height} target="_blank" fontSize={'xl'}>
+            <Link href={beL1BlockUrl(tx.anchr_height)} target="_blank" fontSize={'xl'}>
               {'#' + thousandSeperator(tx.anchr_height)}
             </Link>{' '}
             <Tooltip placement="top" label={tx.anchr_ts}>

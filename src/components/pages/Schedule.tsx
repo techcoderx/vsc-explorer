@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
-import { l1Explorer, themeColorScheme, beApi } from '../../settings'
+import { themeColorScheme, beApi } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
-import { abbreviateHash, thousandSeperator } from '../../helpers'
+import { abbreviateHash, beL1BlockUrl, thousandSeperator } from '../../helpers'
 import { Block } from '../../types/HafApiResult'
 import { PageTitle } from '../PageTitle'
 
@@ -56,7 +56,7 @@ const WitnessSchedule = () => {
       <br />
       <Text>
         Hive head block:{' '}
-        <Link as={ReactRouterLink} to={l1Explorer + '/b/' + prop?.last_processed_block} target="_blank">
+        <Link as={ReactRouterLink} to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank">
           {isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0}
         </Link>
       </Text>
@@ -93,7 +93,7 @@ const WitnessSchedule = () => {
                       </Td>
                       <Td>
                         {sch.bn - prop.last_processed_block < 0 ? (
-                          <Link as={ReactRouterLink} to={l1Explorer + '/b/' + sch.bn} target="_blank">
+                          <Link as={ReactRouterLink} to={beL1BlockUrl(sch.bn)} target="_blank">
                             {thousandSeperator(sch.bn)}
                           </Link>
                         ) : (

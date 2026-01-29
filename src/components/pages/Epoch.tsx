@@ -19,10 +19,10 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import Pagination, { PrevNextBtns } from '../Pagination'
-import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { beL1BlockUrl, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
-import { l1Explorer, themeColorScheme } from '../../settings'
+import { themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { InfoIcon } from '@chakra-ui/icons'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
@@ -84,7 +84,7 @@ const Epoch = () => {
                 label="L1 Block"
                 value={epoch?.block_height}
                 isLoading={isEpochLoading}
-                link={l1Explorer + '/b/' + epoch?.block_height}
+                link={beL1BlockUrl(epoch?.block_height || 0)}
               />
               <TableRow
                 label="Proposer"

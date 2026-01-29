@@ -41,8 +41,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, useNavigate } from 'react-router'
 import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useAddrBalance, useContract } from '../../requests'
 import TableRow from '../TableRow'
-import { abbreviateHash, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
-import { l1Explorer, themeColorLight } from '../../settings'
+import { abbreviateHash, beL1BlockUrl, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
+import { themeColorLight } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
 import { cvInfo } from '../../cvRequests'
@@ -430,7 +430,7 @@ export const Contract = () => {
                       <TableRow
                         label="Created In L1 Block"
                         value={contract.creation_height}
-                        link={l1Explorer + '/b/' + contract.creation_height}
+                        link={beL1BlockUrl(contract.creation_height)}
                         isLoading={isLoading}
                       />
                       <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />

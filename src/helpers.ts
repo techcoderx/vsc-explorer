@@ -11,7 +11,7 @@ import {
   Coin,
   CoinLower
 } from './types/Payloads'
-import { multisigAccount, NETWORK_ID } from './settings'
+import { l1Explorer, l1ExplorerName, multisigAccount, NETWORK_ID } from './settings'
 import { Ops } from './types/L1ApiResult'
 import { fetchL1Rest } from './requests'
 
@@ -286,4 +286,13 @@ export const getNextTabRoute = (tabNames: string[], segments: string[], newIdx: 
 export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {
   if (opidx === 0) return trx_id
   return `${trx_id}-${opidx}`
+}
+
+export const beL1BlockUrl = (num: number) => {
+  // HAF BE uses /block, HiveHub uses /b
+  let route = '/block/'
+  if (l1ExplorerName === 'HiveHub') {
+    route = '/b/'
+  }
+  return l1Explorer + route + num
 }

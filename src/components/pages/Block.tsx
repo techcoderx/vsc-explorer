@@ -20,8 +20,8 @@ import { fetchBlock, fetchEpoch, fetchL2TxnsBy, getDagByCIDBatch, useDagByCID } 
 import PageNotFound from './404'
 import TableRow from '../TableRow'
 import { PrevNextBtns } from '../Pagination'
-import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
-import { l1Explorer, themeColorScheme } from '../../settings'
+import { beL1BlockUrl, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { themeColorScheme } from '../../settings'
 import { Block as BlockResult } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { ParticipatedMembers } from '../BlsAggMembers'
@@ -110,7 +110,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                 label="Slot Height"
                 value={block?.slot_height}
                 isLoading={isBlockLoading}
-                link={l1Explorer + '/b/' + block?.slot_height}
+                link={beL1BlockUrl(block?.slot_height)}
               />
               <TableRow
                 label="Proposer"

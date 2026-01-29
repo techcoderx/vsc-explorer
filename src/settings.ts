@@ -10,7 +10,7 @@ export const beApi = 'https://magi-test.techcoderx.com/be-api/v1'
 export const gqlApi = 'https://magi-test.techcoderx.com/api/v1/graphql'
 export const cvApi = 'https://vsc.techcoderx.com/cv-api/v1'
 export const l1Explorer = hiveApi + '/explorer'
-export const l1ExplorerName = 'HAF BE'
+export const l1ExplorerName: string = 'HAF BE'
 
 export const multisigAccount = 'vsc.gateway'
 export const NETWORK_ID = 'vsc-testnet'
