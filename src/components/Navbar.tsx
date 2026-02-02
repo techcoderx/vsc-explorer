@@ -15,11 +15,12 @@ import {
   useColorModeValue,
   useColorMode,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
+  Tag
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, Outlet } from 'react-router'
-import { getConf, themeColor, themeColorULight } from '../settings'
+import { getConf, themeColor, themeColorScheme, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 
 const Navbar = () => {
@@ -47,7 +48,7 @@ const Navbar = () => {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} gap={'2'}>
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
@@ -56,7 +57,13 @@ const Navbar = () => {
             <ReactRouterLink to="/">Magi Blocks</ReactRouterLink>
           </Text>
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+          {getConf().netId === 'vsc-testnet' && (
+            <Tag variant={'outline'} colorScheme={themeColorScheme}>
+              Testnet
+            </Tag>
+          )}
+
+          <Flex display={{ base: 'none', md: 'flex' }} ml={3}>
             <DesktopNav />
           </Flex>
         </Flex>
