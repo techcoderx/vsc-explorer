@@ -8,7 +8,7 @@ import { abbreviateHash, getNextTabRoute, validateHiveUsername } from '../../../
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
 import { Txns } from '../../tables/Transactions'
-import { multisigAccount, themeColorScheme } from '../../../settings'
+import { getConf, themeColorScheme } from '../../../settings'
 import Pagination from '../../Pagination'
 import { PageTitle } from '../../PageTitle'
 
@@ -73,7 +73,7 @@ export const Address = () => {
         )}
       </Stack>
       <hr />
-      {addr !== 'hive:' + multisigAccount && (
+      {addr !== 'hive:' + getConf().msAccount && (
         <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={'5'} mt={'4'}>
           <AddressBalanceCard addr={addr!} />
           <AddressRcInfo addr={addr!} />

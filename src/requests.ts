@@ -11,7 +11,7 @@ import {
   NetworkStat,
   WeightedMembers
 } from './types/HafApiResult'
-import { beApi, hiveApi, gqlApi } from './settings'
+import { getConf } from './settings'
 import {
   WitnessSchedule,
   Witness,
@@ -27,22 +27,26 @@ import {
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 
+const conf = getConf()
+
 export const fetchProps = async (): Promise<Props> => {
-  return await (await fetch(`${beApi}/props`)).json()
+  return await (await fetch(`${conf.beApi}/props`)).json()
 }
 
 export const fetchBlocks = async (last_block_id: number, count = 50): Promise<Block[]> => {
-  return await (await fetch(`${beApi}/blocks?last_block_id=${last_block_id}&count=${count}`)).json()
+  return await (await fetch(`${conf.beApi}/blocks?last_block_id=${last_block_id}&count=${count}`)).json()
 }
 
 export const fetchBlocksByProposer = async (proposer: string, count = 50, last_block_id?: number): Promise<Block[]> => {
   return await (
-    await fetch(`${beApi}/blocks?proposer=${proposer}&count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`)
+    await fetch(
+      `${conf.beApi}/blocks?proposer=${proposer}&count=${count}${last_block_id ? `&last_block_id=${last_block_id}` : ''}`
+    )
   ).json()
 }
 
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
-  return await (await fetch(`${beApi}/haf/latest-ops/50/true`)).json()
+  return await (await fetch(`${conf.beApi}/haf/latest-ops/50/true`)).json()
 }
 
 export const fetchContracts = async (opts: object): Promise<Contract[]> => {
@@ -55,49 +59,49 @@ export const fetchContracts = async (opts: object): Promise<Contract[]> => {
 }
 
 export const fetchBlock = async (block_id: number | string, by: string = 'id'): Promise<Block> => {
-  return await (await fetch(`${beApi}/block/by-${by}/${block_id}`)).json()
+  return await (await fetch(`${conf.beApi}/block/by-${by}/${block_id}`)).json()
 }
 
 export const fetchWitnessStat = async (username: string): Promise<WitnessStat> => {
-  return await (await fetch(`${beApi}/witness/${username}/stats`)).json()
+  return await (await fetch(`${conf.beApi}/witness/${username}/stats`)).json()
 }
 
 export const fetchWitnessesStats = async (): Promise<WitnessStat[]> => {
-  return await (await fetch(`${beApi}/witnesses/stats`)).json()
+  return await (await fetch(`${conf.beApi}/witnesses/stats`)).json()
 }
 
 export const fetchElections = async (last_epoch: number, count: number = 100): Promise<Election[]> => {
-  return await (await fetch(`${beApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
+  return await (await fetch(`${conf.beApi}/epochs?last_epoch=${last_epoch}&count=${count}`)).json()
 }
 
 export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
-  return await (await fetch(`${beApi}/epoch/${epoch_num}`)).json()
+  return await (await fetch(`${conf.beApi}/epoch/${epoch_num}`)).json()
 }
 
 export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100, offset: number = 0): Promise<Block[]> => {
-  return await (await fetch(`${beApi}/blocks?epoch=${epoch_num}&count=${count}&offset=${offset}`)).json()
+  return await (await fetch(`${conf.beApi}/blocks?epoch=${epoch_num}&count=${count}&offset=${offset}`)).json()
 }
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
-  return await (await fetch(`${beApi}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
+  return await (await fetch(`${conf.beApi}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
 }
 
 export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
-  return await (await fetch(`${beApi}/haf/user/${username}`)).json()
+  return await (await fetch(`${conf.beApi}/haf/user/${username}`)).json()
 }
 
 export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | Txn | null)[]> => {
-  return await (await fetch(`${beApi}/tx/${trx_id}/output`)).json()
+  return await (await fetch(`${conf.beApi}/tx/${trx_id}/output`)).json()
 }
 
 export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {
-  return await (await fetch(`${beApi}/bridge/stats`)).json()
+  return await (await fetch(`${conf.beApi}/bridge/stats`)).json()
 }
 
 export const useAddrTxStats = (addr: string, enabled: boolean = true) => {
   const { data: addrStats } = useQuery<AddrTxStats>({
     queryKey: ['vsc-addr-stat-counts', addr],
-    queryFn: async () => (await fetch(`${beApi}/address/${addr}/stats`)).json(),
+    queryFn: async () => (await fetch(`${conf.beApi}/address/${addr}/stats`)).json(),
     enabled
   })
   return addrStats
@@ -107,7 +111,7 @@ export const useNetworkStats = (enabled: boolean = true) => {
   const { data } = useQuery<NetworkStat[]>({
     queryKey: ['vsc-network-stats'],
     queryFn: async (): Promise<NetworkStat[]> => {
-      const result: NetworkStat[] = await (await fetch(`${beApi}/network/stats/daily`)).json()
+      const result: NetworkStat[] = await (await fetch(`${conf.beApi}/network/stats/daily`)).json()
       return result.map((v) => {
         return { ...v, date: new Date(parseInt(v._id.$date.$numberLong)).toISOString().split('T')[0] }
       })
@@ -118,16 +122,16 @@ export const useNetworkStats = (enabled: boolean = true) => {
 }
 
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
-  return await (await fetch(`${beApi}/search/${search_cid}`)).json()
+  return await (await fetch(`${conf.beApi}/search/${search_cid}`)).json()
 }
 
 export const fetchL1Rest = async <T>(route: string): Promise<T> => {
-  return await (await fetch(`${hiveApi}${route}`)).json()
+  return await (await fetch(`${conf.hiveApi}${route}`)).json()
 }
 
 const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => {
   return (await (
-    await fetch(gqlApi, {
+    await fetch(conf.gqlApi, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

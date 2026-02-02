@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import type Recharts from 'recharts'
 import { BalHistory } from '../../../types/L1ApiResult'
 import { fetchL1Rest, useNetworkStats } from '../../../requests'
-import { multisigAccount } from '../../../settings'
+import { getConf } from '../../../settings'
 import { roundFloat, thousandSeperator } from '../../../helpers'
 import { Coin } from '../../../types/Payloads'
 import { PageTitle } from '../../PageTitle'
@@ -27,18 +27,20 @@ export const HiveBridgeTVL = () => {
     import('recharts').then((module) => setRecharts(module))
   }, [])
 
+  const conf = getConf()
+
   const { data: hiveHistory } = useQuery({
     queryKey: ['bridge-tvl-hive'],
     queryFn: async () =>
       fetchL1Rest<BalHistory[]>(
-        `/balance-api/accounts/${multisigAccount}/aggregated-history?coin-type=HIVE&granularity=daily&direction=asc&from-block=2025-04-01`
+        `/balance-api/accounts/${conf.msAccount}/aggregated-history?coin-type=HIVE&granularity=daily&direction=asc&from-block=2025-04-01`
       )
   })
   const { data: hbdHistory } = useQuery({
     queryKey: ['bridge-tvl-hbd'],
     queryFn: async () =>
       fetchL1Rest<BalHistory[]>(
-        `/balance-api/accounts/${multisigAccount}/aggregated-history?coin-type=HBD&granularity=daily&direction=asc&from-block=2025-04-01`
+        `/balance-api/accounts/${conf.msAccount}/aggregated-history?coin-type=HBD&granularity=daily&direction=asc&from-block=2025-04-01`
       )
   })
 

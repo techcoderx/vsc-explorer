@@ -24,7 +24,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router'
 import { fetchL1Rest, fetchLatestBridgeTxs, getBridgeTxCounts } from '../../../requests'
-import { multisigAccount, themeColorScheme } from '../../../settings'
+import { getConf, themeColorScheme } from '../../../settings'
 import { L1Balance } from '../../../types/L1ApiResult'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
 import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
@@ -76,9 +76,10 @@ const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw
 }
 
 const HiveBridgeOverview = () => {
+  const conf = getConf()
   const { data: l1Acc } = useQuery({
-    queryKey: ['hive-account', multisigAccount],
-    queryFn: async () => fetchL1Rest<L1Balance>(`/balance-api/accounts/${multisigAccount}/balances`)
+    queryKey: ['hive-account', conf.msAccount],
+    queryFn: async () => fetchL1Rest<L1Balance>(`/balance-api/accounts/${conf.msAccount}/balances`)
   })
   const { data: tally } = useQuery({ queryKey: ['vsc-bridge-tx-count'], queryFn: async () => getBridgeTxCounts() })
   const { data } = useQuery({

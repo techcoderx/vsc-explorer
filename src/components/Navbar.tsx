@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink, Outlet } from 'react-router'
-import { multisigAccount, themeColor, themeColorULight } from '../settings'
+import { getConf, themeColor, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 
 const Navbar = () => {
@@ -239,7 +239,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Multisig Account',
         subLabel: 'Activities of multisig account',
-        href: '/address/hive:' + multisigAccount + '/hiveops'
+        href: '/address/hive:' + getConf().msAccount + '/hiveops'
       },
       {
         label: 'Schedule',

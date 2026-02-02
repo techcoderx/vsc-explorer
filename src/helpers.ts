@@ -11,7 +11,7 @@ import {
   Coin,
   CoinLower
 } from './types/Payloads'
-import { l1Explorer, l1ExplorerName, multisigAccount, NETWORK_ID } from './settings'
+import { getConf } from './settings'
 import { Ops } from './types/L1ApiResult'
 import { fetchL1Rest } from './requests'
 
@@ -108,13 +108,22 @@ export const generateMessageToSign = async (username: string) => {
 }
 
 export const parseOperation = (op: Ops): { valid: false } | { valid: true; type: string; user: string; payload: object } => {
+  const conf = getConf()
   switch (op.type) {
     case 'custom_json_operation':
       if (op.value.id.startsWith('vsc.') && (op.value.required_auths.length > 0 || op.value.required_posting_auths.length > 0)) {
         let user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
         try {
           let payload = JSON.parse(op.value.json)
-          if (typeof payload === 'object') {
+          // some early testnet transactions went through without net ID, this was fixed but we show them regardless
+          if (
+            typeof payload === 'object' &&
+            (conf.netId === 'vsc-testnet' ||
+              payload.net_id === conf.netId ||
+              user === conf.msAccount ||
+              op.value.id === 'vsc.tss_commitment' ||
+              op.value.id === 'vsc.tss_sign')
+          ) {
             return {
               valid: true,
               type: op.value.id.replace('vsc.', ''),
@@ -128,14 +137,14 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
     case 'account_update_operation':
       try {
         let jm = JSON.parse(op.value.json_metadata)
-        if (op.value.account === multisigAccount) {
+        if (op.value.account === conf.msAccount) {
           return {
             valid: true,
             type: 'rotate_multisig',
             user: op.value.account,
             payload: op.value
           }
-        } else if (typeof jm.vsc_node === 'object' && jm.vsc_node.net_id === NETWORK_ID) {
+        } else if (typeof jm.vsc_node === 'object' && jm.vsc_node.net_id === conf.netId) {
           return {
             valid: true,
             type: 'announce_node',
@@ -149,7 +158,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
       } catch {}
       break
     case 'interest_operation':
-      if (op.value.owner === multisigAccount)
+      if (op.value.owner === conf.msAccount)
         return {
           valid: true,
           type: 'interest',
@@ -161,11 +170,11 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
     case 'transfer_from_savings_operation':
     case 'transfer_to_savings_operation':
     case 'fill_transfer_from_savings_operation':
-      if (op.value.from === multisigAccount || op.value.to === multisigAccount)
+      if (op.value.from === conf.msAccount || op.value.to === conf.msAccount)
         return {
           valid: true,
           type: op.type === 'transfer_operation' ? 'l1_transfer' : op.type.replace('_operation', ''),
-          user: op.value.from !== multisigAccount ? op.value.from : op.value.to,
+          user: op.value.from !== conf.msAccount ? op.value.from : op.value.to,
           payload: op.value
         }
       break
@@ -174,6 +183,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
 }
 
 export const describeL1TxBriefly = (tx: L1Transaction): string => {
+  const conf = getConf()
   let result: string = tx.username + ' '
   switch (tx.type) {
     case 'announce_node':
@@ -198,7 +208,7 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
         (tx.payload as TransferPayload).to
       break
     case 'l1_transfer':
-      if ((tx.payload as DepositPayload).to === multisigAccount) {
+      if ((tx.payload as DepositPayload).to === conf.msAccount) {
         result += ` mapped ${naiToString((tx.payload as DepositPayload).amount)}`
       } else {
         result += ` unmapped ${naiToString((tx.payload as DepositPayload).amount)}`
@@ -289,10 +299,7 @@ export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {
 }
 
 export const beL1BlockUrl = (num: number) => {
-  // HAF BE uses /block, HiveHub uses /b
-  let route = '/block/'
-  if (l1ExplorerName === 'HiveHub') {
-    route = '/b/'
-  }
-  return l1Explorer + route + num
+  // Use the first one as default
+  const be = getConf().hiveBe[0]
+  return be.url + be.blockRoute + num
 }

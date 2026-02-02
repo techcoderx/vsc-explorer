@@ -29,7 +29,8 @@ import {
   TableCellProps,
   Grid,
   GridItem,
-  Spinner
+  Spinner,
+  HStack
 } from '@chakra-ui/react'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -37,7 +38,7 @@ import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch } from '../../requests'
 import { abbreviateHash, beL1BlockUrl, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
-import { l1Explorer, l1ExplorerName, themeColorScheme } from '../../settings'
+import { getConf, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
@@ -530,16 +531,20 @@ const L1Tx = () => {
         {isLoading ? <Skeleton height={'20px'} marginTop={'10px'} /> : null}
       </Box>
       <hr />
-      <Button
-        as={ReactRouterLink}
-        margin={'20px 0px'}
-        colorScheme={themeColorScheme}
-        variant={'outline'}
-        to={l1Explorer + '/tx/' + txid}
-        target="_blank"
-      >
-        View in {l1ExplorerName}
-      </Button>
+      <HStack gap={'2'}>
+        {getConf().hiveBe.map((be) => (
+          <Button
+            as={ReactRouterLink}
+            margin={'20px 0px'}
+            colorScheme={themeColorScheme}
+            variant={'outline'}
+            to={be.url + '/tx/' + txid}
+            target="_blank"
+          >
+            View in {be.name}
+          </Button>
+        ))}
+      </HStack>
       <Flex gap="6" direction="column">
         {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (

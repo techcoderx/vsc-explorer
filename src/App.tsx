@@ -32,7 +32,7 @@ import { TxCharts } from './components/pages/charts/Transactions'
 import { AddressCharts } from './components/pages/charts/Addresses'
 import { ContractsCharts } from './components/pages/charts/Contracts'
 import { WitnessCharts } from './components/pages/charts/Witnesses'
-import { hiveApi, NETWORK_ID } from './settings'
+import { getConf } from './settings'
 
 const router = createBrowserRouter([
   {
@@ -204,10 +204,10 @@ const App = () => {
         name: 'Magi Blocks'
       }
     })
-    // TODO: Build time network settings (?)
-    aioha.setApi(hiveApi, [])
-    aioha.setChainId('18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e')
-    aioha.vscSetNetId(NETWORK_ID)
+    const conf = getConf()
+    aioha.setApi(conf.hiveApi, [])
+    aioha.setChainId(conf.hiveChainId)
+    aioha.vscSetNetId(conf.netId)
   }, [])
   return (
     <AiohaProvider aioha={aioha}>
