@@ -1,6 +1,8 @@
 FROM node:22-alpine AS build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ARG VITE_NETWORK=mainnet
+ENV VITE_NETWORK=$VITE_NETWORK
 RUN npm i -g corepack@latest
 RUN corepack enable
 COPY . /app
