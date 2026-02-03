@@ -38,10 +38,14 @@ pnpm run preview
 
 #### Build image
 ```sh
-docker build -t magi-blocks .
+docker build --build-arg VITE_NETWORK=mainnet -t magi-blocks .
 ```
 
 #### Run container
 ```sh
 docker run -d --rm -p 8080:8080 --name=magi-blocks magi-blocks
 ```
+
+## Build time env vars
+
+* `VITE_NETWORK`: Network name (mainnet or testnet)
