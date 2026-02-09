@@ -60,6 +60,7 @@ import { useAioha } from '@aioha/providers/react'
 import { AiohaModal } from '../Aioha'
 import { KeyTypes } from '@aioha/aioha'
 import { FaHive } from 'react-icons/fa6'
+import { ContractHistoryTbl } from '../tables/ContractHistory'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -370,6 +371,7 @@ export const Contract = () => {
   const txns = data?.data.txns
   const outputs = data?.data.outputs
   const contract = ct && ct.length > 0 ? ct[0] : null
+  const history = ct && ct.length > 0 ? ct : []
   const {
     data: verifInfo,
     error: verifError,
@@ -410,6 +412,7 @@ export const Contract = () => {
               <Tab>Read State</Tab>
               <Tab>Call Contract</Tab>
               <Tab>Source Code</Tab>
+              <Tab>History</Tab>
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel pt={'2'} px={'0'}>
@@ -560,6 +563,9 @@ export const Contract = () => {
                     <Text m={'5px 0'}>Source code for this contract is unknown.</Text>
                   </>
                 )}
+              </TabPanel>
+              <TabPanel pt={'2'} px={'0'}>
+                <ContractHistoryTbl history={history} />
               </TabPanel>
             </TabPanels>
           </Tabs>

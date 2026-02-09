@@ -242,7 +242,7 @@ query Contract($opt1: FindContractFilter, $opt2: TransactionFilter, $opt3: Contr
   outputs: findContractOutput(filterOptions: $opt3) { id timestamp contract_id inputs results { ret ok }}
 }`,
         {
-          opt1: { byId: contract_id, offset: 0, limit: 1 },
+          opt1: { byId: contract_id, offset: 0, historical: true },
           opt2: { byContract: contract_id, offset: 0, limit: 100 },
           opt3: { byContract: contract_id, offset: 0, limit: 100 }
         }
