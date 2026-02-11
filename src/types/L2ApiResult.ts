@@ -225,6 +225,7 @@ interface ContractOutputBase {
     err?: string
     errMsg?: string
     logs?: string[]
+    tss_ops?: TssOp[]
     ok: boolean
     ret: string
   }[]
@@ -265,4 +266,25 @@ export interface OffchainTx {
     }
     type: TxDataFer['type'] | TxDataCall['type']
   }[]
+}
+
+export interface TssOp {
+  args: string
+  key_id: string
+  type: 'create' | 'sign'
+}
+
+export interface TssReqStatus {
+  status: 'unsigned' | 'complete'
+  keyId: string
+  msg: string
+  sig: string
+}
+
+export interface TssKeyStatus {
+  id: string
+  status: 'created' | 'active' | 'deleted'
+  public_key: string
+  algo: 'ecdsa' | 'eddsa'
+  created_height: number
 }

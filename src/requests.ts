@@ -23,7 +23,10 @@ import {
   Txn,
   Contract,
   AddrBalance,
-  ContractOutput
+  ContractOutput,
+  TssOp,
+  TssKeyStatus,
+  TssReqStatus
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 
@@ -356,5 +359,48 @@ export const fetchMembersAtL1Block = async (height: number): Promise<MemAtBlk> =
     `query MembersAtBlock($height: Uint64) { election: electionByBlockHeight(blockHeight: $height) { members { account } weights }}`,
     { height }
   )
+  return result.data
+}
+
+export const fetchTssReqStatuses = async (reqs: { [k: string]: TssOp }) => {
+  const ks = Object.keys(reqs)
+  const queryFragments = ks.map((req, index) => {
+    switch (reqs[req].type) {
+      case 'create':
+        return `t${req}: getTssKey(keyId: $keyId${index}) { id status public_key algo created_height }`
+      case 'sign':
+        return `t${req}: getTssRequests(keyId: $keyId${index}, msgHex: $msgHex${index}) { status key_id msg sig }`
+    }
+  })
+
+  const variables = ks.reduce(
+    (acc, req, index) => {
+      const r = {
+        ...acc,
+        [`keyId${index}`]: reqs[req].key_id
+      }
+      if (reqs[req].type === 'sign') {
+        r[`msgHex${index}`] = [reqs[req].args]
+      }
+      return r
+    },
+    {} as Record<string, string | string[]>
+  )
+
+  const query = `
+    query DagByCID(${ks
+      .map((req, i) => {
+        let a = `$keyId${i}: String!`
+        if (reqs[req].type === 'sign') {
+          a = a + `, $msgHex${i}: [String!]`
+        }
+        return a
+      })
+      .join(', ')}) {
+      ${queryFragments.join('\n')}
+    }
+  `
+
+  const result = await gql<GqlResponse<{ [k: string]: TssKeyStatus | TssReqStatus[] }>>(query, variables)
   return result.data
 }

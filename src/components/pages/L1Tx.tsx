@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useMemo, useRef } from 'react'
 import {
   Text,
   Box,
@@ -36,13 +36,13 @@ import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
-import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch } from '../../requests'
+import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch, fetchTssReqStatuses } from '../../requests'
 import { abbreviateHash, beL1BlockUrl, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { getConf, themeColorScheme } from '../../settings'
 import { Block, Election } from '../../types/HafApiResult'
 import { ProgressBarPct } from '../ProgressPercent'
 import { L1TxHeader } from '../../types/L1ApiResult'
-import { Contract, ContractOutputDag, Txn } from '../../types/L2ApiResult'
+import { Contract, ContractOutputDag, TssKeyStatus, TssOp, TssReqStatus, Txn } from '../../types/L2ApiResult'
 import { StatusBadge } from '../tables/Ledgers'
 import { AccountLink, ContractLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
@@ -143,6 +143,37 @@ const CallLog = ({ contractId, idx, log }: { contractId: string; idx: number; lo
   </Tr>
 )
 
+const TssRequest = ({
+  contractId,
+  idx,
+  req,
+  status
+}: {
+  contractId: string
+  idx: number
+  req: TssOp
+  status?: TssKeyStatus | TssReqStatus[]
+}) => {
+  const s = Array.isArray(status) ? status[0] : status
+  const out = (s as TssKeyStatus | undefined)?.public_key || (s as TssReqStatus | undefined)?.sig
+  return (
+    <Tr>
+      <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
+      <MinTd>{req.type}</MinTd>
+      <MinTd>{req.key_id.replace(`${contractId}-`, '')}</MinTd>
+      <MinTd>{req.args}</MinTd>
+      <MinTd>
+        {!!s ? (
+          <Badge colorScheme={s.status === 'complete' || s.status === 'active' ? 'green' : themeColorScheme}>{s.status}</Badge>
+        ) : (
+          <Skeleton height="20px" />
+        )}
+      </MinTd>
+      <MinTd>{out ?? <i>N/A</i>}</MinTd>
+    </Tr>
+  )
+}
+
 const shouldRefetch = (txn?: Txn | null) =>
   !!txn &&
   (txn.status === 'UNCONFIRMED' || txn.status === 'INCLUDED') &&
@@ -242,6 +273,33 @@ const TxOut = ({ txn }: { txn: Txn }) => {
           0
         )
       : 0
+  const tssCount =
+    txn.status === 'CONFIRMED' && !!outContents && !!txn.output
+      ? txn.output.reduce(
+          (pv, val, idx) =>
+            pv +
+            val.index.reduce(
+              (pv2, val2) =>
+                pv2 + (!!outContents[idx].results[val2].tss_ops ? outContents[idx].results[val2].tss_ops?.length : 0),
+              0
+            ),
+          0
+        )
+      : 0
+  const tssOps = useMemo(() => {
+    const result: { [k: string]: TssOp } = {}
+    if (tssCount > 0) {
+      txn.output?.forEach((out, i) =>
+        out.index.forEach((o, j) => outContents![i].results[o].tss_ops?.forEach((req, k) => (result[`${i}_${j}_${k}`] = req)))
+      )
+    }
+    return result
+  }, [outContents])
+  const { data: tssReqStatus } = useQuery({
+    queryKey: ['vsc-tx-tss-status', txn.id],
+    queryFn: () => fetchTssReqStatuses(tssOps),
+    enabled: tssCount > 0
+  })
   return (
     <Accordion allowToggle>
       <AccordionItem>
@@ -364,6 +422,49 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                       out.index.map((o, j) =>
                         outContents[i].results[o].logs?.map((log, k) => (
                           <CallLog key={`${i}-${j}-${k}`} contractId={outContents[i].contract_id} idx={j} log={log} />
+                        ))
+                      )
+                    )}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            )}
+          </AccordionPanel>
+        </AccordionItem>
+      )}
+      {!!txn.output && !!outContents && txn.status === 'CONFIRMED' && tssCount > 0 && (
+        <AccordionItem>
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
+              TSS Requests ({tssCount})
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel px={'0'}>
+            {tssCount > 0 && (
+              <TableContainer>
+                <Table variant={'unstyled'}>
+                  <Thead>
+                    <Tr>
+                      <Th>Contract ID</Th>
+                      <Th>Type</Th>
+                      <Th>Key ID</Th>
+                      <Th>Arguments</Th>
+                      <Th>Status</Th>
+                      <Th>Output</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {txn.output.map((out, i) =>
+                      out.index.map((o, j) =>
+                        outContents[i].results[o].tss_ops?.map((req, k) => (
+                          <TssRequest
+                            key={`${i}-${j}-${k}`}
+                            contractId={outContents[i].contract_id}
+                            idx={j}
+                            req={req}
+                            status={tssReqStatus ? tssReqStatus[`t${i}_${j}_${k}`] : undefined}
+                          />
                         ))
                       )
                     )}
@@ -532,8 +633,9 @@ const L1Tx = () => {
       </Box>
       <hr />
       <HStack gap={'2'}>
-        {getConf().hiveBe.map((be) => (
+        {getConf().hiveBe.map((be, i) => (
           <Button
+            key={i}
             as={ReactRouterLink}
             margin={'20px 0px'}
             colorScheme={themeColorScheme}
