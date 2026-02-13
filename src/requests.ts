@@ -26,9 +26,12 @@ import {
   ContractOutput,
   TssOp,
   TssKeyStatus,
-  TssReqStatus
+  TssReqStatus,
+  Status,
+  TxnTypes
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
+import { CoinLower } from './types/Payloads'
 
 const conf = getConf()
 
@@ -101,10 +104,23 @@ export const getBridgeTxCounts = async (): Promise<BridgeCounter> => {
   return await (await fetch(`${conf.beApi}/bridge/stats`)).json()
 }
 
-export const useAddrTxStats = (addr: string, enabled: boolean = true) => {
-  const { data: addrStats } = useQuery<AddrTxStats>({
-    queryKey: ['vsc-addr-stat-counts', addr],
-    queryFn: async () => (await fetch(`${conf.beApi}/address/${addr}/stats`)).json(),
+type historyStatKind = 'txs' | 'ledger_txs' | 'ledger_actions'
+type historyStatOpts = {
+  from_block?: number
+  to_block?: number
+  user?: string
+  contract?: string
+  status?: Status
+  op_types?: TxnTypes
+  asset?: CoinLower
+}
+export const useHistoryStats = (kind: historyStatKind, opts: historyStatOpts, enabled: boolean = true) => {
+  const { data: addrStats } = useQuery<{ count: number }>({
+    queryKey: ['vsc-history-stat-count', kind, opts],
+    queryFn: async () =>
+      (
+        await fetch(`${conf.beApi}/history/stat/${kind}?` + new URLSearchParams(opts as Record<string, string>).toString())
+      ).json(),
     enabled
   })
   return addrStats

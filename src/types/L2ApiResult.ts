@@ -188,6 +188,8 @@ export interface Txn {
   }[]
 }
 
+export type TxnTypes = (TxDataFer | TxDataDeposit | TxDataCall)['type']
+
 export interface AddrBalance {
   bal?: {
     account: string

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, useParams } from 'react-router'
-import { getDeposits, useAddrTxStats } from '../../../requests'
+import { getDeposits, useHistoryStats } from '../../../requests'
 import { LedgerDeposits, LedgerTxsTbl } from '../../tables/Ledgers'
 import Pagination from '../../Pagination'
 
@@ -15,14 +15,14 @@ export const AddressLedgers = () => {
     queryKey: ['vsc-list-ledgers-hive', offset, count, addr],
     queryFn: async () => getDeposits(offset, count, { byToFrom: addr })
   })
-  const stats = useAddrTxStats(addr)
+  const stats = useHistoryStats('ledger_txs', { user: addr })
   return (
     <>
       <LedgerTxsTbl txs={data?.deposits || []} />
       <Pagination
         path={`/address/${addr}/ledger`}
         currentPageNum={pageNum}
-        maxPageNum={Math.min(100, Math.ceil((stats?.ledger_txs || 0) / count))}
+        maxPageNum={Math.min(100, Math.ceil((stats?.count || 0) / count))}
       />
     </>
   )
@@ -37,14 +37,14 @@ export const AddressDeposits = () => {
     queryKey: ['vsc-list-deposits-hive', offset, count, addr],
     queryFn: async () => getDeposits(offset, count, { byToFrom: addr, byTypes: ['deposit'] })
   })
-  const stats = useAddrTxStats(addr)
+  const stats = useHistoryStats('ledger_txs', { user: addr, op_types: 'deposit' })
   return (
     <>
       <LedgerDeposits txs={data?.deposits || []} />
       <Pagination
         path={`/address/${addr}/deposits`}
         currentPageNum={pageNum}
-        maxPageNum={Math.min(100, Math.ceil((stats?.deposits || 0) / count))}
+        maxPageNum={Math.min(100, Math.ceil((stats?.count || 0) / count))}
       />
     </>
   )
