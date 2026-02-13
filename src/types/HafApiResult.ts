@@ -135,14 +135,6 @@ export interface BridgeCounter {
   withdrawals: number
 }
 
-export interface AddrTxStats {
-  txs: number
-  ledger_txs: number
-  ledger_actions: number
-  deposits: number
-  withdrawals: number
-}
-
 export interface CIDSearchResult {
   type?: string
   result?: string | number

@@ -7,7 +7,6 @@ import {
   Block,
   WitnessStat,
   BridgeCounter,
-  AddrTxStats,
   NetworkStat,
   WeightedMembers
 } from './types/HafApiResult'
