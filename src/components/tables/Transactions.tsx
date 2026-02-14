@@ -25,10 +25,10 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
     totalHive > 0
       ? ['hive', totalHive]
       : totalHbd > 0
-      ? ['hbd', totalHbd]
-      : totalStakedHbd > 0
-      ? ['hbd_savings', totalStakedHbd]
-      : null
+        ? ['hbd', totalHbd]
+        : totalStakedHbd > 0
+          ? ['hbd_savings', totalStakedHbd]
+          : null
   let tokenCount = 0
   totalHive > 0 && (tokenCount += 1)
   totalHbd > 0 && (tokenCount += 1)
@@ -44,6 +44,8 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
 }
 
 export const Txns = ({ txs }: { txs: Txn[] }) => {
+  //@ts-ignore
+  txs.forEach((t) => t.ops.forEach((o) => (o.type === 'call' ? (o.type = 'call_contract') : undefined)))
   return (
     <TableContainer my={'3'}>
       <Table>
@@ -70,9 +72,15 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                   <TxLink val={t.id} />
                 </Td>
                 <Td>
-                  <Tooltip placement="top" label={t.anchr_ts}>
-                    {timeAgo(t.anchr_ts)}
-                  </Tooltip>
+                  {!!t.anchr_ts ? (
+                    <Tooltip placement="top" label={t.anchr_ts}>
+                      {timeAgo(t.anchr_ts)}
+                    </Tooltip>
+                  ) : (
+                    <Text opacity={'0.7'}>
+                      <i>Pending...</i>
+                    </Text>
+                  )}
                 </Td>
                 <Td>{o.type === 'call_contract' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
                 <Td>
@@ -80,7 +88,8 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                     val={
                       o.type === 'deposit'
                         ? o.data.from
-                        : t.required_auths[0] ?? (o.type !== 'call_contract' ? o.data.from : t.required_posting_auths[0] ?? '')
+                        : (t.required_auths[0] ??
+                          (o.type !== 'call_contract' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
                     }
                   />
                 </Td>

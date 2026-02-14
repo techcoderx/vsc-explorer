@@ -169,7 +169,13 @@ const TssRequest = ({
           <Skeleton height="20px" />
         )}
       </MinTd>
-      <MinTd>{out ?? <i>N/A</i>}</MinTd>
+      <MinTd>
+        {out ?? (
+          <Text opacity={'0.7'}>
+            <i>N/A</i>
+          </Text>
+        )}
+      </MinTd>
     </Tr>
   )
 }
