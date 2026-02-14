@@ -743,10 +743,10 @@ const L2Tx = () => {
         ) : !!tx.anchr_ts ? (
           <Box marginTop={'10px'}>
             <Text fontSize={'xl'} display={'inline'}>
-              Anchored in L1 block{' '}
+              Included in L2 block at slot height{' '}
             </Text>
-            <Link href={beL1BlockUrl(tx.anchr_height)} target="_blank" fontSize={'xl'}>
-              {'#' + thousandSeperator(tx.anchr_height)}
+            <Link as={ReactRouterLink} to={`/block/${tx.anchr_id}`} fontSize={'xl'}>
+              {thousandSeperator(tx.anchr_height)}
             </Link>{' '}
             <Tooltip placement="top" label={tx.anchr_ts}>
               <Text fontSize={'xl'} display={'inline'}>

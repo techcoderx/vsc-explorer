@@ -173,6 +173,7 @@ export interface Txn {
   anchr_height: number
   anchr_index: number
   anchr_ts: string
+  anchr_id?: string // tx id of l2 block proposal
   type: 'hive' | 'vsc'
   ops: (TxDataFer | TxDataDeposit | TxDataCall)[]
   first_seen: string

@@ -47,11 +47,12 @@ export const BlockBy = () => {
   const blkNum = parseInt(blockId!)
   const invalidBlkNum = isNaN(blkNum) || blkNum < 1
   const invalidBlkHash = !blockId || blockId.length !== 59 || !blockId.startsWith('bafyrei')
-  const invalidBlkId = invalidBlkNum && invalidBlkHash
-  const blockBy = !invalidBlkNum ? 'id' : 'cid'
+  const invalidBlkTxId = !blockId || blockId.length !== 40 || !/^[0-9a-f]+$/i.test(blockId)
+  const invalidBlkId = invalidBlkNum && invalidBlkHash && invalidBlkTxId
+  const blockBy = !invalidBlkTxId ? 'id1' : !invalidBlkNum ? 'id' : 'cid'
   const { data, isLoading, isError } = useQuery({
     queryKey: ['vsc-block', blockBy, blockId!],
-    queryFn: async () => fetchBlock(blockId!, !invalidBlkNum ? 'id' : 'cid'),
+    queryFn: async () => fetchBlock(blockId!, blockBy),
     enabled: !invalidBlkId
   })
   return Block(
