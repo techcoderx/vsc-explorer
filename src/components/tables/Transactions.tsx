@@ -45,7 +45,7 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
 
 export const Txns = ({ txs }: { txs: Txn[] }) => {
   //@ts-ignore
-  txs.forEach((t) => t.ops.forEach((o) => (o.type === 'call' ? (o.type = 'call_contract') : undefined)))
+  txs.forEach((t) => t.ops.forEach((o) => (o.type === 'call_contract' ? (o.type = 'call') : undefined)))
   return (
     <TableContainer my={'3'}>
       <Table>
@@ -82,25 +82,23 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                     </Text>
                   )}
                 </Td>
-                <Td>{o.type === 'call_contract' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
+                <Td>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
                 <Td>
                   <AccountLink
                     val={
                       o.type === 'deposit'
                         ? o.data.from
                         : (t.required_auths[0] ??
-                          (o.type !== 'call_contract' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
+                          (o.type !== 'call' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
                     }
                   />
                 </Td>
                 <Td>
                   <ToIcon />
                 </Td>
+                <Td>{o.type === 'call' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}</Td>
                 <Td>
-                  {o.type === 'call_contract' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}
-                </Td>
-                <Td>
-                  {o.type === 'call_contract' ? (
+                  {o.type === 'call' ? (
                     <AmountIntentAllowance
                       intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
                     />

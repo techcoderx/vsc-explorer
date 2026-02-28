@@ -156,7 +156,7 @@ interface TxDataDeposit {
 }
 
 interface TxDataCall {
-  type: 'call_contract'
+  type: 'call'
   index: number
   data: {
     action: string

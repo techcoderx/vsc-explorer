@@ -186,10 +186,9 @@ const shouldRefetch = (txn?: Txn | null) =>
   (!txn.anchr_ts || Math.abs(new Date().getTime() - new Date(txn.anchr_ts + 'Z').getTime()) < 3600000)
 
 const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
-  const rcUsed =
-    txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract')
-      ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0)
-      : 0
+  // prettier-ignore
+  // @ts-ignore
+  const rcUsed = txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract') ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0) : 0
   return (
     <Card>
       <CardHeader>
