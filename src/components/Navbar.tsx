@@ -286,10 +286,6 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Tools',
     children: [
-      // {
-      //   label: 'Broadcast Transaction',
-      //   subLabel: 'Sign and broadcast a Magi transaction'
-      // },
       {
         label: 'Verify Contract',
         subLabel: 'Submit contract source code for verification',
@@ -299,6 +295,11 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'DAG Inspector',
         subLabel: 'View a DAG by CID pinned by nodes',
         href: '/tools/dag'
+      },
+      {
+        label: 'Broadcast Transaction',
+        subLabel: 'Sign and broadcast a Magi transaction',
+        href: '/tools/broadcast'
       }
     ]
   }

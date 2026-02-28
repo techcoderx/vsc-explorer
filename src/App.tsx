@@ -33,6 +33,7 @@ import { AddressCharts } from './components/pages/charts/Addresses'
 import { ContractsCharts } from './components/pages/charts/Contracts'
 import { WitnessCharts } from './components/pages/charts/Witnesses'
 import { getConf } from './settings'
+import { Broadcast } from './components/pages/tools/Broadcast'
 
 const router = createBrowserRouter([
   {
@@ -186,6 +187,10 @@ const router = createBrowserRouter([
       {
         path: '/tools/dag',
         element: <DagInspector />
+      },
+      {
+        path: '/tools/broadcast',
+        element: <Broadcast />
       },
       {
         path: '*',
