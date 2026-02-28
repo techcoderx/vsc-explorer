@@ -42,7 +42,7 @@ export const Broadcast = () => {
   const { aioha, user } = useAioha()
   const walletDisclosure = useDisclosure()
   const [txType, setTxType] = useState<TxnTypes>('transfer')
-  const [to, setTo] = useState<string>('')
+  const [dest, setDest] = useState<string>('')
   const [amt, setAmt] = useState<string>()
   const [asset, setAsset] = useState<CoinLower>('hive')
   const [memo, setMemo] = useState<string>('')
@@ -51,6 +51,7 @@ export const Broadcast = () => {
   const toast = useToast()
   const conf = getConf()
   const submitClicked = async () => {
+    const to = !!dest ? dest : 'hive:' + user
     const amount = parseFloat(amt || '')
     if (isNaN(amount) || amount < 0) {
       return toast({ title: 'Amount must be greater than 0.', status: 'error' })
@@ -135,9 +136,9 @@ export const Broadcast = () => {
                   <Input
                     focusBorderColor={themeColorLight}
                     type="text"
-                    placeholder="Include hive: or did: prefix for non-map"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
+                    placeholder="Include hive: or did: prefix for non-map, defaults to sender"
+                    value={dest}
+                    onChange={(e) => setDest(e.target.value)}
                   />
                 </FormControl>
                 <FormControl>
@@ -177,7 +178,7 @@ export const Broadcast = () => {
                   />
                 </FormControl>
               </Stack>
-              <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning || !user || !to || !amt}>
+              <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning || !user || !amt}>
                 <Flex gap={'2'} align={'center'}>
                   <Spinner size={'sm'} hidden={!isSpinning} />
                   <Text>Submit</Text>
