@@ -23,8 +23,10 @@ interface Conf {
   msAccount: string
 }
 
-let network: 'mainnet' | 'testnet' = import.meta.env.VITE_NETWORK || 'mainnet'
-if (network !== 'mainnet' && network !== 'testnet') network = 'mainnet'
+type Networks = 'mainnet' | 'testnet' | 'devnet'
+
+let network: Networks = import.meta.env.VITE_NETWORK || 'mainnet'
+if (network !== 'mainnet' && network !== 'testnet' && network !== 'devnet') network = 'mainnet'
 
 const testnetConf: Conf = {
   hiveApi: 'https://testnet.techcoderx.com',
@@ -63,11 +65,33 @@ const mainnetConf: Conf = {
   msAccount: 'vsc.gateway'
 }
 
+const devnetHiveApi = import.meta.env.VITE_DEVNET_HIVE_API || 'http://localhost:10710'
+const devnetBeApi = import.meta.env.VITE_DEVNET_BE_API || 'http://localhost:10719/be-api/v1'
+const devnetGqlApi = import.meta.env.VITE_DEVNET_GQL_API || 'http://localhost:8080/api/v1/graphql'
+
+const devnetConf: Conf = {
+  hiveApi: devnetHiveApi,
+  beApi: devnetBeApi,
+  gqlApi: devnetGqlApi,
+  hiveBe: [
+    {
+      url: devnetHiveApi + '/explorer',
+      name: 'HAF BE',
+      blockRoute: '/block/'
+    }
+  ],
+  hiveChainId: '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e',
+  netId: 'vsc-devnet',
+  msAccount: 'vsc.gateway'
+}
+
 export const getConf = (): Conf => {
   switch (network) {
     case 'mainnet':
       return mainnetConf
     case 'testnet':
       return testnetConf
+    case 'devnet':
+      return devnetConf
   }
 }
