@@ -10,7 +10,7 @@ import {
   NetworkStat,
   WeightedMembers
 } from './types/HafApiResult'
-import { getConf } from './settings'
+import { getConf, hafBaseUrl } from './settings'
 import {
   WitnessSchedule,
   Witness,
@@ -51,7 +51,7 @@ export const fetchBlocksByProposer = async (proposer: string, count = 50, last_b
 }
 
 export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
-  return await (await fetch(`${conf.beApi}/haf/latest-ops/50/true`)).json()
+  return await (await fetch(`${hafBaseUrl}/haf/latest-ops/50/true`)).json()
 }
 
 export const fetchContracts = async (opts: object): Promise<Contract[]> => {
@@ -88,11 +88,11 @@ export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100,
 }
 
 export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
-  return await (await fetch(`${conf.beApi}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
+  return await (await fetch(`${hafBaseUrl}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
 }
 
 export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {
-  return await (await fetch(`${conf.beApi}/haf/user/${username}`)).json()
+  return await (await fetch(`${hafBaseUrl}/haf/user/${username}`)).json()
 }
 
 export const fetchL1TxOutput = async (trx_id: string): Promise<(Block | Election | Contract | Txn | null)[]> => {

@@ -95,3 +95,5 @@ export const getConf = (): Conf => {
       return devnetConf
   }
 }
+
+export const hafBaseUrl = import.meta.env.VITE_HAF_BASE_URL || getConf().beApi
