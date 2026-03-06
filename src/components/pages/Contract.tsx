@@ -228,7 +228,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
           }
         }
       })
-    const callResult = await aioha.vscCallContract(contractId, methodName, payload, rcLimitInt, intentsArr)
+    const callResult = await aioha.vscCallContract(contractId, methodName, payload, rcLimitInt, intentsArr, keyType)
     if (!callResult.success) {
       return toast({ title: callResult.error, status: 'error' })
     } else {
