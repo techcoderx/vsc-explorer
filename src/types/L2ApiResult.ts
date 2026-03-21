@@ -292,3 +292,27 @@ export interface TssKeyStatus {
   algo: 'ecdsa' | 'eddsa'
   created_height: number
 }
+
+export interface SimulateCallInput {
+  contract_id: string
+  action: string
+  payload: string
+  rc_limit: number
+  intents?: { type: string; args: object }[]
+}
+
+export interface SimulateCallsInput {
+  tx_id: string
+  required_auths?: string[]
+  required_posting_auths?: string[]
+  calls: SimulateCallInput[]
+}
+
+export interface SimulateCallResult {
+  success: boolean
+  err?: string
+  err_msg?: string
+  ret?: string
+  rc_used: string
+  gas_used: string
+}

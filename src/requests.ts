@@ -26,6 +26,8 @@ import {
   TssOp,
   TssKeyStatus,
   TssReqStatus,
+  SimulateCallResult,
+  SimulateCallsInput,
   Status,
   TxnTypes
 } from './types/L2ApiResult'
@@ -184,6 +186,17 @@ export const getWitnessSchedule = async (height: number): Promise<WitnessSchedul
     {
       height: height.toString()
     }
+  )
+}
+
+export const simulateContractCalls = async (input: SimulateCallsInput) => {
+  return gql<GqlResponse<{ simulateContractCalls: SimulateCallResult[] }>>(
+    `query SimulateContractCalls($input: SimulateContractCallsInput!) {
+      simulateContractCalls(input: $input) {
+        success err err_msg ret rc_used gas_used
+      }
+    }`,
+    { input }
   )
 }
 

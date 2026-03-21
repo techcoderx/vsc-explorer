@@ -39,7 +39,14 @@ import {
 import { CheckCircleIcon, QuestionIcon, WarningIcon, AddIcon } from '@chakra-ui/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useNavigate } from 'react-router'
-import { fetchL1Rest, fetchMembersAtL1Block, getStateKeys, useAddrBalance, useContract } from '../../requests'
+import {
+  fetchL1Rest,
+  fetchMembersAtL1Block,
+  getStateKeys,
+  simulateContractCalls,
+  useAddrBalance,
+  useContract
+} from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, beL1BlockUrl, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
 import { themeColorLight } from '../../settings'
@@ -190,7 +197,6 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   const { balance } = useAddrBalance('hive:' + user)
   const [methodName, setMethodName] = useState('')
   const [payload, setPayload] = useState('')
-  const [rcLimit, setRcLimit] = useState('')
   const [keyType, setKeyType] = useState(KeyTypes.Posting)
   const [newIntentAmt, setNewIntentAmt] = useState('')
   const [newIntentToken, setNewIntentToken] = useState<CoinLower>('hive')
@@ -213,9 +219,11 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     setIntentCleared((p) => !p)
   }
   const call = async () => {
-    const rcLimitInt = parseInt(rcLimit)
-    if (isNaN(rcLimitInt) || rcLimitInt < 100) {
-      return toast({ title: 'RC limit must be greater than or equal to 100', status: 'error' })
+    if (!user) {
+      return toast({ title: 'Please connect your wallet first', status: 'error' })
+    }
+    if (!methodName) {
+      return toast({ title: 'Call method is required', status: 'error' })
     }
     const intentsArr = Object.keys(intents.current)
       .filter((a) => intents.current[a as CoinLower] > 0)
@@ -228,6 +236,24 @@ const CallContract = ({ contractId }: { contractId: string }) => {
           }
         }
       })
+    const simResult = await simulateContractCalls({
+      tx_id: '',
+      ...(keyType === KeyTypes.Active ? { required_auths: ['hive:' + user] } : { required_posting_auths: ['hive:' + user] }),
+      calls: [
+        {
+          contract_id: contractId,
+          action: methodName,
+          payload: payload,
+          rc_limit: 100000,
+          intents: intentsArr.length > 0 ? intentsArr : undefined
+        }
+      ]
+    })
+    const sim = simResult.data.simulateContractCalls[0]
+    if (!sim.success) {
+      return toast({ title: 'Contract Call Simulation Failed', description: sim.err_msg || sim.err, status: 'error' })
+    }
+    const rcLimitInt = Math.ceil(parseInt(sim.rc_used) * 1.25)
     const callResult = await aioha.vscCallContract(contractId, methodName, payload, rcLimitInt, intentsArr, keyType)
     if (!callResult.success) {
       return toast({ title: callResult.error, status: 'error' })
@@ -332,18 +358,6 @@ const CallContract = ({ contractId }: { contractId: string }) => {
               <FormHelperText>
                 Current Allowance: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
               </FormHelperText>
-            </FormControl>
-            {/** TODO: Estimate RC usage by simulating call */}
-            <FormControl>
-              <FormLabel>RC Limit</FormLabel>
-              <Input
-                type="number"
-                min={100}
-                value={rcLimit}
-                onChange={(e) => setRcLimit(e.target.value)}
-                focusBorderColor={themeColorLight}
-                maxW={'56'}
-              />
             </FormControl>
             <FormControl>
               <FormLabel>Key Type</FormLabel>
