@@ -2,6 +2,7 @@
 export const Flairs: {
   [name: string]: string
 } = {
+  'did:vsc:oracle:btc': 'BTC Oracle',
   'hive:vsc.ms-8968d20c': 'Old Multisig Gateway',
   'hive:vsc.gateway': 'Multisig Gateway',
   'hive:vsc.network': 'Official Account',
