@@ -20,6 +20,7 @@ import {
   Input,
   HStack,
   Button,
+  ButtonGroup,
   VStack,
   Radio,
   RadioGroup,
@@ -366,14 +367,22 @@ const CallContract = ({ contractId }: { contractId: string }) => {
             {wallet === Wallet.Hive && (
               <FormControl>
                 <FormLabel>Key Type</FormLabel>
-                <Select
-                  focusBorderColor={themeColorLight}
-                  value={keyType}
-                  onChange={(e) => setKeyType(e.target.value as KeyTypes)}
-                >
-                  <option value={KeyTypes.Posting}>Posting</option>
-                  <option value={KeyTypes.Active}>Active</option>
-                </Select>
+                <ButtonGroup isAttached>
+                  <Button
+                    colorScheme={keyType === KeyTypes.Posting ? themeColorScheme : 'gray'}
+                    variant="outline"
+                    onClick={() => setKeyType(KeyTypes.Posting)}
+                  >
+                    Posting
+                  </Button>
+                  <Button
+                    colorScheme={keyType === KeyTypes.Active ? themeColorScheme : 'gray'}
+                    variant="outline"
+                    onClick={() => setKeyType(KeyTypes.Active)}
+                  >
+                    Active
+                  </Button>
+                </ButtonGroup>
               </FormControl>
             )}
           </Stack>

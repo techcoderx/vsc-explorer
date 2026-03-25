@@ -15,8 +15,8 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       '@aioha/providers':
-        specifier: 1.9.0-beta.1
-        version: 1.9.0-beta.1(3f63f74d6190d2871a579bd61af3b9ee)
+        specifier: 1.9.0-beta.2
+        version: 1.9.0-beta.2(3f63f74d6190d2871a579bd61af3b9ee)
       '@chakra-ui/anatomy':
         specifier: ^2.3.4
         version: 2.3.4
@@ -139,8 +139,8 @@ packages:
       '@aioha/aioha': ^1.8.2
       viem: 2.x
 
-  '@aioha/providers@1.9.0-beta.1':
-    resolution: {integrity: sha512-plaPSYw9GB9iyXuGNL4STUUXpDAuCOYXkgAvhatHxfX4xz9rytsnndVms+bCo49G6g6ubQkduHuANSOrvztHpQ==}
+  '@aioha/providers@1.9.0-beta.2':
+    resolution: {integrity: sha512-HQFdfUWrFYlvBt2pKdHwiW6kPy5i0zi5gPmkexVJrXXgpYYhnaLL98cAh8Ep83JLuF1BM/qNBRuLOd9gfqbmHQ==}
     peerDependencies:
       '@aioha/aioha': ^1.8.2
       '@aioha/magi': ^0.0.3
@@ -4085,7 +4085,7 @@ snapshots:
       multiformats: 13.4.2
       viem: 2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
 
-  '@aioha/providers@1.9.0-beta.1(3f63f74d6190d2871a579bd61af3b9ee)':
+  '@aioha/providers@1.9.0-beta.2(3f63f74d6190d2871a579bd61af3b9ee)':
     dependencies:
       '@aioha/aioha': 1.8.2(webextension-polyfill@0.12.0)
     optionalDependencies:
