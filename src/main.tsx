@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme} toastOptions={{ defaultOptions: { position: 'bottom-right', isClosable: true } }}>
-      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+      <WagmiProvider config={wagmiAdapter.wagmiConfig} reconnectOnMount={false}>
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
