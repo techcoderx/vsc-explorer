@@ -63,10 +63,10 @@ import { ParticipatedMembers } from '../BlsAggMembers'
 import { Contract as ContractType } from '../../types/L2ApiResult'
 import { PageTitle } from '../PageTitle'
 import { AccountLink } from '../TableLink'
-import { useAioha } from '@aioha/providers/react'
+import { useMagi } from '@aioha/providers/magi/react'
+import { Wallet, KeyTypes } from '@aioha/magi'
 import { AiohaModal } from '../Aioha'
-import { KeyTypes } from '@aioha/aioha'
-import { FaHive } from 'react-icons/fa6'
+import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
@@ -193,8 +193,9 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   const walletDisclosure = useDisclosure()
   const toast = useToast()
   const navigate = useNavigate()
-  const { aioha, user } = useAioha()
-  const { balance } = useAddrBalance('hive:' + user)
+  const { magi, user, wallet } = useMagi()
+  const userPrefixed = magi.getUser(true)
+  const { balance } = useAddrBalance(userPrefixed ?? '')
   const [methodName, setMethodName] = useState('')
   const [payload, setPayload] = useState('')
   const [keyType, setKeyType] = useState(KeyTypes.Posting)
@@ -225,6 +226,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     if (!methodName) {
       return toast({ title: 'Call method is required', status: 'error' })
     }
+    const effectiveKeyType = wallet === Wallet.Hive ? keyType : KeyTypes.Active
     const intentsArr = Object.keys(intents.current)
       .filter((a) => intents.current[a as CoinLower] > 0)
       .map((a) => {
@@ -238,7 +240,9 @@ const CallContract = ({ contractId }: { contractId: string }) => {
       })
     const simResult = await simulateContractCalls({
       tx_id: '',
-      ...(keyType === KeyTypes.Active ? { required_auths: ['hive:' + user] } : { required_posting_auths: ['hive:' + user] }),
+      ...(effectiveKeyType === KeyTypes.Active
+        ? { required_auths: [userPrefixed!] }
+        : { required_posting_auths: [userPrefixed!] }),
       calls: [
         {
           contract_id: contractId,
@@ -254,7 +258,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
       return toast({ title: 'Contract Call Simulation Failed', description: sim.err_msg || sim.err, status: 'error' })
     }
     const rcLimitInt = Math.ceil(parseInt(sim.rc_used) * 1.25)
-    const callResult = await aioha.vscCallContract(contractId, methodName, payload, rcLimitInt, intentsArr, keyType)
+    const callResult = await magi.call(contractId, methodName, payload, rcLimitInt, intentsArr, effectiveKeyType)
     if (!callResult.success) {
       return toast({ title: callResult.error, status: 'error' })
     } else {
@@ -284,7 +288,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
               <Button
                 _focus={{ boxShadow: 'none' }}
                 onClick={walletDisclosure.onOpen}
-                leftIcon={user ? <Icon as={FaHive} fontSize={'lg'} /> : undefined}
+                leftIcon={user ? <Icon as={wallet === Wallet.Ethereum ? FaEthereum : FaHive} fontSize={'lg'} /> : undefined}
               >
                 {user ?? 'Connect Wallet'}
               </Button>
@@ -359,13 +363,19 @@ const CallContract = ({ contractId }: { contractId: string }) => {
                 Current Allowance: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
               </FormHelperText>
             </FormControl>
-            <FormControl>
-              <FormLabel>Key Type</FormLabel>
-              <Select focusBorderColor={themeColorLight} value={keyType} onChange={(e) => setKeyType(e.target.value as KeyTypes)}>
-                <option value={KeyTypes.Posting}>Posting</option>
-                <option value={KeyTypes.Active}>Active</option>
-              </Select>
-            </FormControl>
+            {wallet === Wallet.Hive && (
+              <FormControl>
+                <FormLabel>Key Type</FormLabel>
+                <Select
+                  focusBorderColor={themeColorLight}
+                  value={keyType}
+                  onChange={(e) => setKeyType(e.target.value as KeyTypes)}
+                >
+                  <option value={KeyTypes.Posting}>Posting</option>
+                  <option value={KeyTypes.Active}>Active</option>
+                </Select>
+              </FormControl>
+            )}
           </Stack>
           <Button colorScheme={themeColorScheme} mt={'5'} onClick={call}>
             Call Contract

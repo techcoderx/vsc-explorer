@@ -18,14 +18,14 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { PageTitle } from '../../PageTitle'
-import { useAioha } from '@aioha/providers/react'
+import { useMagi } from '@aioha/providers/magi/react'
+import { Asset, Wallet } from '@aioha/magi'
+import { VscStakeType } from '@aioha/aioha'
 import { AiohaModal } from '../../Aioha'
-import { FaHive } from 'react-icons/fa6'
+import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { useState } from 'react'
-import { getConf, themeColorLight, themeColorScheme } from '../../../settings'
+import { themeColorLight, themeColorScheme } from '../../../settings'
 import { TxnTypes } from '../../../types/L2ApiResult'
-import { CoinLower } from '../../../types/Payloads'
-import { Asset, KeyTypes } from '@aioha/aioha'
 import { useNavigate } from 'react-router'
 
 const txTypes: [TxnTypes, string][] = [
@@ -38,45 +38,59 @@ const txTypes: [TxnTypes, string][] = [
   ['unstake_hbd', 'Unstake HBD']
 ]
 
+const assetToEnum: Record<string, Asset> = {
+  hive: Asset.hive,
+  hbd: Asset.hbd,
+  hbd_savings: Asset.shbd
+}
+
 export const Broadcast = () => {
-  const { aioha, user } = useAioha()
+  const { magi, user, wallet } = useMagi()
   const walletDisclosure = useDisclosure()
   const [txType, setTxType] = useState<TxnTypes>('transfer')
   const [dest, setDest] = useState<string>('')
   const [amt, setAmt] = useState<string>()
-  const [asset, setAsset] = useState<CoinLower>('hive')
+  const [asset, setAsset] = useState<string>('hive')
   const [memo, setMemo] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const toast = useToast()
-  const conf = getConf()
   const submitClicked = async () => {
-    const to = !!dest ? dest : 'hive:' + user
+    const to = !!dest ? dest : magi.getUser(true)!
     const amount = parseFloat(amt || '')
-    if (isNaN(amount) || amount < 0) {
+    if (isNaN(amount) || amount <= 0) {
       return toast({ title: 'Amount must be greater than 0.', status: 'error' })
     }
     if (txType === 'deposit' && asset === 'hbd_savings') {
       return toast({ title: 'Deposit asset must be HIVE or HBD.', status: 'error' })
     }
-    const amtStr = amount.toFixed(3)
+    const currency = assetToEnum[asset]
     setIsSpinning(true)
-    const result =
-      txType !== 'deposit'
-        ? await aioha.customJSON(KeyTypes.Active, 'vsc.' + txType, {
-            net_id: conf.netId,
-            from: 'hive:' + user,
-            to,
-            amount: amtStr,
-            asset,
-            memo
-          })
-        : await aioha.transfer(
-            conf.msAccount,
-            amount,
-            asset.toUpperCase() as Asset,
-            'to=' + to.replace('hive:', '').replace('did:pkh:eip155:1:', '')
-          )
+    let result
+    switch (txType) {
+      case 'transfer':
+      case 'deposit':
+        result = await magi.transfer(to, amount, currency, memo || undefined)
+        break
+      case 'withdraw':
+        result = await magi.unmap(to, amount, currency, memo || undefined)
+        break
+      case 'consensus_stake':
+        result = await magi.stake(VscStakeType.Consensus, amount, to, memo || undefined)
+        break
+      case 'consensus_unstake':
+        result = await magi.unstake(VscStakeType.Consensus, amount, to, memo || undefined)
+        break
+      case 'stake_hbd':
+        result = await magi.stake(VscStakeType.HBD, amount, to, memo || undefined)
+        break
+      case 'unstake_hbd':
+        result = await magi.unstake(VscStakeType.HBD, amount, to, memo || undefined)
+        break
+      default:
+        setIsSpinning(false)
+        return toast({ title: 'Unknown transaction type', status: 'error' })
+    }
     setIsSpinning(false)
     if (!result.success) {
       return toast({ title: result.error, status: 'error' })
@@ -97,6 +111,7 @@ export const Broadcast = () => {
       })
     }
   }
+  const walletIcon = wallet === Wallet.Ethereum ? FaEthereum : FaHive
   return (
     <>
       <PageTitle title="Broadcast Transaction" />
@@ -112,7 +127,7 @@ export const Broadcast = () => {
                   <Button
                     _focus={{ boxShadow: 'none' }}
                     onClick={walletDisclosure.onOpen}
-                    leftIcon={user ? <Icon as={FaHive} fontSize={'lg'} /> : undefined}
+                    leftIcon={user ? <Icon as={walletIcon} fontSize={'lg'} /> : undefined}
                   >
                     {user ?? 'Connect Wallet'}
                   </Button>
@@ -155,7 +170,7 @@ export const Broadcast = () => {
                       />
                       <Select
                         value={asset}
-                        onChange={(e) => setAsset(e.target.value as CoinLower)}
+                        onChange={(e) => setAsset(e.target.value)}
                         focusBorderColor={themeColorLight}
                         width="auto"
                         minW={'24'}
@@ -188,7 +203,7 @@ export const Broadcast = () => {
           </Card>
         </Stack>
       </Center>
-      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} />
+      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} initPage={0} />
     </>
   )
 }

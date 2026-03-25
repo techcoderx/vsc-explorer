@@ -1,5 +1,9 @@
 import { useAioha } from '@aioha/providers/react'
+import { useMagi } from '@aioha/providers/magi/react'
+import { Wallet } from '@aioha/magi'
 import { KeyTypes, Providers } from '@aioha/aioha'
+import { useAppKit } from '@reown/appkit/react'
+import { useDisconnect } from 'wagmi'
 import {
   Alert,
   AlertDescription,
@@ -89,6 +93,8 @@ const ProvidersSeq: Providers[] = [
   Providers.Ledger
 ] // in this particular order
 
+const abbreviateAddr = (addr: string) => (addr.length > 12 ? addr.slice(0, 6) + '...' + addr.slice(-4) : addr)
+
 export const AiohaModal = ({
   displayed,
   onClose,
@@ -100,7 +106,10 @@ export const AiohaModal = ({
   initPage?: number
   disabledProviders?: Providers[]
 }) => {
-  const { aioha, user } = useAioha()
+  const { aioha, user: hiveUser } = useAioha()
+  const { user: magiUser, wallet } = useMagi()
+  const { open: openAppKit } = useAppKit()
+  const { disconnect: disconnectEvm } = useDisconnect()
   const { colorMode } = useColorMode()
   const [page, setPage] = useState(initPage)
   const [selectedProv, setSelectedProv] = useState<Providers | null>(null)
@@ -140,14 +149,15 @@ export const AiohaModal = ({
       onClose()
     }
   }
+  const isConnected = !!magiUser || !!hiveUser
   return (
     <Modal isOpen={displayed} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {!user && <ModalHeader>Connect Wallet</ModalHeader>}
+        {!isConnected && <ModalHeader>Connect Wallet</ModalHeader>}
         <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         <ModalBody>
-          {!user ? (
+          {!isConnected ? (
             page === 0 ? (
               <Stack direction={'column'} gap={'3'}>
                 <Button leftIcon={<Icon fontSize={'2xl'} as={FaHive} />} onClick={() => setPage(1)}>
@@ -155,9 +165,15 @@ export const AiohaModal = ({
                     Hive
                   </Text>
                 </Button>
-                <Button leftIcon={<Icon fontSize={'2xl'} as={FaEthereum} />} disabled>
+                <Button
+                  leftIcon={<Icon fontSize={'2xl'} as={FaEthereum} />}
+                  onClick={() => {
+                    onClose()
+                    openAppKit()
+                  }}
+                >
                   <Text textAlign={'left'} w={'full'}>
-                    Ethereum [WIP]
+                    Ethereum
                   </Text>
                 </Button>
               </Stack>
@@ -233,10 +249,29 @@ export const AiohaModal = ({
                 </Flex>
               </Box>
             ) : null
+          ) : wallet === Wallet.Ethereum ? (
+            <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
+              <Icon as={FaEthereum} fontSize={'5xl'} />
+              <Heading fontSize={'lg'}>{abbreviateAddr(magiUser!)}</Heading>
+              <Button
+                onClick={() => {
+                  disconnectEvm()
+                  onClose()
+                  setPage(initPage)
+                }}
+              >
+                Disconnect
+              </Button>
+            </Flex>
           ) : (
             <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
-              <Image src={`${ImageServer}/u/${user}/avatar`} alt={`${user}'s avatar`} width={'16'} height={'16'} />
-              <Heading fontSize={'lg'}>{user}</Heading>
+              <Image
+                src={`${ImageServer}/u/${hiveUser}/avatar`}
+                alt={`${hiveUser}'s avatar`}
+                width={'16'}
+                height={'16'}
+              />
+              <Heading fontSize={'lg'}>{hiveUser}</Heading>
               <Button
                 onClick={async () => {
                   await aioha.logout()

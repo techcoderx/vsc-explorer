@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { Aioha } from '@aioha/aioha'
+import { Magi } from '@aioha/magi'
 import { AiohaProvider } from '@aioha/providers/react'
+import { MagiProvider } from '@aioha/providers/magi/react'
+import { createAppKit } from '@reown/appkit/react'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
@@ -34,6 +37,7 @@ import { ContractsCharts } from './components/pages/charts/Contracts'
 import { WitnessCharts } from './components/pages/charts/Witnesses'
 import { getConf } from './settings'
 import { Broadcast } from './components/pages/tools/Broadcast'
+import { wagmiAdapter, networks } from './wagmiConfig'
 
 const router = createBrowserRouter([
   {
@@ -201,6 +205,21 @@ const router = createBrowserRouter([
 ])
 
 const aioha = new Aioha()
+const magi = new Magi()
+
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || ''
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId,
+  metadata: {
+    name: 'Magi Blocks',
+    description: 'Magi Blocks Explorer',
+    url: typeof window !== 'undefined' ? window.location.origin : '',
+    icons: []
+  }
+})
 
 const App = () => {
   useEffect(() => {
@@ -213,10 +232,15 @@ const App = () => {
     aioha.setApi(conf.hiveApi, [])
     aioha.setChainId(conf.hiveChainId)
     aioha.vscSetNetId(conf.netId)
+    magi.setApi(conf.gqlApi, [])
+    magi.setNetId(conf.netId)
+    magi.setAioha(aioha)
   }, [])
   return (
     <AiohaProvider aioha={aioha}>
-      <RouterProvider router={router} />
+      <MagiProvider magi={magi}>
+        <RouterProvider router={router} />
+      </MagiProvider>
     </AiohaProvider>
   )
 }
