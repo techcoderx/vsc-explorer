@@ -43,7 +43,14 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
   )
 }
 
-export const Txns = ({ txs }: { txs: Txn[] }) => {
+const resolveFrom = (t: Txn, o: Txn['ops'][number]): string =>
+  o.type === 'deposit'
+    ? o.data.from
+    : (t.required_auths[0] ?? (o.type !== 'call' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
+
+const resolveTo = (o: Txn['ops'][number]): string => (o.type === 'call' ? o.data.contract_id : o.data.to)
+
+export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
   //@ts-ignore
   txs.forEach((t) => t.ops.forEach((o) => (o.type === 'call_contract' ? (o.type = 'call') : undefined)))
   return (
@@ -63,7 +70,9 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
         </Thead>
         <Tbody>
           {txs.map((t) =>
-            t.ops.map((o, j) => (
+            t.ops
+              .filter((o) => !pov || pov === resolveFrom(t, o) || pov === resolveTo(o))
+              .map((o, j) => (
               <Tr key={`${t.id}-${j}`}>
                 <Td>
                   <StatusIcon status={t.status} />
@@ -84,14 +93,7 @@ export const Txns = ({ txs }: { txs: Txn[] }) => {
                 </Td>
                 <Td>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
                 <Td>
-                  <AccountLink
-                    val={
-                      o.type === 'deposit'
-                        ? o.data.from
-                        : (t.required_auths[0] ??
-                          (o.type !== 'call' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
-                    }
-                  />
+                  <AccountLink val={resolveFrom(t, o)} />
                 </Td>
                 <Td>
                   <ToIcon />

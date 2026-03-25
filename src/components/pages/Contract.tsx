@@ -430,7 +430,7 @@ export const Contract = () => {
             </TabList>
             <TabPanels mt={'2'}>
               <TabPanel pt={'2'} px={'0'}>
-                <Txns txs={txns || []} />
+                <Txns txs={txns || []} pov={contractId} />
               </TabPanel>
               <TabPanel px={'0'} pt={'2'}>
                 <ContractOutputTbl outputs={outputs || []} />

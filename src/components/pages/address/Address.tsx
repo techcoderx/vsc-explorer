@@ -27,7 +27,7 @@ export const AddressTxs = () => {
   const stats = useHistoryStats('txs', { user: addr })
   return (
     <Box>
-      <Txns txs={txs?.txns || []} />
+      <Txns txs={txs?.txns || []} pov={addr} />
       <Pagination
         path={`/address/${addr}/txs`}
         currentPageNum={pageNum || 1}
