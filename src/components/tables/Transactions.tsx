@@ -51,8 +51,6 @@ const resolveFrom = (t: Txn, o: Txn['ops'][number]): string =>
 const resolveTo = (o: Txn['ops'][number]): string => (o.type === 'call' ? o.data.contract_id : o.data.to)
 
 export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
-  //@ts-ignore
-  txs.forEach((t) => t.ops.forEach((o) => (o.type === 'call_contract' ? (o.type = 'call') : undefined)))
   return (
     <TableContainer my={'3'}>
       <Table>
@@ -73,45 +71,45 @@ export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
             t.ops
               .filter((o) => !pov || pov === resolveFrom(t, o) || pov === resolveTo(o))
               .map((o, j) => (
-              <Tr key={`${t.id}-${j}`}>
-                <Td>
-                  <StatusIcon status={t.status} />
-                </Td>
-                <Td>
-                  <TxLink val={t.id} />
-                </Td>
-                <Td>
-                  {!!t.anchr_ts ? (
-                    <Tooltip placement="top" label={t.anchr_ts}>
-                      {timeAgo(t.anchr_ts)}
-                    </Tooltip>
-                  ) : (
-                    <Text opacity={'0.7'}>
-                      <i>Pending...</i>
-                    </Text>
-                  )}
-                </Td>
-                <Td>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
-                <Td>
-                  <AccountLink val={resolveFrom(t, o)} />
-                </Td>
-                <Td>
-                  <ToIcon />
-                </Td>
-                <Td>{o.type === 'call' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}</Td>
-                <Td>
-                  {o.type === 'call' ? (
-                    <AmountIntentAllowance
-                      intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
-                    />
-                  ) : o.type === 'deposit' ? (
-                    fmtAmount(o.data.amount / 1000, o.data.asset.toUpperCase() as Coin)
-                  ) : (
-                    fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)
-                  )}
-                </Td>
-              </Tr>
-            ))
+                <Tr key={`${t.id}-${j}`}>
+                  <Td>
+                    <StatusIcon status={t.status} />
+                  </Td>
+                  <Td>
+                    <TxLink val={t.id} />
+                  </Td>
+                  <Td>
+                    {!!t.anchr_ts ? (
+                      <Tooltip placement="top" label={t.anchr_ts}>
+                        {timeAgo(t.anchr_ts)}
+                      </Tooltip>
+                    ) : (
+                      <Text opacity={'0.7'}>
+                        <i>Pending...</i>
+                      </Text>
+                    )}
+                  </Td>
+                  <Td>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
+                  <Td>
+                    <AccountLink val={resolveFrom(t, o)} />
+                  </Td>
+                  <Td>
+                    <ToIcon />
+                  </Td>
+                  <Td>{o.type === 'call' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}</Td>
+                  <Td>
+                    {o.type === 'call' ? (
+                      <AmountIntentAllowance
+                        intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
+                      />
+                    ) : o.type === 'deposit' ? (
+                      fmtAmount(o.data.amount / 1000, o.data.asset.toUpperCase() as Coin)
+                    ) : (
+                      fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)
+                    )}
+                  </Td>
+                </Tr>
+              ))
           )}
         </Tbody>
       </Table>

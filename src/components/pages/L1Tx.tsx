@@ -76,7 +76,7 @@ const RC_COSTS = {
   unstake_hbd: 200,
   consensus_stake: 100,
   consensus_unstake: 100,
-  call_contract: 0 // FIXME: use real RC usage
+  call: 0 // FIXME: use real RC usage
 }
 
 const CallOutputs = ({
@@ -187,8 +187,7 @@ const shouldRefetch = (txn?: Txn | null) =>
 
 const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
   // prettier-ignore
-  // @ts-ignore
-  const rcUsed = txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call_contract') ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0) : 0
+  const rcUsed = txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call') ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0) : 0
   return (
     <Card>
       <CardHeader>
