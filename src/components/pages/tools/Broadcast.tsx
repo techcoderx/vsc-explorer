@@ -24,9 +24,10 @@ import { VscStakeType } from '@aioha/aioha'
 import { AiohaModal } from '../../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { useState } from 'react'
-import { themeColorLight, themeColorScheme } from '../../../settings'
+import { getConf, themeColorLight, themeColorScheme } from '../../../settings'
 import { TxnTypes } from '../../../types/L2ApiResult'
 import { useNavigate } from 'react-router'
+import { useAioha } from '@aioha/providers/react'
 
 const txTypes: [TxnTypes, string][] = [
   ['transfer', 'Transfer'],
@@ -46,6 +47,7 @@ const assetToEnum: Record<string, Asset> = {
 
 export const Broadcast = () => {
   const { magi, user, wallet } = useMagi()
+  const { aioha } = useAioha()
   const walletDisclosure = useDisclosure()
   const [txType, setTxType] = useState<TxnTypes>('transfer')
   const [dest, setDest] = useState<string>('')
@@ -68,8 +70,19 @@ export const Broadcast = () => {
     setIsSpinning(true)
     let result
     switch (txType) {
-      case 'transfer':
       case 'deposit':
+        if (wallet !== Wallet.Hive) {
+          return toast({ title: 'Can only map from Hive wallets.', status: 'error' })
+        }
+        result = await aioha.transfer(
+          getConf().msAccount,
+          amount,
+          //@ts-ignore
+          asset.toUpperCase() as Asset,
+          'to=' + to.replace('hive:', '').replace('did:pkh:eip155:1:', '')
+        )
+        break
+      case 'transfer':
         result = await magi.transfer(to, amount, currency, memo || undefined)
         break
       case 'withdraw':
