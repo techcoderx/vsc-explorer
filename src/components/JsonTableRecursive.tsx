@@ -19,10 +19,22 @@ const JsonToTableRecursive = ({ json, isInCard = false, minimalSpace = false }: 
                 <i>null</i>
               </TableRow>
             )
+          if (Array.isArray(value) && value.length === 0)
+            return (
+              <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
+                <Text fontStyle="italic" opacity={0.6}>{'[]'}</Text>
+              </TableRow>
+            )
           if (typeof value === 'object')
             return (
               <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
                 {JsonToTableRecursive({ json: value, isInCard, minimalSpace })}
+              </TableRow>
+            )
+          else if (typeof value === 'string' && value === '')
+            return (
+              <TableRow key={key} isInCard={isInCard} allCardBorders label={key} isLoading={false} minimalSpace={minimalSpace}>
+                <Text fontStyle="italic" opacity={0.6}>empty</Text>
               </TableRow>
             )
           else

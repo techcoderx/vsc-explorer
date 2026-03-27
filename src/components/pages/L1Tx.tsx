@@ -661,24 +661,17 @@ const L1Tx = () => {
           parsedOps.map((trx, i) => (
             <Card key={i}>
               <CardHeader>
-                <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                <Flex gap={'3'} direction={'row'} alignItems={'center'}>
+                  <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                  {trx.valid && (
+                    <Tag variant={'outline'} colorScheme={themeColorScheme} size={'lg'}>
+                      {trx.type}
+                    </Tag>
+                  )}
+                </Flex>
               </CardHeader>
               {trx.valid ? (
                 <>
-                  <CardBody mt={'-6'}>
-                    <Table variant={'unstyled'}>
-                      <Tbody>
-                        <TableRow isInCard label="Timestamp" value={data.timestamp + ' (' + timeAgo(data.timestamp) + ')'} />
-                        <TableRow isInCard label="Username" value={trx.user} link={'/address/hive:' + trx.user} />
-                        <TableRow isInCard label="Operation Type">
-                          <Badge colorScheme={themeColorScheme}>{trx.type}</Badge>
-                        </TableRow>
-                      </Tbody>
-                    </Table>
-                  </CardBody>
-                  <CardHeader>
-                    <Heading fontSize={'xl'}>Payload</Heading>
-                  </CardHeader>
                   <CardBody marginTop={'-6'}>
                     <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
                   </CardBody>
@@ -764,10 +757,15 @@ const L2Tx = () => {
           {tx.ops.map((op, i) => (
             <Card key={i}>
               <CardHeader>
-                <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                <Flex gap={'3'} direction={'row'} alignItems={'center'}>
+                  <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                  <Tag variant={'outline'} colorScheme={themeColorScheme} size={'lg'}>
+                    {op.type}
+                  </Tag>
+                </Flex>
               </CardHeader>
               <CardBody mt={'-6'}>
-                <JsonToTableRecursive isInCard minimalSpace json={op} />
+                <JsonToTableRecursive isInCard minimalSpace json={op.data} />
               </CardBody>
             </Card>
           ))}
