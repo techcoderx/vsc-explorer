@@ -4,7 +4,6 @@ import { themeColorScheme } from '../settings'
 export const ProgressBarPct = ({
   val,
   fontSize = 'sm',
-  height = '6px',
   width = 'sm'
 }: {
   val: number
