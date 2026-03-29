@@ -6,32 +6,23 @@ import { useAppKit } from '@reown/appkit/react'
 import { useDisconnect } from 'wagmi'
 import {
   Alert,
-  AlertDescription,
-  AlertIcon,
   Box,
   Button,
+  Dialog,
   Flex,
   Heading,
-  Icon,
   IconButton,
   Image,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spinner,
   Stack,
   Text,
-  useColorMode,
   VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { themeColorLight, themeColorScheme } from '../settings'
+import { themeColorScheme } from '../settings'
 import { FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
+import { useColorMode } from './ui/color-mode'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -151,141 +142,155 @@ export const AiohaModal = ({
   }
   const isConnected = !!magiUser || !!hiveUser
   return (
-    <Modal isOpen={displayed} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        {!isConnected && <ModalHeader>Connect Wallet</ModalHeader>}
-        <ModalCloseButton _focus={{ boxShadow: 'none' }} />
-        <ModalBody>
-          {!isConnected ? (
-            page === 0 ? (
-              <Stack direction={'column'} gap={'3'}>
-                <Button leftIcon={<Icon fontSize={'2xl'} as={FaHive} />} onClick={() => setPage(1)}>
-                  <Text textAlign={'left'} w={'full'}>
-                    Hive
-                  </Text>
-                </Button>
-                <Button
-                  leftIcon={<Icon fontSize={'2xl'} as={FaEthereum} />}
-                  onClick={() => {
-                    onClose()
-                    openAppKit()
-                  }}
-                >
-                  <Text textAlign={'left'} w={'full'}>
-                    Ethereum
-                  </Text>
-                </Button>
-              </Stack>
-            ) : page === 1 ? (
-              <VStack gap={'3'} alignItems={'flex-start'}>
-                {initPage === 0 && (
-                  <Button leftIcon={<Icon as={FaChevronLeft} />} variant={'outline'} onClick={() => setPage(0)}>
+    <Dialog.Root open={displayed} onOpenChange={(e) => !e.open && onClose()}>
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          {!isConnected && <Dialog.Header>Connect Wallet</Dialog.Header>}
+          <Dialog.CloseTrigger _focus={{ boxShadow: 'none' }} />
+          <Dialog.Body>
+            {!isConnected ? (
+              page === 0 ? (
+                <Stack direction={'column'} gap={'3'}>
+                  <Button variant={'outline'} colorPalette={'gray'} onClick={() => setPage(1)}>
+                    <Box as={FaHive} fontSize={'2xl'} />
+                    <Text textAlign={'left'} w={'full'}>
+                      Hive
+                    </Text>
+                  </Button>
+                  <Button
+                    variant={'outline'}
+                    colorPalette={'gray'}
+                    onClick={() => {
+                      onClose()
+                      openAppKit()
+                    }}
+                  >
+                    <Box as={FaEthereum} fontSize={'2xl'} />
+                    <Text textAlign={'left'} w={'full'}>
+                      Ethereum
+                    </Text>
+                  </Button>
+                </Stack>
+              ) : page === 1 ? (
+                <VStack gap={'3'} alignItems={'flex-start'}>
+                  {initPage === 0 && (
+                    <Button variant={'outline'} onClick={() => setPage(0)}>
+                      <FaChevronLeft />
+                      Back
+                    </Button>
+                  )}
+                  {ProvidersSeq.map(
+                    (prov, i) =>
+                      !disabledProviders.includes(prov) &&
+                      aioha.isProviderEnabled(prov) && (
+                        <Button
+                          key={i}
+                          variant={'outline'}
+                          colorPalette={'gray'}
+                          w={'full'}
+                          h={'12'}
+                          justifyContent={'flex-start'}
+                          onClick={() => {
+                            setSelectedProv(prov)
+                            setError('')
+                            setPage(2)
+                          }}
+                          _focus={{ boxShadow: 'none' }}
+                        >
+                          <Flex direction={'row'} align={'center'} gap={'4'}>
+                            <Image src={(colorMode === 'dark' && ProviderInfo[prov].iconDark) || ProviderInfo[prov].icon} w={'8'} />
+                            <Text>{ProviderInfo[prov].name}</Text>
+                          </Flex>
+                        </Button>
+                      )
+                  )}
+                </VStack>
+              ) : page === 2 ? (
+                <Box>
+                  {error && (
+                    <Alert.Root status="error" mb={'3'}>
+                      <Alert.Indicator />
+                      <Alert.Description>{error}</Alert.Description>
+                    </Alert.Root>
+                  )}
+                  <Button variant={'outline'} onClick={() => setPage(1)}>
+                    <FaChevronLeft />
                     Back
                   </Button>
-                )}
-                {ProvidersSeq.map(
-                  (prov, i) =>
-                    !disabledProviders.includes(prov) &&
-                    aioha.isProviderEnabled(prov) && (
-                      <Button
-                        key={i}
-                        w={'full'}
-                        h={'12'}
-                        justifyContent={'flex-start'}
-                        onClick={() => {
-                          setSelectedProv(prov)
-                          setError('')
-                          setPage(2)
-                        }}
-                        _focus={{ boxShadow: 'none' }}
-                      >
-                        <Flex direction={'row'} align={'center'} gap={'4'}>
-                          <Image src={(colorMode === 'dark' && ProviderInfo[prov].iconDark) || ProviderInfo[prov].icon} w={'8'} />
-                          <Text>{ProviderInfo[prov].name}</Text>
-                        </Flex>
-                      </Button>
-                    )
-                )}
-              </VStack>
-            ) : page === 2 ? (
-              <Box>
-                {error && (
-                  <Alert status="error" mb={'3'}>
-                    <AlertIcon />
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-                <Button leftIcon={<Icon as={FaChevronLeft} />} variant={'outline'} onClick={() => setPage(1)}>
-                  Back
+                  <Flex direction={'row'} mt={'3'} gap={'2'}>
+                    <Input
+
+                      placeholder="Enter Hive Username"
+                      value={usernameInput}
+                      onKeyDown={(evt) => (evt.key === 'Enter' ? proceedLogin() : null)}
+                      onChange={(evt) => setUsernameInput(evt.target.value)}
+                    />
+                    <IconButton
+                      colorPalette={themeColorScheme}
+                      onClick={proceedLogin}
+                      aria-label="Proceed"
+                      disabled={usernameInput.length === 0}
+                    >
+                      {!inProgress ? <FaChevronRight /> : <Spinner size={'sm'} />}
+                    </IconButton>
+                  </Flex>
+                </Box>
+              ) : page === 3 ? (
+                <Box>
+                  <Text>Scan the QR code using a HiveAuth-compatible mobile app.</Text>
+                  <Flex direction={'column'} gap={'6'} alignItems={'center'} mt={'4'}>
+                    <a href={hiveAuthPl!.payload}>
+                      <Box w={'64'} h={'64'} p={'2'} backgroundColor={'white'}>
+                        <QRCode value={hiveAuthPl!.payload} style={{ width: '100%', height: '100%' }} />
+                      </Box>
+                    </a>
+                    <Button variant={'outline'} colorPalette={'gray'} onClick={hiveAuthPl!.cancel}>Cancel</Button>
+                  </Flex>
+                </Box>
+              ) : null
+            ) : wallet === Wallet.Ethereum ? (
+              <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
+                <Box as={FaEthereum} fontSize={'5xl'} />
+                <Heading fontSize={'lg'}>{abbreviateAddr(magiUser!)}</Heading>
+                <Button
+                  variant={'outline'}
+                  colorPalette={'gray'}
+                  onClick={() => {
+                    disconnectEvm()
+                    onClose()
+                    setPage(initPage)
+                  }}
+                >
+                  Disconnect
                 </Button>
-                <Flex direction={'row'} mt={'3'} gap={'2'}>
-                  <Input
-                    focusBorderColor={themeColorLight}
-                    placeholder="Enter Hive Username"
-                    value={usernameInput}
-                    onKeyDown={(evt) => (evt.key === 'Enter' ? proceedLogin() : null)}
-                    onChange={(evt) => setUsernameInput(evt.target.value)}
-                  />
-                  <IconButton
-                    colorScheme={themeColorScheme}
-                    icon={!inProgress ? <Icon as={FaChevronRight} /> : <Spinner size={'sm'} />}
-                    onClick={proceedLogin}
-                    aria-label="Proceed"
-                    disabled={usernameInput.length === 0}
-                  />
-                </Flex>
-              </Box>
-            ) : page === 3 ? (
-              <Box>
-                <Text>Scan the QR code using a HiveAuth-compatible mobile app.</Text>
-                <Flex direction={'column'} gap={'6'} alignItems={'center'} mt={'4'}>
-                  <a href={hiveAuthPl!.payload}>
-                    <Box w={'64'} h={'64'} p={'2'} backgroundColor={'white'}>
-                      <QRCode value={hiveAuthPl!.payload} style={{ width: '100%', height: '100%' }} />
-                    </Box>
-                  </a>
-                  <Button onClick={hiveAuthPl!.cancel}>Cancel</Button>
-                </Flex>
-              </Box>
-            ) : null
-          ) : wallet === Wallet.Ethereum ? (
-            <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
-              <Icon as={FaEthereum} fontSize={'5xl'} />
-              <Heading fontSize={'lg'}>{abbreviateAddr(magiUser!)}</Heading>
-              <Button
-                onClick={() => {
-                  disconnectEvm()
-                  onClose()
-                  setPage(initPage)
-                }}
-              >
-                Disconnect
-              </Button>
-            </Flex>
-          ) : (
-            <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
-              <Image
-                src={`${ImageServer}/u/${hiveUser}/avatar`}
-                alt={`${hiveUser}'s avatar`}
-                width={'16'}
-                height={'16'}
-              />
-              <Heading fontSize={'lg'}>{hiveUser}</Heading>
-              <Button
-                onClick={async () => {
-                  await aioha.logout()
-                  onClose()
-                  setPage(1)
-                }}
-              >
-                Disconnect
-              </Button>
-            </Flex>
-          )}
-        </ModalBody>
-        <ModalFooter></ModalFooter>
-      </ModalContent>
-    </Modal>
+              </Flex>
+            ) : (
+              <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
+                <Image
+                  src={`${ImageServer}/u/${hiveUser}/avatar`}
+                  alt={`${hiveUser}'s avatar`}
+                  width={'16'}
+                  height={'16'}
+                />
+                <Heading fontSize={'lg'}>{hiveUser}</Heading>
+                <Button
+                  variant={'outline'}
+                  colorPalette={'gray'}
+                  onClick={async () => {
+                    await aioha.logout()
+                    onClose()
+                    setPage(1)
+                  }}
+                >
+                  Disconnect
+                </Button>
+              </Flex>
+            )}
+          </Dialog.Body>
+          <Dialog.Footer></Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Dialog.Root>
   )
 }

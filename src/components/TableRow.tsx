@@ -1,4 +1,4 @@
-import { Tr, Td, Skeleton, Link } from '@chakra-ui/react'
+import { Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { ReactNode } from 'react'
 
@@ -32,7 +32,7 @@ const TableRow = ({
   overflowWrap = 'normal',
   whitespace = 'normal'
 }: TableRowProps) => (
-  <Tr
+  <Table.Row
     _dark={{
       borderTop: isInCard ? cardBorder : 'unset',
       borderBottom: isInCard ? cardBorder : 'unset',
@@ -46,23 +46,25 @@ const TableRow = ({
       borderRight: allCardBorders ? cardBorderLight : 'unset'
     }}
   >
-    <Td fontWeight="bold" padding={minimalSpace ? '10px 10px' : undefined} minW={minWidthLabel ?? undefined}>
+    <Table.Cell fontWeight="bold" padding={minimalSpace ? '10px 10px' : undefined} minW={minWidthLabel ?? undefined}>
       {label}
-    </Td>
-    <Td style={{ overflowWrap: overflowWrap, whiteSpace: whitespace }} padding={minimalSpace ? '10px 10px' : undefined}>
+    </Table.Cell>
+    <Table.Cell style={{ overflowWrap: overflowWrap, whiteSpace: whitespace }} padding={minimalSpace ? '10px 10px' : undefined}>
       {isLoading ? (
         <Skeleton height="20px" minW="20px" />
       ) : children ? (
         children
       ) : link ? (
-        <Link as={ReactRouterLink} to={link} target={!link.startsWith('/') ? '_blank' : '_self'}>
-          {value}
+        <Link asChild>
+          <ReactRouterLink to={link} target={!link.startsWith('/') ? '_blank' : '_self'}>
+            {value}
+          </ReactRouterLink>
         </Link>
       ) : (
         value
       )}
-    </Td>
-  </Tr>
+    </Table.Cell>
+  </Table.Row>
 )
 
 export default TableRow

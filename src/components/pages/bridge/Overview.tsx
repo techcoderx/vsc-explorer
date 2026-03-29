@@ -1,26 +1,5 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Skeleton,
-  Stack,
-  Stat,
-  StatLabel,
-  StatNumber,
-  TableContainer,
-  Table,
-  Th,
-  Tr,
-  Td,
-  Text,
-  Thead,
-  Tbody,
-  Tooltip,
-  CardFooter,
-  Button,
-  Link
-} from '@chakra-ui/react'
+import { Card, Heading, Skeleton, Stack, Stat, Table, Text, CardFooter, Button, Link } from '@chakra-ui/react'
+import { Tooltip } from '../../ui/tooltip'
 import { useQuery } from '@tanstack/react-query'
 import { Link as ReactRouterLink } from 'react-router'
 import { fetchL1Rest, fetchLatestBridgeTxs, getBridgeTxCounts } from '../../../requests'
@@ -36,42 +15,42 @@ const cardBorderLight = '1.5px solid #e2e8f0'
 
 const BridgeTxsTable = ({ txs }: { txs?: (LedgerTx<'deposit'> | LedgerActions<'withdraw'>)[] }) => {
   return (
-    <TableContainer>
-      <Table variant={'simple'}>
-        <Thead>
-          <Tr>
-            <Th>Tx ID</Th>
-            <Th>Age</Th>
-            <Th>To User</Th>
-            <Th>Amount</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <Table.ScrollArea>
+      <Table.Root variant={'line'}>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader>Tx ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Age</Table.ColumnHeader>
+            <Table.ColumnHeader>To User</Table.ColumnHeader>
+            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {txs?.map((tx, i) => (
             <BridgeTxRow key={i} tx={tx} />
           ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        </Table.Body>
+      </Table.Root>
+    </Table.ScrollArea>
   )
 }
 
 const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw'> }) => {
   return (
-    <Tr _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
-      <Td>
+    <Table.Row _dark={{ borderTop: cardBorder }} _light={{ borderTop: cardBorderLight }}>
+      <Table.Cell>
         <TxLink val={tx.id.split(':')[0]} truncate={10} />
-      </Td>
-      <Td>
-        <Tooltip label={tx.timestamp} placement={'top'}>
+      </Table.Cell>
+      <Table.Cell>
+        <Tooltip content={tx.timestamp} positioning={{ placement: 'top' }}>
           {timeAgo(tx.timestamp + 'Z')}
         </Tooltip>
-      </Td>
-      <Td>
+      </Table.Cell>
+      <Table.Cell>
         <AccountLink val={tx.to} />
-      </Td>
-      <Td>{fmtmAmount(tx.amount, tx.asset)}</Td>
-    </Tr>
+      </Table.Cell>
+      <Table.Cell>{fmtmAmount(tx.amount, tx.asset)}</Table.Cell>
+    </Table.Row>
   )
 }
 
@@ -92,70 +71,72 @@ const HiveBridgeOverview = () => {
       <Text fontSize={'5xl'}>Hive Asset Mapping Overview</Text>
       <hr />
       <br />
-      <Card mb={'4'}>
-        <CardBody>
+      <Card.Root mb={'4'}>
+        <Card.Body>
           <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'space-between'}>
-            <Stat>
-              <StatLabel>HIVE TVL</StatLabel>
-              <StatNumber>
+            <Stat.Root>
+              <Stat.Label>HIVE TVL</Stat.Label>
+              <Stat.ValueText>
                 {!!l1Acc ? (
                   fmtmAmount(l1Acc.hive_balance + l1Acc.hive_savings + parseInt(l1Acc.vesting_balance_hive), 'HIVE')
                 ) : (
                   <Skeleton height={'20px'} maxW={'40px'} />
                 )}
-              </StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>HBD TVL</StatLabel>
-              <StatNumber>
+              </Stat.ValueText>
+            </Stat.Root>
+            <Stat.Root>
+              <Stat.Label>HBD TVL</Stat.Label>
+              <Stat.ValueText>
                 {!!l1Acc ? fmtmAmount(l1Acc.hbd_balance + l1Acc.hbd_savings, 'HBD') : <Skeleton height={'20px'} maxW={'40px'} />}
-              </StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Map Txs</StatLabel>
-              <StatNumber>{!!tally ? thousandSeperator(tally.deposits) : <Skeleton height={'20px'} maxW={'40px'} />}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Unmap Txs</StatLabel>
-              <StatNumber>
+              </Stat.ValueText>
+            </Stat.Root>
+            <Stat.Root>
+              <Stat.Label>Map Txs</Stat.Label>
+              <Stat.ValueText>{!!tally ? thousandSeperator(tally.deposits) : <Skeleton height={'20px'} maxW={'40px'} />}</Stat.ValueText>
+            </Stat.Root>
+            <Stat.Root>
+              <Stat.Label>Unmap Txs</Stat.Label>
+              <Stat.ValueText>
                 {!!tally ? thousandSeperator(tally.withdrawals) : <Skeleton height={'20px'} maxW={'40px'} />}
-              </StatNumber>
-            </Stat>
+              </Stat.ValueText>
+            </Stat.Root>
           </Stack>
-        </CardBody>
-      </Card>
+        </Card.Body>
+      </Card.Root>
       <hr />
-      <Stack direction={{ base: 'column', xl: 'row' }} justifyContent={'space-between'} my={'4'} spacing={'4'}>
-        <Card width={'100%'}>
-          <CardHeader>
+      <Stack direction={{ base: 'column', xl: 'row' }} justifyContent={'space-between'} my={'4'} gap={'4'}>
+        <Card.Root width={'100%'}>
+          <Card.Header>
             <Heading fontSize={'2xl'}>Latest Maps</Heading>
-          </CardHeader>
-          <CardBody padding={'0'}>
+          </Card.Header>
+          <Card.Body padding={'0'}>
             <BridgeTxsTable txs={data?.deposits || []} />
-          </CardBody>
+          </Card.Body>
           <CardFooter paddingTop={'3'}>
-            <Button as={ReactRouterLink} to={'/bridge/hive/deposits'} colorScheme={themeColorScheme}>
-              View More
+            <Button asChild colorPalette={themeColorScheme}>
+              <ReactRouterLink to={'/bridge/hive/deposits'}>View More</ReactRouterLink>
             </Button>
           </CardFooter>
-        </Card>
-        <Card width={'100%'}>
-          <CardHeader>
+        </Card.Root>
+        <Card.Root width={'100%'}>
+          <Card.Header>
             <Heading fontSize={'2xl'}>Latest Unmaps</Heading>
-          </CardHeader>
-          <CardBody padding={'0'}>
+          </Card.Header>
+          <Card.Body padding={'0'}>
             <BridgeTxsTable txs={data?.withdrawals || []} />
-          </CardBody>
+          </Card.Body>
           <CardFooter paddingTop={'3'}>
-            <Button as={ReactRouterLink} to={'/bridge/hive/withdrawals'} colorScheme={themeColorScheme}>
-              View More
+            <Button asChild colorPalette={themeColorScheme}>
+              <ReactRouterLink to={'/bridge/hive/withdrawals'}>View More</ReactRouterLink>
             </Button>
           </CardFooter>
-        </Card>
+        </Card.Root>
       </Stack>
       <Text>
-        <Link as={ReactRouterLink} target="_blank" to={'https://peakd.com/vsc/@vsc.network/introducing-native-asset-mapping'}>
-          Learn more about native asset mapping here.
+        <Link asChild>
+          <ReactRouterLink target="_blank" to={'https://peakd.com/vsc/@vsc.network/introducing-native-asset-mapping'}>
+            Learn more about native asset mapping here.
+          </ReactRouterLink>
         </Link>
       </Text>
     </>

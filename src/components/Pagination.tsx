@@ -1,7 +1,7 @@
-import { Flex, ButtonGroup, Button, Box } from '@chakra-ui/react'
+import { Flex, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { Link as ReactRouterLink, To } from 'react-router'
-import { themeColor, themeColorULight } from '../settings'
+import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
 
 interface PaginationProps {
   path: string
@@ -14,13 +14,36 @@ interface Wrapper {
   children: ReactNode
 }
 
+export const attachedGroupCss = {
+  display: 'inline-flex',
+  isolation: 'isolate',
+  '& > button': {
+    borderRadius: 0
+  },
+  '& > button:first-of-type': {
+    borderStartStartRadius: 'l2',
+    borderEndStartRadius: 'l2'
+  },
+  '& > button:last-of-type': {
+    borderStartEndRadius: 'l2',
+    borderEndEndRadius: 'l2'
+  },
+  '& > button:not(:last-of-type)': {
+    marginInlineEnd: '-1px'
+  }
+}
+
 export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
   return (
     <Button
+      size="md"
+      variant="outline"
+      colorPalette={themeColorScheme}
       zIndex={2}
       bg={themeColor}
+      color={'white'}
       _hover={{ bg: themeColor }}
-      _light={{ borderColor: themeColor, bg: themeColorULight, _hover: { bg: themeColorULight } }}
+      _light={{ borderColor: themeColor, bg: themeColorULight, color: themeColorDark, _hover: { bg: themeColorULight } }}
     >
       {children}
     </Button>
@@ -29,10 +52,9 @@ export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
 
 export const LinkedBtn = ({ to, children }: Wrapper) => {
   return (
-    <Button padding="0 0">
+    <Button size="md" variant="outline" colorPalette="gray" padding="0 0">
       <Box
-        as={ReactRouterLink}
-        to={to}
+        asChild
         w="100%"
         h="100%"
         display="flex"
@@ -40,7 +62,9 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
         justifyContent="center"
         padding="0px 16px"
       >
-        {children}
+        <ReactRouterLink to={to}>
+          {children}
+        </ReactRouterLink>
       </Box>
     </Button>
   )
@@ -49,7 +73,7 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
 const Pagination = ({ path, currentPageNum, maxPageNum }: PaginationProps) => {
   return (
     <Flex justifyContent={'center'}>
-      <ButtonGroup size={'md'} isAttached variant={'outline'}>
+      <Box css={attachedGroupCss}>
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>Previous</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={path + '/' + (currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
@@ -61,13 +85,13 @@ const Pagination = ({ path, currentPageNum, maxPageNum }: PaginationProps) => {
           <LinkedBtn to={path + '/' + (currentPageNum + 2)}>{currentPageNum + 2}</LinkedBtn>
         ) : null}
         {maxPageNum > currentPageNum + 3 ? (
-          <Button disabled cursor="not-allowed">
+          <Button size="md" variant="outline" colorPalette="gray" disabled cursor="not-allowed">
             ...
           </Button>
         ) : null}
         {maxPageNum >= currentPageNum + 3 ? <LinkedBtn to={path + '/' + maxPageNum}>{maxPageNum}</LinkedBtn> : null}
         {currentPageNum < maxPageNum ? <LinkedBtn to={path + '/' + ((currentPageNum || 1) + 1)}>Next</LinkedBtn> : null}
-      </ButtonGroup>
+      </Box>
     </Flex>
   )
 }
@@ -80,10 +104,10 @@ interface prevNextBtnProps {
 export const PrevNextBtns = ({ toPrev, toNext }: prevNextBtnProps) => {
   return (
     <Box margin="10px 0px">
-      <ButtonGroup size="md" isAttached variant={'outline'} float="right">
+      <Box css={attachedGroupCss} float="right">
         {toPrev ? <LinkedBtn to={toPrev}>Previous</LinkedBtn> : null}
         {toNext ? <LinkedBtn to={toNext}>Next</LinkedBtn> : null}
-      </ButtonGroup>
+      </Box>
     </Box>
   )
 }

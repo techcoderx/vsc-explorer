@@ -1,7 +1,8 @@
 import { useRef, Dispatch, SetStateAction } from 'react'
-import { Input, Box, Text, List, ListItem, ListIcon, Button, Flex, IconButton, useToast } from '@chakra-ui/react'
-import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons'
+import { Input, Box, Text, List, Button, Flex, IconButton } from '@chakra-ui/react'
+import { LuPaperclip, LuX } from 'react-icons/lu'
 import { themeColor, themeColorScheme } from '../settings'
+import { toaster } from './ui/toaster'
 
 interface MultiFileInputProps {
   files: File[]
@@ -12,7 +13,6 @@ interface MultiFileInputProps {
 
 const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept, onChange }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const toast = useToast()
   const MAX_FILE_SIZE = 1024 * 1024 // 1MB in bytes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,10 +25,9 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
 
     // Notify user about invalid files
     if (invalidFiles.length > 0) {
-      toast({
+      toaster.error({
         title: 'File(s) too large',
-        description: `The following files exceed the 1MB limit and were not added: ${invalidFiles.map((f) => f.name).join(', ')}`,
-        status: 'error'
+        description: `The following files exceed the 1MB limit and were not added: ${invalidFiles.map((f) => f.name).join(', ')}`
       })
     }
 
@@ -80,7 +79,7 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
 
       {/* Custom styled button for file selection */}
       <label htmlFor="file-input">
-        <Button as="span" colorScheme={themeColorScheme} cursor="pointer">
+        <Button as="span" colorPalette={themeColorScheme} cursor="pointer">
           Choose Files
         </Button>
       </label>
@@ -91,11 +90,13 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
           <Text fontSize="sm" mb={2}>
             Selected files ({files.length}):
           </Text>
-          <List spacing={2}>
+          <List.Root gap={2}>
             {files.map((file) => (
-              <ListItem key={file.name} fontSize="sm">
+              <List.Item key={file.name} fontSize="sm">
                 <Flex align="center">
-                  <ListIcon as={AttachmentIcon} color={themeColor} />
+                  <List.Indicator asChild color={themeColor}>
+                    <LuPaperclip />
+                  </List.Indicator>
                   <Box flex="1">
                     {file.name}
                     <Text as="span" fontSize="xs" color="gray.500" ml={2}>
@@ -104,16 +105,17 @@ const MultiFileInput: React.FC<MultiFileInputProps> = ({ files, setFiles, accept
                   </Box>
                   <IconButton
                     aria-label="Remove file"
-                    icon={<CloseIcon />}
                     size="xs"
                     variant="ghost"
                     onClick={() => handleRemoveFile(file.name)}
-                    colorScheme="red"
-                  />
+                    colorPalette="red"
+                  >
+                    <LuX />
+                  </IconButton>
                 </Flex>
-              </ListItem>
+              </List.Item>
             ))}
-          </List>
+          </List.Root>
         </Box>
       )}
 

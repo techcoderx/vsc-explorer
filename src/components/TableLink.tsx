@@ -1,9 +1,10 @@
 import { ReactNode } from 'react'
-import { HStack, Link, Tooltip } from '@chakra-ui/react'
+import { HStack, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, validateHiveUsername } from '../helpers'
 import { FaEthereum, FaHive, FaFileContract, FaNetworkWired } from 'react-icons/fa6'
 import { Flairs } from '../flairs'
+import { Tooltip } from './ui/tooltip'
 
 type TableLinkParams = { val: string; ttVal?: string; truncate?: number; icon?: ReactNode }
 
@@ -21,13 +22,15 @@ const rmPrefix = (addr: string) => {
 const TheLink = ({ val, ttVal, truncate, href, icon }: TableLinkParams & { href: string }) => {
   const display = ttVal ?? abbreviateHash(rmPrefix(val), truncate, 0)
   return (
-    <Link as={ReactRouterLink} to={href}>
-      <HStack gap={'1.5'}>
-        {icon}
-        <Tooltip label={val} placement={'top'}>
-          {display}
-        </Tooltip>
-      </HStack>
+    <Link asChild>
+      <ReactRouterLink to={href}>
+        <HStack gap={'1.5'}>
+          {icon}
+          <Tooltip content={val} positioning={{ placement: 'top' }}>
+            {display}
+          </Tooltip>
+        </HStack>
+      </ReactRouterLink>
     </Link>
   )
 }

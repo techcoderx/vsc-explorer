@@ -15,7 +15,11 @@ export const ProgressBarPct = ({
   return (
     <Flex alignItems="center">
       <Box width={width}>
-        <Progress colorScheme={themeColorScheme} height={height} value={val} />
+        <Progress.Root colorPalette={themeColorScheme} size={'xs'} value={val} max={100}>
+          <Progress.Track>
+            <Progress.Range />
+          </Progress.Track>
+        </Progress.Root>
       </Box>
       <Text ml={2} fontSize={fontSize}>
         {val.toFixed(2)}%

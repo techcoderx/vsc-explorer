@@ -3,46 +3,40 @@ import {
   Box,
   Button,
   Card,
-  CardBody,
-  CardHeader,
   Flex,
   Heading,
   HStack,
   Input,
   Spinner,
   Switch,
-  Text,
-  useToast
+  Text
 } from '@chakra-ui/react'
 import { useSearchParams } from 'react-router'
-import { themeColorLight, themeColorScheme } from '../../../settings'
+import { themeColorScheme } from '../../../settings'
 import { useDagByCID } from '../../../requests'
 import JsonToTableRecursive from '../../JsonTableRecursive'
 import { CopyButton } from '../../CopyButton'
 import { SourceFile } from '../../SourceFile'
 import { PageTitle } from '../../PageTitle'
+import { toaster } from '../../ui/toaster'
 
 export const DagInspector = () => {
   const [searchParams] = useSearchParams()
-  const toast = useToast()
   const [rawJson, setRawJson] = useState<boolean>(false)
   const [cid, setCid] = useState<string>(searchParams.get('cid') || '')
   const [cidToQuery, setCidToQuery] = useState<string>(searchParams.get('cid') || '')
   const { data: dag, isLoading, isError } = useDagByCID<object>(cidToQuery, !!cidToQuery, false)
   useEffect(() => {
     if (isError) {
-      const t = toast({
-        title: 'Failed to fetch DAG',
-        status: 'error'
+      toaster.error({
+        title: 'Failed to fetch DAG'
       })
-      return () => toast.close(t)
     }
   }, [isError])
   const inspectClicked = () => {
     if (!cid)
-      return toast({
-        title: 'Please enter a CID',
-        status: 'error'
+      return toaster.error({
+        title: 'Please enter a CID'
       })
     setCidToQuery(cid)
   }
@@ -58,9 +52,9 @@ export const DagInspector = () => {
           value={cid}
           onChange={(e) => setCid(e.target.value)}
           onKeyDown={(e) => (e.key === 'Enter' ? inspectClicked() : null)}
-          focusBorderColor={themeColorLight}
+
         />
-        <Button colorScheme={themeColorScheme} onClick={inspectClicked} disabled={isLoading}>
+        <Button colorPalette={themeColorScheme} onClick={inspectClicked} disabled={isLoading}>
           <Flex gap={'2'} align={'center'}>
             <Spinner size={'sm'} hidden={!isLoading} />
             <Text>Inspect</Text>
@@ -68,27 +62,32 @@ export const DagInspector = () => {
         </Button>
       </HStack>
       {!!dag && (
-        <Card>
+        <Card.Root>
           <Box position={'absolute'} top={'3'} right={'3'}>
             <CopyButton text={JSON.stringify(dag, null, 2)} />
           </Box>
-          <CardHeader>
+          <Card.Header pb={'4'}>
             <HStack gap={'4'}>
               <Heading fontSize={'xl'}>DAG content</Heading>
               <HStack gap={'2'}>
-                <Switch colorScheme={themeColorScheme} isChecked={rawJson} onChange={() => setRawJson((v) => !v)} />
+                <Switch.Root colorPalette={themeColorScheme} checked={rawJson} onCheckedChange={(e) => setRawJson(e.checked)}>
+                  <Switch.HiddenInput />
+                  <Switch.Control>
+                    <Switch.Thumb />
+                  </Switch.Control>
+                </Switch.Root>
                 <Text>Raw JSON</Text>
               </HStack>
             </HStack>
-          </CardHeader>
-          <CardBody mt={'-6'}>
+          </Card.Header>
+          <Card.Body pt={'0'}>
             {rawJson ? (
               <SourceFile content={JSON.stringify(dag, null, 2)} />
             ) : (
               <JsonToTableRecursive json={dag} isInCard minimalSpace />
             )}
-          </CardBody>
-        </Card>
+          </Card.Body>
+        </Card.Root>
       )}
     </>
   )

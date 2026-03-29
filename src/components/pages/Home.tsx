@@ -1,4 +1,4 @@
-import { Card, CardBody, Stack, VStack, StackDivider, Box, Text, Heading, Center, Skeleton } from '@chakra-ui/react'
+import { Card, Separator, Stack, VStack, Box, Text, Heading, Center, Skeleton } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProps } from '../../requests'
 import { thousandSeperator } from '../../helpers'
@@ -30,14 +30,14 @@ const Home = () => {
   return (
     <>
       <Center>
-        <Card alignItems={'center'}>
-          <CardBody textAlign="center" w="3xl" padding="15px 20px">
-            <VStack divider={<StackDivider />} spacing={{ base: '4', md: '0' }}>
+        <Card.Root alignItems={'center'}>
+          <Card.Body textAlign="center" w="3xl" padding="15px 20px">
+            <VStack separator={<Separator />} gap={{ base: '4', md: '0' }}>
               <Stack
                 direction={{ base: 'column', md: 'row' }}
                 w="100%"
-                divider={<StackDivider />}
-                spacing={'4'}
+                separator={<Separator />}
+                gap={'4'}
                 align="center"
                 justify="center"
               >
@@ -58,8 +58,8 @@ const Home = () => {
               <Stack
                 direction={{ base: 'column', md: 'row' }}
                 w="100%"
-                divider={<StackDivider />}
-                spacing={'4'}
+                separator={<Separator />}
+                gap={'4'}
                 align="center"
                 justify="center"
               >
@@ -68,8 +68,8 @@ const Home = () => {
                 <InfoBox title="Contracts" prop={prop?.contracts} isLoading={isPropLoading} isSuccess={isPropSuccess} />
               </Stack>
             </VStack>
-          </CardBody>
-        </Card>
+          </Card.Body>
+        </Card.Root>
       </Center>
     </>
   )

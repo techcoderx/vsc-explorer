@@ -3,35 +3,22 @@ import {
   Text,
   Box,
   Table,
-  Tbody,
   Skeleton,
   Link,
   Button,
   Heading,
   Card,
-  CardHeader,
-  CardBody,
   Badge,
   Flex,
-  Tooltip,
   Tag,
   Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  TableContainer,
-  Thead,
-  Tr,
-  Th,
-  Td,
   Icon,
-  TableCellProps,
   Grid,
   GridItem,
   Spinner,
   HStack
 } from '@chakra-ui/react'
+import { Tooltip } from '../ui/tooltip'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import TableRow from '../TableRow'
@@ -46,13 +33,13 @@ import { Contract, ContractOutputDag, TssKeyStatus, TssOp, TssReqStatus, Txn } f
 import { StatusBadge } from '../tables/Ledgers'
 import { AccountLink, ContractLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
+import { LuCheck, LuX } from 'react-icons/lu'
 import { PageTitle } from '../PageTitle'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1px solid #e2e8f0'
-const MinTd = ({ children, ...props }: { children: ReactNode } & TableCellProps) => (
-  <Td
+const MinTd = ({ children, ...props }: { children: ReactNode } & Table.CellProps) => (
+  <Table.Cell
     py={'2'}
     _dark={{
       borderTop: cardBorder,
@@ -65,7 +52,7 @@ const MinTd = ({ children, ...props }: { children: ReactNode } & TableCellProps)
     {...props}
   >
     {children}
-  </Td>
+  </Table.Cell>
 )
 
 const RC_COSTS = {
@@ -89,26 +76,26 @@ const CallOutputs = ({
   outContents: ContractOutputDag[]
 }) => {
   return (
-    <TableContainer>
-      <Table variant={'unstyled'}>
-        <Thead>
-          <Tr>
-            <Th>Output ID</Th>
-            <Th>Contract ID</Th>
-            <Th>Index</Th>
-            {!success && <Th>Error Symbol</Th>}
-            {!success && <Th>Error Message</Th>}
-            {success && <Th>Output</Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
+    <Table.ScrollArea>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader>Output ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Index</Table.ColumnHeader>
+            {!success && <Table.ColumnHeader>Error Symbol</Table.ColumnHeader>}
+            {!success && <Table.ColumnHeader>Error Message</Table.ColumnHeader>}
+            {success && <Table.ColumnHeader>Output</Table.ColumnHeader>}
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {outputs.map((out, i) =>
             out.index.map((o, j) => (
-              <Tr key={`${i}-${j}`}>
+              <Table.Row key={`${i}-${j}`}>
                 <MinTd>
                   {j === 0 && (
-                    <Link as={ReactRouterLink} to={`/tools/dag?cid=${out.id}`}>
-                      {abbreviateHash(out.id, 20, 0)}
+                    <Link asChild>
+                      <ReactRouterLink to={`/tools/dag?cid=${out.id}`}>{abbreviateHash(out.id, 20, 0)}</ReactRouterLink>
                     </Link>
                   )}
                 </MinTd>
@@ -127,20 +114,20 @@ const CallOutputs = ({
                     )}
                   </MinTd>
                 )}
-              </Tr>
+              </Table.Row>
             ))
           )}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        </Table.Body>
+      </Table.Root>
+    </Table.ScrollArea>
   )
 }
 
 const CallLog = ({ contractId, idx, log }: { contractId: string; idx: number; log: string }) => (
-  <Tr>
+  <Table.Row>
     <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
     <MinTd>{log}</MinTd>
-  </Tr>
+  </Table.Row>
 )
 
 const TssRequest = ({
@@ -157,14 +144,14 @@ const TssRequest = ({
   const s = Array.isArray(status) ? status[0] : status
   const out = (s as TssKeyStatus | undefined)?.public_key || (s as TssReqStatus | undefined)?.sig
   return (
-    <Tr>
+    <Table.Row>
       <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
       <MinTd>{req.type}</MinTd>
       <MinTd>{req.key_id.replace(`${contractId}-`, '')}</MinTd>
       <MinTd>{req.args}</MinTd>
       <MinTd>
         {!!s ? (
-          <Badge colorScheme={s.status === 'complete' || s.status === 'active' ? 'green' : themeColorScheme}>{s.status}</Badge>
+          <Badge colorPalette={s.status === 'complete' || s.status === 'active' ? 'green' : themeColorScheme}>{s.status}</Badge>
         ) : (
           <Skeleton height="20px" />
         )}
@@ -176,7 +163,7 @@ const TssRequest = ({
           </Text>
         )}
       </MinTd>
-    </Tr>
+    </Table.Row>
   )
 }
 
@@ -189,31 +176,28 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
   // prettier-ignore
   const rcUsed = txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call') ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0) : 0
   return (
-    <Card>
-      <CardHeader>
-        <Flex gap={'3'} direction={'row'}>
+    <Card.Root>
+      <Card.Header pb={'4'}>
+        <Flex gap={'3'} direction={'row'} alignItems={'center'}>
           <Heading fontSize={'2xl'} display={'inline'}>
             Magi Transaction
           </Heading>
-          <Tag colorScheme={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}>
-            {txn.status === 'CONFIRMED' ? (
-              <CheckIcon mr={'1.5'} />
-            ) : txn.status === 'FAILED' ? (
-              <CloseIcon fontSize={'xs'} mr={'1.5'} />
-            ) : (
-              <Spinner size={'sm'} mr={'1.5'} />
-            )}
+          <Tag.Root
+            py={'2px'}
+            colorPalette={txn.status === 'CONFIRMED' ? 'green' : txn.status === 'FAILED' ? 'red' : themeColorScheme}
+          >
+            {txn.status === 'CONFIRMED' ? <LuCheck /> : txn.status === 'FAILED' ? <LuX /> : <Spinner size={'sm'} mx={'1'} />}
             {txn.status.toUpperCase()}
-          </Tag>
+          </Tag.Root>
         </Flex>
-      </CardHeader>
+      </Card.Header>
 
-      <CardBody mt={'-6'}>
-        <TableContainer>
-          <Table mb={'-1px'}>
-            <Tbody>
-              <Tr>
-                <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+      <Card.Body pt={'0'}>
+        <Table.ScrollArea>
+          <Table.Root>
+            <Table.Body>
+              <Table.Row>
+                <MinTd py={'2.5'} fontWeight={'bold'}>
                   Required Auths
                 </MinTd>
                 <MinTd py={'2.5'}>
@@ -224,38 +208,38 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
                     {txn.required_auths.map((a, i) => {
                       return (
                         <GridItem key={i}>
-                          <Link as={ReactRouterLink} to={'/address/' + a}>
-                            {a}
+                          <Link asChild>
+                            <ReactRouterLink to={'/address/' + a}>{a}</ReactRouterLink>
                           </Link>
                         </GridItem>
                       )
                     })}
                   </Grid>
                 </MinTd>
-              </Tr>
-              <Tr>
-                <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+              </Table.Row>
+              <Table.Row>
+                <MinTd py={'2.5'} fontWeight={'bold'}>
                   RC Used
                 </MinTd>
                 <MinTd>
                   {rcUsed > 0 ? rcUsed : '🤔'} / {txn.rc_limit} (
                   {txn.rc_limit > 0 ? Math.round((100 * rcUsed) / txn.rc_limit) : '👀'}%)
                 </MinTd>
-              </Tr>
+              </Table.Row>
               {type === 'vsc' && (
-                <Tr>
-                  <MinTd py={'2.5'} pl={'4'} fontWeight={'bold'}>
+                <Table.Row>
+                  <MinTd py={'2.5'} fontWeight={'bold'}>
                     Nonce
                   </MinTd>
                   <MinTd>{txn.nonce}</MinTd>
-                </Tr>
+                </Table.Row>
               )}
-            </Tbody>
-          </Table>
-        </TableContainer>
+            </Table.Body>
+          </Table.Root>
+        </Table.ScrollArea>
         {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && <TxOut txn={txn} />}
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   )
 }
 
@@ -305,31 +289,31 @@ const TxOut = ({ txn }: { txn: Txn }) => {
     enabled: tssCount > 0
   })
   return (
-    <Accordion allowToggle>
-      <AccordionItem>
-        <AccordionButton>
+    <Accordion.Root collapsible>
+      <Accordion.Item value="ledger-ops">
+        <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
           <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
             Ledger Operations ({txn.ledger.length})
           </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel px={'0'}>
-          <TableContainer>
-            <Table variant={'unstyled'}>
-              <Thead>
-                <Tr>
-                  <Th>Type</Th>
-                  <Th>From</Th>
-                  <Th></Th>
-                  <Th>To</Th>
-                  <Th>Amount</Th>
-                  <Th>Memo</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
+          <Accordion.ItemIndicator />
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent px={'0'}>
+          <Table.ScrollArea>
+            <Table.Root>
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeader>Type</Table.ColumnHeader>
+                  <Table.ColumnHeader>From</Table.ColumnHeader>
+                  <Table.ColumnHeader></Table.ColumnHeader>
+                  <Table.ColumnHeader>To</Table.ColumnHeader>
+                  <Table.ColumnHeader>Amount</Table.ColumnHeader>
+                  <Table.ColumnHeader>Memo</Table.ColumnHeader>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {txn.ledger.map((item, i) => {
                   return (
-                    <Tr key={i}>
+                    <Table.Row key={i}>
                       <MinTd>{item.type}</MinTd>
                       <MinTd>
                         <AccountLink val={item.from} />
@@ -342,37 +326,37 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                       </MinTd>
                       <MinTd>{fmtmAmount(item.amount, item.type === 'consensus_unstake' ? 'HIVE' : item.asset)}</MinTd>
                       <MinTd>{item.memo}</MinTd>
-                    </Tr>
+                    </Table.Row>
                   )
                 })}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem>
-        <AccordionButton>
+              </Table.Body>
+            </Table.Root>
+          </Table.ScrollArea>
+        </Accordion.ItemContent>
+      </Accordion.Item>
+      <Accordion.Item value="ledger-actions">
+        <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
           <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
             Ledger Actions ({txn.ledger_actions.length})
           </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel px={'0'}>
-          <TableContainer>
-            <Table variant={'unstyled'}>
-              <Thead>
-                <Tr>
-                  <Th>Type</Th>
-                  <Th>To</Th>
-                  <Th>Amount</Th>
-                  <Th>Status</Th>
-                  <Th>Memo</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
+          <Accordion.ItemIndicator />
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent px={'0'}>
+          <Table.ScrollArea>
+            <Table.Root>
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeader>Type</Table.ColumnHeader>
+                  <Table.ColumnHeader>To</Table.ColumnHeader>
+                  <Table.ColumnHeader>Amount</Table.ColumnHeader>
+                  <Table.ColumnHeader>Status</Table.ColumnHeader>
+                  <Table.ColumnHeader>Memo</Table.ColumnHeader>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {txn.ledger_actions.map((item, i) => {
                   return (
-                    <Tr key={i}>
+                    <Table.Row key={i}>
                       <MinTd>{item.type}</MinTd>
                       <MinTd>
                         <AccountLink val={item.to} />
@@ -382,46 +366,46 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                         <StatusBadge status={item.status} />
                       </MinTd>
                       <MinTd>{item.memo}</MinTd>
-                    </Tr>
+                    </Table.Row>
                   )
                 })}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </AccordionPanel>
-      </AccordionItem>
+              </Table.Body>
+            </Table.Root>
+          </Table.ScrollArea>
+        </Accordion.ItemContent>
+      </Accordion.Item>
       {!!txn.output && !!outContents && txn.status !== 'UNCONFIRMED' && txn.status !== 'INCLUDED' && (
-        <AccordionItem>
-          <AccordionButton>
+        <Accordion.Item value="call-outputs">
+          <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
               Call Outputs
             </Box>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel px={'0'}>
+            <Accordion.ItemIndicator />
+          </Accordion.ItemTrigger>
+          <Accordion.ItemContent px={'0'}>
             <CallOutputs success={txn.status === 'CONFIRMED'} outputs={txn.output} outContents={outContents} />
-          </AccordionPanel>
-        </AccordionItem>
+          </Accordion.ItemContent>
+        </Accordion.Item>
       )}
       {!!txn.output && !!outContents && txn.status === 'CONFIRMED' && (
-        <AccordionItem>
-          <AccordionButton>
+        <Accordion.Item value="logs">
+          <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
               Logs ({logCount})
             </Box>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel px={'0'}>
+            <Accordion.ItemIndicator />
+          </Accordion.ItemTrigger>
+          <Accordion.ItemContent px={'0'}>
             {logCount > 0 && (
-              <TableContainer>
-                <Table variant={'unstyled'}>
-                  <Thead>
-                    <Tr>
-                      <Th>Contract ID</Th>
-                      <Th>Log</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
+              <Table.ScrollArea>
+                <Table.Root>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
+                      <Table.ColumnHeader>Log</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {txn.output.map((out, i) =>
                       out.index.map((o, j) =>
                         outContents[i].results[o].logs?.map((log, k) => (
@@ -429,36 +413,36 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                         ))
                       )
                     )}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
             )}
-          </AccordionPanel>
-        </AccordionItem>
+          </Accordion.ItemContent>
+        </Accordion.Item>
       )}
       {!!txn.output && !!outContents && txn.status === 'CONFIRMED' && tssCount > 0 && (
-        <AccordionItem>
-          <AccordionButton>
+        <Accordion.Item value="tss-requests">
+          <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
               TSS Requests ({tssCount})
             </Box>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel px={'0'}>
+            <Accordion.ItemIndicator />
+          </Accordion.ItemTrigger>
+          <Accordion.ItemContent px={'0'}>
             {tssCount > 0 && (
-              <TableContainer>
-                <Table variant={'unstyled'}>
-                  <Thead>
-                    <Tr>
-                      <Th>Contract ID</Th>
-                      <Th>Type</Th>
-                      <Th>Key ID</Th>
-                      <Th>Arguments</Th>
-                      <Th>Status</Th>
-                      <Th>Output</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
+              <Table.ScrollArea>
+                <Table.Root>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
+                      <Table.ColumnHeader>Type</Table.ColumnHeader>
+                      <Table.ColumnHeader>Key ID</Table.ColumnHeader>
+                      <Table.ColumnHeader>Arguments</Table.ColumnHeader>
+                      <Table.ColumnHeader>Status</Table.ColumnHeader>
+                      <Table.ColumnHeader>Output</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {txn.output.map((out, i) =>
                       out.index.map((o, j) =>
                         outContents[i].results[o].tss_ops?.map((req, k) => (
@@ -472,28 +456,28 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                         ))
                       )
                     )}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
             )}
-          </AccordionPanel>
-        </AccordionItem>
+          </Accordion.ItemContent>
+        </Accordion.Item>
       )}
-    </Accordion>
+    </Accordion.Root>
   )
 }
 
 const ContractResult = ({ out }: { out: Contract }) => {
   return (
     <>
-      <CardHeader>
+      <Card.Header pb={'4'}>
         <Heading fontSize={'xl'}>Deployed Contract</Heading>
-      </CardHeader>
-      <CardBody mt={'-6'}>
-        <Table variant={'unstyled'}>
+      </Card.Header>
+      <Card.Body pt={'0'}>
+        <Table.Root>
           <TableRow minimalSpace isInCard allCardBorders label="Contract ID" value={out.id} link={`/contract/${out.id}`} />
-        </Table>
-      </CardBody>
+        </Table.Root>
+      </Card.Body>
     </>
   )
 }
@@ -501,12 +485,12 @@ const ContractResult = ({ out }: { out: Contract }) => {
 const ElectionResult = ({ out }: { out: Election }) => {
   return (
     <>
-      <CardHeader>
+      <Card.Header pb={'4'}>
         <Heading fontSize={'xl'}>Proposed Election Result</Heading>
-      </CardHeader>
-      <CardBody mt={'-6'}>
-        <Table margin={'0'} variant={'unstyled'}>
-          <Tbody>
+      </Card.Header>
+      <Card.Body pt={'0'}>
+        <Table.Root margin={'0'}>
+          <Table.Body>
             <TableRow minimalSpace isInCard allCardBorders label="Epoch" value={out.epoch} link={'/epoch/' + out.epoch} />
             <TableRow minimalSpace isInCard allCardBorders label="Data CID" value={out.data} />
             {out.epoch > 0 ? (
@@ -520,9 +504,9 @@ const ElectionResult = ({ out }: { out: Election }) => {
                 )}
               </TableRow>
             ) : null}
-          </Tbody>
-        </Table>
-      </CardBody>
+          </Table.Body>
+        </Table.Root>
+      </Card.Body>
     </>
   )
 }
@@ -530,16 +514,18 @@ const ElectionResult = ({ out }: { out: Election }) => {
 const BlockResult = ({ out }: { out: Block }) => {
   return (
     <>
-      <CardHeader>
+      <Card.Header pb={'4'}>
         <Heading fontSize={'xl'}>Proposed Block</Heading>
-      </CardHeader>
-      <CardBody mt={'-6'}>
-        <Table margin={'0'} variant={'unstyled'}>
-          <Tbody>
+      </Card.Header>
+      <Card.Body pt={'0'}>
+        <Table.Root margin={'0'}>
+          <Table.Body>
             <TableRow minimalSpace isInCard allCardBorders label="Block Number">
               {out.be_info ? (
-                <Link as={ReactRouterLink} to={'/block/' + out.be_info.block_id}>
-                  {thousandSeperator(out.be_info.block_id)}
+                <Link asChild>
+                  <ReactRouterLink to={'/block/' + out.be_info.block_id}>
+                    {thousandSeperator(out.be_info.block_id)}
+                  </ReactRouterLink>
                 </Link>
               ) : (
                 <Text fontStyle={'italic'} opacity={'0.7'}>
@@ -557,9 +543,9 @@ const BlockResult = ({ out }: { out: Block }) => {
                 </Text>
               )}
             </TableRow>
-          </Tbody>
-        </Table>
-      </CardBody>
+          </Table.Body>
+        </Table.Root>
+      </Card.Body>
     </>
   )
 }
@@ -589,7 +575,7 @@ const L1Tx = () => {
   const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : (data?.timestamp ?? '')
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const intervalRef = useRef<NodeJS.Timeout>(undefined)
   useEffect(() => {
     if (shouldRefetch(!!vscTx && vscTx.length > 0 ? vscTx[0] : null)) {
       intervalRef.current = setInterval(() => {
@@ -621,7 +607,7 @@ const L1Tx = () => {
               <Link href={beL1BlockUrl(data.block_num)} target="_blank" fontSize={'xl'}>
                 {'#' + thousandSeperator(data.block_num)}
               </Link>{' '}
-              <Tooltip placement="top" label={timestamp}>
+              <Tooltip positioning={{ placement: 'top' }} content={timestamp}>
                 <Text fontSize={'xl'} display={'inline'}>
                   ({timeAgo(timestamp)})
                 </Text>
@@ -638,43 +624,37 @@ const L1Tx = () => {
       <hr />
       <HStack gap={'2'}>
         {getConf().hiveBe.map((be, i) => (
-          <Button
-            key={i}
-            as={ReactRouterLink}
-            margin={'20px 0px'}
-            colorScheme={themeColorScheme}
-            variant={'outline'}
-            to={be.url + '/tx/' + txid}
-            target="_blank"
-          >
-            View in {be.name}
+          <Button key={i} asChild margin={'20px 0px'} colorPalette={themeColorScheme} variant={'outline'}>
+            <ReactRouterLink to={be.url + '/tx/' + txid} target="_blank">
+              View in {be.name}
+            </ReactRouterLink>
           </Button>
         ))}
       </HStack>
       <Flex gap="6" direction="column">
         {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (
-          <Card w="100%">
-            <CardBody>Loading Magi Operations...</CardBody>
-          </Card>
+          <Card.Root w="100%">
+            <Card.Body>Loading Magi Operations...</Card.Body>
+          </Card.Root>
         ) : isSuccess && !data.code ? (
           parsedOps.map((trx, i) => (
-            <Card key={i}>
-              <CardHeader>
+            <Card.Root key={i}>
+              <Card.Header pb={'4'}>
                 <Flex gap={'3'} direction={'row'} alignItems={'center'}>
                   <Heading fontSize={'2xl'}>Operation #{i}</Heading>
                   {trx.valid && (
-                    <Tag variant={'outline'} colorScheme={themeColorScheme} size={'lg'}>
+                    <Tag.Root variant={'outline'} colorPalette={themeColorScheme} size={'lg'}>
                       {trx.type}
-                    </Tag>
+                    </Tag.Root>
                   )}
                 </Flex>
-              </CardHeader>
+              </Card.Header>
               {trx.valid ? (
                 <>
-                  <CardBody marginTop={'-6'}>
+                  <Card.Body pt={'0'}>
                     <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
-                  </CardBody>
+                  </Card.Body>
                   {outData && outData[i] ? (
                     trx.type === 'create_contract' ? (
                       <ContractResult out={outData[i] as Contract} />
@@ -686,11 +666,11 @@ const L1Tx = () => {
                   ) : null}
                 </>
               ) : (
-                <CardBody mt={'-6'}>
+                <Card.Body pt={'0'}>
                   <Text fontStyle={'italic'}>This operation is not related to Magi.</Text>
-                </CardBody>
+                </Card.Body>
               )}
-            </Card>
+            </Card.Root>
           ))
         ) : null}
       </Flex>
@@ -706,7 +686,7 @@ const L2Tx = () => {
   })
   const exists = !!data && Array.isArray(data.txns) && data.txns.length > 0
   const tx = exists ? data.txns[0] : null
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const intervalRef = useRef<NodeJS.Timeout>(undefined)
   useEffect(() => {
     if (shouldRefetch(tx)) {
       intervalRef.current = setInterval(() => {
@@ -736,10 +716,10 @@ const L2Tx = () => {
             <Text fontSize={'xl'} display={'inline'}>
               Included in L2 block at slot height{' '}
             </Text>
-            <Link as={ReactRouterLink} to={`/block/${tx.anchr_id}`} fontSize={'xl'}>
-              {thousandSeperator(tx.anchr_height)}
+            <Link asChild fontSize={'xl'}>
+              <ReactRouterLink to={`/block/${tx.anchr_id}`}>{thousandSeperator(tx.anchr_height)}</ReactRouterLink>
             </Link>{' '}
-            <Tooltip placement="top" label={tx.anchr_ts}>
+            <Tooltip positioning={{ placement: 'top' }} content={tx.anchr_ts}>
               <Text fontSize={'xl'} display={'inline'}>
                 ({timeAgo(tx.anchr_ts)})
               </Text>
@@ -748,26 +728,26 @@ const L2Tx = () => {
         ) : null}
       </Box>
       <hr />
-      <Button as={ReactRouterLink} my={'5'} colorScheme={themeColorScheme} variant={'outline'} to={`/tools/dag?cid=${txid}`}>
-        View in DAG Inspector
+      <Button asChild my={'5'} colorPalette={themeColorScheme} variant={'outline'}>
+        <ReactRouterLink to={`/tools/dag?cid=${txid}`}>View in DAG Inspector</ReactRouterLink>
       </Button>
       {!!tx && (
         <Flex gap="6" direction="column">
           <TxOverview txn={tx} type="vsc" />
           {tx.ops.map((op, i) => (
-            <Card key={i}>
-              <CardHeader>
+            <Card.Root key={i}>
+              <Card.Header pb={'4'}>
                 <Flex gap={'3'} direction={'row'} alignItems={'center'}>
                   <Heading fontSize={'2xl'}>Operation #{i}</Heading>
-                  <Tag variant={'outline'} colorScheme={themeColorScheme} size={'lg'}>
+                  <Tag.Root variant={'outline'} colorPalette={themeColorScheme} size={'lg'}>
                     {op.type}
-                  </Tag>
+                  </Tag.Root>
                 </Flex>
-              </CardHeader>
-              <CardBody mt={'-6'}>
+              </Card.Header>
+              <Card.Body pt={'0'}>
                 <JsonToTableRecursive isInCard minimalSpace json={op.data} />
-              </CardBody>
-            </Card>
+              </Card.Body>
+            </Card.Root>
           ))}
         </Flex>
       )}

@@ -1,17 +1,17 @@
-import { Box, Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react'
+import { Box, Card, Heading, Text } from '@chakra-ui/react'
 import { ProgressBarPct } from '../../ProgressPercent'
 import { useAddrBalance } from '../../../requests'
 
 export const AddressRcInfo = ({ addr }: { addr: string }) => {
   const { balance, isLoading } = useAddrBalance(addr)
   return (
-    <Card>
-      <CardHeader mb={'-4'}>
+    <Card.Root>
+      <Card.Header mb={'-4'}>
         <Heading size={'md'} textAlign={'center'}>
           RC Info
         </Heading>
-      </CardHeader>
-      <CardBody>
+      </Card.Header>
+      <Card.Body>
         {!!balance && !!balance.rc && balance.rc.max_rcs > 0 ? (
           <Box>
             <ProgressBarPct val={(100 * balance.rc.amount) / balance.rc.max_rcs} fontSize="lg" height={'10px'} width={'100%'} />
@@ -24,7 +24,7 @@ export const AddressRcInfo = ({ addr }: { addr: string }) => {
         ) : (
           <Text>You have no RCs available. Please deposit HBD to obtain RCs.</Text>
         )}
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   )
 }

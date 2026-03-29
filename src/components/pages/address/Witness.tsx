@@ -1,21 +1,6 @@
-import {
-  Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Link,
-  Stack,
-  Stat,
-  StatLabel,
-  StatNumber,
-  Table,
-  TableContainer,
-  Tbody,
-  Text,
-  Tooltip,
-  VStack
-} from '@chakra-ui/react'
+import { Box, Card, Heading, Link, Stack, Stat, Table, Text, VStack } from '@chakra-ui/react'
+import { Tooltip } from '../../ui/tooltip'
+import { CheckXIcon } from '../../CheckXIcon'
 import { ReactNode, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, Link as ReactRouterLink } from 'react-router'
@@ -28,51 +13,55 @@ import { Blocks } from '../../tables/Blocks'
 
 export const StatCard = ({ label, children }: { label: string; children?: ReactNode }) => {
   return (
-    <Card minW={'48'} flex={1}>
-      <CardBody>
-        <Stat>
-          <StatLabel>{label}</StatLabel>
-          <StatNumber>{children}</StatNumber>
-        </Stat>
-      </CardBody>
-    </Card>
+    <Card.Root minW={'48'} flex={1}>
+      <Card.Body>
+        <Stat.Root>
+          <Stat.Label>{label}</Stat.Label>
+          <Stat.ValueText>{children}</Stat.ValueText>
+        </Stat.Root>
+      </Card.Body>
+    </Card.Root>
   )
 }
 
 export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: WitnessStat }) => {
   const [expMeta, setExpMeta] = useState(false)
   return !!witness ? (
-    <VStack width={'full'} spacing={'1'}>
+    <VStack width={'full'} gap={'1'}>
       {!!stats && (
-        <Stack spacing={'3'} direction={'row'} w={'full'} overflowX={'scroll'}>
+        <Stack gap={'3'} direction={'row'} w={'full'} overflowX={'scroll'}>
           <StatCard label="Enabled">
-            <Badge colorScheme={witness.enabled ? 'green' : 'red'} fontSize={'18'}>
-              {witness.enabled.toString()}
-            </Badge>
+            <Box css={{ '& > *': { fontSize: '2rem !important' } }}>
+              <CheckXIcon ok={witness.enabled} />
+            </Box>
           </StatCard>
           <StatCard label="Last Block">
-            <Link as={ReactRouterLink} to={'/block/' + stats.last_block}>
-              {stats.last_block ? thousandSeperator(stats.last_block) : 'N/A'}
+            <Link asChild>
+              <ReactRouterLink to={'/block/' + stats.last_block}>
+                {stats.last_block ? thousandSeperator(stats.last_block) : 'N/A'}
+              </ReactRouterLink>
             </Link>
           </StatCard>
           <StatCard label="Blocks Produced">{thousandSeperator(stats?.block_count || 0)}</StatCard>
           <StatCard label="Last Epoch">
-            <Link as={ReactRouterLink} to={'/epoch/' + stats.last_epoch}>
-              {stats.last_epoch ? thousandSeperator(stats.last_epoch) : 'N/A'}
+            <Link asChild>
+              <ReactRouterLink to={'/epoch/' + stats.last_epoch}>
+                {stats.last_epoch ? thousandSeperator(stats.last_epoch) : 'N/A'}
+              </ReactRouterLink>
             </Link>
           </StatCard>
           <StatCard label="Elections Held">{thousandSeperator(stats.election_count || 0)}</StatCard>
         </Stack>
       )}
-      <Card width={'100%'} mt={'15px'}>
-        <CardHeader onClick={() => setExpMeta((v) => !v)} cursor={'pointer'}>
+      <Card.Root width={'100%'} mt={'15px'}>
+        <Card.Header pt={'4'} pb={'4'} onClick={() => setExpMeta((v) => !v)} cursor={'pointer'}>
           <Heading size={'md'}>Witness Info{!expMeta ? ' (Click to expand)' : ''}</Heading>
-        </CardHeader>
+        </Card.Header>
         {expMeta && (
-          <CardBody pt={'0'}>
-            <TableContainer>
-              <Table variant={'unstyled'}>
-                <Tbody>
+          <Card.Body pt={'0'}>
+            <Table.ScrollArea>
+              <Table.Root>
+                <Table.Body>
                   <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID" value={witness.peer_id} />
                   <TableRow
                     isInCard
@@ -91,18 +80,18 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
                     link={'https://github.com/vsc-eco/go-vsc-node/commit/' + witness.git_commit}
                   />
                   <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update">
-                    <Tooltip placement="top" label={witness.ts}>
-                      <Link as={ReactRouterLink} wordBreak={'break-all'} to={'/tx/' + witness.tx_id}>
-                        {timeAgo(witness.ts)}
+                    <Tooltip positioning={{ placement: 'top' }} content={witness.ts}>
+                      <Link asChild wordBreak={'break-all'}>
+                        <ReactRouterLink to={'/tx/' + witness.tx_id}>{timeAgo(witness.ts)}</ReactRouterLink>
                       </Link>
                     </Tooltip>
                   </TableRow>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </CardBody>
+                </Table.Body>
+              </Table.Root>
+            </Table.ScrollArea>
+          </Card.Body>
         )}
-      </Card>
+      </Card.Root>
     </VStack>
   ) : (
     <Text>Failed to load witness info</Text>

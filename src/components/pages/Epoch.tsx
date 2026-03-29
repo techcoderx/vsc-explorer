@@ -1,19 +1,4 @@
-import {
-  Link,
-  Text,
-  Box,
-  Grid,
-  GridItem,
-  Stack,
-  Table,
-  Tbody,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Flex
-} from '@chakra-ui/react'
+import { Link, Text, Box, Grid, GridItem, Stack, Table, Tabs, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
@@ -24,7 +9,7 @@ import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
-import { InfoIcon } from '@chakra-ui/icons'
+import { LuInfo } from 'react-icons/lu'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
 import { PageTitle } from '../PageTitle'
 
@@ -69,8 +54,8 @@ const Epoch = () => {
         <Text>{epoch ? epoch.error : 'Failed to fetch epoch from backend'}</Text>
       ) : (
         <Box>
-          <Table mt={'20px'}>
-            <Tbody>
+          <Table.Root mt={'20px'}>
+            <Table.Body>
               <TableRow label="Epoch Number" value={epochNum} isLoading={isEpochLoading} />
               {epoch && epoch.be_info ? (
                 <TableRow label="Timestamp" isLoading={isEpochLoading}>
@@ -121,51 +106,51 @@ const Epoch = () => {
                   {epoch?.members.map((m, i) => {
                     return (
                       <GridItem key={i}>
-                        <Link as={ReactRouterLink} to={'/address/hive:' + m.account}>
-                          {m.account}
-                          <Text display={'inline'} fontSize={'small'}>
-                            {' '}
-                            ({epoch?.weights[i]})
-                          </Text>
+                        <Link asChild>
+                          <ReactRouterLink to={'/address/hive:' + m.account}>
+                            {m.account}
+                            <Text display={'inline'} fontSize={'small'}>
+                              {' '}
+                              ({epoch?.weights[i]})
+                            </Text>
+                          </ReactRouterLink>
                         </Link>
                       </GridItem>
                     )
                   })}
                 </Grid>
               </TableRow>
-            </Tbody>
-          </Table>
-          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-            <TabList>
-              <Tab>Blocks ({epoch?.blocks_info?.count || 0})</Tab>
-              <Tab>Participation</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <BlocksTbl blocks={blocks} />
-                <Pagination
-                  currentPageNum={pageNum}
-                  maxPageNum={Math.ceil((epoch?.blocks_info?.count || 1) / blockBatch)}
-                  path={`/epoch/${epochNum}`}
+            </Table.Body>
+          </Table.Root>
+          <Tabs.Root mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
+            <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
+              <Tabs.Trigger value="0">Blocks ({epoch?.blocks_info?.count || 0})</Tabs.Trigger>
+              <Tabs.Trigger value="1">Participation</Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="0">
+              <BlocksTbl blocks={blocks} />
+              <Pagination
+                currentPageNum={pageNum}
+                maxPageNum={Math.ceil((epoch?.blocks_info?.count || 1) / blockBatch)}
+                path={`/epoch/${epochNum}`}
+              />
+            </Tabs.Content>
+            <Tabs.Content value="1">
+              {hasVotes ? (
+                <ParticipatedMembers
+                  bv={epoch.be_info!.signature!.bv}
+                  sig={epoch.be_info!.signature!.sig}
+                  members={prevEpoch.members}
+                  weights={prevEpoch.weights}
                 />
-              </TabPanel>
-              <TabPanel>
-                {hasVotes ? (
-                  <ParticipatedMembers
-                    bv={epoch.be_info!.signature!.bv}
-                    sig={epoch.be_info!.signature!.sig}
-                    members={prevEpoch.members}
-                    weights={prevEpoch.weights}
-                  />
-                ) : epchNum === 0 ? (
-                  <Flex align={'center'} gap={'2'}>
-                    <InfoIcon color={themeColorScheme} />
-                    <Text fontSize={'md'}>BLS signature was not required for the first election.</Text>
-                  </Flex>
-                ) : null}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+              ) : epchNum === 0 ? (
+                <Flex align={'center'} gap={'2'}>
+                  <LuInfo color={themeColorScheme} />
+                  <Text fontSize={'md'}>BLS signature was not required for the first election.</Text>
+                </Flex>
+              ) : null}
+            </Tabs.Content>
+          </Tabs.Root>
         </Box>
       )}
     </>

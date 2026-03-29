@@ -1,9 +1,10 @@
-import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Tooltip, Link } from '@chakra-ui/react'
+import { Text, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
 import { PageTitle } from '../PageTitle'
 import { AccountLink, ContractLink } from '../TableLink'
+import { Tooltip } from '../ui/tooltip'
 
 const NewContracts = () => {
   const { contracts, isLoading } = useContracts({})
@@ -12,62 +13,64 @@ const NewContracts = () => {
       <PageTitle title="Latest Contracts" />
       <Text fontSize={'5xl'}>Latest Contracts</Text>
       <hr />
-      <TableContainer marginTop={'15px'}>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Contract Id</Th>
-              <Th>Age</Th>
-              <Th>Creator</Th>
-              <Th>Creation Tx</Th>
-              <Th>Code</Th>
-              <Th>Runtime</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      <Table.ScrollArea marginTop={'15px'}>
+        <Table.Root variant="line">
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>Contract Id</Table.ColumnHeader>
+              <Table.ColumnHeader>Age</Table.ColumnHeader>
+              <Table.ColumnHeader>Creator</Table.ColumnHeader>
+              <Table.ColumnHeader>Creation Tx</Table.ColumnHeader>
+              <Table.ColumnHeader>Code</Table.ColumnHeader>
+              <Table.ColumnHeader>Runtime</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {isLoading ? (
-              <Tr>
+              <Table.Row>
                 {[...Array(5)].map((_, i) => (
-                  <Td key={i}>
+                  <Table.Cell key={i}>
                     <Skeleton height="20px" />
-                  </Td>
+                  </Table.Cell>
                 ))}
-              </Tr>
+              </Table.Row>
             ) : !!contracts ? (
               contracts.map((item, i) => (
-                <Tr key={i}>
-                  <Td>
+                <Table.Row key={i}>
+                  <Table.Cell>
                     <ContractLink val={item.id} truncate={20} />
-                  </Td>
-                  <Td sx={{ whiteSpace: 'nowrap' }}>
-                    <Tooltip label={item.creation_ts} placement="top">
+                  </Table.Cell>
+                  <Table.Cell css={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip content={item.creation_ts} positioning={{ placement: 'top' }}>
                       {timeAgo(item.creation_ts)}
                     </Tooltip>
-                  </Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <AccountLink val={item.creator} />
-                  </Td>
-                  <Td>
-                    <Tooltip label={item.tx_id} placement="top">
-                      <Link as={ReactRouterLink} to={'/tx/' + item.tx_id}>
-                        {abbreviateHash(item.tx_id, 15, 0)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Tooltip content={item.tx_id} positioning={{ placement: 'top' }}>
+                      <Link asChild>
+                        <ReactRouterLink to={'/tx/' + item.tx_id}>
+                          {abbreviateHash(item.tx_id, 15, 0)}
+                        </ReactRouterLink>
                       </Link>
                     </Tooltip>
-                  </Td>
-                  <Td>
-                    <Tooltip label={item.code} placement="top">
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Tooltip content={item.code} positioning={{ placement: 'top' }}>
                       {abbreviateHash(item.code)}
                     </Tooltip>
-                  </Td>
-                  <Td>{item.runtime}</Td>
-                </Tr>
+                  </Table.Cell>
+                  <Table.Cell>{item.runtime}</Table.Cell>
+                </Table.Row>
               ))
             ) : (
-              <Tr></Tr>
+              <Table.Row></Table.Row>
             )}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     </>
   )
 }

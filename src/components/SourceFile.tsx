@@ -1,4 +1,5 @@
-import { Box, useColorMode } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
+import { useColorMode } from './ui/color-mode'
 
 export const SourceFile = ({ content }: { content: string }) => {
   const { colorMode } = useColorMode()

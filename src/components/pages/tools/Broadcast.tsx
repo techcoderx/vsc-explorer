@@ -1,21 +1,17 @@
 import {
   Button,
   Card,
-  CardBody,
   Center,
   Flex,
-  FormControl,
-  FormLabel,
-  Icon,
+  Field,
+  Box,
   Input,
   Link,
-  Select,
+  NativeSelect,
   Spinner,
   Stack,
   Text,
-  useBreakpointValue,
-  useDisclosure,
-  useToast
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { PageTitle } from '../../PageTitle'
 import { useMagi } from '@aioha/providers/magi/react'
@@ -24,10 +20,11 @@ import { VscStakeType } from '@aioha/aioha'
 import { AiohaModal } from '../../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { useState } from 'react'
-import { getConf, themeColorLight, themeColorScheme } from '../../../settings'
+import { getConf, themeColorScheme } from '../../../settings'
 import { TxnTypes } from '../../../types/L2ApiResult'
 import { useNavigate } from 'react-router'
 import { useAioha } from '@aioha/providers/react'
+import { toaster } from '../../ui/toaster'
 
 const txTypes: [TxnTypes, string][] = [
   ['transfer', 'Transfer'],
@@ -48,7 +45,7 @@ const assetToEnum: Record<string, Asset> = {
 export const Broadcast = () => {
   const { magi, user, wallet } = useMagi()
   const { aioha } = useAioha()
-  const walletDisclosure = useDisclosure()
+  const [walletOpen, setWalletOpen] = useState(false)
   const [txType, setTxType] = useState<TxnTypes>('transfer')
   const [dest, setDest] = useState<string>('')
   const [amt, setAmt] = useState<string>()
@@ -56,15 +53,14 @@ export const Broadcast = () => {
   const [memo, setMemo] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
-  const toast = useToast()
   const submitClicked = async () => {
     const to = !!dest ? dest : magi.getUser(true)!
     const amount = parseFloat(amt || '')
     if (isNaN(amount) || amount <= 0) {
-      return toast({ title: 'Amount must be greater than 0.', status: 'error' })
+      return toaster.error({ title: 'Amount must be greater than 0.' })
     }
     if (txType === 'deposit' && asset === 'hbd_savings') {
-      return toast({ title: 'Deposit asset must be HIVE or HBD.', status: 'error' })
+      return toaster.error({ title: 'Deposit asset must be HIVE or HBD.' })
     }
     const currency = assetToEnum[asset]
     setIsSpinning(true)
@@ -72,7 +68,7 @@ export const Broadcast = () => {
     switch (txType) {
       case 'deposit':
         if (wallet !== Wallet.Hive) {
-          return toast({ title: 'Can only map from Hive wallets.', status: 'error' })
+          return toaster.error({ title: 'Can only map from Hive wallets.' })
         }
         result = await aioha.transfer(
           getConf().msAccount,
@@ -102,15 +98,14 @@ export const Broadcast = () => {
         break
       default:
         setIsSpinning(false)
-        return toast({ title: 'Unknown transaction type', status: 'error' })
+        return toaster.error({ title: 'Unknown transaction type' })
     }
     setIsSpinning(false)
     if (!result.success) {
-      return toast({ title: result.error, status: 'error' })
+      return toaster.error({ title: result.error })
     } else {
-      return toast({
+      return toaster.success({
         title: 'Transaction broadcasted successfully',
-        status: 'success',
         description: (
           <Link
             onClick={(evt) => {
@@ -132,91 +127,97 @@ export const Broadcast = () => {
       <Text mb={'6'}>Sign and broadcast a Magi transaction.</Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
-          <Card>
-            <CardBody>
+          <Card.Root>
+            <Card.Body>
               <Stack direction={'column'} gap={'3'} mb={'5'}>
-                <FormControl>
-                  <FormLabel>Username</FormLabel>
+                <Field.Root>
+                  <Field.Label>Username</Field.Label>
                   <Button
+                    variant={'outline'}
+                    colorPalette={'gray'}
                     _focus={{ boxShadow: 'none' }}
-                    onClick={walletDisclosure.onOpen}
-                    leftIcon={user ? <Icon as={walletIcon} fontSize={'lg'} /> : undefined}
+                    onClick={() => setWalletOpen(true)}
                   >
+                    {user ? <Box as={walletIcon} fontSize={'lg'} /> : null}
                     {user ?? 'Connect Wallet'}
                   </Button>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Type</FormLabel>
-                  <Select
-                    focusBorderColor={themeColorLight}
-                    value={txType}
-                    onChange={(e) => setTxType(e.target.value as TxnTypes)}
-                  >
-                    {txTypes.map((t, i) => (
-                      <option key={i} value={t[0]}>
-                        {t[1]}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Destination Address</FormLabel>
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Type</Field.Label>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field
+            
+                      value={txType}
+                      onChange={(e) => setTxType(e.target.value as TxnTypes)}
+                    >
+                      {txTypes.map((t, i) => (
+                        <option key={i} value={t[0]}>
+                          {t[1]}
+                        </option>
+                      ))}
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Destination Address</Field.Label>
                   <Input
-                    focusBorderColor={themeColorLight}
+          
                     type="text"
                     placeholder="Include hive: or did: prefix for non-map, defaults to sender"
                     value={dest}
                     onChange={(e) => setDest(e.target.value)}
                   />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Amount</FormLabel>
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Amount</Field.Label>
                   <Stack direction={useBreakpointValue({ base: 'column', sm: 'row' })}>
                     <Stack direction={'row'}>
                       <Input
                         type="number"
                         value={amt}
                         onChange={(e) => setAmt(e.target.value)}
-                        focusBorderColor={themeColorLight}
+              
                         maxW={useBreakpointValue({ base: undefined, sm: '56' })}
                         textAlign={'right'}
                       />
-                      <Select
-                        value={asset}
-                        onChange={(e) => setAsset(e.target.value)}
-                        focusBorderColor={themeColorLight}
-                        width="auto"
-                        minW={'24'}
-                      >
-                        <option value="hive">HIVE</option>
-                        <option value="hbd">HBD</option>
-                        <option value="hbd_savings">sHBD</option>
-                      </Select>
+                      <NativeSelect.Root width="auto" minW={'24'}>
+                        <NativeSelect.Field
+                          value={asset}
+                          onChange={(e) => setAsset(e.target.value)}
+                
+                        >
+                          <option value="hive">HIVE</option>
+                          <option value="hbd">HBD</option>
+                          <option value="hbd_savings">sHBD</option>
+                        </NativeSelect.Field>
+                        <NativeSelect.Indicator />
+                      </NativeSelect.Root>
                     </Stack>
                   </Stack>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Memo</FormLabel>
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Memo</Field.Label>
                   <Input
-                    focusBorderColor={themeColorLight}
+          
                     type="text"
                     placeholder="Optional"
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
                   />
-                </FormControl>
+                </Field.Root>
               </Stack>
-              <Button colorScheme={themeColorScheme} onClick={submitClicked} disabled={isSpinning || !user || !amt}>
+              <Button colorPalette={themeColorScheme} onClick={submitClicked} disabled={isSpinning || !user || !amt} w={'fit-content'}>
                 <Flex gap={'2'} align={'center'}>
                   <Spinner size={'sm'} hidden={!isSpinning} />
                   <Text>Submit</Text>
                 </Flex>
               </Button>
-            </CardBody>
-          </Card>
+            </Card.Body>
+          </Card.Root>
         </Stack>
       </Center>
-      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} initPage={0} />
+      <AiohaModal displayed={walletOpen} onClose={() => setWalletOpen(false)} initPage={0} />
     </>
   )
 }

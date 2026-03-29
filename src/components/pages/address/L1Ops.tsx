@@ -25,7 +25,7 @@ export const AddressL1Ops = () => {
   })
   return (
     Array.isArray(history) && (
-      <VStack spacing={'3'} flexGrow={'1'} mt={'3'}>
+      <VStack gap={'3'} flexGrow={'1'} mt={'3'}>
         {history.map((itm, i) => (
           <TxCard key={i} id={itm.id} ts={itm.ts} txid={itm.l1_tx}>
             {describeL1TxBriefly(itm)}

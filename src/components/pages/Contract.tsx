@@ -4,40 +4,25 @@ import {
   Box,
   Skeleton,
   Table,
-  TableContainer,
-  Tbody,
   Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
   Tag,
   Flex,
   Card,
-  CardBody,
   Spinner,
   Stack,
   Input,
   HStack,
   Button,
-  ButtonGroup,
   VStack,
-  Radio,
   RadioGroup,
   Alert,
-  AlertIcon,
-  AlertDescription,
-  FormControl,
-  FormLabel,
-  useDisclosure,
-  Select,
-  Icon,
-  useToast,
+  Field,
+  NativeSelect,
   Link,
-  FormHelperText,
   useBreakpointValue
 } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionIcon, WarningIcon, AddIcon } from '@chakra-ui/icons'
+import { LuCircleCheck, LuCircleHelp, LuTriangleAlert, LuPlus } from 'react-icons/lu'
+import { attachedGroupCss } from '../Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useNavigate } from 'react-router'
 import {
@@ -50,7 +35,6 @@ import {
 } from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, beL1BlockUrl, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
-import { themeColorLight } from '../../settings'
 import { themeColorScheme } from '../../settings'
 import { Flairs } from '../../flairs'
 import { cvInfo } from '../../cvRequests'
@@ -69,6 +53,7 @@ import { Wallet, KeyTypes } from '@aioha/magi'
 import { AiohaModal } from '../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
+import { toaster } from '../ui/toaster'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -149,9 +134,9 @@ const ReadState = ({ contractId }: { contractId: string }) => {
           value={key}
           onChange={(e) => setKey(e.target.value)}
           onKeyDown={(e) => (e.key === 'Enter' ? read() : null)}
-          focusBorderColor={themeColorLight}
+
         />
-        <Button colorScheme={themeColorScheme} onClick={read} disabled={isLoading}>
+        <Button colorPalette={themeColorScheme} onClick={read} disabled={isLoading}>
           <Flex gap={'2'} align={'center'}>
             <Spinner size={'sm'} hidden={!isLoading} />
             <Text>Read</Text>
@@ -159,27 +144,35 @@ const ReadState = ({ contractId }: { contractId: string }) => {
         </Button>
       </HStack>
       {!!err && (
-        <Alert status="error">
-          <AlertIcon />
-          <AlertDescription>{err}</AlertDescription>
-        </Alert>
+        <Alert.Root status="error">
+          <Alert.Indicator />
+          <Alert.Description>{err}</Alert.Description>
+        </Alert.Root>
       )}
       {!!val && (
         <Box alignItems={'left'} w={'full'} px={'1'}>
-          <RadioGroup onChange={setFormat} value={format} colorScheme={themeColorScheme}>
+          <RadioGroup.Root onValueChange={(details) => setFormat(details.value ?? '0')} value={format} colorPalette={themeColorScheme}>
             <Stack direction={'row'}>
-              <Radio value="0">UTF-8</Radio>
-              <Radio value="1">Hex</Radio>
+              <RadioGroup.Item value="0">
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemControl />
+                <RadioGroup.ItemText>UTF-8</RadioGroup.ItemText>
+              </RadioGroup.Item>
+              <RadioGroup.Item value="1">
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemControl />
+                <RadioGroup.ItemText>Hex</RadioGroup.ItemText>
+              </RadioGroup.Item>
             </Stack>
-          </RadioGroup>
+          </RadioGroup.Root>
         </Box>
       )}
       {!!val && (
-        <Card w={'full'}>
-          <CardBody>
+        <Card.Root w={'full'}>
+          <Card.Body>
             <Text>{format === '0' ? val : utf8ToHex(val)}</Text>
-          </CardBody>
-        </Card>
+          </Card.Body>
+        </Card.Root>
       )}
     </VStack>
   )
@@ -191,8 +184,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     queryFn: async () => cvInfo(contractId!),
     enabled: !!contractId
   })
-  const walletDisclosure = useDisclosure()
-  const toast = useToast()
+  const [walletOpen, setWalletOpen] = useState(false)
   const navigate = useNavigate()
   const { magi, user, wallet } = useMagi()
   const userPrefixed = magi.getUser(true)
@@ -207,11 +199,11 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   const addIntent = () => {
     const amt = parseFloat(newIntentAmt)
     if (!user || !balance || !balance.bal) {
-      return toast({ title: 'Wallet not connected or balances could not be loaded', status: 'error' })
+      return toaster.error({ title: 'Wallet not connected or balances could not be loaded' })
     } else if (isNaN(amt) || amt <= 0) {
-      return toast({ title: 'Amount must be greater than 0', status: 'error' })
+      return toaster.error({ title: 'Amount must be greater than 0' })
     } else if (Math.round(amt * 1000) > balance.bal[newIntentToken]) {
-      return toast({ title: 'Insufficient balance', status: 'error' })
+      return toaster.error({ title: 'Insufficient balance' })
     }
     intents.current[newIntentToken] = amt
     setNewIntentAmt('')
@@ -222,10 +214,10 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   }
   const call = async () => {
     if (!user) {
-      return toast({ title: 'Please connect your wallet first', status: 'error' })
+      return toaster.error({ title: 'Please connect your wallet first' })
     }
     if (!methodName) {
-      return toast({ title: 'Call method is required', status: 'error' })
+      return toaster.error({ title: 'Call method is required' })
     }
     const effectiveKeyType = wallet === Wallet.Hive ? keyType : KeyTypes.Active
     const intentsArr = Object.keys(intents.current)
@@ -256,16 +248,15 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     })
     const sim = simResult.data.simulateContractCalls[0]
     if (!sim.success) {
-      return toast({ title: 'Contract Call Simulation Failed', description: sim.err_msg || sim.err, status: 'error' })
+      return toaster.error({ title: 'Contract Call Simulation Failed', description: sim.err_msg || sim.err })
     }
     const rcLimitInt = Math.ceil(parseInt(sim.rc_used) * 1.25)
     const callResult = await magi.call(contractId, methodName, payload, rcLimitInt, intentsArr, effectiveKeyType)
     if (!callResult.success) {
-      return toast({ title: callResult.error, status: 'error' })
+      return toaster.error({ title: callResult.error })
     } else {
-      return toast({
+      return toaster.success({
         title: 'Transaction broadcasted successfully',
-        status: 'success',
         description: (
           <Link
             onClick={(evt) => {
@@ -281,117 +272,123 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   }
   return (
     <>
-      <Card>
-        <CardBody>
+      <Card.Root>
+        <Card.Body>
           <Stack direction={'column'} gap={'3'}>
-            <FormControl>
-              <FormLabel>Username</FormLabel>
+            <Field.Root>
+              <Field.Label>Username</Field.Label>
               <Button
+                variant={'outline'}
+                colorPalette={'gray'}
                 _focus={{ boxShadow: 'none' }}
-                onClick={walletDisclosure.onOpen}
-                leftIcon={user ? <Icon as={wallet === Wallet.Ethereum ? FaEthereum : FaHive} fontSize={'lg'} /> : undefined}
+                onClick={() => setWalletOpen(true)}
               >
+                {user ? <Box as={wallet === Wallet.Ethereum ? FaEthereum : FaHive} fontSize={'lg'} /> : null}
                 {user ?? 'Connect Wallet'}
               </Button>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Method</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Method</Field.Label>
               {!verifInfo || !!verifInfo.error || !Array.isArray(verifInfo.exports) || verifInfo.exports.length === 0 ? (
                 <Input
                   type="text"
                   value={methodName}
                   onChange={(e) => setMethodName(e.target.value)}
-                  focusBorderColor={themeColorLight}
+        
                 />
               ) : (
-                <Select
-                  focusBorderColor={themeColorLight}
-                  value={methodName}
-                  onChange={(e) => setMethodName(e.target.value as KeyTypes)}
-                >
-                  {verifInfo.exports.map((exp, i) => (
-                    <option key={i} value={exp}>
-                      {exp}
-                    </option>
-                  ))}
-                </Select>
+                <NativeSelect.Root>
+                  <NativeSelect.Field
+          
+                    value={methodName}
+                    onChange={(e) => setMethodName(e.target.value as KeyTypes)}
+                  >
+                    {verifInfo.exports.map((exp, i) => (
+                      <option key={i} value={exp}>
+                        {exp}
+                      </option>
+                    ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator />
+                </NativeSelect.Root>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Payload</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Payload</Field.Label>
               <Input
                 type="text"
                 value={payload}
                 onChange={(e) => setPayload(e.target.value)}
-                focusBorderColor={themeColorLight}
+      
               />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Intents</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Intents</Field.Label>
               <Stack direction={useBreakpointValue({ base: 'column', sm: 'row' })}>
                 <Stack direction={'row'}>
                   <Input
                     type="number"
                     value={newIntentAmt}
                     onChange={(e) => setNewIntentAmt(e.target.value)}
-                    focusBorderColor={themeColorLight}
+          
                     maxW={useBreakpointValue({ base: undefined, sm: '56' })}
                     textAlign={'right'}
                     placeholder={!!balance && !!balance.bal ? `Balance: ${balance.bal[newIntentToken] / 1000}` : undefined}
                   />
-                  <Select
-                    value={newIntentToken}
-                    onChange={(e) => setNewIntentToken(e.target.value as CoinLower)}
-                    focusBorderColor={themeColorLight}
-                    width="auto"
-                    minW={'24'}
-                  >
-                    <option value="hive">HIVE</option>
-                    <option value="hbd">HBD</option>
-                    <option value="hbd_savings">sHBD</option>
-                  </Select>
+                  <NativeSelect.Root width="auto" minW={'24'}>
+                    <NativeSelect.Field
+                      value={newIntentToken}
+                      onChange={(e) => setNewIntentToken(e.target.value as CoinLower)}
+            
+                    >
+                      <option value="hive">HIVE</option>
+                      <option value="hbd">HBD</option>
+                      <option value="hbd_savings">sHBD</option>
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
                 </Stack>
                 <Stack direction={'row'}>
-                  <Button variant={'outline'} colorScheme={themeColorScheme} onClick={addIntent}>
-                    <AddIcon fontSize={'sm'} />
+                  <Button variant={'outline'} colorPalette={themeColorScheme} onClick={addIntent}>
+                    <LuPlus fontSize={'sm'} />
                   </Button>
-                  <Button variant={'outline'} colorScheme={themeColorScheme} onClick={rmIntent}>
+                  <Button variant={'outline'} colorPalette={themeColorScheme} onClick={rmIntent}>
                     Clear All
                   </Button>
                 </Stack>
               </Stack>
-              <FormHelperText>
+              <Field.HelperText>
                 Current Allowance: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
-              </FormHelperText>
-            </FormControl>
+              </Field.HelperText>
+            </Field.Root>
             {wallet === Wallet.Hive && (
-              <FormControl>
-                <FormLabel>Key Type</FormLabel>
-                <ButtonGroup isAttached>
+              <Field.Root>
+                <Field.Label>Key Type</Field.Label>
+                <Box css={attachedGroupCss}>
                   <Button
-                    colorScheme={keyType === KeyTypes.Posting ? themeColorScheme : 'gray'}
+                    colorPalette={keyType === KeyTypes.Posting ? themeColorScheme : 'gray'}
                     variant="outline"
                     onClick={() => setKeyType(KeyTypes.Posting)}
                   >
                     Posting
                   </Button>
                   <Button
-                    colorScheme={keyType === KeyTypes.Active ? themeColorScheme : 'gray'}
+                    colorPalette={keyType === KeyTypes.Active ? themeColorScheme : 'gray'}
                     variant="outline"
                     onClick={() => setKeyType(KeyTypes.Active)}
                   >
                     Active
                   </Button>
-                </ButtonGroup>
-              </FormControl>
+                </Box>
+              </Field.Root>
             )}
           </Stack>
-          <Button colorScheme={themeColorScheme} mt={'5'} onClick={call}>
+          <Button colorPalette={themeColorScheme} mt={'5'} onClick={call} w={'fit-content'}>
             Call Contract
           </Button>
-        </CardBody>
-      </Card>
-      <AiohaModal displayed={walletDisclosure.isOpen} onClose={walletDisclosure.onClose} initPage={0} />
+        </Card.Body>
+      </Card.Root>
+      <AiohaModal displayed={walletOpen} onClose={() => setWalletOpen(false)} initPage={0} />
     </>
   )
 }
@@ -426,9 +423,9 @@ export const Contract = () => {
           </Text>
         </Box>
         {Flairs[contractId!] && (
-          <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
+          <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
             {Flairs[contractId!]}
-          </Tag>
+          </Tag.Root>
         )}
       </Stack>
       <hr />
@@ -436,172 +433,170 @@ export const Contract = () => {
       {!!contract ? (
         <Box mt={'4'}>
           <AddressBalanceCard addr={'contract:' + contract.id} />
-          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-            <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
-              <Tab>Transactions</Tab>
-              <Tab>Outputs</Tab>
-              <Tab>Info</Tab>
-              <Tab>Storage Proof</Tab>
-              <Tab>Read State</Tab>
-              <Tab>Call Contract</Tab>
-              <Tab>Source Code</Tab>
-              <Tab>History</Tab>
-            </TabList>
-            <TabPanels mt={'2'}>
-              <TabPanel pt={'2'} px={'0'}>
-                <Txns txs={txns || []} pov={contractId} />
-              </TabPanel>
-              <TabPanel px={'0'} pt={'2'}>
-                <ContractOutputTbl outputs={outputs || []} />
-              </TabPanel>
-              <TabPanel px={'0'}>
-                <TableContainer>
-                  <Table>
-                    <Tbody>
-                      <TableRow
-                        label="Created At"
-                        value={contract ? contract.creation_ts + ' (' + timeAgo(contract.creation_ts) + ')' : ''}
-                        isLoading={isLoading}
-                      />
-                      <TableRow
-                        label="Created In L1 Block"
-                        value={contract.creation_height}
-                        link={beL1BlockUrl(contract.creation_height)}
-                        isLoading={isLoading}
-                      />
-                      <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
-                      <TableRow label="Creator">
-                        <AccountLink val={contract.creator} />
-                      </TableRow>
-                      <TableRow label="Owner">
-                        <AccountLink val={contract.owner} />
-                      </TableRow>
-                      <TableRow label="Bytecode CID">
-                        <Flex align={'center'} gap={'2'}>
-                          <Text>{contract.code}</Text>
-                          {verifInfo && verifInfo.status === 'success' ? (
-                            <CheckCircleIcon color={themeColorScheme} aria-label="Contract source code verified" />
-                          ) : null}
-                        </Flex>
-                      </TableRow>
-                      <TableRow label="Runtime" value={contract.runtime} />
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </TabPanel>
-              <TabPanel>{!!contract && <StorageProof contract={contract} />}</TabPanel>
-              <TabPanel px={0}>
-                <ReadState contractId={contract.id} />
-              </TabPanel>
-              <TabPanel px={0}>
-                <CallContract contractId={contract.id} />
-              </TabPanel>
-              <TabPanel>
-                {verifInfo ? (
-                  verifInfo.status === 'success' ? (
-                    <>
+          <Tabs.Root defaultValue="0" mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'}>
+            <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
+              <Tabs.Trigger value="0">Transactions</Tabs.Trigger>
+              <Tabs.Trigger value="1">Outputs</Tabs.Trigger>
+              <Tabs.Trigger value="2">Info</Tabs.Trigger>
+              <Tabs.Trigger value="3">Storage Proof</Tabs.Trigger>
+              <Tabs.Trigger value="4">Read State</Tabs.Trigger>
+              <Tabs.Trigger value="5">Call Contract</Tabs.Trigger>
+              <Tabs.Trigger value="6">Source Code</Tabs.Trigger>
+              <Tabs.Trigger value="7">History</Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="0" pt={'2'} px={'0'}>
+              <Txns txs={txns || []} pov={contractId} />
+            </Tabs.Content>
+            <Tabs.Content value="1" px={'0'} pt={'2'}>
+              <ContractOutputTbl outputs={outputs || []} />
+            </Tabs.Content>
+            <Tabs.Content value="2" px={'0'}>
+              <Table.ScrollArea>
+                <Table.Root>
+                  <Table.Body>
+                    <TableRow
+                      label="Created At"
+                      value={contract ? contract.creation_ts + ' (' + timeAgo(contract.creation_ts) + ')' : ''}
+                      isLoading={isLoading}
+                    />
+                    <TableRow
+                      label="Created In L1 Block"
+                      value={contract.creation_height}
+                      link={beL1BlockUrl(contract.creation_height)}
+                      isLoading={isLoading}
+                    />
+                    <TableRow label="Creation Tx" value={contract.tx_id} link={'/tx/' + contract.tx_id} />
+                    <TableRow label="Creator">
+                      <AccountLink val={contract.creator} />
+                    </TableRow>
+                    <TableRow label="Owner">
+                      <AccountLink val={contract.owner} />
+                    </TableRow>
+                    <TableRow label="Bytecode CID">
                       <Flex align={'center'} gap={'2'}>
-                        <CheckCircleIcon color={themeColorScheme} />
-                        <Heading fontSize={'md'}>Contract source code verified</Heading>
+                        <Text>{contract.code}</Text>
+                        {verifInfo && verifInfo.status === 'success' ? (
+                          <LuCircleCheck color={themeColorScheme} aria-label="Contract source code verified" />
+                        ) : null}
                       </Flex>
-                      <Text m={'5px 0'}>
-                        Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the
-                        contract. This does not mean the contract is safe to interact with.
-                      </Text>
-                      <Card mt={'5'} mb={'5'}>
-                        <CardBody>
-                          <TableContainer>
-                            <Table variant={'unstyled'}>
-                              <Tbody>
-                                <TableRow label="Language" value={verifInfo.lang} isInCard minimalSpace />
-                                {!!verifInfo.license ? (
-                                  <TableRow label="License" value={verifInfo.license} isInCard minimalSpace />
-                                ) : null}
-                                <TableRow label="Verified At" isInCard minimalSpace>
-                                  {verifInfo.verified_ts + ' (' + timeAgo(verifInfo.verified_ts) + ')'}
-                                </TableRow>
-                                <TableRow label="Submitted By" isInCard minimalSpace>
-                                  <AccountLink val={'hive:' + verifInfo.verifier} />
-                                </TableRow>
-                                <TableRow
-                                  label="Repository"
-                                  value={`${verifInfo.repo_name} (${verifInfo.git_commit.slice(0, 8)})`}
-                                  link={`https://github.com/${verifInfo.repo_name}/tree/${verifInfo.git_commit}`}
-                                  isInCard
-                                  minimalSpace
-                                />
-                                <TableRow
-                                  label="TinyGo Version"
-                                  value={`v${verifInfo.tinygo_version} (Go: v${verifInfo.go_version})`}
-                                  link={`https://hub.docker.com/layers/tinygo/tinygo/${verifInfo.tinygo_version}`}
-                                  isInCard
-                                  minimalSpace
-                                />
-                                <TableRow label="Exports" isInCard minimalSpace>
-                                  <Flex gap={3}>
-                                    {verifInfo.exports.map((method, i) => (
-                                      <Tag colorScheme={themeColorScheme} key={i}>
-                                        {method}
-                                      </Tag>
-                                    ))}
-                                  </Flex>
-                                </TableRow>
-                              </Tbody>
-                            </Table>
-                          </TableContainer>
-                        </CardBody>
-                      </Card>
-                    </>
-                  ) : verifInfo.status === 'queued' ? (
-                    <Flex align={'center'} gap={'2'}>
-                      <Spinner size={'sm'} />
-                      <Text fontSize={'md'}>Contract verification request is currently in queue.</Text>
-                    </Flex>
-                  ) : verifInfo.status === 'in progress' ? (
-                    <Flex align={'center'} gap={'2'}>
-                      <Spinner size={'sm'} />
-                      <Text fontSize={'md'}>Contract verification request is currently being processed.</Text>
-                    </Flex>
-                  ) : verifInfo.status === 'failed' ? (
-                    <Flex align={'center'} gap={'2'}>
-                      <WarningIcon />
-                      <Text fontSize={'md'}>Contract verification failed to complete.</Text>
-                    </Flex>
-                  ) : verifInfo.status === 'not match' ? (
-                    <Flex align={'center'} gap={'2'}>
-                      <WarningIcon />
-                      <Text fontSize={'md'}>
-                        Contract verification failed due to non-matching deployed bytecode from compiled source code.
-                      </Text>
-                    </Flex>
-                  ) : verifInfo.status === 'pending' ? (
-                    <Flex align={'center'} gap={'2'}>
-                      <Spinner size={'sm'} />
-                      <Text fontSize={'md'}>Contract verification request is currently pending.</Text>
-                    </Flex>
-                  ) : null
-                ) : verifError ? (
-                  <Text>Failed to fetch contract verification status.</Text>
-                ) : verifLoading ? (
-                  <Flex align={'center'} gap={'2'}>
-                    <Spinner size={'sm'} />
-                    <Text fontSize={'md'}>Loading contract verification status...</Text>
-                  </Flex>
-                ) : (
+                    </TableRow>
+                    <TableRow label="Runtime" value={contract.runtime} />
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
+            </Tabs.Content>
+            <Tabs.Content value="3">{!!contract && <StorageProof contract={contract} />}</Tabs.Content>
+            <Tabs.Content value="4" px={0}>
+              <ReadState contractId={contract.id} />
+            </Tabs.Content>
+            <Tabs.Content value="5" px={0}>
+              <CallContract contractId={contract.id} />
+            </Tabs.Content>
+            <Tabs.Content value="6">
+              {verifInfo ? (
+                verifInfo.status === 'success' ? (
                   <>
                     <Flex align={'center'} gap={'2'}>
-                      <QuestionIcon color={themeColorScheme} />
-                      <Heading fontSize={'md'}>Contract source code not verified</Heading>
+                      <LuCircleCheck color={themeColorScheme} />
+                      <Heading fontSize={'md'}>Contract source code verified</Heading>
                     </Flex>
-                    <Text m={'5px 0'}>Source code for this contract is unknown.</Text>
+                    <Text m={'5px 0'}>
+                      Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the
+                      contract. This does not mean the contract is safe to interact with.
+                    </Text>
+                    <Card.Root mt={'5'} mb={'5'}>
+                      <Card.Body>
+                        <Table.ScrollArea>
+                          <Table.Root>
+                            <Table.Body>
+                              <TableRow label="Language" value={verifInfo.lang} isInCard minimalSpace />
+                              {!!verifInfo.license ? (
+                                <TableRow label="License" value={verifInfo.license} isInCard minimalSpace />
+                              ) : null}
+                              <TableRow label="Verified At" isInCard minimalSpace>
+                                {verifInfo.verified_ts + ' (' + timeAgo(verifInfo.verified_ts) + ')'}
+                              </TableRow>
+                              <TableRow label="Submitted By" isInCard minimalSpace>
+                                <AccountLink val={'hive:' + verifInfo.verifier} />
+                              </TableRow>
+                              <TableRow
+                                label="Repository"
+                                value={`${verifInfo.repo_name} (${verifInfo.git_commit.slice(0, 8)})`}
+                                link={`https://github.com/${verifInfo.repo_name}/tree/${verifInfo.git_commit}`}
+                                isInCard
+                                minimalSpace
+                              />
+                              <TableRow
+                                label="TinyGo Version"
+                                value={`v${verifInfo.tinygo_version} (Go: v${verifInfo.go_version})`}
+                                link={`https://hub.docker.com/layers/tinygo/tinygo/${verifInfo.tinygo_version}`}
+                                isInCard
+                                minimalSpace
+                              />
+                              <TableRow label="Exports" isInCard minimalSpace>
+                                <Flex gap={3}>
+                                  {verifInfo.exports.map((method, i) => (
+                                    <Tag.Root colorPalette={themeColorScheme} key={i}>
+                                      {method}
+                                    </Tag.Root>
+                                  ))}
+                                </Flex>
+                              </TableRow>
+                            </Table.Body>
+                          </Table.Root>
+                        </Table.ScrollArea>
+                      </Card.Body>
+                    </Card.Root>
                   </>
-                )}
-              </TabPanel>
-              <TabPanel pt={'2'} px={'0'}>
-                <ContractHistoryTbl history={history} />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+                ) : verifInfo.status === 'queued' ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <Spinner size={'sm'} />
+                    <Text fontSize={'md'}>Contract verification request is currently in queue.</Text>
+                  </Flex>
+                ) : verifInfo.status === 'in progress' ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <Spinner size={'sm'} />
+                    <Text fontSize={'md'}>Contract verification request is currently being processed.</Text>
+                  </Flex>
+                ) : verifInfo.status === 'failed' ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <LuTriangleAlert />
+                    <Text fontSize={'md'}>Contract verification failed to complete.</Text>
+                  </Flex>
+                ) : verifInfo.status === 'not match' ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <LuTriangleAlert />
+                    <Text fontSize={'md'}>
+                      Contract verification failed due to non-matching deployed bytecode from compiled source code.
+                    </Text>
+                  </Flex>
+                ) : verifInfo.status === 'pending' ? (
+                  <Flex align={'center'} gap={'2'}>
+                    <Spinner size={'sm'} />
+                    <Text fontSize={'md'}>Contract verification request is currently pending.</Text>
+                  </Flex>
+                ) : null
+              ) : verifError ? (
+                <Text>Failed to fetch contract verification status.</Text>
+              ) : verifLoading ? (
+                <Flex align={'center'} gap={'2'}>
+                  <Spinner size={'sm'} />
+                  <Text fontSize={'md'}>Loading contract verification status...</Text>
+                </Flex>
+              ) : (
+                <>
+                  <Flex align={'center'} gap={'2'}>
+                    <LuCircleHelp color={themeColorScheme} />
+                    <Heading fontSize={'md'}>Contract source code not verified</Heading>
+                  </Flex>
+                  <Text m={'5px 0'}>Source code for this contract is unknown.</Text>
+                </>
+              )}
+            </Tabs.Content>
+            <Tabs.Content value="7" pt={'2'} px={'0'}>
+              <ContractHistoryTbl history={history} />
+            </Tabs.Content>
+          </Tabs.Root>
         </Box>
       ) : isError ? (
         <Text>Failed to fetch contract</Text>

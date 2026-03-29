@@ -1,11 +1,11 @@
-import { Text, Flex, ButtonGroup, Stack, Box } from '@chakra-ui/react'
+import { Text, Flex, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, useLocation, useParams } from 'react-router'
 import { TxCard } from '../TxCard'
 import { fetchLatestTxs, fetchL2TxnsBy, fetchProps } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
-import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
+import Pagination, { CurrentPageBtn, LinkedBtn, attachedGroupCss } from '../Pagination'
 import { PageTitle } from '../PageTitle'
 
 export const NewHiveTxs = () => {
@@ -62,7 +62,7 @@ export const NewTxs = () => {
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Box my={'auto'} py={'1'}>
-          <ButtonGroup size="md" isAttached variant={'outline'} float={'right'}>
+          <Box css={attachedGroupCss} float={'right'}>
             {location.pathname !== '/transactions' && !location.pathname.startsWith('/transactions/magi') ? (
               <LinkedBtn to={'/transactions'}>Magi</LinkedBtn>
             ) : (
@@ -73,7 +73,7 @@ export const NewTxs = () => {
             ) : (
               <CurrentPageBtn>Hive</CurrentPageBtn>
             )}
-          </ButtonGroup>
+          </Box>
         </Box>
       </Stack>
       <hr />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@chakra-ui/react'
+import { Box, Card, Heading, Text } from '@chakra-ui/react'
+import { useColorMode } from '../../ui/color-mode'
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { thousandSeperator } from '../../../helpers'
@@ -48,17 +49,17 @@ export const BlocksCharts = () => {
       <PageTitle title="Blocks Charts" />
       <Text fontSize={'5xl'}>Blocks Charts</Text>
       <hr />
-      <Card my={'6'}>
-        <CardHeader>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>Block Count</Heading>
           <Text>Number of blocks produced daily</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <DailyBlocks />
           </Box>
-        </CardBody>
-      </Card>
+        </Card.Body>
+      </Card.Root>
     </>
   )
 }

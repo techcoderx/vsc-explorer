@@ -1,4 +1,4 @@
-import { Table, Tbody, Grid, GridItem, Link } from '@chakra-ui/react'
+import { Table, Grid, GridItem, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import BitSet from 'bitset'
 import TableRow from './TableRow'
@@ -89,8 +89,8 @@ export const ParticipatedMembers = ({
   const bvHex = base64UrlToHex(bv)
   const { votedMembers } = getVotedMembers(bvHex, members, weights)
   return (
-    <Table>
-      <Tbody>
+    <Table.Root>
+      <Table.Body>
         <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>
           {bitsGrid(getBitsetStrFromHex(bvHex), members.length)}
         </TableRow>
@@ -102,8 +102,10 @@ export const ParticipatedMembers = ({
             {votedMembers.map((m, i) => {
               return (
                 <GridItem key={i}>
-                  <Link as={ReactRouterLink} to={'/address/hive:' + m.account}>
-                    {m.account}
+                  <Link asChild>
+                    <ReactRouterLink to={'/address/hive:' + m.account}>
+                      {m.account}
+                    </ReactRouterLink>
                   </Link>
                 </GridItem>
               )
@@ -111,7 +113,7 @@ export const ParticipatedMembers = ({
           </Grid>
         </TableRow>
         <TableRow label="BLS Signature" value={sig} overflowWrap={'anywhere'} />
-      </Tbody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   )
 }

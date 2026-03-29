@@ -1,54 +1,55 @@
-import { Table, TableContainer, Tag, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { Table, Tag } from '@chakra-ui/react'
 import { Contract } from '../../types/L2ApiResult'
 import { AccountLink, TxLink } from '../TableLink'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { themeColorScheme } from '../../settings'
+import { Tooltip } from '../ui/tooltip'
 
 export const ContractHistoryTbl = ({ history }: { history: Contract[] }) => {
   return (
-    <TableContainer my={'3'}>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Transaction ID</Th>
-            <Th>Age</Th>
-            <Th>Deployer</Th>
-            <Th>Owner</Th>
-            <Th>Code</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <Table.ScrollArea my={'3'}>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Age</Table.ColumnHeader>
+            <Table.ColumnHeader>Deployer</Table.ColumnHeader>
+            <Table.ColumnHeader>Owner</Table.ColumnHeader>
+            <Table.ColumnHeader>Code</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {history.map((h, i) => (
-            <Tr key={i}>
-              <Td>
+            <Table.Row key={i}>
+              <Table.Cell>
                 <TxLink val={h.tx_id} />
-              </Td>
-              <Td>
-                <Tooltip placement="top" label={h.creation_ts}>
+              </Table.Cell>
+              <Table.Cell>
+                <Tooltip positioning={{ placement: 'top' }} content={h.creation_ts}>
                   {timeAgo(h.creation_ts)}
                 </Tooltip>
-              </Td>
-              <Td>
+              </Table.Cell>
+              <Table.Cell>
                 <AccountLink val={h.creator} />
-              </Td>
-              <Td>
+              </Table.Cell>
+              <Table.Cell>
                 <AccountLink val={h.owner} />
-              </Td>
-              <Td>
-                <Tooltip placement="top" label={h.code}>
+              </Table.Cell>
+              <Table.Cell>
+                <Tooltip positioning={{ placement: 'top' }} content={h.code}>
                   {i === 0 ? (
-                    <Tag variant={'outline'} colorScheme={themeColorScheme}>
+                    <Tag.Root variant={'outline'} colorPalette={themeColorScheme}>
                       Latest
-                    </Tag>
+                    </Tag.Root>
                   ) : (
                     abbreviateHash(h.code, 20, 0)
                   )}
                 </Tooltip>
-              </Td>
-            </Tr>
+              </Table.Cell>
+            </Table.Row>
           ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        </Table.Body>
+      </Table.Root>
+    </Table.ScrollArea>
   )
 }

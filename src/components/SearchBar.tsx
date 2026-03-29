@@ -1,28 +1,15 @@
-import {
-  Box,
-  Text,
-  Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Stack,
-  useDisclosure,
-  useColorModeValue,
-  Skeleton
-} from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
+import { Box, Text, Button, Input, Dialog, Stack, Skeleton } from '@chakra-ui/react'
+import { LuSearch } from 'react-icons/lu'
 import { Link as ReactRouterLink, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { isAddress } from 'viem'
-import { themeColor, themeColorLight, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
+import { themeColor, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
 import { fetchProps, cidSearch, fetchL1Rest } from '../requests'
 import { validateHiveUsername } from '../helpers'
 import { L1TxHeader } from '../types/L1ApiResult'
+import { useColorModeValue } from './ui/color-mode'
+import { InputGroup } from './ui/input-group'
 
 interface SearchBarProps {
   miniBtn?: boolean
@@ -240,7 +227,9 @@ const useSearchResults = (query: string): SearchResultHook => {
 
 const SearchBar = ({ miniBtn }: SearchBarProps) => {
   const navigate = useNavigate()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [open, setOpen] = useState(false)
+  const onOpen = () => setOpen(true)
+  const onClose = () => setOpen(false)
   const [searchQuery, setSearchQuery] = useState('')
   const { searchResult, isLoading } = useSearchResults(searchQuery)
   const bgColor = useColorModeValue(themeColorULight, 'gray.600')
@@ -253,12 +242,13 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
         onClick={onOpen}
         width={'100%'}
         justifyContent={miniBtn ? 'unset' : 'flex-start'}
-        colorScheme={themeColorScheme}
+        colorPalette={themeColorScheme}
         variant={'outline'}
         aria-label={'Search account, block, tx...'}
         _focus={{ boxShadow: 'none' }}
+        focusRingWidth={0}
       >
-        <SearchIcon />
+        <LuSearch />
         <Text
           fontWeight={'light'}
           color={'#ffffff'}
@@ -273,54 +263,57 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
         </Text>
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent maxW="700px">
-          <ModalBody p="2.5">
-            <InputGroup>
-              <InputLeftElement children={<SearchIcon />} />
-              <Input
-                placeholder="Search account, block, transaction..."
-                focusBorderColor={themeColorLight}
-                spellCheck={false}
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                onKeyDown={(event) => {
-                  if (!isLoading && searchResult.length > 0 && event.key === 'Enter') {
-                    navigate(searchResult[0].href)
-                    onClose()
-                  }
-                }}
-              />
-            </InputGroup>
-            {!isLoading && searchResult.length > 0 ? (
-              <Stack mt={'2.5'} direction="column">
-                {searchResult.map((r, i) => (
-                  <Box
-                    key={i}
-                    as={ReactRouterLink}
-                    to={r.href}
-                    onClick={onClose}
-                    p={'3'}
-                    role={'group'}
-                    display={'block'}
-                    rounded={'md'}
-                    transition={'all .2s ease'}
-                    bg={bgColor}
-                    _hover={{ bg: bgColorHovered }}
-                  >
-                    <Text transition={'all .2s ease'} _groupHover={{ color: bgColorHoveredText }} fontWeight={500}>
-                      {r.type}
-                    </Text>
-                    <Text fontSize={'sm'}>{searchQuery}</Text>
-                  </Box>
-                ))}
-              </Stack>
-            ) : null}
-            {isLoading ? <Skeleton h="50px" mt="2.5" /> : null}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <Dialog.Root open={open} onOpenChange={(e) => !e.open && onClose()}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content maxW="700px">
+            <Dialog.Body p="2.5">
+              <InputGroup width="100%" startElement={<LuSearch />}>
+                <Input
+                  placeholder="Search account, block, transaction..."
+                  spellCheck={false}
+                  _focus={{ borderColor: themeColor }}
+                  _focusVisible={{ outline: 'none' }}
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (!isLoading && searchResult.length > 0 && event.key === 'Enter') {
+                      navigate(searchResult[0].href)
+                      onClose()
+                    }
+                  }}
+                />
+              </InputGroup>
+              {!isLoading && searchResult.length > 0 ? (
+                <Stack mt={'2.5'} direction="column">
+                  {searchResult.map((r, i) => (
+                    <Box
+                      key={i}
+                      asChild
+                      onClick={onClose}
+                      p={'3'}
+                      role={'group'}
+                      display={'block'}
+                      rounded={'md'}
+                      transition={'all .2s ease'}
+                      bg={bgColor}
+                      _hover={{ bg: bgColorHovered }}
+                    >
+                      <ReactRouterLink to={r.href}>
+                        <Text transition={'all .2s ease'} _groupHover={{ color: bgColorHoveredText }} fontWeight={500}>
+                          {r.type}
+                        </Text>
+                        <Text fontSize={'sm'}>{searchQuery}</Text>
+                      </ReactRouterLink>
+                    </Box>
+                  ))}
+                </Stack>
+              ) : null}
+              {isLoading ? <Skeleton h="50px" mt="2.5" /> : null}
+            </Dialog.Body>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
     </>
   )
 }

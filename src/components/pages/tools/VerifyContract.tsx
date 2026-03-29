@@ -1,40 +1,33 @@
-import { InfoIcon } from '@chakra-ui/icons'
+import { LuInfo } from 'react-icons/lu'
 import {
   Box,
   Button,
   Card,
-  CardBody,
-  CardHeader,
   Center,
   Code,
+  Field,
   Flex,
   Heading,
   Link,
+  NativeSelect,
   Stack,
-  StackDivider,
+  StackSeparator,
   Text,
-  useSteps,
-  FormControl,
-  FormLabel,
-  Select,
-  Input,
-  useToast,
   Spinner,
-  ToastId,
-  useDisclosure,
-  Icon
+  Input
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useSearchParams, Link as ReactRouterLink } from 'react-router'
 import { useAioha } from '@aioha/providers/react'
 import { KeyTypes, Providers } from '@aioha/aioha'
-import { themeColorScheme, themeColorLight, cvApi } from '../../../settings'
+import { themeColorScheme, cvApi } from '../../../settings'
 import { cvInfo } from '../../../cvRequests'
 import { fetchContracts } from '../../../requests'
 import { PageTitle } from '../../PageTitle'
 import { AiohaModal } from '../../Aioha'
 import { generateMessageToSign } from '../../../helpers'
 import { FaHive } from 'react-icons/fa6'
+import { toaster } from '../../ui/toaster'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.39.0': {
@@ -108,19 +101,15 @@ const notice = [
 export const VerifyContract = () => {
   const [searchParams] = useSearchParams()
   const { aioha, user, provider } = useAioha()
-  const { activeStep: stage, setActiveStep: setStage } = useSteps({
-    index: searchParams.get('skipnotice') === '1' ? 1 : 0,
-    count: 2
-  })
+  const [stage, setStage] = useState(searchParams.get('skipnotice') === '1' ? 1 : 0)
   const [addr, setAddr] = useState<string>(searchParams.get('address') || '')
   const [repoUrl, setRepoUrl] = useState<string>('')
   const [gitBranch, setGitBranch] = useState<string>('')
   const [tinygoVersion, setTinyGoVersion] = useState<string>('0.39.0')
   const [wasmStripTool, setWasmStripTool] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
-  const toast = useToast()
-  const toastRef = useRef<ToastId>()
-  const walletDisclosure = useDisclosure()
+  const toastIdRef = useRef<string | undefined>(undefined)
+  const [walletOpen, setWalletOpen] = useState(false)
   const submitClicked = async () => {
     let e = ''
     if (!addr.startsWith('vsc1')) {
@@ -138,7 +127,7 @@ export const VerifyContract = () => {
       e = 'Invalid Github repo name'
     }
     if (e) {
-      return toast({ title: e, status: 'error' })
+      return toaster.error({ title: e })
     }
 
     try {
@@ -146,45 +135,48 @@ export const VerifyContract = () => {
       const verifInfo = await cvInfo(addr)
       if (verifInfo && (verifInfo.status === 'queued' || verifInfo.status === 'in progress' || verifInfo.status === 'success')) {
         setIsSpinning(false)
-        return toast({ title: 'Contract is already verified or being verified.', status: 'error' })
+        return toaster.error({ title: 'Contract is already verified or being verified.' })
       }
       if (!verifInfo) {
         const ct = await fetchContracts({ byId: addr })
         if (!ct || ct.length === 0) {
           setIsSpinning(false)
-          return toast({ title: 'Contract not found', status: 'error' })
+          return toaster.error({ title: 'Contract not found' })
         }
       }
     } catch {
       setIsSpinning(false)
-      return toast({ title: 'Failed to call backend for contract verification status', status: 'error' })
+      return toaster.error({ title: 'Failed to call backend for contract verification status' })
     }
     try {
       let fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
       if (fetchedRepo.status !== 200) {
-        return toast({ title: 'Failed to fetch repository info with status code ' + fetchedRepo.status, status: 'error' })
+        return toaster.error({ title: 'Failed to fetch repository info with status code ' + fetchedRepo.status })
       }
       if (gitBranch.length > 0) {
         let fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
         if (fetchedBranch.status !== 200) {
-          return toast({ title: 'Failed to fetch branch info with status code ' + fetchedBranch.status, status: 'error' })
+          return toaster.error({ title: 'Failed to fetch branch info with status code ' + fetchedBranch.status })
         }
       }
     } catch {
       setIsSpinning(false)
-      return toast({ title: 'Failed to validate repository', status: 'error' })
+      return toaster.error({ title: 'Failed to validate repository' })
     }
-    toastRef.current = toast({
+    toastIdRef.current = toaster.create({
       title: 'Submitting verification request...',
       description: 'Approve message signature request in wallet when prompted',
-      status: 'loading',
-      duration: null
+      type: 'loading',
+      duration: Infinity
     })
     try {
       let msgToSign = await generateMessageToSign(user!)
       let sign = await aioha.signMessage(msgToSign, KeyTypes.Posting)
       if (!sign.success) {
-        toast.update(toastRef.current, { title: 'Signature Error', description: sign.error, status: 'error', duration: 15000 })
+        if (toastIdRef.current) {
+          toaster.dismiss(toastIdRef.current)
+        }
+        toaster.error({ title: 'Signature Error', description: sign.error })
         return
       }
       const authReq = await fetch(`${cvApi}/login`, {
@@ -192,11 +184,12 @@ export const VerifyContract = () => {
         body: `${msgToSign}:${sign.result}`
       })
       if (authReq.status !== 200) {
-        toast.update(toastRef.current, {
+        if (toastIdRef.current) {
+          toaster.dismiss(toastIdRef.current)
+        }
+        toaster.error({
           title: 'Error',
-          description: (await authReq.json()).error,
-          status: 'error',
-          duration: 15000
+          description: (await authReq.json()).error
         })
         return
       }
@@ -217,20 +210,27 @@ export const VerifyContract = () => {
       if (createReq.status !== 200) {
         setIsSpinning(false)
         let e = await createReq.json()
-        toast.update(toastRef.current, { title: 'Error', description: e.error, status: 'error', duration: 15000 })
+        if (toastIdRef.current) {
+          toaster.dismiss(toastIdRef.current)
+        }
+        toaster.error({ title: 'Error', description: e.error })
         return
       }
-      toast.update(toastRef.current, {
+      if (toastIdRef.current) {
+        toaster.dismiss(toastIdRef.current)
+      }
+      toaster.success({
         title: 'Success',
-        description: 'Contract verification request submitted successfully!',
-        status: 'success',
-        duration: 30000
+        description: 'Contract verification request submitted successfully!'
       })
       setIsSpinning(false)
       setStage(2)
     } catch {
       setIsSpinning(false)
-      toast.update(toastRef.current, { title: 'Error', description: 'Unknown error occurred', status: 'error', duration: 15000 })
+      if (toastIdRef.current) {
+        toaster.dismiss(toastIdRef.current)
+      }
+      toaster.error({ title: 'Error', description: 'Unknown error occurred' })
       return
     }
   }
@@ -246,17 +246,17 @@ export const VerifyContract = () => {
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
           {stage === 0 ? (
             <Box>
-              <Card mb={'3'}>
-                <CardHeader>
+              <Card.Root mb={'3'}>
+                <Card.Header>
                   <Heading fontSize={'2xl'}>
                     <Flex align={'center'} gap={'2'}>
-                      <InfoIcon />
+                      <LuInfo />
                       Read This First!
                     </Flex>
                   </Heading>
-                </CardHeader>
-                <CardBody mt={'-20px'}>
-                  <Stack divider={<StackDivider />} spacing={'3'}>
+                </Card.Header>
+                <Card.Body mt={'-20px'}>
+                  <Stack separator={<StackSeparator />} gap={'3'}>
                     {notice.map((n, i) => (
                       <Box key={i}>
                         <Heading size={'sm'} textTransform={'uppercase'}>
@@ -266,95 +266,101 @@ export const VerifyContract = () => {
                       </Box>
                     ))}
                   </Stack>
-                </CardBody>
-              </Card>
+                </Card.Body>
+              </Card.Root>
               <Center>
-                <Button colorScheme={themeColorScheme} onClick={() => setStage(1)}>
+                <Button colorPalette={themeColorScheme} onClick={() => setStage(1)}>
                   Next
                 </Button>
               </Center>
             </Box>
           ) : stage === 1 ? (
             <Box>
-              <Card mb={'3'}>
-                <CardBody>
+              <Card.Root mb={'3'}>
+                <Card.Body>
                   <Stack direction={'column'} gap={'3'}>
-                    <FormControl>
-                      <FormLabel>Username</FormLabel>
+                    <Field.Root>
+                      <Field.Label>Username</Field.Label>
                       <Button
                         _focus={{ boxShadow: 'none' }}
-                        onClick={walletDisclosure.onOpen}
-                        leftIcon={user ? <Icon as={FaHive} fontSize={'lg'} /> : undefined}
+                        onClick={() => setWalletOpen(true)}
                       >
+                        {user ? <Box as={FaHive} fontSize={'lg'} /> : null}
                         {user ?? 'Connect Wallet'}
                       </Button>
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>Contract Address</FormLabel>
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>Contract Address</Field.Label>
                       <Input
                         type="text"
                         placeholder="vsc1..."
                         value={addr}
                         onChange={(e) => setAddr(e.target.value)}
-                        focusBorderColor={themeColorLight}
+              
                       />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>GitHub Repository URL</FormLabel>
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>GitHub Repository URL</Field.Label>
                       <Input
                         type="text"
                         placeholder="https://github.com/..."
                         value={repoUrl}
                         onChange={(e) => setRepoUrl(e.target.value)}
-                        focusBorderColor={themeColorLight}
+              
                       />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>Git Branch</FormLabel>
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>Git Branch</Field.Label>
                       <Input
                         type="text"
                         placeholder={'default branch'}
                         value={gitBranch}
                         onChange={(e) => setGitBranch(e.target.value)}
-                        focusBorderColor={themeColorLight}
+              
                       />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>TinyGo Version</FormLabel>
-                      <Select
-                        focusBorderColor={themeColorLight}
-                        value={tinygoVersion}
-                        onChange={(e) => setTinyGoVersion(e.target.value)}
-                      >
-                        {Object.keys(tinygoVersions).map((val, i) => (
-                          <option key={i} value={val}>
-                            v{val} (Go: v{tinygoVersions[val].go})
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>WASM Strip Tool</FormLabel>
-                      <Select
-                        focusBorderColor={themeColorLight}
-                        value={wasmStripTool}
-                        onChange={(e) => setWasmStripTool(e.target.value)}
-                      >
-                        {wasmStripTools.map((val, i) => (
-                          <option key={i} value={val[0]}>
-                            {val[1]}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>TinyGo Version</Field.Label>
+                      <NativeSelect.Root>
+                        <NativeSelect.Field
+                
+                          value={tinygoVersion}
+                          onChange={(e) => setTinyGoVersion(e.target.value)}
+                        >
+                          {Object.keys(tinygoVersions).map((val, i) => (
+                            <option key={i} value={val}>
+                              v{val} (Go: v{tinygoVersions[val].go})
+                            </option>
+                          ))}
+                        </NativeSelect.Field>
+                        <NativeSelect.Indicator />
+                      </NativeSelect.Root>
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>WASM Strip Tool</Field.Label>
+                      <NativeSelect.Root>
+                        <NativeSelect.Field
+                
+                          value={wasmStripTool}
+                          onChange={(e) => setWasmStripTool(e.target.value)}
+                        >
+                          {wasmStripTools.map((val, i) => (
+                            <option key={i} value={val[0]}>
+                              {val[1]}
+                            </option>
+                          ))}
+                        </NativeSelect.Field>
+                        <NativeSelect.Indicator />
+                      </NativeSelect.Root>
+                    </Field.Root>
                   </Stack>
-                </CardBody>
-              </Card>
+                </Card.Body>
+              </Card.Root>
               <Center>
                 <Stack direction="row" gap="3">
                   <Button onClick={() => setStage(0)}>Previous</Button>
                   <Button
-                    colorScheme={themeColorScheme}
+                    colorPalette={themeColorScheme}
                     onClick={submitClicked}
                     disabled={
                       isSpinning || !user || addr.length === 0 || repoUrl.length === 0 || provider === Providers.MetaMaskSnap
@@ -375,16 +381,16 @@ export const VerifyContract = () => {
                 Your contract source code is being verified. This may take a few minutes depending on the queue. Refer to the
                 Source Code tab in contract page for status.
               </Text>
-              <Button colorScheme={themeColorScheme} as={ReactRouterLink} to={`/contract/${addr}`}>
-                View Contract
+              <Button asChild colorPalette={themeColorScheme}>
+                <ReactRouterLink to={`/contract/${addr}`}>View Contract</ReactRouterLink>
               </Button>
             </Flex>
           ) : null}
         </Stack>
       </Center>
       <AiohaModal
-        displayed={walletDisclosure.isOpen}
-        onClose={walletDisclosure.onClose}
+        displayed={walletOpen}
+        onClose={() => setWalletOpen(false)}
         disabledProviders={[Providers.MetaMaskSnap]}
       />
     </>

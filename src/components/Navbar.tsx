@@ -6,31 +6,28 @@ import {
   Button,
   Stack,
   HStack,
-  Collapse,
-  Icon,
+  Collapsible,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
   Container,
-  useColorModeValue,
-  useColorMode,
   useBreakpointValue,
-  useDisclosure,
   Tag
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { LuMenu, LuX, LuChevronDown, LuChevronRight, LuMoon, LuSun } from 'react-icons/lu'
 import { Link as ReactRouterLink, Outlet } from 'react-router'
 import { getConf, themeColor, themeColorScheme, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
+import { useColorMode, useColorModeValue } from './ui/color-mode'
+import { useState } from 'react'
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
-  const { isOpen, onToggle } = useDisclosure()
+  const [isOpen, setIsOpen] = useState(false)
+  const onToggle = () => setIsOpen((v) => !v)
 
   return (
     <Box>
       <Flex
-        bg={useColorModeValue('white', 'gray.800')}
+        bg={useColorModeValue('gray.100', 'gray.900')}
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
@@ -41,14 +38,11 @@ const Navbar = () => {
         align={'center'}
       >
         <Flex flex={{ base: 1, md: 'auto' }} ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
+          <IconButton onClick={onToggle} variant={'ghost'} aria-label={'Toggle Navigation'}>
+            {isOpen ? <LuX size={12} /> : <LuMenu size={20} />}
+          </IconButton>
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} gap={'2'}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} align={'center'} gap={'2'}>
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
@@ -58,9 +52,9 @@ const Navbar = () => {
           </Text>
 
           {getConf().netId === 'vsc-testnet' && (
-            <Tag variant={'outline'} colorScheme={themeColorScheme}>
+            <Tag.Root size={'sm'} variant={'outline'} colorPalette={themeColorScheme}>
               Testnet
-            </Tag>
+            </Tag.Root>
           )}
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={3}>
@@ -68,19 +62,27 @@ const Navbar = () => {
           </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={3}>
+        <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} gap={3}>
           <Box width={{ base: 'fit-content', lg: '270px' }}>
             <SearchBar miniBtn={useBreakpointValue({ base: true, lg: false })} />
           </Box>
-          <Button onClick={toggleColorMode} aria-label={'Switch color theme'}>
-            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          <Button
+            variant={'subtle'}
+            colorPalette={'gray'}
+            bg={useColorModeValue('gray.200', 'gray.800')}
+            onClick={toggleColorMode}
+            aria-label={'Switch color theme'}
+          >
+            {colorMode === 'light' ? <LuMoon /> : <LuSun />}
           </Button>
         </Stack>
       </Flex>
 
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
+      <Collapsible.Root open={isOpen}>
+        <Collapsible.Content>
+          <MobileNav />
+        </Collapsible.Content>
+      </Collapsible.Root>
 
       <Container width={'100%'} maxW={'8xl'} marginTop={'15px'} marginBottom={'40px'}>
         <Outlet />
@@ -95,14 +97,13 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
-    <Stack direction={'row'} spacing={4}>
+    <Stack direction={'row'} gap={4}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
+          <Popover.Root positioning={{ placement: 'bottom-start' }}>
+            <Popover.Trigger asChild>
               <Box
-                as={ReactRouterLink}
-                to={navItem.href ?? '#'}
+                asChild
                 p={2}
                 fontSize={'md'}
                 fontWeight={500}
@@ -112,20 +113,22 @@ const DesktopNav = () => {
                   color: linkHoverColor
                 }}
               >
-                {navItem.label}
+                <ReactRouterLink to={navItem.href ?? '#'}>{navItem.label}</ReactRouterLink>
               </Box>
-            </PopoverTrigger>
+            </Popover.Trigger>
 
             {navItem.children && (
-              <PopoverContent border={0} boxShadow={'xl'} bg={popoverContentBgColor} p={4} rounded={'xl'} minW={'sm'}>
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
+              <Popover.Positioner>
+                <Popover.Content border={0} boxShadow={'xl'} bg={popoverContentBgColor} p={4} rounded={'xl'} minW={'sm'}>
+                  <Stack>
+                    {navItem.children.map((child) => (
+                      <DesktopSubNav key={child.label} {...child} />
+                    ))}
+                  </Stack>
+                </Popover.Content>
+              </Popover.Positioner>
             )}
-          </Popover>
+          </Popover.Root>
         </Box>
       ))}
     </Stack>
@@ -141,7 +144,9 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
             <Text transition={'all .3s ease'} _groupHover={{ color: themeColor }} fontWeight={500}>
               {label}
             </Text>
-            <Text fontSize={'sm'}>{subLabel}</Text>
+            <Text fontSize={'xs'} color={'gray.500'} _dark={{ color: 'gray.400' }}>
+              {subLabel}
+            </Text>
           </Box>
           <Flex
             transition={'all .3s ease'}
@@ -152,7 +157,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
             align={'center'}
             flex={1}
           >
-            <Icon color={themeColor} w={5} h={5} as={ChevronRightIcon} />
+            <Box as={LuChevronRight} color={themeColor} w={5} h={5} />
           </Flex>
         </Stack>
       </ReactRouterLink>
@@ -162,7 +167,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 
 const MobileNav = () => {
   return (
-    <Stack bg={useColorModeValue('white', 'gray.800')} px={5} display={{ md: 'none' }}>
+    <Stack bg={useColorModeValue('gray.100', 'gray.900')} px={5} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -171,53 +176,57 @@ const MobileNav = () => {
 }
 
 const MobileNavItem = ({ label, children, href }: NavItem) => {
-  const { isOpen, onToggle } = useDisclosure()
+  const [isOpen, setIsOpen] = useState(false)
+  const onToggle = () => setIsOpen((v) => !v)
 
   return (
-    <Stack spacing={0} onClick={children && onToggle}>
+    <Stack gap={0} onClick={children && onToggle}>
       <Box
         py={3}
-        as={ReactRouterLink}
-        to={href ?? '#'}
+        asChild
         justifyContent="space-between"
         alignItems="center"
         _hover={{
           textDecoration: 'none'
         }}
       >
-        <HStack>
-          <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
-            {label}
-          </Text>
-          {children && (
-            <Icon
-              as={ChevronDownIcon}
-              transition={'all .25s ease-in-out'}
-              transform={isOpen ? 'rotate(180deg)' : ''}
-              w={6}
-              h={6}
-            />
-          )}
-        </HStack>
+        <ReactRouterLink to={href ?? '#'}>
+          <HStack>
+            <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
+              {label}
+            </Text>
+            {children && (
+              <Box
+                as={LuChevronDown}
+                transition={'all .25s ease-in-out'}
+                transform={isOpen ? 'rotate(180deg)' : ''}
+                w={6}
+                h={6}
+              />
+            )}
+          </HStack>
+        </ReactRouterLink>
       </Box>
 
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
-        <Stack
-          mt={0}
-          pl={4}
-          borderLeft={1}
-          borderStyle={'solid'}
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
-          align={'start'}
-        >
-          {children &&
-            children.map((child) => (
-              <Box as={ReactRouterLink} key={child.label} py={2} to={child.href}>
-                {child.label}
-              </Box>
-            ))}
-        </Stack>
-      </Collapse>
+      <Collapsible.Root open={isOpen}>
+        <Collapsible.Content style={{ marginTop: '0!important' }}>
+          <Stack
+            mt={0}
+            pl={4}
+            borderLeft={1}
+            borderStyle={'solid'}
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            align={'start'}
+          >
+            {children &&
+              children.map((child) => (
+                <Box asChild key={child.label} py={2}>
+                  <ReactRouterLink to={child.href ?? '#'}>{child.label}</ReactRouterLink>
+                </Box>
+              ))}
+          </Stack>
+        </Collapsible.Content>
+      </Collapsible.Root>
     </Stack>
   )
 }

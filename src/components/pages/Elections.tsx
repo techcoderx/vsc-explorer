@@ -1,4 +1,4 @@
-import { Text, TableContainer, Table, Tbody, Thead, Tr, Th, Td, Tooltip, Skeleton, Link } from '@chakra-ui/react'
+import { Text, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
@@ -7,6 +7,7 @@ import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
 import { PageTitle } from '../PageTitle'
+import { Tooltip } from '../ui/tooltip'
 
 const count = 100
 
@@ -36,40 +37,42 @@ const Elections = () => {
       <Text fontSize={'5xl'}>Elections</Text>
       <hr />
       <br />
-      <TableContainer mb={'15px'}>
-        <Table variant={'simple'}>
-          <Thead>
-            <Tr>
-              <Th>Epoch</Th>
-              <Th>Age</Th>
-              <Th>Proposer</Th>
-              <Th>Blocks</Th>
-              <Th>Members</Th>
-              <Th>Total Weight</Th>
-              <Th>Voted</Th>
-              <Th>Block Votes</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      <Table.ScrollArea mb={'15px'}>
+        <Table.Root variant={'line'}>
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>Epoch</Table.ColumnHeader>
+              <Table.ColumnHeader>Age</Table.ColumnHeader>
+              <Table.ColumnHeader>Proposer</Table.ColumnHeader>
+              <Table.ColumnHeader>Blocks</Table.ColumnHeader>
+              <Table.ColumnHeader>Members</Table.ColumnHeader>
+              <Table.ColumnHeader>Total Weight</Table.ColumnHeader>
+              <Table.ColumnHeader>Voted</Table.ColumnHeader>
+              <Table.ColumnHeader>Block Votes</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {isEpochsLoading ? (
-              <Tr>
+              <Table.Row>
                 {[...Array(8)].map((_, i) => (
-                  <Td key={i}>
+                  <Table.Cell key={i}>
                     <Skeleton height="20px" />
-                  </Td>
+                  </Table.Cell>
                 ))}
-              </Tr>
+              </Table.Row>
             ) : isEpochsSuccess ? (
               epochs.map((epoch, i) => (
-                <Tr key={i}>
-                  <Td>
-                    <Link as={ReactRouterLink} to={'/epoch/' + epoch.epoch}>
-                      {thousandSeperator(epoch.epoch)}
+                <Table.Row key={i}>
+                  <Table.Cell>
+                    <Link asChild>
+                      <ReactRouterLink to={'/epoch/' + epoch.epoch}>
+                        {thousandSeperator(epoch.epoch)}
+                      </ReactRouterLink>
                     </Link>
-                  </Td>
-                  <Td sx={{ whiteSpace: 'nowrap' }}>
+                  </Table.Cell>
+                  <Table.Cell css={{ whiteSpace: 'nowrap' }}>
                     {epoch.be_info ? (
-                      <Tooltip placement="top" label={epoch.be_info.ts}>
+                      <Tooltip positioning={{ placement: 'top' }} content={epoch.be_info.ts}>
                         {timeAgo(epoch.be_info.ts)}
                       </Tooltip>
                     ) : (
@@ -77,16 +80,18 @@ const Elections = () => {
                         Indexing...
                       </Text>
                     )}
-                  </Td>
-                  <Td>
-                    <Link as={ReactRouterLink} to={'/address/hive:' + epoch.proposer}>
-                      {epoch.proposer}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Link asChild>
+                      <ReactRouterLink to={'/address/hive:' + epoch.proposer}>
+                        {epoch.proposer}
+                      </ReactRouterLink>
                     </Link>
-                  </Td>
-                  <Td>{epoch.blocks_info?.count || 0}</Td>
-                  <Td>{epoch.members.length}</Td>
-                  <Td>{fmtmAmount(epoch.total_weight, 'HIVE')}</Td>
-                  <Td maxW={'200px'}>
+                  </Table.Cell>
+                  <Table.Cell>{epoch.blocks_info?.count || 0}</Table.Cell>
+                  <Table.Cell>{epoch.members.length}</Table.Cell>
+                  <Table.Cell>{fmtmAmount(epoch.total_weight, 'HIVE')}</Table.Cell>
+                  <Table.Cell maxW={'200px'}>
                     {epoch.epoch === 0 ? (
                       <Text>N/A</Text>
                     ) : epoch.be_info ? (
@@ -96,20 +101,20 @@ const Elections = () => {
                         Indexing...
                       </Text>
                     )}
-                  </Td>
-                  <Td maxW={'200px'}>
+                  </Table.Cell>
+                  <Table.Cell maxW={'200px'}>
                     <ProgressBarPct
                       val={(100 * (epoch.blocks_info?.total_votes || 0)) / (epoch.total_weight * (epoch.blocks_info?.count || 1))}
                     />
-                  </Td>
-                </Tr>
+                  </Table.Cell>
+                </Table.Row>
               ))
             ) : (
-              <Tr></Tr>
+              <Table.Row></Table.Row>
             )}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
       <Pagination path="/elections" currentPageNum={pageNumber} maxPageNum={Math.ceil((prop?.epoch || 0) / count)} />
     </>
   )

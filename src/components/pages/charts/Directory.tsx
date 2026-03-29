@@ -1,4 +1,5 @@
-import { Card, CardBody, Flex, Grid, Image, Text, useToast } from '@chakra-ui/react'
+import { Card, Flex, Grid, Image, Text } from '@chakra-ui/react'
+import { toaster } from '../../ui/toaster'
 import { Link as ReactRouterLink } from 'react-router'
 import { themeColor } from '../../../settings'
 import { PageTitle } from '../../PageTitle'
@@ -37,38 +38,39 @@ const metrics = [
 ]
 
 export const ChartsDirectory = () => {
-  const toast = useToast()
   return (
     <Flex direction={'column'} gap={'3'}>
       <PageTitle title="Network Charts Directory" />
       <Text fontSize={'5xl'}>Network Charts</Text>
       <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={'3'}>
         {metrics.map((m, i) => (
-          <Card
-            as={ReactRouterLink}
-            to={m.href}
+          <Card.Root
+            asChild
             key={i}
-            onClick={(evt) => {
-              if (m.href === '#') {
-                evt.preventDefault()
-                toast({
-                  title: 'Soon 🔜',
-                  status: 'info'
-                })
-              }
-            }}
             _hover={{ borderColor: themeColor, borderWidth: '0.5px' }}
             _light={{ _hover: { borderWidth: '1px' } }}
           >
-            <CardBody textAlign={'center'}>
-              <Flex direction={'column'} gap={'5'}>
-                <Image src={m.icon} width={'36'} height={'36'} mx={'auto'} my={'3'} />
-                <Text fontSize={'xl'} fontWeight={'bold'}>
-                  {m.title}
-                </Text>
-              </Flex>
-            </CardBody>
-          </Card>
+            <ReactRouterLink
+              to={m.href}
+              onClick={(evt) => {
+                if (m.href === '#') {
+                  evt.preventDefault()
+                  toaster.info({
+                    title: 'Soon 🔜'
+                  })
+                }
+              }}
+            >
+              <Card.Body textAlign={'center'}>
+                <Flex direction={'column'} gap={'5'}>
+                  <Image src={m.icon} width={'36'} height={'36'} mx={'auto'} my={'3'} objectFit={'contain'} />
+                  <Text fontSize={'xl'} fontWeight={'bold'}>
+                    {m.title}
+                  </Text>
+                </Flex>
+              </Card.Body>
+            </ReactRouterLink>
+          </Card.Root>
         ))}
       </Grid>
     </Flex>

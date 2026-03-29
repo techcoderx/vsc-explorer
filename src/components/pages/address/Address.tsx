@@ -1,4 +1,4 @@
-import { Text, Grid, Tab, Tabs, TabList, Box, Stack, Tag } from '@chakra-ui/react'
+import { Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
 import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
@@ -46,7 +46,7 @@ export const Address = () => {
   const isL1 = addr!.startsWith('hive:') && validateHiveUsername(addr!.replace('hive:', '')) === null
   const validAddr = isL1 || addr!.startsWith('did:')
   const segments = pathname.split('/')
-  const tabIndex = tabNames.indexOf(segments.length >= 4 ? segments[3] : tabNames[0])
+  const tabValue = segments.length >= 4 ? segments[3] : tabNames[0]
   const { data: witness } = useQuery({
     queryKey: ['vsc-witness', addr!.replace('hive:', '')],
     queryFn: async () => getWitness(addr!.replace('hive:', '')),
@@ -71,9 +71,9 @@ export const Address = () => {
         )}
         {/* Note: Wrap with another HStack when there are more than one flair */}
         {Flairs[addr] && (
-          <Tag colorScheme={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
+          <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
             {Flairs[addr]}
-          </Tag>
+          </Tag.Root>
         )}
       </Stack>
       <hr />
@@ -83,25 +83,29 @@ export const Address = () => {
           <AddressRcInfo addr={addr!} />
         </Grid>
       )}
-      <Tabs
+      <Tabs.Root
         mt={'7'}
-        variant={'solid-rounded'}
-        index={tabIndex}
-        onChange={(newIdx: number) => navigate(getNextTabRoute(tabNames, segments, newIdx), { preventScrollReset: true })}
+        colorPalette={themeColorScheme}
+        variant={'enclosed'}
+        value={tabValue}
+        onValueChange={(details) => {
+          const newIdx = tabNames.indexOf(details.value)
+          navigate(getNextTabRoute(tabNames, segments, newIdx), { preventScrollReset: true })
+        }}
       >
-        <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
-          <Tab>Transactions</Tab>
-          <Tab hidden={!isL1}>L1 Ops</Tab>
-          <Tab>Ledger Ops</Tab>
-          <Tab>Actions</Tab>
-          <Tab>Maps</Tab>
-          <Tab>Unmaps</Tab>
-          <Tab hidden={!isL1 || !witness}>Witness</Tab>
-        </TabList>
+        <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
+          <Tabs.Trigger value="txs">Transactions</Tabs.Trigger>
+          <Tabs.Trigger value="hiveops" hidden={!isL1}>L1 Ops</Tabs.Trigger>
+          <Tabs.Trigger value="ledger">Ledger Ops</Tabs.Trigger>
+          <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
+          <Tabs.Trigger value="deposits">Maps</Tabs.Trigger>
+          <Tabs.Trigger value="withdrawals">Unmaps</Tabs.Trigger>
+          <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>Witness</Tabs.Trigger>
+        </Tabs.List>
         <Box pt={'2'}>
           <Outlet context={{ addr }} />
         </Box>
-      </Tabs>
+      </Tabs.Root>
     </>
   )
 }

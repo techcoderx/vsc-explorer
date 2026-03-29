@@ -1,5 +1,6 @@
 import { useMemo, useEffect, useState } from 'react'
-import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@chakra-ui/react'
+import { Box, Card, Heading, Text } from '@chakra-ui/react'
+import { useColorMode } from '../../ui/color-mode'
 import { useQuery } from '@tanstack/react-query'
 import type Recharts from 'recharts'
 import { BalHistory } from '../../../types/L1ApiResult'
@@ -214,39 +215,39 @@ export const BridgeCharts = () => {
       <PageTitle title="Native Asset Mapping (NAM) Charts" />
       <Text fontSize={'5xl'}>Native Asset Mapping (NAM) Charts</Text>
       <hr />
-      <Card my={'6'}>
-        <CardHeader>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>HIVE and HBD TVL</Heading>
           <Text>History of HIVE and HBD balances in gateway account over time</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <HiveBridgeTVL />
           </Box>
-        </CardBody>
-      </Card>
-      <Card my={'6'}>
-        <CardHeader>
+        </Card.Body>
+      </Card.Root>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>HIVE Net Flow</Heading>
           <Text>History of HIVE net flows over time</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <BridgeNetFlow coin="HIVE" />
           </Box>
-        </CardBody>
-      </Card>
-      <Card my={'6'}>
-        <CardHeader>
+        </Card.Body>
+      </Card.Root>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>HBD Net Flow</Heading>
           <Text>History of HBD net flows over time</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <BridgeNetFlow coin="HBD" />
           </Box>
-        </CardBody>
-      </Card>
+        </Card.Body>
+      </Card.Root>
     </>
   )
 }

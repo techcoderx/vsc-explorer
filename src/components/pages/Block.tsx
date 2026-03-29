@@ -1,19 +1,4 @@
-import {
-  Text,
-  Table,
-  Tbody,
-  Stack,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  TableContainer,
-  Thead,
-  Th,
-  Tr,
-  Td
-} from '@chakra-ui/react'
+import { Text, Table, Stack, Tabs } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import { fetchBlock, fetchEpoch, fetchL2TxnsBy, getDagByCIDBatch, useDagByCID } from '../../requests'
@@ -98,8 +83,8 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
         <Text mt={'3'}>{block ? block.error : 'Failed to fetch block from backend'}</Text>
       ) : (
         <>
-          <Table marginTop="20px">
-            <Tbody>
+          <Table.Root marginTop="20px">
+            <Table.Body>
               <TableRow label="Block ID" value={blkNum} isLoading={isBlockLoading} />
               <TableRow
                 label="Timestamp"
@@ -134,93 +119,91 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                   </Text>
                 )}
               </TableRow>
-            </Tbody>
-          </Table>
+            </Table.Body>
+          </Table.Root>
 
-          <Tabs mt={'7'} colorScheme={themeColorScheme} variant={'solid-rounded'}>
-            <TabList overflowX={'scroll'} whiteSpace={'nowrap'}>
-              <Tab>Transactions</Tab>
-              <Tab>Op Logs</Tab>
-              {Array.isArray(outputs) && outputs.length > 0 && <Tab>Contract Outputs</Tab>}
-              <Tab>Participation</Tab>
-            </TabList>
-            <TabPanels mt={'2'}>
-              <TabPanel pt={'1'}>
-                <BlockTxs txIds={txIds} />
-              </TabPanel>
-              <TabPanel>
-                <TableContainer>
-                  <Table>
-                    <Thead>
-                      <Tr>
-                        <Th></Th>
-                        <Th>Transaction ID</Th>
-                        <Th>Type</Th>
-                        <Th>From</Th>
-                        <Th></Th>
-                        <Th>To</Th>
-                        <Th>Amount</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {opLogs?.outputs.map((tx, i) => {
-                        return tx.ok && tx.lidx.length > 0 ? (
-                          tx.lidx.map((ln, j) => (
-                            <Tr key={`${i}.${j}`}>
-                              <Td>{j === 0 ? <CheckXIcon ok={tx.ok} /> : null}</Td>
-                              <Td>{j === 0 ? <TxLink val={tx.id} /> : null}</Td>
-                              <Td>{opLogs.ledger[ln].ty}</Td>
-                              <Td>
-                                <AccountLink val={opLogs.ledger[ln].fr} />
-                              </Td>
-                              <Td>
-                                <ToIcon />
-                              </Td>
-                              <Td>
-                                <AccountLink val={opLogs.ledger[ln].to} />
-                              </Td>
-                              <Td>{fmtmAmount(opLogs.ledger[ln].am, opLogs.ledger[ln].as.toUpperCase() as Coin)}</Td>
-                            </Tr>
-                          ))
-                        ) : (
-                          <Tr key={`${i}`}>
-                            <Td>
-                              <CheckXIcon ok={tx.ok} />
-                            </Td>
-                            <Td>
-                              <TxLink val={tx.id} />
-                            </Td>
-                            {[...Array(5)].map((_, k) => (
-                              <Td key={k}>
-                                <Text fontStyle={'italic'} opacity={'0.7'}>
-                                  {k !== 2 ? 'N/A' : ''}
-                                </Text>
-                              </Td>
-                            ))}
-                          </Tr>
-                        )
-                      })}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </TabPanel>
-              {Array.isArray(outputs) && outputs.length > 0 && (
-                <TabPanel pt={'1'}>
-                  <ContractOutputTbl outputs={outputs ?? []} />
-                </TabPanel>
-              )}
-              <TabPanel>
-                {block && block.be_info ? (
-                  <ParticipatedMembers
-                    bv={block.be_info.signature.bv}
-                    sig={block.be_info.signature.sig}
-                    members={epoch?.members || []}
-                    weights={epoch?.weights || []}
-                  />
-                ) : null}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          <Tabs.Root mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
+            <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
+              <Tabs.Trigger value="0">Transactions</Tabs.Trigger>
+              <Tabs.Trigger value="1">Op Logs</Tabs.Trigger>
+              {Array.isArray(outputs) && outputs.length > 0 && <Tabs.Trigger value="2">Contract Outputs</Tabs.Trigger>}
+              <Tabs.Trigger value="3">Participation</Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="0" mt={'2'} pt={'1'}>
+              <BlockTxs txIds={txIds} />
+            </Tabs.Content>
+            <Tabs.Content value="1" mt={'2'}>
+              <Table.ScrollArea>
+                <Table.Root>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader></Table.ColumnHeader>
+                      <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
+                      <Table.ColumnHeader>Type</Table.ColumnHeader>
+                      <Table.ColumnHeader>From</Table.ColumnHeader>
+                      <Table.ColumnHeader></Table.ColumnHeader>
+                      <Table.ColumnHeader>To</Table.ColumnHeader>
+                      <Table.ColumnHeader>Amount</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {opLogs?.outputs.map((tx, i) => {
+                      return tx.ok && tx.lidx.length > 0 ? (
+                        tx.lidx.map((ln, j) => (
+                          <Table.Row key={`${i}.${j}`}>
+                            <Table.Cell>{j === 0 ? <CheckXIcon ok={tx.ok} /> : null}</Table.Cell>
+                            <Table.Cell>{j === 0 ? <TxLink val={tx.id} /> : null}</Table.Cell>
+                            <Table.Cell>{opLogs.ledger[ln].ty}</Table.Cell>
+                            <Table.Cell>
+                              <AccountLink val={opLogs.ledger[ln].fr} />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <ToIcon />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <AccountLink val={opLogs.ledger[ln].to} />
+                            </Table.Cell>
+                            <Table.Cell>{fmtmAmount(opLogs.ledger[ln].am, opLogs.ledger[ln].as.toUpperCase() as Coin)}</Table.Cell>
+                          </Table.Row>
+                        ))
+                      ) : (
+                        <Table.Row key={`${i}`}>
+                          <Table.Cell>
+                            <CheckXIcon ok={tx.ok} />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <TxLink val={tx.id} />
+                          </Table.Cell>
+                          {[...Array(5)].map((_, k) => (
+                            <Table.Cell key={k}>
+                              <Text fontStyle={'italic'} opacity={'0.7'}>
+                                {k !== 2 ? 'N/A' : ''}
+                              </Text>
+                            </Table.Cell>
+                          ))}
+                        </Table.Row>
+                      )
+                    })}
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
+            </Tabs.Content>
+            {Array.isArray(outputs) && outputs.length > 0 && (
+              <Tabs.Content value="2" mt={'2'} pt={'1'}>
+                <ContractOutputTbl outputs={outputs ?? []} />
+              </Tabs.Content>
+            )}
+            <Tabs.Content value="3" mt={'2'}>
+              {block && block.be_info ? (
+                <ParticipatedMembers
+                  bv={block.be_info.signature.bv}
+                  sig={block.be_info.signature.sig}
+                  members={epoch?.members || []}
+                  weights={epoch?.weights || []}
+                />
+              ) : null}
+            </Tabs.Content>
+          </Tabs.Root>
         </>
       )}
     </>

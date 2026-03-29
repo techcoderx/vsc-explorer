@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { Tooltip, Button } from '@chakra-ui/react'
-import { CheckIcon, CopyIcon } from '@chakra-ui/icons'
+import { Button } from '@chakra-ui/react'
+import { Tooltip } from './ui/tooltip'
+import { LuCheck, LuCopy } from 'react-icons/lu'
 
 export const CopyButton = ({ text }: { text: string }) => {
   const [hasCopied, setHasCopied] = useState(false)
-  const timeoutRef = useRef<number>()
+  const timeoutRef = useRef<number>(undefined)
 
   useEffect(() => {
     return () => {
@@ -29,9 +30,9 @@ export const CopyButton = ({ text }: { text: string }) => {
   }
 
   return (
-    <Tooltip label={hasCopied ? 'Copied!' : 'Copy to clipboard'} placement="top" closeOnClick={false}>
-      <Button onClick={handleCopy} aria-label={hasCopied ? 'Copied!' : 'Copy to clipboard'}>
-        {hasCopied ? <CheckIcon /> : <CopyIcon />}
+    <Tooltip content={hasCopied ? 'Copied!' : 'Copy to clipboard'} positioning={{ placement: 'top' }}>
+      <Button variant={'outline'} colorPalette={'gray'} onClick={handleCopy} aria-label={hasCopied ? 'Copied!' : 'Copy to clipboard'}>
+        {hasCopied ? <LuCheck /> : <LuCopy />}
       </Button>
     </Tooltip>
   )

@@ -1,48 +1,48 @@
-import { Stack, Card, CardBody, CardHeader, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react'
+import { Stack, Card, Heading, Stat } from '@chakra-ui/react'
 import { fmtmAmount } from '../../../helpers'
 import { useAddrBalance } from '../../../requests'
 
 export const AddressBalanceCard = ({ addr }: { addr: string }) => {
   const { balance } = useAddrBalance(addr)
   return (
-    <Card>
-      <CardHeader mb={'-6'}>
+    <Card.Root>
+      <Card.Header mb={'-6'}>
         <Heading size={'md'}>Balances</Heading>
-      </CardHeader>
-      <CardBody>
+      </Card.Header>
+      <Card.Body>
         <Stack direction={{ base: 'column', md: 'row' }} justifyContent={'space-between'}>
-          <Stat my={'auto'}>
-            <StatLabel>Hive</StatLabel>
-            <StatNumber>{fmtmAmount(balance?.bal?.hive || 0, 'hive')}</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>HBD</StatLabel>
-            <StatNumber>{fmtmAmount(balance?.bal?.hbd || 0, 'hbd')}</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>Liquid Staked HBD</StatLabel>
-            <StatNumber>{fmtmAmount(balance?.bal?.hbd_savings || 0, 'hbd')}</StatNumber>
-          </Stat>
+          <Stat.Root my={'auto'}>
+            <Stat.Label>Hive</Stat.Label>
+            <Stat.ValueText>{fmtmAmount(balance?.bal?.hive || 0, 'hive')}</Stat.ValueText>
+          </Stat.Root>
+          <Stat.Root>
+            <Stat.Label>HBD</Stat.Label>
+            <Stat.ValueText>{fmtmAmount(balance?.bal?.hbd || 0, 'hbd')}</Stat.ValueText>
+          </Stat.Root>
+          <Stat.Root>
+            <Stat.Label>Liquid Staked HBD</Stat.Label>
+            <Stat.ValueText>{fmtmAmount(balance?.bal?.hbd_savings || 0, 'hbd')}</Stat.ValueText>
+          </Stat.Root>
           {balance && balance.bal && balance.bal.pending_hbd_unstaking > 0 && (
-            <Stat>
-              <StatLabel>HBD Unstaking</StatLabel>
-              <StatNumber>{fmtmAmount(balance.bal.pending_hbd_unstaking, 'hbd')}</StatNumber>
-            </Stat>
+            <Stat.Root>
+              <Stat.Label>HBD Unstaking</Stat.Label>
+              <Stat.ValueText>{fmtmAmount(balance.bal.pending_hbd_unstaking, 'hbd')}</Stat.ValueText>
+            </Stat.Root>
           )}
           {balance && balance.bal && balance.bal?.hive_consensus > 0 && (
-            <Stat>
-              <StatLabel>Consensus Stake</StatLabel>
-              <StatNumber>{fmtmAmount(balance.bal.hive_consensus, 'hive')}</StatNumber>
-            </Stat>
+            <Stat.Root>
+              <Stat.Label>Consensus Stake</Stat.Label>
+              <Stat.ValueText>{fmtmAmount(balance.bal.hive_consensus, 'hive')}</Stat.ValueText>
+            </Stat.Root>
           )}
           {balance && balance.bal && balance.bal.consensus_unstaking > 0 && (
-            <Stat>
-              <StatLabel>Consensus Unstaking</StatLabel>
-              <StatNumber>{fmtmAmount(balance.bal.consensus_unstaking, 'hive')}</StatNumber>
-            </Stat>
+            <Stat.Root>
+              <Stat.Label>Consensus Unstaking</Stat.Label>
+              <Stat.ValueText>{fmtmAmount(balance.bal.consensus_unstaking, 'hive')}</Stat.ValueText>
+            </Stat.Root>
           )}
         </Stack>
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   )
 }

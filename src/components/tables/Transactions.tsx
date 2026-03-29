@@ -1,10 +1,11 @@
-import { Table, TableContainer, Tbody, Td, Text, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { Table, Text } from '@chakra-ui/react'
 import { Txn, Status } from '../../types/L2ApiResult'
 import { CheckXIcon, PendingIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, ContractLink, TxLink } from '../TableLink'
 import { abbreviateHash, fmtAmount, timeAgo } from '../../helpers'
 import { Coin, CoinLower } from '../../types/Payloads'
 import { TxIntentAllowance } from '../../types/L2ApiResult'
+import { Tooltip } from '../ui/tooltip'
 
 export const StatusIcon = ({ status }: { status: Status }) => {
   switch (status) {
@@ -52,35 +53,35 @@ const resolveTo = (o: Txn['ops'][number]): string => (o.type === 'call' ? o.data
 
 export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
   return (
-    <TableContainer my={'3'}>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th></Th>
-            <Th>Transaction ID</Th>
-            <Th>Age</Th>
-            <Th>Method</Th>
-            <Th>From</Th>
-            <Th></Th>
-            <Th>To</Th>
-            <Th>Amount</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <Table.ScrollArea my={'3'}>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader></Table.ColumnHeader>
+            <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Age</Table.ColumnHeader>
+            <Table.ColumnHeader>Method</Table.ColumnHeader>
+            <Table.ColumnHeader>From</Table.ColumnHeader>
+            <Table.ColumnHeader></Table.ColumnHeader>
+            <Table.ColumnHeader>To</Table.ColumnHeader>
+            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {txs.map((t) =>
             t.ops
               .filter((o) => !pov || pov === resolveFrom(t, o) || pov === resolveTo(o))
               .map((o, j) => (
-                <Tr key={`${t.id}-${j}`}>
-                  <Td>
+                <Table.Row key={`${t.id}-${j}`}>
+                  <Table.Cell>
                     <StatusIcon status={t.status} />
-                  </Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <TxLink val={t.id} />
-                  </Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>
                     {!!t.anchr_ts ? (
-                      <Tooltip placement="top" label={t.anchr_ts}>
+                      <Tooltip positioning={{ placement: 'top' }} content={t.anchr_ts}>
                         {timeAgo(t.anchr_ts)}
                       </Tooltip>
                     ) : (
@@ -88,16 +89,16 @@ export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
                         <i>Pending...</i>
                       </Text>
                     )}
-                  </Td>
-                  <Td>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Table.Cell>
+                  <Table.Cell>
                     <AccountLink val={resolveFrom(t, o)} />
-                  </Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <ToIcon />
-                  </Td>
-                  <Td>{o.type === 'call' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}</Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>{o.type === 'call' ? <ContractLink val={o.data.contract_id} /> : <AccountLink val={o.data.to} />}</Table.Cell>
+                  <Table.Cell>
                     {o.type === 'call' ? (
                       <AmountIntentAllowance
                         intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
@@ -107,12 +108,12 @@ export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
                     ) : (
                       fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)
                     )}
-                  </Td>
-                </Tr>
+                  </Table.Cell>
+                </Table.Row>
               ))
           )}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        </Table.Body>
+      </Table.Root>
+    </Table.ScrollArea>
   )
 }

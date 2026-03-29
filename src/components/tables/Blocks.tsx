@@ -1,66 +1,73 @@
-import { Link, Skeleton, Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { Link, Skeleton, Table } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { Block } from '../../types/HafApiResult'
 import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
+import { Tooltip } from '../ui/tooltip'
 
 export const Blocks = ({ blocks, isLoading }: { blocks?: Block[]; isLoading?: boolean }) => {
   return (
-    <TableContainer my={'3'} w={'full'}>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Id</Th>
-            <Th>Age</Th>
-            <Th>Proposer</Th>
-            <Th>Block Hash</Th>
-            <Th>Voted</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <Table.ScrollArea my={'3'} w={'full'}>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader>Id</Table.ColumnHeader>
+            <Table.ColumnHeader>Age</Table.ColumnHeader>
+            <Table.ColumnHeader>Proposer</Table.ColumnHeader>
+            <Table.ColumnHeader>Block Hash</Table.ColumnHeader>
+            <Table.ColumnHeader>Voted</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {isLoading ? (
-            <Tr>
+            <Table.Row>
               {[...Array(5)].map((_, i) => (
-                <Td key={i}>
+                <Table.Cell key={i}>
                   <Skeleton height="20px" />
-                </Td>
+                </Table.Cell>
               ))}
-            </Tr>
+            </Table.Row>
           ) : Array.isArray(blocks) ? (
             blocks.map((item, i) => (
-              <Tr key={i}>
-                <Td>
-                  <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
-                    {thousandSeperator(item.be_info.block_id)}
+              <Table.Row key={i}>
+                <Table.Cell>
+                  <Link asChild>
+                    <ReactRouterLink to={'/block/' + item.be_info.block_id}>
+                      {thousandSeperator(item.be_info.block_id)}
+                    </ReactRouterLink>
                   </Link>
-                </Td>
-                <Td sx={{ whiteSpace: 'nowrap' }}>
-                  <Tooltip label={item.ts} placement="top">
+                </Table.Cell>
+                <Table.Cell css={{ whiteSpace: 'nowrap' }}>
+                  <Tooltip content={item.ts} positioning={{ placement: 'top' }}>
                     {timeAgo(item.ts)}
                   </Tooltip>
-                </Td>
-                <Td>
-                  <Link as={ReactRouterLink} to={'/address/hive:' + item.proposer}>
-                    {item.proposer}
+                </Table.Cell>
+                <Table.Cell>
+                  <Link asChild>
+                    <ReactRouterLink to={'/address/hive:' + item.proposer}>
+                      {item.proposer}
+                    </ReactRouterLink>
                   </Link>
-                </Td>
-                <Td>
-                  <Tooltip label={item.block} placement="top">
-                    <Link as={ReactRouterLink} to={'/block/' + item.be_info.block_id}>
-                      {abbreviateHash(item.block)}
+                </Table.Cell>
+                <Table.Cell>
+                  <Tooltip content={item.block} positioning={{ placement: 'top' }}>
+                    <Link asChild>
+                      <ReactRouterLink to={'/block/' + item.be_info.block_id}>
+                        {abbreviateHash(item.block)}
+                      </ReactRouterLink>
                     </Link>
                   </Tooltip>
-                </Td>
-                <Td maxW={'200px'}>
+                </Table.Cell>
+                <Table.Cell maxW={'200px'}>
                   <ProgressBarPct val={(item.be_info.voted_weight / item.be_info.eligible_weight) * 100} />
-                </Td>
-              </Tr>
+                </Table.Cell>
+              </Table.Row>
             ))
           ) : (
-            <Tr></Tr>
+            <Table.Row></Table.Row>
           )}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        </Table.Body>
+      </Table.Root>
+    </Table.ScrollArea>
   )
 }

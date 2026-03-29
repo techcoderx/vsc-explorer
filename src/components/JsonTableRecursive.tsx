@@ -1,4 +1,4 @@
-import { Table, Tbody, Text } from '@chakra-ui/react'
+import { Table, Text } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import TableRow from './TableRow'
 
@@ -10,8 +10,8 @@ interface JTR {
 
 const JsonToTableRecursive = ({ json, isInCard = false, minimalSpace = false }: JTR): ReactNode => {
   return (
-    <Table variant={'unstyled'}>
-      <Tbody>
+    <Table.Root>
+      <Table.Body>
         {Object.entries(json).map(([key, value]) => {
           if (value === null)
             return (
@@ -46,8 +46,8 @@ const JsonToTableRecursive = ({ json, isInCard = false, minimalSpace = false }: 
               </TableRow>
             )
         })}
-      </Tbody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   )
 }
 

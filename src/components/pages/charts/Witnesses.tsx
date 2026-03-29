@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Box, Card, CardBody, CardHeader, Heading, Text, useColorMode } from '@chakra-ui/react'
+import { Box, Card, Heading, Text } from '@chakra-ui/react'
+import { useColorMode } from '../../ui/color-mode'
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { roundFloat, thousandSeperator } from '../../../helpers'
@@ -85,28 +86,28 @@ export const WitnessCharts = () => {
       <PageTitle title="Witness Charts" />
       <Text fontSize={'5xl'}>Witness Charts</Text>
       <hr />
-      <Card my={'6'}>
-        <CardHeader>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>Active Stake</Heading>
           <Text>Total eligible HIVE consensus stake for each day</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <ActiveStake />
           </Box>
-        </CardBody>
-      </Card>
-      <Card my={'6'}>
-        <CardHeader>
+        </Card.Body>
+      </Card.Root>
+      <Card.Root my={'6'}>
+        <Card.Header pb={'4'}>
           <Heading fontSize={'xl'}>Active Witnesses</Heading>
           <Text>Number of daily active witnesses</Text>
-        </CardHeader>
-        <CardBody mt={'-6'}>
+        </Card.Header>
+        <Card.Body pt={'0'}>
           <Box h={'400px'}>
             <DailyActiveWitnesses />
           </Box>
-        </CardBody>
-      </Card>
+        </Card.Body>
+      </Card.Root>
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Box, Text, Table, Thead, Tbody, Th, Tr, Td, Link, FormControl, FormLabel, Switch } from '@chakra-ui/react'
+import { Box, Text, Table, Link, Field } from '@chakra-ui/react'
+import { Switch } from '../ui/switch'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { themeColorScheme, getConf } from '../../settings'
@@ -56,63 +57,71 @@ const WitnessSchedule = () => {
       <br />
       <Text>
         Hive head block:{' '}
-        <Link as={ReactRouterLink} to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank">
-          {isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0}
+        <Link asChild>
+          <ReactRouterLink to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank">
+            {isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0}
+          </ReactRouterLink>
         </Link>
       </Text>
       <Box overflowX="auto" maxW={'xl'} margin={'10px auto 15px auto'}>
-        <FormControl display="flex" alignItems="center" mb={'10px'}>
-          <FormLabel htmlFor="witsch-expand" mb="0">
+        <Field.Root display="flex" alignItems="center" mb={'10px'}>
+          <Field.Label htmlFor="witsch-expand" mb="0">
             Show Older Slots
-          </FormLabel>
-          <Switch id="witsch-expand" colorScheme={themeColorScheme} size={'lg'} onChange={() => setExpSchedule(!expSchedule)} />
-        </FormControl>
-        <Table variant={'simple'}>
-          <Thead>
-            <Tr>
-              <Th>Username</Th>
-              <Th>L1 Block</Th>
-              <Th>Magi Block</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+          </Field.Label>
+          <Switch id="witsch-expand" colorPalette={themeColorScheme} size={'lg'} onCheckedChange={() => setExpSchedule(!expSchedule)} />
+        </Field.Root>
+        <Table.Root variant={'line'}>
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>Username</Table.ColumnHeader>
+              <Table.ColumnHeader>L1 Block</Table.ColumnHeader>
+              <Table.ColumnHeader>Magi Block</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {isScheduleSuccess && isPropSuccess
               ? schedule.data.witnessSchedule.map((sch, i) => {
                   return sch.bn - prop.last_processed_block > -50 || expSchedule ? (
-                    <Tr
+                    <Table.Row
                       key={i}
                       opacity={sch.bn - prop.last_processed_block > -10 ? '100%' : '50%'}
                       fontWeight={
                         sch.bn - prop.last_processed_block > -10 && sch.bn - prop.last_processed_block <= 0 ? 'bold' : 'normal'
                       }
                     >
-                      <Td>
-                        <Link as={ReactRouterLink} to={'/address/hive:' + sch.account}>
-                          {sch.account}
+                      <Table.Cell>
+                        <Link asChild>
+                          <ReactRouterLink to={'/address/hive:' + sch.account}>
+                            {sch.account}
+                          </ReactRouterLink>
                         </Link>
-                      </Td>
-                      <Td>
+                      </Table.Cell>
+                      <Table.Cell>
                         {sch.bn - prop.last_processed_block < 0 ? (
-                          <Link as={ReactRouterLink} to={beL1BlockUrl(sch.bn)} target="_blank">
-                            {thousandSeperator(sch.bn)}
+                          <Link asChild>
+                            <ReactRouterLink to={beL1BlockUrl(sch.bn)} target="_blank">
+                              {thousandSeperator(sch.bn)}
+                            </ReactRouterLink>
                           </Link>
                         ) : (
                           thousandSeperator(sch.bn)
                         )}
-                      </Td>
-                      <Td>
+                      </Table.Cell>
+                      <Table.Cell>
                         {blocksProduced.current[sch.bn] ? (
-                          <Link as={ReactRouterLink} to={'/block/' + blocksProduced.current[sch.bn].block}>
-                            {abbreviateHash(blocksProduced.current[sch.bn].block, 12, 0)}
+                          <Link asChild>
+                            <ReactRouterLink to={'/block/' + blocksProduced.current[sch.bn].block}>
+                              {abbreviateHash(blocksProduced.current[sch.bn].block, 12, 0)}
+                            </ReactRouterLink>
                           </Link>
                         ) : null}
-                      </Td>
-                    </Tr>
+                      </Table.Cell>
+                    </Table.Row>
                   ) : null
                 })
               : null}
-          </Tbody>
-        </Table>
+          </Table.Body>
+        </Table.Root>
       </Box>
     </>
   )

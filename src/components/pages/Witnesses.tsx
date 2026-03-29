@@ -1,4 +1,4 @@
-import { Text, TableContainer, Table, Thead, Tbody, Tr, Th, Td, Skeleton, Link, Tooltip, HStack, Box } from '@chakra-ui/react'
+import { Text, Table, Skeleton, Link, HStack, Box } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
@@ -6,6 +6,7 @@ import { fetchEpoch, fetchWitnessesStats } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
 import { useMemo, useState } from 'react'
 import { PageTitle } from '../PageTitle'
+import { Tooltip } from '../ui/tooltip'
 
 const Witnesses = () => {
   const [sort, setSort] = useState<string>('')
@@ -38,13 +39,13 @@ const Witnesses = () => {
       <Text>
         Total {epoch ? epoch.members.length : 0} active witnesses. Participation rate: {participation.toFixed(2)}%
       </Text>
-      <TableContainer my={'3'}>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Idx</Th>
-              <Th>Username</Th>
-              <Th
+      <Table.ScrollArea my={'3'}>
+        <Table.Root variant="line">
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>Idx</Table.ColumnHeader>
+              <Table.ColumnHeader>Username</Table.ColumnHeader>
+              <Table.ColumnHeader
                 cursor={'pointer'}
                 onClick={() => {
                   setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
@@ -54,64 +55,70 @@ const Witnesses = () => {
                   <Box>Weight</Box>
                   {sort === 'weight' ? <FaAngleDown /> : sort === 'weight_asc' ? <FaAngleUp /> : <FaArrowsUpDown />}
                 </HStack>
-              </Th>
-              <Th>Last Block</Th>
-              <Th>Blocks Produced</Th>
-              <Th>Last Epoch</Th>
-              <Th>Elections</Th>
-              <Th>DID Key</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader>Last Block</Table.ColumnHeader>
+              <Table.ColumnHeader>Blocks Produced</Table.ColumnHeader>
+              <Table.ColumnHeader>Last Epoch</Table.ColumnHeader>
+              <Table.ColumnHeader>Elections</Table.ColumnHeader>
+              <Table.ColumnHeader>DID Key</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {isLoading ? (
-              <Tr>
+              <Table.Row>
                 {[...Array(8)].map((_, i) => (
-                  <Td key={i}>
+                  <Table.Cell key={i}>
                     <Skeleton h={'20px'} />
-                  </Td>
+                  </Table.Cell>
                 ))}
-              </Tr>
+              </Table.Row>
             ) : !!statsSorted ? (
               statsSorted.map((m, i) => (
-                <Tr key={i}>
-                  <Td>{i + 1}</Td>
-                  <Td>
-                    <Link as={ReactRouterLink} to={'/address/hive:' + m._id}>
-                      {m._id}
+                <Table.Row key={i}>
+                  <Table.Cell>{i + 1}</Table.Cell>
+                  <Table.Cell>
+                    <Link asChild>
+                      <ReactRouterLink to={'/address/hive:' + m._id}>
+                        {m._id}
+                      </ReactRouterLink>
                     </Link>
-                  </Td>
-                  <Td>{fmtmAmount(m.weight, 'HIVE')}</Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>{fmtmAmount(m.weight, 'HIVE')}</Table.Cell>
+                  <Table.Cell>
                     {m.last_block ? (
-                      <Link as={ReactRouterLink} to={'/block/' + m.last_block}>
-                        {thousandSeperator(m.last_block || 0)}
+                      <Link asChild>
+                        <ReactRouterLink to={'/block/' + m.last_block}>
+                          {thousandSeperator(m.last_block || 0)}
+                        </ReactRouterLink>
                       </Link>
                     ) : (
                       'N/A'
                     )}
-                  </Td>
-                  <Td>{thousandSeperator(m.block_count || 0)}</Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>{thousandSeperator(m.block_count || 0)}</Table.Cell>
+                  <Table.Cell>
                     {m.last_epoch ? (
-                      <Link as={ReactRouterLink} to={'/epoch/' + m.last_epoch}>
-                        {thousandSeperator(m.last_epoch)}
+                      <Link asChild>
+                        <ReactRouterLink to={'/epoch/' + m.last_epoch}>
+                          {thousandSeperator(m.last_epoch)}
+                        </ReactRouterLink>
                       </Link>
                     ) : (
                       'N/A'
                     )}
-                  </Td>
-                  <Td>{thousandSeperator(m.election_count || 0)}</Td>
-                  <Td sx={{ whiteSpace: 'nowrap' }} isTruncated>
-                    <Tooltip placement="top" label={m.did_key}>
+                  </Table.Cell>
+                  <Table.Cell>{thousandSeperator(m.election_count || 0)}</Table.Cell>
+                  <Table.Cell css={{ whiteSpace: 'nowrap' }} truncate>
+                    <Tooltip positioning={{ placement: 'top' }} content={m.did_key}>
                       {abbreviateHash(m.did_key, 20, 0)}
                     </Tooltip>
-                  </Td>
-                </Tr>
+                  </Table.Cell>
+                </Table.Row>
               ))
             ) : null}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     </>
   )
 }
