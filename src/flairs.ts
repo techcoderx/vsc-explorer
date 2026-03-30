@@ -3,9 +3,10 @@ export const Flairs: {
   [name: string]: string
 } = {
   'did:vsc:oracle:btc': 'BTC Oracle',
+  'hive:magi.network': 'Magi Team',
   'hive:vsc.ms-8968d20c': 'Old Multisig Gateway',
   'hive:vsc.gateway': 'Multisig Gateway',
-  'hive:vsc.network': 'Official Account',
+  'hive:vsc.network': 'Magi Team 2',
   'hive:vsc.dao': 'Magi DAO',
   'hive:techcoderx': 'Magi Blocks Dev',
   vsc1Bem8RnoLgGPP7E2MBN52ekrdVqy2LNpSqF: 'Hello World',
