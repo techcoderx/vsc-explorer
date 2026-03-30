@@ -31,7 +31,7 @@ const DailyContracts = () => {
           formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
           labelFormatter={(date: Date) => `Date: ${date}`}
           contentStyle={{
-            backgroundColor: colorMode === 'dark' ? '#1a1a1a' : '#edf2f7',
+            backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',
             border: '1px solid #333'
           }}

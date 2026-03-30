@@ -37,6 +37,7 @@ import { ContractsCharts } from './components/pages/charts/Contracts'
 import { WitnessCharts } from './components/pages/charts/Witnesses'
 import { getConf } from './settings'
 import { Broadcast } from './components/pages/tools/Broadcast'
+import Settings from './components/pages/Settings'
 import { wagmiAdapter, networks } from './wagmiConfig'
 
 const router = createBrowserRouter([
@@ -195,6 +196,10 @@ const router = createBrowserRouter([
       {
         path: '/tools/broadcast',
         element: <Broadcast />
+      },
+      {
+        path: '/settings',
+        element: <Settings />
       },
       {
         path: '*',
