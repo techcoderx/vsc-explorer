@@ -2,7 +2,7 @@ import { Table, Text } from '@chakra-ui/react'
 import { Txn, Status } from '../../types/L2ApiResult'
 import { CheckXIcon, PendingIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, ContractLink, TxLink } from '../TableLink'
-import { abbreviateHash, fmtAmount, timeAgo } from '../../helpers'
+import { abbreviateHash, fmtAmount, formatBaseUnits, timeAgo } from '../../helpers'
 import { Coin, CoinLower } from '../../types/Payloads'
 import { TxIntentAllowance } from '../../types/L2ApiResult'
 import { Tooltip } from '../ui/tooltip'
@@ -19,9 +19,9 @@ export const StatusIcon = ({ status }: { status: Status }) => {
 }
 
 export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[] }) => {
-  const totalHive = intents.reduce((pv, v) => (v.args.token === 'hive' ? pv + parseFloat(v.args.limit) : pv), 0)
-  const totalHbd = intents.reduce((pv, v) => (v.args.token === 'hbd' ? pv + parseFloat(v.args.limit) : pv), 0)
-  const totalStakedHbd = intents.reduce((pv, v) => (v.args.token === 'hbd_savings' ? pv + parseFloat(v.args.limit) : pv), 0)
+  const totalHive = intents.reduce((pv, v) => (v.args.token === 'hive' ? pv + formatBaseUnits(v.args.limit) : pv), 0)
+  const totalHbd = intents.reduce((pv, v) => (v.args.token === 'hbd' ? pv + formatBaseUnits(v.args.limit) : pv), 0)
+  const totalStakedHbd = intents.reduce((pv, v) => (v.args.token === 'hbd_savings' ? pv + formatBaseUnits(v.args.limit) : pv), 0)
   const first: [CoinLower, number] | null =
     totalHive > 0
       ? ['hive', totalHive]
@@ -103,10 +103,8 @@ export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
                       <AmountIntentAllowance
                         intents={Array.isArray(o.data.intents) ? o.data.intents.filter((i) => i.type === 'transfer.allow') : []}
                       />
-                    ) : o.type === 'deposit' ? (
-                      fmtAmount(o.data.amount / 1000, o.data.asset.toUpperCase() as Coin)
                     ) : (
-                      fmtAmount(parseFloat(o.data.amount || '0'), o.data.asset.toUpperCase() as Coin)
+                      fmtAmount(formatBaseUnits(o.data.amount), o.data.asset.toUpperCase() as Coin)
                     )}
                   </Table.Cell>
                 </Table.Row>

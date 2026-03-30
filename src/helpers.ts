@@ -74,6 +74,15 @@ export const validateHiveUsername = (value: string): string | null => {
   return null
 }
 
+export const formatBaseUnits = (amount: string | number, decimals: number = 3): number => {
+  const str = amount.toString()
+  const parts = str.split('.')
+  if (parts.length === 2) {
+    return parseFloat(str)
+  }
+  return parseInt(str, 10) / Math.pow(10, decimals)
+}
+
 export const fmtAmount = (amount: number, asset: Coin | CoinLower) => {
   return `${thousandSeperator(amount)} ${asset.toUpperCase()}`
 }
