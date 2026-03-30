@@ -43,10 +43,10 @@ export const globalCss = {
     borderColor: '#4a5568 !important',
     borderBottomColor: 'var(--magi-surface) !important'
   },
-  '.dark[data-bg-theme="blue"] .chakra-table__cell, .dark[data-bg-theme="blue"] .chakra-table__columnHeader': {
+  '.dark[data-bg-theme="blue"] .chakra-card__root .chakra-table__cell, .dark[data-bg-theme="blue"] .chakra-card__root .chakra-table__columnHeader': {
     borderColor: '#4a5568 !important'
   },
-  '.dark[data-bg-theme="blue"] .chakra-accordion__item': {
+  '.dark[data-bg-theme="blue"] .chakra-card__root .chakra-accordion__item': {
     borderColor: '#4a5568 !important'
   }
 }
