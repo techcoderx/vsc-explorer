@@ -29,7 +29,7 @@ const Witnesses = () => {
     } else {
       return statsUnsorted
     }
-  }, [stats, sort])
+  }, [stats, sort, statsUnsorted])
   return (
     <>
       <PageTitle title="Witnesses" />
@@ -78,18 +78,14 @@ const Witnesses = () => {
                   <Table.Cell>{i + 1}</Table.Cell>
                   <Table.Cell>
                     <Link asChild>
-                      <ReactRouterLink to={'/address/hive:' + m._id}>
-                        {m._id}
-                      </ReactRouterLink>
+                      <ReactRouterLink to={'/address/hive:' + m._id}>{m._id}</ReactRouterLink>
                     </Link>
                   </Table.Cell>
                   <Table.Cell>{fmtmAmount(m.weight, 'HIVE')}</Table.Cell>
                   <Table.Cell>
                     {m.last_block ? (
                       <Link asChild>
-                        <ReactRouterLink to={'/block/' + m.last_block}>
-                          {thousandSeperator(m.last_block || 0)}
-                        </ReactRouterLink>
+                        <ReactRouterLink to={'/block/' + m.last_block}>{thousandSeperator(m.last_block || 0)}</ReactRouterLink>
                       </Link>
                     ) : (
                       'N/A'
@@ -99,9 +95,7 @@ const Witnesses = () => {
                   <Table.Cell>
                     {m.last_epoch ? (
                       <Link asChild>
-                        <ReactRouterLink to={'/epoch/' + m.last_epoch}>
-                          {thousandSeperator(m.last_epoch)}
-                        </ReactRouterLink>
+                        <ReactRouterLink to={'/epoch/' + m.last_epoch}>{thousandSeperator(m.last_epoch)}</ReactRouterLink>
                       </Link>
                     ) : (
                       'N/A'

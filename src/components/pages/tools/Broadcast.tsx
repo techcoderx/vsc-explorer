@@ -73,7 +73,7 @@ export const Broadcast = () => {
         result = await aioha.transfer(
           getConf().msAccount,
           amount,
-          //@ts-ignore
+          //@ts-expect-error - incorrect type signature in aioha transfer
           asset.toUpperCase() as Asset,
           'to=' + to.replace('hive:', '').replace('did:pkh:eip155:1:', '')
         )

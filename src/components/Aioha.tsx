@@ -109,7 +109,7 @@ export const AiohaModal = ({
   const [error, setError] = useState<string>('')
   const [hiveAuthPl, setHiveAuthPl] = useState<{ payload: string; cancel: () => void }>()
   useEffect(() => {
-    const handler = (payload: string, _: any, cancel: () => void) => {
+    const handler = (payload: string, _: unknown, cancel: () => void) => {
       setError('')
       setHiveAuthPl({ payload, cancel })
       setPage(3)
@@ -118,7 +118,7 @@ export const AiohaModal = ({
     return () => {
       aioha.off('hiveauth_login_request', handler)
     }
-  }, [])
+  }, [aioha])
   const proceedLogin = async () => {
     setError('')
     setInProgress(true)
@@ -220,7 +220,6 @@ export const AiohaModal = ({
                   </Button>
                   <Flex direction={'row'} mt={'3'} gap={'2'}>
                     <Input
-
                       placeholder="Enter Hive Username"
                       value={usernameInput}
                       onKeyDown={(evt) => (evt.key === 'Enter' ? proceedLogin() : null)}

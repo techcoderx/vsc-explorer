@@ -2,6 +2,7 @@ import { Flex, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { Link as ReactRouterLink, To } from 'react-router'
 import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
+import { btnGroupCss } from '../styles/btnGroup'
 
 interface PaginationProps {
   path: string
@@ -12,25 +13,6 @@ interface PaginationProps {
 interface Wrapper {
   to: To
   children: ReactNode
-}
-
-export const attachedGroupCss = {
-  display: 'inline-flex',
-  isolation: 'isolate',
-  '& > button': {
-    borderRadius: 0
-  },
-  '& > button:first-of-type': {
-    borderStartStartRadius: 'l2',
-    borderEndStartRadius: 'l2'
-  },
-  '& > button:last-of-type': {
-    borderStartEndRadius: 'l2',
-    borderEndEndRadius: 'l2'
-  },
-  '& > button:not(:last-of-type)': {
-    marginInlineEnd: '-1px'
-  }
 }
 
 export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
@@ -53,18 +35,8 @@ export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
 export const LinkedBtn = ({ to, children }: Wrapper) => {
   return (
     <Button size="md" variant="outline" colorPalette="gray" padding="0 0">
-      <Box
-        asChild
-        w="100%"
-        h="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        padding="0px 16px"
-      >
-        <ReactRouterLink to={to}>
-          {children}
-        </ReactRouterLink>
+      <Box asChild w="100%" h="100%" display="flex" alignItems="center" justifyContent="center" padding="0px 16px">
+        <ReactRouterLink to={to}>{children}</ReactRouterLink>
       </Box>
     </Button>
   )
@@ -73,7 +45,7 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
 const Pagination = ({ path, currentPageNum, maxPageNum }: PaginationProps) => {
   return (
     <Flex justifyContent={'center'}>
-      <Box css={attachedGroupCss}>
+      <Box css={btnGroupCss}>
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>Previous</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={path + '/' + (currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
@@ -104,7 +76,7 @@ interface prevNextBtnProps {
 export const PrevNextBtns = ({ toPrev, toNext }: prevNextBtnProps) => {
   return (
     <Box margin="10px 0px">
-      <Box css={attachedGroupCss} float="right">
+      <Box css={btnGroupCss} float="right">
         {toPrev ? <LinkedBtn to={toPrev}>Previous</LinkedBtn> : null}
         {toNext ? <LinkedBtn to={toNext}>Next</LinkedBtn> : null}
       </Box>

@@ -5,8 +5,9 @@ import { TxCard } from '../TxCard'
 import { fetchLatestTxs, fetchL2TxnsBy, fetchProps } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
-import Pagination, { CurrentPageBtn, LinkedBtn, attachedGroupCss } from '../Pagination'
+import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
+import { btnGroupCss } from '../../styles/btnGroup'
 
 export const NewHiveTxs = () => {
   const { data: txs } = useQuery({
@@ -62,7 +63,7 @@ export const NewTxs = () => {
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Box my={'auto'} py={'1'}>
-          <Box css={attachedGroupCss} float={'right'}>
+          <Box css={btnGroupCss} float={'right'}>
             {location.pathname !== '/transactions' && !location.pathname.startsWith('/transactions/magi') ? (
               <LinkedBtn to={'/transactions'}>Magi</LinkedBtn>
             ) : (

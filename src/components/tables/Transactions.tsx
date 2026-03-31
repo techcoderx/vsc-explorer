@@ -31,9 +31,9 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
           ? ['hbd_savings', totalStakedHbd]
           : null
   let tokenCount = 0
-  totalHive > 0 && (tokenCount += 1)
-  totalHbd > 0 && (tokenCount += 1)
-  totalStakedHbd > 0 && (tokenCount += 1)
+  if (totalHive > 0) tokenCount += 1
+  if (totalHbd > 0) tokenCount += 1
+  if (totalStakedHbd > 0) tokenCount += 1
   return first !== null ? (
     <Text>
       {fmtAmount(first[1], first[0])}

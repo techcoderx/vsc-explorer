@@ -138,7 +138,7 @@ export const useNetworkStats = (enabled: boolean = true) => {
     },
     enabled
   })
-  return data
+  return data || []
 }
 
 export const cidSearch = async (search_cid: string): Promise<CIDSearchResult> => {
@@ -149,7 +149,7 @@ export const fetchL1Rest = async <T>(route: string): Promise<T> => {
   return await (await fetch(`${conf.hiveApi}${route}`)).json()
 }
 
-const gql = async <T>(query: string, variables: { [key: string]: any } = {}) => {
+const gql = async <T>(query: string, variables: { [key: string]: unknown } = {}) => {
   return (await (
     await fetch(conf.gqlApi, {
       method: 'POST',

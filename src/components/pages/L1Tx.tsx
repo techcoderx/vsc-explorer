@@ -282,7 +282,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
       )
     }
     return result
-  }, [outContents])
+  }, [outContents, txn, tssCount])
   const { data: tssReqStatus } = useQuery({
     queryKey: ['vsc-tx-tss-status', txn.id],
     queryFn: () => fetchTssReqStatuses(tssOps),
@@ -585,7 +585,7 @@ const L1Tx = () => {
       clearInterval(intervalRef.current)
     }
     return () => clearInterval(intervalRef.current)
-  }, [t])
+  }, [vscTx, refetch])
   return (
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
@@ -696,7 +696,7 @@ const L2Tx = () => {
       clearInterval(intervalRef.current)
     }
     return () => clearInterval(intervalRef.current)
-  }, [data])
+  }, [tx, refetch])
   return (
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />

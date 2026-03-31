@@ -2,7 +2,7 @@ import { cvApi } from './settings'
 import { CvInfo, SrcFile } from './types/CvResult'
 
 export const cvInfo = async (address: string): Promise<CvInfo | null> => {
-  let r = await fetch(`${cvApi}/contract/${address}`)
+  const r = await fetch(`${cvApi}/contract/${address}`)
   if (r.status === 404) return null
   return await r.json()
 }

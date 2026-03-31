@@ -161,7 +161,7 @@ interface TxDataCall {
   data: {
     action: string
     contract_id: string
-    payload: any
+    payload: unknown
     rc_limit: number
     intents: TxIntentAllowance[]
     caller?: string

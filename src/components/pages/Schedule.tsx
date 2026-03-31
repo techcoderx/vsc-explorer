@@ -32,20 +32,21 @@ const WitnessSchedule = () => {
     enabled: !!currentSlot,
     refetchInterval: 3000
   })
+  // eslint-disable-next-line react-hooks/refs
   if (blockAtCurrentSlot && !blockAtCurrentSlot.error) blocksProduced.current[currentSlot] = blockAtCurrentSlot
   useEffect(() => {
     const l2BlockNums = Object.keys(blocksProduced.current)
     if (l2BlockNums.length > 50) {
       // cleanup blocksProduced periodically
       let min = parseInt(l2BlockNums[0])
-      for (let i in l2BlockNums) if (parseInt(l2BlockNums[i]) < min) min = parseInt(l2BlockNums[i])
+      for (const i in l2BlockNums) if (parseInt(l2BlockNums[i]) < min) min = parseInt(l2BlockNums[i])
       delete blocksProduced.current[min.toString()]
     }
   }, [blockAtCurrentSlot])
   useEffect(() => {
     const fb = async () => {
       const blocks: Block[] = await (await fetch(`${getConf().beApi}/blocks?count=50`)).json()
-      for (let b in blocks) blocksProduced.current[blocks[b].slot_height] = blocks[b]
+      for (const b in blocks) blocksProduced.current[blocks[b].slot_height] = blocks[b]
     }
     fb()
   }, [])
@@ -80,6 +81,7 @@ const WitnessSchedule = () => {
           </Table.Header>
           <Table.Body>
             {isScheduleSuccess && isPropSuccess
+              // eslint-disable-next-line react-hooks/refs
               ? schedule.data.witnessSchedule.map((sch, i) => {
                   return sch.bn - prop.last_processed_block > -50 || expSchedule ? (
                     <Table.Row

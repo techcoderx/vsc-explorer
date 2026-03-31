@@ -22,7 +22,6 @@ import {
   useBreakpointValue
 } from '@chakra-ui/react'
 import { LuCircleCheck, LuCircleHelp, LuTriangleAlert, LuPlus } from 'react-icons/lu'
-import { attachedGroupCss } from '../Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useNavigate } from 'react-router'
 import {
@@ -54,6 +53,7 @@ import { AiohaModal } from '../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
 import { toaster } from '../ui/toaster'
+import { btnGroupCss } from '../../styles/btnGroup'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const {
@@ -73,8 +73,8 @@ const StorageProof = ({ contract }: { contract: ContractType }) => {
     queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${contract.tx_id}?include-virtual=true`)
   })
   const proofSig = useMemo(() => {
-    if (!!deployTx) {
-      for (let op in deployTx.transaction_json.operations) {
+    if (deployTx) {
+      for (const op in deployTx.transaction_json.operations) {
         if (deployTx.transaction_json.operations[op].type === 'custom_json_operation') {
           const json = JSON.parse(deployTx.transaction_json.operations[op].value.json)
           if (
@@ -89,7 +89,7 @@ const StorageProof = ({ contract }: { contract: ContractType }) => {
         }
       }
     }
-  }, [deployTx])
+  }, [deployTx, contract])
   return deployTxLoading || mbLoading ? (
     <Text>Loading deployment tx...</Text>
   ) : deployTxErr || mbErr ? (
@@ -120,7 +120,7 @@ const ReadState = ({ contractId }: { contractId: string }) => {
       } else {
         setVal(sk.data.state[key])
       }
-    } catch (e) {
+    } catch {
       setErr('Failed to fetch state key')
     }
     setIsLoading(false)
@@ -134,7 +134,6 @@ const ReadState = ({ contractId }: { contractId: string }) => {
           value={key}
           onChange={(e) => setKey(e.target.value)}
           onKeyDown={(e) => (e.key === 'Enter' ? read() : null)}
-
         />
         <Button colorPalette={themeColorScheme} onClick={read} disabled={isLoading}>
           <Flex gap={'2'} align={'center'}>
@@ -151,7 +150,11 @@ const ReadState = ({ contractId }: { contractId: string }) => {
       )}
       {!!val && (
         <Box alignItems={'left'} w={'full'} px={'1'}>
-          <RadioGroup.Root onValueChange={(details) => setFormat(details.value ?? '0')} value={format} colorPalette={themeColorScheme}>
+          <RadioGroup.Root
+            onValueChange={(details) => setFormat(details.value ?? '0')}
+            value={format}
+            colorPalette={themeColorScheme}
+          >
             <Stack direction={'row'}>
               <RadioGroup.Item value="0">
                 <RadioGroup.ItemHiddenInput />
@@ -195,7 +198,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   const [newIntentAmt, setNewIntentAmt] = useState('')
   const [newIntentToken, setNewIntentToken] = useState<CoinLower>('hive')
   const intents = useRef({ hive: 0, hbd: 0, hbd_savings: 0 })
-  const [_, setIntentCleared] = useState(false)
+  const [, setIntentCleared] = useState(false)
   const addIntent = () => {
     const amt = parseFloat(newIntentAmt)
     if (!user || !balance || !balance.bal) {
@@ -290,19 +293,10 @@ const CallContract = ({ contractId }: { contractId: string }) => {
             <Field.Root>
               <Field.Label>Method</Field.Label>
               {!verifInfo || !!verifInfo.error || !Array.isArray(verifInfo.exports) || verifInfo.exports.length === 0 ? (
-                <Input
-                  type="text"
-                  value={methodName}
-                  onChange={(e) => setMethodName(e.target.value)}
-        
-                />
+                <Input type="text" value={methodName} onChange={(e) => setMethodName(e.target.value)} />
               ) : (
                 <NativeSelect.Root>
-                  <NativeSelect.Field
-          
-                    value={methodName}
-                    onChange={(e) => setMethodName(e.target.value as KeyTypes)}
-                  >
+                  <NativeSelect.Field value={methodName} onChange={(e) => setMethodName(e.target.value as KeyTypes)}>
                     {verifInfo.exports.map((exp, i) => (
                       <option key={i} value={exp}>
                         {exp}
@@ -315,12 +309,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
             </Field.Root>
             <Field.Root>
               <Field.Label>Payload</Field.Label>
-              <Input
-                type="text"
-                value={payload}
-                onChange={(e) => setPayload(e.target.value)}
-      
-              />
+              <Input type="text" value={payload} onChange={(e) => setPayload(e.target.value)} />
             </Field.Root>
             <Field.Root>
               <Field.Label>Intents</Field.Label>
@@ -330,17 +319,12 @@ const CallContract = ({ contractId }: { contractId: string }) => {
                     type="number"
                     value={newIntentAmt}
                     onChange={(e) => setNewIntentAmt(e.target.value)}
-          
                     maxW={useBreakpointValue({ base: undefined, sm: '56' })}
                     textAlign={'right'}
                     placeholder={!!balance && !!balance.bal ? `Balance: ${balance.bal[newIntentToken] / 1000}` : undefined}
                   />
                   <NativeSelect.Root width="auto" minW={'24'}>
-                    <NativeSelect.Field
-                      value={newIntentToken}
-                      onChange={(e) => setNewIntentToken(e.target.value as CoinLower)}
-            
-                    >
+                    <NativeSelect.Field value={newIntentToken} onChange={(e) => setNewIntentToken(e.target.value as CoinLower)}>
                       <option value="hive">HIVE</option>
                       <option value="hbd">HBD</option>
                       <option value="hbd_savings">sHBD</option>
@@ -358,13 +342,14 @@ const CallContract = ({ contractId }: { contractId: string }) => {
                 </Stack>
               </Stack>
               <Field.HelperText>
+                {/* eslint-disable-next-line react-hooks/refs */}
                 Current Allowance: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
               </Field.HelperText>
             </Field.Root>
             {wallet === Wallet.Hive && (
               <Field.Root>
                 <Field.Label>Key Type</Field.Label>
-                <Box css={attachedGroupCss}>
+                <Box css={btnGroupCss}>
                   <Button
                     colorPalette={keyType === KeyTypes.Posting ? themeColorScheme : 'gray'}
                     variant="outline"
@@ -501,8 +486,8 @@ export const Contract = () => {
                       <Heading fontSize={'md'}>Contract source code verified</Heading>
                     </Flex>
                     <Text m={'5px 0'}>
-                      Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the
-                      contract. This does not mean the contract is safe to interact with.
+                      Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the contract.
+                      This does not mean the contract is safe to interact with.
                     </Text>
                     <Card.Root mt={'5'} mb={'5'}>
                       <Card.Body>

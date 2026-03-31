@@ -48,7 +48,7 @@ export type CoinLower = 'hive' | 'hbd' | 'hbd_savings'
 export interface CallContractPayload {
   contract_id: string
   action: string
-  payload: any
+  payload: unknown
   intents: []
   rc_limit: number
 }

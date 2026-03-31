@@ -149,12 +149,12 @@ export const VerifyContract = () => {
       return toaster.error({ title: 'Failed to call backend for contract verification status' })
     }
     try {
-      let fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
+      const fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
       if (fetchedRepo.status !== 200) {
         return toaster.error({ title: 'Failed to fetch repository info with status code ' + fetchedRepo.status })
       }
       if (gitBranch.length > 0) {
-        let fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
+        const fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
         if (fetchedBranch.status !== 200) {
           return toaster.error({ title: 'Failed to fetch branch info with status code ' + fetchedBranch.status })
         }
@@ -170,8 +170,8 @@ export const VerifyContract = () => {
       duration: Infinity
     })
     try {
-      let msgToSign = await generateMessageToSign(user!)
-      let sign = await aioha.signMessage(msgToSign, KeyTypes.Posting)
+      const msgToSign = await generateMessageToSign(user!)
+      const sign = await aioha.signMessage(msgToSign, KeyTypes.Posting)
       if (!sign.success) {
         if (toastIdRef.current) {
           toaster.dismiss(toastIdRef.current)
@@ -194,7 +194,7 @@ export const VerifyContract = () => {
         return
       }
       const authResult = await authReq.json()
-      let createReq = await fetch(`${cvApi}/verify/${addr}/new`, {
+      const createReq = await fetch(`${cvApi}/verify/${addr}/new`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ export const VerifyContract = () => {
       })
       if (createReq.status !== 200) {
         setIsSpinning(false)
-        let e = await createReq.json()
+        const e = await createReq.json()
         if (toastIdRef.current) {
           toaster.dismiss(toastIdRef.current)
         }

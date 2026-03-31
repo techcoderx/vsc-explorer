@@ -91,7 +91,7 @@ export const HiveBridgeTVL = () => {
           <Legend
             verticalAlign="top"
             height={36}
-            onClick={(e: any) => {
+            onClick={(e: { dataKey?: string | number }) => {
               if (typeof e.dataKey === 'string' && (e.dataKey === 'hiveTotal' || e.dataKey === 'hbdTotal')) {
                 setHiddenLines((prev) => ({
                   ...prev,
@@ -122,7 +122,7 @@ type NetFlow = {
 export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
-  const networkStats = useNetworkStats() || []
+  const networkStats = useNetworkStats()
   const [hiddenLines, setHiddenLines] = useState<{ deposits: boolean; withdrawals: boolean; net: boolean }>({
     deposits: false,
     withdrawals: false,
@@ -170,7 +170,7 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
         <Legend
           verticalAlign="top"
           height={36}
-          onClick={(e: any) => {
+          onClick={(e: { dataKey?: string | number }) => {
             if (typeof e.dataKey === 'string') {
               const k = e.dataKey.replace(coin.toLowerCase(), '').toLowerCase() as 'deposits' | 'withdrawals' | 'net'
               if (typeof hiddenLines[k] === 'boolean')

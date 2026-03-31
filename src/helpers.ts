@@ -121,9 +121,9 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
   switch (op.type) {
     case 'custom_json_operation':
       if (op.value.id.startsWith('vsc.') && (op.value.required_auths.length > 0 || op.value.required_posting_auths.length > 0)) {
-        let user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
+        const user = op.value.required_auths.length > 0 ? op.value.required_auths[0] : op.value.required_posting_auths[0]
         try {
-          let payload = JSON.parse(op.value.json)
+          const payload = JSON.parse(op.value.json)
           // some early testnet transactions went through without net ID, this was fixed but we show them regardless
           if (
             typeof payload === 'object' &&
@@ -140,12 +140,12 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
               payload
             }
           }
-        } catch {}
+        } catch { /* empty */ }
       }
       break
     case 'account_update_operation':
       try {
-        let jm = JSON.parse(op.value.json_metadata)
+        const jm = JSON.parse(op.value.json_metadata)
         if (op.value.account === conf.msAccount) {
           return {
             valid: true,
@@ -164,7 +164,7 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
             }
           }
         }
-      } catch {}
+      } catch { /* empty */ }
       break
     case 'interest_operation':
       if (op.value.owner === conf.msAccount)
@@ -262,10 +262,11 @@ export const describeL1TxBriefly = (tx: L1Transaction): string => {
     case 'interest':
       result += ` collect ${naiToString((tx.payload as InterestPayload).interest)} interest`
       break
-    case 'call':
+    case 'call': {
       const call = tx.payload as CallContractPayload
       result += 'call ' + abbreviateHash(call.action, 30, 0) + ' at contract ' + abbreviateHash(call.contract_id, 20, 0)
       break
+    }
     default:
       result += tx.type.replace(/_/g, ' ')
       break
