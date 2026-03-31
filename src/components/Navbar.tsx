@@ -23,7 +23,7 @@ import { useState } from 'react'
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const { bgTheme } = useBgTheme()
-  const isBlue = bgTheme === 'blue'
+  const isThemed = bgTheme !== 'default'
   const [isOpen, setIsOpen] = useState(false)
   const onToggle = () => setIsOpen((v) => !v)
   const defaultNavBg = useColorModeValue('gray.100', 'gray.900')
@@ -33,14 +33,14 @@ const Navbar = () => {
   return (
     <Box>
       <Flex
-        bg={isBlue ? 'var(--magi-surface)' : defaultNavBg}
+        bg={isThemed ? 'var(--magi-surface)' : defaultNavBg}
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={'solid'}
-        borderColor={isBlue ? 'var(--magi-border)' : defaultBorderColor}
+        borderColor={isThemed ? 'var(--magi-border)' : defaultBorderColor}
         align={'center'}
       >
         <Flex flex={{ base: 1, md: 'auto' }} ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
@@ -64,7 +64,7 @@ const Navbar = () => {
           )}
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={3}>
-            <DesktopNav isBlue={isBlue} />
+            <DesktopNav isThemed={isThemed} />
           </Flex>
         </Flex>
 
@@ -75,7 +75,7 @@ const Navbar = () => {
           <Button
             variant={'subtle'}
             colorPalette={'gray'}
-            bg={isBlue ? 'var(--magi-surface-hover)' : defaultBtnBg}
+            bg={isThemed ? 'var(--magi-surface-hover)' : defaultBtnBg}
             onClick={toggleColorMode}
             aria-label={'Switch color theme'}
           >
@@ -83,7 +83,7 @@ const Navbar = () => {
           </Button>
           <Box asChild>
             <ReactRouterLink to="/settings">
-              <Button variant={'subtle'} colorPalette={'gray'} bg={isBlue ? 'var(--magi-surface-hover)' : defaultBtnBg} aria-label={'Settings'}>
+              <Button variant={'subtle'} colorPalette={'gray'} bg={isThemed ? 'var(--magi-surface-hover)' : defaultBtnBg} aria-label={'Settings'}>
                 <LuSettings />
               </Button>
             </ReactRouterLink>
@@ -93,7 +93,7 @@ const Navbar = () => {
 
       <Collapsible.Root open={isOpen}>
         <Collapsible.Content>
-          <MobileNav isBlue={isBlue} />
+          <MobileNav isThemed={isThemed} />
         </Collapsible.Content>
       </Collapsible.Root>
 
@@ -104,11 +104,11 @@ const Navbar = () => {
   )
 }
 
-const DesktopNav = ({ isBlue }: { isBlue: boolean }) => {
+const DesktopNav = ({ isThemed }: { isThemed: boolean }) => {
   const linkColor = useColorModeValue('gray.600', 'gray.200')
   const linkHoverColor = useColorModeValue('gray.800', 'white')
   const defaultPopoverBg = useColorModeValue('white', 'gray.800')
-  const popoverContentBgColor = isBlue ? 'var(--magi-popover)' : defaultPopoverBg
+  const popoverContentBgColor = isThemed ? 'var(--magi-popover)' : defaultPopoverBg
 
   return (
     <Stack direction={'row'} gap={4}>
@@ -136,7 +136,7 @@ const DesktopNav = ({ isBlue }: { isBlue: boolean }) => {
                 <Popover.Content border={0} boxShadow={'xl'} bg={popoverContentBgColor} p={4} rounded={'xl'} minW={'sm'}>
                   <Stack>
                     {navItem.children.map((child) => (
-                      <DesktopSubNav key={child.label} {...child} isBlue={isBlue} />
+                      <DesktopSubNav key={child.label} {...child} isThemed={isThemed} />
                     ))}
                   </Stack>
                 </Popover.Content>
@@ -149,10 +149,10 @@ const DesktopNav = ({ isBlue }: { isBlue: boolean }) => {
   )
 }
 
-const DesktopSubNav = ({ label, href, subLabel, isBlue }: NavItem & { isBlue: boolean }) => {
+const DesktopSubNav = ({ label, href, subLabel, isThemed }: NavItem & { isThemed: boolean }) => {
   const defaultHoverBg = useColorModeValue(themeColorULight, 'gray.900')
   return (
-    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isBlue ? 'var(--magi-surface-hover)' : defaultHoverBg }}>
+    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isThemed ? 'var(--magi-surface-hover)' : defaultHoverBg }}>
       <ReactRouterLink to={href ?? '#'}>
         <Stack direction={'row'} align={'center'}>
           <Box>
@@ -180,10 +180,10 @@ const DesktopSubNav = ({ label, href, subLabel, isBlue }: NavItem & { isBlue: bo
   )
 }
 
-const MobileNav = ({ isBlue }: { isBlue: boolean }) => {
+const MobileNav = ({ isThemed }: { isThemed: boolean }) => {
   const defaultBg = useColorModeValue('gray.100', 'gray.900')
   return (
-    <Stack bg={isBlue ? 'var(--magi-surface)' : defaultBg} px={5} display={{ md: 'none' }}>
+    <Stack bg={isThemed ? 'var(--magi-surface)' : defaultBg} px={5} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}

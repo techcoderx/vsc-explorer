@@ -64,6 +64,30 @@ export const themeConfig = defineConfig({
               },
               '.dark[data-bg-theme="blue"] &:focus-visible': {
                 borderColor: '#4a5568'
+              },
+              '.dark[data-bg-theme="red"] &': {
+                backgroundColor: 'var(--magi-surface)',
+                borderColor: '#4a3538',
+                transition: 'border-color 0.2s, background-color 0.2s'
+              },
+              '.dark[data-bg-theme="red"] &:hover': {
+                backgroundColor: 'var(--magi-surface-hover)',
+                borderColor: '#6b4d51'
+              },
+              '.dark[data-bg-theme="red"] &:focus-visible': {
+                borderColor: '#4a3538'
+              },
+              '.dark[data-bg-theme="green"] &': {
+                backgroundColor: 'var(--magi-surface)',
+                borderColor: '#354a3a',
+                transition: 'border-color 0.2s, background-color 0.2s'
+              },
+              '.dark[data-bg-theme="green"] &:hover': {
+                backgroundColor: 'var(--magi-surface-hover)',
+                borderColor: '#4d6b52'
+              },
+              '.dark[data-bg-theme="green"] &:focus-visible': {
+                borderColor: '#354a3a'
               }
             } as SystemStyleObject
           }

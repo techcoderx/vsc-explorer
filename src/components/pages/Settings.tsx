@@ -6,6 +6,8 @@ import { useBgTheme, BgTheme } from '../../hooks/useBgTheme'
 
 const bgOptions: { value: BgTheme; label: string; lightColor: string; darkColor: string }[] = [
   { value: 'default', label: 'Default', lightColor: '#ffffff', darkColor: '#000000' },
+  { value: 'red', label: 'Red', lightColor: '#fff5f5', darkColor: '#1a1215' },
+  { value: 'green', label: 'Green', lightColor: '#f0fff4', darkColor: '#121a14' },
   { value: 'blue', label: 'Blue', lightColor: '#ebf8ff', darkColor: '#1a202c' }
 ]
 
@@ -29,7 +31,7 @@ const Settings = () => {
             onCheckedChange={(e) => setColorMode(e.checked ? 'dark' : 'light')}
             colorPalette="pink"
             size="lg"
-            thumbLabel={{ on: <LuMoon />, off: <LuSun /> }}
+            thumbLabel={{ on: <LuMoon color="var(--chakra-colors-pink-400)" />, off: <LuSun color="var(--chakra-colors-pink-400)" /> }}
           >
             Dark Mode
           </Switch>

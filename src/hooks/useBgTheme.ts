@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useColorMode } from '../components/ui/color-mode'
 
-export type BgTheme = 'default' | 'blue'
+export type BgTheme = 'default' | 'blue' | 'red' | 'green'
 
 const STORAGE_KEY = 'magi-bg-theme'
 const BG_THEME_EVENT = 'magi-bg-theme-change'
@@ -24,12 +24,20 @@ const themeColors: Record<BgTheme, { light: ThemeColors; dark: ThemeColors }> = 
   blue: {
     light: { bg: '#ebf8ff', surface: '#e2f0fb', surfaceHover: '#d0e8f5', border: '#bee3f8', popover: '#ffffff', tooltip: '#e2f0fb', card: '#e2f0fb' },
     dark: { bg: '#1a202c', surface: '#2d3748', surfaceHover: '#4a5568', border: '#2d3748', popover: '#2d3748', tooltip: '#2d3748', card: '#2D3748' }
+  },
+  red: {
+    light: { bg: '#fff5f5', surface: '#fee2e2', surfaceHover: '#fecaca', border: '#fecaca', popover: '#ffffff', tooltip: '#fee2e2', card: '#fee2e2' },
+    dark: { bg: '#1a1215', surface: '#2d1f21', surfaceHover: '#4a3538', border: '#2d1f21', popover: '#2d1f21', tooltip: '#2d1f21', card: '#2d1f21' }
+  },
+  green: {
+    light: { bg: '#f0fff4', surface: '#dcfce7', surfaceHover: '#bbf7d0', border: '#bbf7d0', popover: '#ffffff', tooltip: '#dcfce7', card: '#dcfce7' },
+    dark: { bg: '#121a14', surface: '#1e2d22', surfaceHover: '#354a3a', border: '#1e2d22', popover: '#1e2d22', tooltip: '#1e2d22', card: '#1e2d22' }
   }
 }
 
 function getStoredTheme(): BgTheme {
   const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored === 'default' || stored === 'blue') return stored
+  if (stored === 'default' || stored === 'blue' || stored === 'red' || stored === 'green') return stored
   return 'default'
 }
 
