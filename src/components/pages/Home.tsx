@@ -1,18 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  Box,
-  Card,
-  Flex,
-  Grid,
-  Heading,
-  Link,
-  SimpleGrid,
-  Skeleton,
-  Stack,
-  Table,
-  Text,
-  VStack
-} from '@chakra-ui/react'
+import { Box, Card, Flex, Grid, Heading, Link, SimpleGrid, Skeleton, Stack, Table, Text, VStack } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -250,10 +237,7 @@ const QuickLinks = () => (
 )
 
 const Home = () => {
-  const {
-    data: prop,
-    isLoading: isPropLoading
-  } = useQuery({
+  const { data: prop, isLoading: isPropLoading } = useQuery({
     queryKey: ['vsc-props'],
     queryFn: fetchProps,
     refetchInterval: 6000
@@ -284,15 +268,9 @@ const Home = () => {
   return (
     <VStack gap="6" align="stretch">
       {/* Hero Search */}
-      <Box
-        bg="var(--magi-surface)"
-        borderRadius="xl"
-        py={{ base: 8, md: 12 }}
-        px="4"
-        textAlign="center"
-      >
+      <Box bg="var(--magi-surface)" borderRadius="xl" py={{ base: 8, md: 12 }} px="4" textAlign="center">
         <Heading size={{ base: '2xl', md: '4xl' }} mb="2">
-          Magi Blocks Explorer
+          Magi Block Explorer
         </Heading>
         <Text opacity={0.7} mb="6">
           Search accounts, blocks, transactions, and contracts
@@ -321,15 +299,11 @@ const Home = () => {
                 <ReactRouterLink to={`/epoch/${epoch.epoch}`}>Epoch {epoch.epoch}</ReactRouterLink>
               </Link>
               <Text opacity={0.5}>|</Text>
-              <Text>
-                {fmtmAmount(epoch.total_weight, 'HIVE')} total stake
-              </Text>
+              <Text>{fmtmAmount(epoch.total_weight, 'HIVE')} total stake</Text>
               {epochCountdown !== null && (
                 <>
                   <Text opacity={0.5}>|</Text>
-                  <Text>
-                    Next epoch in ~{formatCountdown(epochCountdown)}
-                  </Text>
+                  <Text>Next epoch in ~{formatCountdown(epochCountdown)}</Text>
                 </>
               )}
             </Flex>
