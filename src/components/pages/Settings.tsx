@@ -40,7 +40,7 @@ const Settings = () => {
 
       <Card.Root>
         <Card.Header>
-          <Heading size="md">Background Color</Heading>
+          <Heading size="md">Color Theme</Heading>
         </Card.Header>
         <Card.Body>
           <HStack gap={4}>
