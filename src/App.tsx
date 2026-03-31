@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Aioha } from '@aioha/aioha'
 import { Magi } from '@aioha/magi'
 import { AiohaProvider } from '@aioha/providers/react'
@@ -6,39 +6,45 @@ import { MagiProvider } from '@aioha/providers/magi/react'
 import { createAppKit } from '@reown/appkit/react'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
-import Home from './components/pages/Home'
-import Witnesses from './components/pages/Witnesses'
-import Blocks from './components/pages/Blocks'
-import { NewTxs, NewHiveTxs, NewVscTxs } from './components/pages/NewTxs'
-import NewContracts from './components/pages/NewContracts'
-import PageNotFound from './components/pages/404'
-import { BlockBy } from './components/pages/Block'
-import L1User from './components/pages/L1User'
-import { Tx } from './components/pages/L1Tx'
-import Elections from './components/pages/Elections'
-import Epoch from './components/pages/Epoch'
-import { Contract } from './components/pages/Contract'
-import HiveBridgeOverview from './components/pages/bridge/Overview'
-import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
-import WitnessSchedule from './components/pages/Schedule'
-import { Address, AddressTxs } from './components/pages/address/Address'
-import { AddressDeposits, AddressLedgers } from './components/pages/address/LedgerTxs'
-import { AddressActions, AddressWithdrawals } from './components/pages/address/LedgerActions'
-import { VerifyContract } from './components/pages/tools/VerifyContract'
-import { DagInspector } from './components/pages/tools/DagInspector'
-import { AddressWitness } from './components/pages/address/Witness'
-import { AddressL1Ops } from './components/pages/address/L1Ops'
-import { ChartsDirectory } from './components/pages/charts/Directory'
-import { BridgeCharts } from './components/pages/charts/Bridge'
-import { BlocksCharts } from './components/pages/charts/Blocks'
-import { TxCharts } from './components/pages/charts/Transactions'
-import { AddressCharts } from './components/pages/charts/Addresses'
-import { ContractsCharts } from './components/pages/charts/Contracts'
-import { WitnessCharts } from './components/pages/charts/Witnesses'
 import { getConf } from './settings'
-import { Broadcast } from './components/pages/tools/Broadcast'
-import Settings from './components/pages/Settings'
 import { wagmiAdapter, networks } from './wagmiConfig'
+
+const Home = lazy(() => import('./components/pages/Home'))
+const Witnesses = lazy(() => import('./components/pages/Witnesses'))
+const Blocks = lazy(() => import('./components/pages/Blocks'))
+const NewTxs = lazy(() => import('./components/pages/NewTxs').then((m) => ({ default: m.NewTxs })))
+const NewHiveTxs = lazy(() => import('./components/pages/NewTxs').then((m) => ({ default: m.NewHiveTxs })))
+const NewVscTxs = lazy(() => import('./components/pages/NewTxs').then((m) => ({ default: m.NewVscTxs })))
+const NewContracts = lazy(() => import('./components/pages/NewContracts'))
+const PageNotFound = lazy(() => import('./components/pages/404'))
+const BlockBy = lazy(() => import('./components/pages/Block').then((m) => ({ default: m.BlockBy })))
+const L1User = lazy(() => import('./components/pages/L1User'))
+const Tx = lazy(() => import('./components/pages/L1Tx').then((m) => ({ default: m.Tx })))
+const Elections = lazy(() => import('./components/pages/Elections'))
+const Epoch = lazy(() => import('./components/pages/Epoch'))
+const Contract = lazy(() => import('./components/pages/Contract').then((m) => ({ default: m.Contract })))
+const HiveBridgeOverview = lazy(() => import('./components/pages/bridge/Overview'))
+const HiveBridgeLatestTxs = lazy(() => import('./components/pages/bridge/HiveLatestTxs').then((m) => ({ default: m.HiveBridgeLatestTxs })))
+const WitnessSchedule = lazy(() => import('./components/pages/Schedule'))
+const Address = lazy(() => import('./components/pages/address/Address').then((m) => ({ default: m.Address })))
+const AddressTxs = lazy(() => import('./components/pages/address/Address').then((m) => ({ default: m.AddressTxs })))
+const AddressDeposits = lazy(() => import('./components/pages/address/LedgerTxs').then((m) => ({ default: m.AddressDeposits })))
+const AddressLedgers = lazy(() => import('./components/pages/address/LedgerTxs').then((m) => ({ default: m.AddressLedgers })))
+const AddressActions = lazy(() => import('./components/pages/address/LedgerActions').then((m) => ({ default: m.AddressActions })))
+const AddressWithdrawals = lazy(() => import('./components/pages/address/LedgerActions').then((m) => ({ default: m.AddressWithdrawals })))
+const VerifyContract = lazy(() => import('./components/pages/tools/VerifyContract').then((m) => ({ default: m.VerifyContract })))
+const DagInspector = lazy(() => import('./components/pages/tools/DagInspector').then((m) => ({ default: m.DagInspector })))
+const AddressWitness = lazy(() => import('./components/pages/address/Witness').then((m) => ({ default: m.AddressWitness })))
+const AddressL1Ops = lazy(() => import('./components/pages/address/L1Ops').then((m) => ({ default: m.AddressL1Ops })))
+const ChartsDirectory = lazy(() => import('./components/pages/charts/Directory').then((m) => ({ default: m.ChartsDirectory })))
+const BridgeCharts = lazy(() => import('./components/pages/charts/Bridge').then((m) => ({ default: m.BridgeCharts })))
+const BlocksCharts = lazy(() => import('./components/pages/charts/Blocks').then((m) => ({ default: m.BlocksCharts })))
+const TxCharts = lazy(() => import('./components/pages/charts/Transactions').then((m) => ({ default: m.TxCharts })))
+const AddressCharts = lazy(() => import('./components/pages/charts/Addresses').then((m) => ({ default: m.AddressCharts })))
+const ContractsCharts = lazy(() => import('./components/pages/charts/Contracts').then((m) => ({ default: m.ContractsCharts })))
+const WitnessCharts = lazy(() => import('./components/pages/charts/Witnesses').then((m) => ({ default: m.WitnessCharts })))
+const Broadcast = lazy(() => import('./components/pages/tools/Broadcast').then((m) => ({ default: m.Broadcast })))
+const Settings = lazy(() => import('./components/pages/Settings'))
 
 const router = createBrowserRouter([
   {
@@ -244,7 +250,9 @@ const App = () => {
   return (
     <AiohaProvider aioha={aioha}>
       <MagiProvider magi={magi}>
-        <RouterProvider router={router} />
+        <Suspense>
+          <RouterProvider router={router} />
+        </Suspense>
       </MagiProvider>
     </AiohaProvider>
   )

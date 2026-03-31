@@ -13,6 +13,18 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-wallet': ['@reown/appkit', '@reown/appkit-adapter-wagmi', '@reown/appkit/react', 'wagmi', 'viem'],
+          'vendor-recharts': ['recharts'],
+          'vendor-chakra': ['@chakra-ui/react', '@emotion/react'],
+          'vendor-aioha': ['@aioha/aioha', '@aioha/magi']
+        }
+      }
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom',

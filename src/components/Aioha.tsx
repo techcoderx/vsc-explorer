@@ -19,14 +19,14 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { themeColorScheme } from '../settings'
 import { FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
 import { useColorMode } from './ui/color-mode'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { QRCode } from 'react-qr-code'
+const QRCode = lazy(() => import('react-qr-code').then((m) => ({ default: m.QRCode })))
 
 const ImageServer = 'https://images.hive.blog'
 
@@ -242,7 +242,9 @@ export const AiohaModal = ({
                   <Flex direction={'column'} gap={'6'} alignItems={'center'} mt={'4'}>
                     <a href={hiveAuthPl!.payload}>
                       <Box w={'64'} h={'64'} p={'2'} backgroundColor={'white'}>
-                        <QRCode value={hiveAuthPl!.payload} style={{ width: '100%', height: '100%' }} />
+                        <Suspense fallback={<Spinner />}>
+                          <QRCode value={hiveAuthPl!.payload} style={{ width: '100%', height: '100%' }} />
+                        </Suspense>
                       </Box>
                     </a>
                     <Button variant={'outline'} colorPalette={'gray'} onClick={hiveAuthPl!.cancel}>Cancel</Button>
