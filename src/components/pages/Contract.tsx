@@ -43,7 +43,8 @@ import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import Pagination from '../Pagination'
-import { TxFilterBar } from '../TxFilterBar'
+import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
+import { useFilterOpen } from '../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 import { L1TxHeader } from '../../types/L1ApiResult'
 import { useMemo, useRef, useState } from 'react'
@@ -388,6 +389,8 @@ const txCount = 100
 export const Contract = () => {
   const { contractId } = useParams()
   const [searchParams] = useSearchParams()
+  const [filtersOpen, setFiltersOpen] = useFilterOpen()
+  const [activeTab, setActiveTab] = useState('0')
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
   const ct = data?.data.contract
@@ -449,7 +452,7 @@ export const Contract = () => {
       {!!contract ? (
         <Box mt={'4'}>
           <AddressBalanceCard addr={'contract:' + contract.id} />
-          <Tabs.Root defaultValue="0" mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'}>
+          <Tabs.Root value={activeTab} onValueChange={(d) => setActiveTab(d.value)} mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'}>
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
               <Tabs.Trigger value="0">Transactions</Tabs.Trigger>
               <Tabs.Trigger value="1">Outputs</Tabs.Trigger>
@@ -459,9 +462,14 @@ export const Contract = () => {
               <Tabs.Trigger value="5">Call Contract</Tabs.Trigger>
               <Tabs.Trigger value="6">Source Code</Tabs.Trigger>
               <Tabs.Trigger value="7">History</Tabs.Trigger>
+              {activeTab === '0' && (
+                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                  <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                </Box>
+              )}
             </Tabs.List>
             <Tabs.Content value="0" pt={'2'} px={'0'}>
-              <TxFilterBar basePath={`/contract/${contractId}`} />
+              <TxFilterBar open={filtersOpen} basePath={`/contract/${contractId}`} />
               <Txns txs={txns || []} pov={contractId} />
               <Pagination
                 path={`/contract/${contractId}`}

@@ -1,4 +1,4 @@
-import { Flex, NativeSelect, Input, Field, DatePicker, IconButton, Button, Box, Collapsible } from '@chakra-ui/react'
+import { Flex, NativeSelect, Input, Field, DatePicker, IconButton, Button, Collapsible } from '@chakra-ui/react'
 import { parseDate } from '@chakra-ui/react/date-picker'
 import type { DateValue } from '@chakra-ui/react/date-picker'
 import { useSearchParams, useNavigate } from 'react-router'
@@ -7,7 +7,21 @@ import { TX_STATUS_OPTIONS, TX_TYPE_OPTIONS } from '../types/TxFilters'
 import { themeColorScheme } from '../settings'
 import { LuCalendar, LuX, LuFilter } from 'react-icons/lu'
 
+const FILTER_KEYS = ['status', 'type', 'from', 'to', 'account', 'contract']
+
+export const TxFilterToggle = ({ open, onToggle }: { open: boolean; onToggle: () => void }) => {
+  const [searchParams] = useSearchParams()
+  const activeCount = FILTER_KEYS.filter((k) => searchParams.get(k)).length
+  return (
+    <Button size={'sm'} variant={open ? 'solid' : 'outline'} colorPalette={'gray'} onClick={onToggle}>
+      <LuFilter />
+      Filters{activeCount > 0 ? ` (${activeCount})` : ''}
+    </Button>
+  )
+}
+
 interface TxFilterBarProps {
+  open: boolean
   showAccount?: boolean
   showContract?: boolean
   basePath: string
@@ -89,11 +103,9 @@ const DateFilterField = ({
 
 const readParam = (sp: URLSearchParams, key: string) => sp.get(key) || ''
 
-export const TxFilterBar = ({ showAccount, showContract, basePath }: TxFilterBarProps) => {
+export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFilterBarProps) => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const hasActiveFilters = ['status', 'type', 'from', 'to', 'account', 'contract'].some((k) => searchParams.get(k))
-  const [open, setOpen] = useState(hasActiveFilters)
 
   const initState = useCallback(
     () => ({
@@ -129,74 +141,67 @@ export const TxFilterBar = ({ showAccount, showContract, basePath }: TxFilterBar
   }
 
   return (
-    <Box my={'3'}>
-      <Button size={'sm'} variant={'outline'} colorPalette={'gray'} onClick={() => setOpen((p) => !p)}>
-        <LuFilter />
-        Filters
-        {hasActiveFilters ? ` (${['status', 'type', 'from', 'to', 'account', 'contract'].filter((k) => searchParams.get(k)).length})` : ''}
-      </Button>
-      <Collapsible.Root open={open}>
-        <Collapsible.Content>
-          <Flex gap={'3'} mt={'3'} wrap={'wrap'} align={'end'}>
-            <Field.Root maxW={'180px'}>
-              <Field.Label fontSize={'xs'}>Status</Field.Label>
-              <NativeSelect.Root size={'sm'}>
-                <NativeSelect.Field value={draft.status} onChange={(e) => set('status', e.target.value)}>
-                  {TX_STATUS_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </NativeSelect.Field>
-                <NativeSelect.Indicator />
-              </NativeSelect.Root>
+    <Collapsible.Root open={open}>
+      <Collapsible.Content>
+        <Flex gap={'3'} my={'3'} wrap={'wrap'} align={'end'}>
+          <Field.Root maxW={'180px'}>
+            <Field.Label fontSize={'xs'}>Status</Field.Label>
+            <NativeSelect.Root size={'sm'}>
+              <NativeSelect.Field value={draft.status} onChange={(e) => set('status', e.target.value)}>
+                {TX_STATUS_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </NativeSelect.Field>
+              <NativeSelect.Indicator />
+            </NativeSelect.Root>
+          </Field.Root>
+          <Field.Root maxW={'180px'}>
+            <Field.Label fontSize={'xs'}>Type</Field.Label>
+            <NativeSelect.Root size={'sm'}>
+              <NativeSelect.Field value={draft.type} onChange={(e) => set('type', e.target.value)}>
+                {TX_TYPE_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </NativeSelect.Field>
+              <NativeSelect.Indicator />
+            </NativeSelect.Root>
+          </Field.Root>
+          <DateFilterField label="From" value={draft.from} onChange={(v) => set('from', v)} />
+          <DateFilterField label="To" value={draft.to} onChange={(v) => set('to', v)} />
+          {showAccount && (
+            <Field.Root maxW={'240px'}>
+              <Field.Label fontSize={'xs'}>Account</Field.Label>
+              <Input
+                size={'sm'}
+                placeholder="hive:username"
+                value={draft.account}
+                onChange={(e) => set('account', e.target.value)}
+              />
             </Field.Root>
-            <Field.Root maxW={'180px'}>
-              <Field.Label fontSize={'xs'}>Type</Field.Label>
-              <NativeSelect.Root size={'sm'}>
-                <NativeSelect.Field value={draft.type} onChange={(e) => set('type', e.target.value)}>
-                  {TX_TYPE_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </NativeSelect.Field>
-                <NativeSelect.Indicator />
-              </NativeSelect.Root>
+          )}
+          {showContract && (
+            <Field.Root maxW={'240px'}>
+              <Field.Label fontSize={'xs'}>Contract</Field.Label>
+              <Input
+                size={'sm'}
+                placeholder="vsc1..."
+                value={draft.contract}
+                onChange={(e) => set('contract', e.target.value)}
+              />
             </Field.Root>
-            <DateFilterField label="From" value={draft.from} onChange={(v) => set('from', v)} />
-            <DateFilterField label="To" value={draft.to} onChange={(v) => set('to', v)} />
-            {showAccount && (
-              <Field.Root maxW={'240px'}>
-                <Field.Label fontSize={'xs'}>Account</Field.Label>
-                <Input
-                  size={'sm'}
-                  placeholder="hive:username"
-                  value={draft.account}
-                  onChange={(e) => set('account', e.target.value)}
-                />
-              </Field.Root>
-            )}
-            {showContract && (
-              <Field.Root maxW={'240px'}>
-                <Field.Label fontSize={'xs'}>Contract</Field.Label>
-                <Input
-                  size={'sm'}
-                  placeholder="vsc1..."
-                  value={draft.contract}
-                  onChange={(e) => set('contract', e.target.value)}
-                />
-              </Field.Root>
-            )}
-            <Button size={'sm'} colorPalette={themeColorScheme} onClick={applyFilters}>
-              Apply
-            </Button>
-            <Button size={'sm'} variant={'outline'} colorPalette={'gray'} onClick={resetFilters}>
-              Reset
-            </Button>
-          </Flex>
-        </Collapsible.Content>
-      </Collapsible.Root>
-    </Box>
+          )}
+          <Button size={'sm'} colorPalette={themeColorScheme} onClick={applyFilters}>
+            Apply
+          </Button>
+          <Button size={'sm'} variant={'outline'} colorPalette={'gray'} onClick={resetFilters}>
+            Reset
+          </Button>
+        </Flex>
+      </Collapsible.Content>
+    </Collapsible.Root>
   )
 }

@@ -11,13 +11,14 @@ import { Txns } from '../../tables/Transactions'
 import { getConf, themeColorScheme } from '../../../settings'
 import Pagination from '../../Pagination'
 import { PageTitle } from '../../PageTitle'
-import { TxFilterBar } from '../../TxFilterBar'
+import { TxFilterBar, TxFilterToggle } from '../../TxFilterBar'
+import { useFilterOpen } from '../../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
 
 const count = 100
 
 export const AddressTxs = () => {
-  const { addr } = useOutletContext<{ addr: string }>()
+  const { addr, filtersOpen } = useOutletContext<{ addr: string; filtersOpen: boolean }>()
   const { page } = useParams()
   const [searchParams] = useSearchParams()
   const filters = parseFiltersFromSearchParams(searchParams)
@@ -33,7 +34,7 @@ export const AddressTxs = () => {
   const stats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { user: addr }))
   return (
     <Box>
-      <TxFilterBar basePath={`/address/${addr}/txs`} />
+      <TxFilterBar open={filtersOpen} basePath={`/address/${addr}/txs`} />
       <Txns txs={txs?.txns || []} pov={addr} />
       <Pagination
         path={`/address/${addr}/txs`}
@@ -54,6 +55,7 @@ export const Address = () => {
   const validAddr = isL1 || addr!.startsWith('did:')
   const segments = pathname.split('/')
   const tabValue = segments.length >= 4 ? segments[3] : tabNames[0]
+  const [filtersOpen, setFiltersOpen] = useFilterOpen()
   const { data: witness } = useQuery({
     queryKey: ['vsc-witness', addr!.replace('hive:', '')],
     queryFn: async () => getWitness(addr!.replace('hive:', '')),
@@ -108,9 +110,14 @@ export const Address = () => {
           <Tabs.Trigger value="deposits">Maps</Tabs.Trigger>
           <Tabs.Trigger value="withdrawals">Unmaps</Tabs.Trigger>
           <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>Witness</Tabs.Trigger>
+          {tabValue === 'txs' && (
+            <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+              <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+            </Box>
+          )}
         </Tabs.List>
         <Box pt={'2'}>
-          <Outlet context={{ addr }} />
+          <Outlet context={{ addr, filtersOpen }} />
         </Box>
       </Tabs.Root>
     </>

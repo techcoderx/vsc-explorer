@@ -1,6 +1,6 @@
 import { Text, Flex, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { Outlet, useLocation, useParams, useSearchParams } from 'react-router'
+import { Outlet, useLocation, useOutletContext, useParams, useSearchParams } from 'react-router'
 import { TxCard } from '../TxCard'
 import { fetchLatestTxs, fetchL2TxnsBy, useHistoryStats } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
@@ -8,7 +8,8 @@ import { Txns } from '../tables/Transactions'
 import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
 import { btnGroupCss } from '../../styles/btnGroup'
-import { TxFilterBar } from '../TxFilterBar'
+import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
+import { useFilterOpen } from '../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 
 export const NewHiveTxs = () => {
@@ -34,6 +35,7 @@ export const NewHiveTxs = () => {
 const count = 100
 
 export const NewVscTxs = () => {
+  const { filtersOpen } = useOutletContext<{ filtersOpen: boolean }>()
   const { page } = useParams()
   const [searchParams] = useSearchParams()
   const filters = parseFiltersFromSearchParams(searchParams)
@@ -48,7 +50,7 @@ export const NewVscTxs = () => {
   const stats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange))
   return (
     <>
-      <TxFilterBar basePath="/transactions/magi" />
+      <TxFilterBar open={filtersOpen} basePath="/transactions/magi" />
       {!!txs && !!txs.txns ? (
         <>
           <Txns txs={txs.txns} />
@@ -65,28 +67,27 @@ export const NewVscTxs = () => {
 
 export const NewTxs = () => {
   const location = useLocation()
+  const [filtersOpen, setFiltersOpen] = useFilterOpen()
+  const isMagi = location.pathname === '/transactions' || location.pathname.startsWith('/transactions/magi')
   return (
     <>
       <PageTitle title="Latest Transactions" />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Text fontSize={'5xl'}>Latest Transactions</Text>
-        <Box my={'auto'} py={'1'}>
-          <Box css={btnGroupCss} float={'right'}>
-            {location.pathname !== '/transactions' && !location.pathname.startsWith('/transactions/magi') ? (
-              <LinkedBtn to={'/transactions'}>Magi</LinkedBtn>
-            ) : (
-              <CurrentPageBtn>Magi</CurrentPageBtn>
-            )}
+        <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
+          {isMagi && <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
+          <Box css={btnGroupCss}>
+            {!isMagi ? <LinkedBtn to={'/transactions'}>Magi</LinkedBtn> : <CurrentPageBtn>Magi</CurrentPageBtn>}
             {location.pathname !== '/transactions/hive' ? (
               <LinkedBtn to={'/transactions/hive'}>Hive</LinkedBtn>
             ) : (
               <CurrentPageBtn>Hive</CurrentPageBtn>
             )}
           </Box>
-        </Box>
+        </Flex>
       </Stack>
       <hr />
-      <Outlet />
+      <Outlet context={{ filtersOpen }} />
     </>
   )
 }
