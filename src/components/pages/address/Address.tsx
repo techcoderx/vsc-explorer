@@ -1,5 +1,5 @@
 import { Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
-import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
+import { useParams, Outlet, useOutletContext, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
@@ -11,22 +11,29 @@ import { Txns } from '../../tables/Transactions'
 import { getConf, themeColorScheme } from '../../../settings'
 import Pagination from '../../Pagination'
 import { PageTitle } from '../../PageTitle'
+import { TxFilterBar } from '../../TxFilterBar'
+import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
 
 const count = 100
 
 export const AddressTxs = () => {
   const { addr } = useOutletContext<{ addr: string }>()
   const { page } = useParams()
+  const [searchParams] = useSearchParams()
+  const filters = parseFiltersFromSearchParams(searchParams)
+  const blockRange = useBlockRange(filters)
+  const filterOpts = buildTxFilterOptions(filters, blockRange, { byAccount: addr })
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data: txs } = useQuery({
-    queryKey: ['vsc-address-history', offset, count, addr],
-    queryFn: async () => fetchL2TxnsBy(offset, count, { byAccount: addr }),
+    queryKey: ['vsc-address-history', offset, count, addr, filterOpts],
+    queryFn: async () => fetchL2TxnsBy(offset, count, filterOpts),
     staleTime: 60000
   })
-  const stats = useHistoryStats('txs', { user: addr })
+  const stats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { user: addr }))
   return (
     <Box>
+      <TxFilterBar basePath={`/address/${addr}/txs`} />
       <Txns txs={txs?.txns || []} pov={addr} />
       <Pagination
         path={`/address/${addr}/txs`}

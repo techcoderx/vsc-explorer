@@ -1,13 +1,15 @@
 import { Text, Flex, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { Outlet, useLocation, useParams } from 'react-router'
+import { Outlet, useLocation, useParams, useSearchParams } from 'react-router'
 import { TxCard } from '../TxCard'
-import { fetchLatestTxs, fetchL2TxnsBy, fetchProps } from '../../requests'
+import { fetchLatestTxs, fetchL2TxnsBy, useHistoryStats } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
 import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
 import { btnGroupCss } from '../../styles/btnGroup'
+import { TxFilterBar } from '../TxFilterBar'
+import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 
 export const NewHiveTxs = () => {
   const { data: txs } = useQuery({
@@ -33,26 +35,32 @@ const count = 100
 
 export const NewVscTxs = () => {
   const { page } = useParams()
+  const [searchParams] = useSearchParams()
+  const filters = parseFiltersFromSearchParams(searchParams)
+  const blockRange = useBlockRange(filters)
+  const filterOpts = buildTxFilterOptions(filters, blockRange)
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data: txs } = useQuery({
-    queryKey: ['vsc-latest-tsx', offset, count],
-    queryFn: () => fetchL2TxnsBy(offset, count)
+    queryKey: ['vsc-latest-tsx', offset, count, filterOpts],
+    queryFn: () => fetchL2TxnsBy(offset, count, filterOpts)
   })
-  const { data: prop } = useQuery({
-    queryKey: ['vsc-props'],
-    queryFn: fetchProps
-  })
-  return !!txs && !!txs.txns ? (
+  const stats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange))
+  return (
     <>
-      <Txns txs={txs.txns} />
-      <Pagination
-        path={'/transactions/magi'}
-        currentPageNum={pageNum}
-        maxPageNum={Math.min(100, Math.ceil((prop?.transactions || 0) / 100))}
-      />
+      <TxFilterBar basePath="/transactions/magi" />
+      {!!txs && !!txs.txns ? (
+        <>
+          <Txns txs={txs.txns} />
+          <Pagination
+            path={'/transactions/magi'}
+            currentPageNum={pageNum}
+            maxPageNum={Math.min(100, Math.ceil((stats?.count || 0) / count))}
+          />
+        </>
+      ) : null}
     </>
-  ) : null
+  )
 }
 
 export const NewTxs = () => {

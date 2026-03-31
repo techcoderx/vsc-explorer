@@ -149,6 +149,15 @@ export const fetchL1Rest = async <T>(route: string): Promise<T> => {
   return await (await fetch(`${conf.hiveApi}${route}`)).json()
 }
 
+export const fetchBlockNumByTimestamp = async (timestamp: string): Promise<number | null> => {
+  try {
+    const result = await fetchL1Rest<{ block_num: number }>(`/hafah-api/global-state?block-num=${encodeURIComponent(timestamp)}`)
+    return result?.block_num ?? null
+  } catch {
+    return null
+  }
+}
+
 const gql = async <T>(query: string, variables: { [key: string]: unknown } = {}) => {
   return (await (
     await fetch(conf.gqlApi, {
@@ -265,16 +274,14 @@ export const useContract = (contract_id: string, enabled = true) => {
   return useQuery({
     queryKey: ['vsc-contract', contract_id],
     queryFn: async () => {
-      return await gql<GqlResponse<{ contract: Contract[]; txns: Txn[]; outputs: ContractOutput[] }>>(
+      return await gql<GqlResponse<{ contract: Contract[]; outputs: ContractOutput[] }>>(
         `
-query Contract($opt1: FindContractFilter, $opt2: TransactionFilter, $opt3: ContractOutputFilter) {
+query Contract($opt1: FindContractFilter, $opt3: ContractOutputFilter) {
   contract: findContract(filterOptions: $opt1) { id code creator owner tx_id creation_height creation_ts runtime }
-  txns: findTransaction(filterOptions: $opt2) { id anchr_height anchr_ts required_auths required_posting_auths status ops { type data }}
   outputs: findContractOutput(filterOptions: $opt3) { id timestamp contract_id inputs results { ret ok }}
 }`,
         {
           opt1: { byId: contract_id, offset: 0, historical: true },
-          opt2: { byContract: contract_id, offset: 0, limit: 100 },
           opt3: { byContract: contract_id, offset: 0, limit: 100 }
         }
       )

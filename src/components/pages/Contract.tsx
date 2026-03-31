@@ -23,14 +23,16 @@ import {
 } from '@chakra-ui/react'
 import { LuCircleCheck, LuCircleHelp, LuTriangleAlert, LuPlus } from 'react-icons/lu'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, useNavigate } from 'react-router'
+import { useParams, useNavigate, useSearchParams } from 'react-router'
 import {
   fetchL1Rest,
+  fetchL2TxnsBy,
   fetchMembersAtL1Block,
   getStateKeys,
   simulateContractCalls,
   useAddrBalance,
-  useContract
+  useContract,
+  useHistoryStats
 } from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, beL1BlockUrl, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
@@ -40,6 +42,9 @@ import { cvInfo } from '../../cvRequests'
 import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
+import Pagination from '../Pagination'
+import { TxFilterBar } from '../TxFilterBar'
+import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 import { L1TxHeader } from '../../types/L1ApiResult'
 import { useMemo, useRef, useState } from 'react'
 import { BLSSig, CoinLower } from '../../types/Payloads'
@@ -378,13 +383,39 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   )
 }
 
+const txCount = 100
+
 export const Contract = () => {
   const { contractId } = useParams()
+  const [searchParams] = useSearchParams()
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
   const ct = data?.data.contract
-  const txns = data?.data.txns
   const outputs = data?.data.outputs
+
+  const filters = parseFiltersFromSearchParams(searchParams)
+  const blockRange = useBlockRange(filters)
+  const filterOpts = buildTxFilterOptions(filters, blockRange, { byContract: contractId })
+  const txPage = parseInt(searchParams.get('page') || '1')
+  const txOffset = (txPage - 1) * txCount
+  const { data: txData } = useQuery({
+    queryKey: ['vsc-contract-txns', contractId, txOffset, txCount, filterOpts],
+    queryFn: () => fetchL2TxnsBy(txOffset, txCount, filterOpts),
+    enabled: !invalidContractId
+  })
+  const txns = txData?.txns
+  const txStats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { contract: contractId }), !invalidContractId)
+
+  const buildTxPageLink = (page: number) => {
+    const params = new URLSearchParams(searchParams)
+    if (page > 1) {
+      params.set('page', String(page))
+    } else {
+      params.delete('page')
+    }
+    const qs = params.toString()
+    return `/contract/${contractId}` + (qs ? '?' + qs : '')
+  }
   const contract = ct && ct.length > 0 ? ct[0] : null
   const history = ct && ct.length > 0 ? ct : []
   const {
@@ -430,7 +461,14 @@ export const Contract = () => {
               <Tabs.Trigger value="7">History</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="0" pt={'2'} px={'0'}>
+              <TxFilterBar basePath={`/contract/${contractId}`} />
               <Txns txs={txns || []} pov={contractId} />
+              <Pagination
+                path={`/contract/${contractId}`}
+                currentPageNum={txPage}
+                maxPageNum={Math.ceil((txStats?.count || 0) / txCount)}
+                buildLink={buildTxPageLink}
+              />
             </Tabs.Content>
             <Tabs.Content value="1" px={'0'} pt={'2'}>
               <ContractOutputTbl outputs={outputs || []} />

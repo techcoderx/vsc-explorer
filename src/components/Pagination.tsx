@@ -1,6 +1,6 @@
 import { Flex, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
-import { Link as ReactRouterLink, To } from 'react-router'
+import { Link as ReactRouterLink, To, useSearchParams } from 'react-router'
 import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
 import { btnGroupCss } from '../styles/btnGroup'
 
@@ -8,6 +8,7 @@ interface PaginationProps {
   path: string
   currentPageNum: number
   maxPageNum: number
+  buildLink?: (page: number) => string
 }
 
 interface Wrapper {
@@ -42,27 +43,33 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
   )
 }
 
-const Pagination = ({ path, currentPageNum, maxPageNum }: PaginationProps) => {
+const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationProps) => {
+  const [searchParams] = useSearchParams()
+  const link = (page: number) => {
+    if (buildLink) return buildLink(page)
+    const qs = searchParams.toString()
+    return path + '/' + page + (qs ? '?' + qs : '')
+  }
   return (
     <Flex justifyContent={'center'}>
       <Box css={btnGroupCss}>
-        {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>Previous</LinkedBtn> : null}
-        {currentPageNum > 2 ? <LinkedBtn to={path + '/' + (currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
-        {currentPageNum > 1 ? <LinkedBtn to={path + '/' + (currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
+        {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>Previous</LinkedBtn> : null}
+        {currentPageNum > 2 ? <LinkedBtn to={link(currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
+        {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
         <CurrentPageBtn>{currentPageNum}</CurrentPageBtn>
         {maxPageNum >= currentPageNum + 1 ? (
-          <LinkedBtn to={path + '/' + (currentPageNum + 1)}>{currentPageNum + 1}</LinkedBtn>
+          <LinkedBtn to={link(currentPageNum + 1)}>{currentPageNum + 1}</LinkedBtn>
         ) : null}
         {maxPageNum >= currentPageNum + 2 ? (
-          <LinkedBtn to={path + '/' + (currentPageNum + 2)}>{currentPageNum + 2}</LinkedBtn>
+          <LinkedBtn to={link(currentPageNum + 2)}>{currentPageNum + 2}</LinkedBtn>
         ) : null}
         {maxPageNum > currentPageNum + 3 ? (
           <Button size="md" variant="outline" colorPalette="gray" disabled cursor="not-allowed">
             ...
           </Button>
         ) : null}
-        {maxPageNum >= currentPageNum + 3 ? <LinkedBtn to={path + '/' + maxPageNum}>{maxPageNum}</LinkedBtn> : null}
-        {currentPageNum < maxPageNum ? <LinkedBtn to={path + '/' + ((currentPageNum || 1) + 1)}>Next</LinkedBtn> : null}
+        {maxPageNum >= currentPageNum + 3 ? <LinkedBtn to={link(maxPageNum)}>{maxPageNum}</LinkedBtn> : null}
+        {currentPageNum < maxPageNum ? <LinkedBtn to={link((currentPageNum || 1) + 1)}>Next</LinkedBtn> : null}
       </Box>
     </Flex>
   )
