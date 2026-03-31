@@ -91,11 +91,11 @@ export const HiveBridgeTVL = () => {
           <Legend
             verticalAlign="top"
             height={36}
-            onClick={(e: { dataKey?: string | number }) => {
-              if (typeof e.dataKey === 'string' && (e.dataKey === 'hiveTotal' || e.dataKey === 'hbdTotal')) {
+            onClick={(data) => {
+              if (typeof data.dataKey === 'string' && (data.dataKey === 'hiveTotal' || data.dataKey === 'hbdTotal')) {
                 setHiddenLines((prev) => ({
                   ...prev,
-                  [e.dataKey as 'hiveTotal' | 'hbdTotal']: !prev[e.dataKey as 'hiveTotal' | 'hbdTotal']
+                  [data.dataKey as 'hiveTotal' | 'hbdTotal']: !prev[data.dataKey as 'hiveTotal' | 'hbdTotal']
                 }))
               }
             }}
@@ -170,9 +170,9 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
         <Legend
           verticalAlign="top"
           height={36}
-          onClick={(e: { dataKey?: string | number }) => {
-            if (typeof e.dataKey === 'string') {
-              const k = e.dataKey.replace(coin.toLowerCase(), '').toLowerCase() as 'deposits' | 'withdrawals' | 'net'
+          onClick={(data) => {
+            if (typeof data.dataKey === 'string') {
+              const k = data.dataKey.replace(coin.toLowerCase(), '').toLowerCase() as 'deposits' | 'withdrawals' | 'net'
               if (typeof hiddenLines[k] === 'boolean')
                 setHiddenLines((prev) => ({
                   ...prev,
