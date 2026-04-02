@@ -295,7 +295,7 @@ export const VerifyContract = () => {
                   <Stack direction={'column'} gap={'3'}>
                     <Field.Root>
                       <Field.Label>Username</Field.Label>
-                      <Button _focus={{ boxShadow: 'none' }} onClick={() => setWalletOpen(true)}>
+                      <Button variant={'outline'} colorPalette={'gray'} _focus={{ boxShadow: 'none' }} onClick={() => setWalletOpen(true)}>
                         {user ? <Box as={FaHive} fontSize={'lg'} /> : null}
                         {user ?? 'Connect Wallet'}
                       </Button>
