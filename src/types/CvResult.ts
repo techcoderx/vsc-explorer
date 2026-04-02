@@ -13,6 +13,7 @@ export interface CvInfo {
   go_version: string
   llvm_version: string
   strip_tool?: 'wabt' | 'wasm-tools'
+  contract_dir?: string
   exports: string[]
   license: string
   lang: string

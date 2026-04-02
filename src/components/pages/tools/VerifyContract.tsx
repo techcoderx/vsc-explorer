@@ -30,6 +30,11 @@ import { FaHive } from 'react-icons/fa6'
 import { toaster } from '../../ui/toaster'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
+  '0.40.1': {
+    go: '1.25.5',
+    llvm: '20.1.1',
+    img_digest: 'sha256:89a77cc87b191399077be51a295d1d29569314931f334b2730427d7ed3a2b18e'
+  },
   '0.39.0': {
     go: '1.25.0',
     llvm: '19.1.2',
@@ -78,8 +83,9 @@ const notice = [
     title: 'Entrypoint',
     body: (
       <Text>
-        The entrypoint filename must be <Code>contract/main.go</Code> for Go contracts. Please ensure that this file exists as
-        part of the main package.
+        The default entrypoint directory is <Code>contract/</Code> for Go contracts. A custom subdirectory may be specified if the
+        contract source code is located elsewhere in the repository (e.g. <Code>contracts/dex</Code>). Please ensure that{' '}
+        <Code>main.go</Code> exists as part of the main package in the specified directory.
       </Text>
     )
   },
@@ -106,6 +112,7 @@ export const VerifyContract = () => {
   const [repoUrl, setRepoUrl] = useState<string>('')
   const [gitBranch, setGitBranch] = useState<string>('')
   const [tinygoVersion, setTinyGoVersion] = useState<string>('0.39.0')
+  const [contractDir, setContractDir] = useState<string>('')
   const [wasmStripTool, setWasmStripTool] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const toastIdRef = useRef<string | undefined>(undefined)
@@ -125,6 +132,12 @@ export const VerifyContract = () => {
       e = 'Invalid Github user'
     } else if (repoIdParts[1].length > 100 || !/^[A-Za-z0-9._-]+$/.test(repoIdParts[1])) {
       e = 'Invalid Github repo name'
+    }
+    if (
+      contractDir.length > 0 &&
+      (contractDir.includes('..') || contractDir.startsWith('/') || !/^[A-Za-z0-9/_.\-]+$/.test(contractDir))
+    ) {
+      e = 'Invalid contract directory path'
     }
     if (e) {
       return toaster.error({ title: e })
@@ -204,7 +217,8 @@ export const VerifyContract = () => {
           repo_url: repoUrl,
           repo_branch: gitBranch.length > 0 ? gitBranch : undefined,
           tinygo_version: tinygoVersion,
-          strip_tool: wasmStripTool.length > 0 ? wasmStripTool : undefined
+          strip_tool: wasmStripTool.length > 0 ? wasmStripTool : undefined,
+          contract_dir: contractDir.length > 0 ? contractDir : undefined
         })
       })
       if (createReq.status !== 200) {
@@ -281,23 +295,14 @@ export const VerifyContract = () => {
                   <Stack direction={'column'} gap={'3'}>
                     <Field.Root>
                       <Field.Label>Username</Field.Label>
-                      <Button
-                        _focus={{ boxShadow: 'none' }}
-                        onClick={() => setWalletOpen(true)}
-                      >
+                      <Button _focus={{ boxShadow: 'none' }} onClick={() => setWalletOpen(true)}>
                         {user ? <Box as={FaHive} fontSize={'lg'} /> : null}
                         {user ?? 'Connect Wallet'}
                       </Button>
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>Contract Address</Field.Label>
-                      <Input
-                        type="text"
-                        placeholder="vsc1..."
-                        value={addr}
-                        onChange={(e) => setAddr(e.target.value)}
-              
-                      />
+                      <Input type="text" placeholder="vsc1..." value={addr} onChange={(e) => setAddr(e.target.value)} />
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>GitHub Repository URL</Field.Label>
@@ -306,7 +311,6 @@ export const VerifyContract = () => {
                         placeholder="https://github.com/..."
                         value={repoUrl}
                         onChange={(e) => setRepoUrl(e.target.value)}
-              
                       />
                     </Field.Root>
                     <Field.Root>
@@ -316,17 +320,21 @@ export const VerifyContract = () => {
                         placeholder={'default branch'}
                         value={gitBranch}
                         onChange={(e) => setGitBranch(e.target.value)}
-              
+                      />
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>Contract Directory</Field.Label>
+                      <Input
+                        type="text"
+                        placeholder={'contract'}
+                        value={contractDir}
+                        onChange={(e) => setContractDir(e.target.value)}
                       />
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>TinyGo Version</Field.Label>
                       <NativeSelect.Root>
-                        <NativeSelect.Field
-                
-                          value={tinygoVersion}
-                          onChange={(e) => setTinyGoVersion(e.target.value)}
-                        >
+                        <NativeSelect.Field value={tinygoVersion} onChange={(e) => setTinyGoVersion(e.target.value)}>
                           {Object.keys(tinygoVersions).map((val, i) => (
                             <option key={i} value={val}>
                               v{val} (Go: v{tinygoVersions[val].go})
@@ -339,11 +347,7 @@ export const VerifyContract = () => {
                     <Field.Root>
                       <Field.Label>WASM Strip Tool</Field.Label>
                       <NativeSelect.Root>
-                        <NativeSelect.Field
-                
-                          value={wasmStripTool}
-                          onChange={(e) => setWasmStripTool(e.target.value)}
-                        >
+                        <NativeSelect.Field value={wasmStripTool} onChange={(e) => setWasmStripTool(e.target.value)}>
                           {wasmStripTools.map((val, i) => (
                             <option key={i} value={val[0]}>
                               {val[1]}
@@ -388,11 +392,7 @@ export const VerifyContract = () => {
           ) : null}
         </Stack>
       </Center>
-      <AiohaModal
-        displayed={walletOpen}
-        onClose={() => setWalletOpen(false)}
-        disabledProviders={[Providers.MetaMaskSnap]}
-      />
+      <AiohaModal displayed={walletOpen} onClose={() => setWalletOpen(false)} disabledProviders={[Providers.MetaMaskSnap]} />
     </>
   )
 }
