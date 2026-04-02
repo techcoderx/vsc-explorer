@@ -28,6 +28,7 @@ import { AiohaModal } from '../../Aioha'
 import { generateMessageToSign } from '../../../helpers'
 import { FaHive } from 'react-icons/fa6'
 import { toaster } from '../../ui/toaster'
+import { InfoTip } from '../../ui/toggle-tip'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.40.1': {
@@ -113,6 +114,7 @@ export const VerifyContract = () => {
   const [gitBranch, setGitBranch] = useState<string>('')
   const [tinygoVersion, setTinyGoVersion] = useState<string>('0.39.0')
   const [contractDir, setContractDir] = useState<string>('')
+  const [goModDir, setGoModDir] = useState<string>('')
   const [wasmStripTool, setWasmStripTool] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const toastIdRef = useRef<string | undefined>(undefined)
@@ -138,6 +140,12 @@ export const VerifyContract = () => {
       (contractDir.includes('..') || contractDir.startsWith('/') || !/^[A-Za-z0-9/_.\-]+$/.test(contractDir))
     ) {
       e = 'Invalid contract directory path'
+    }
+    if (
+      goModDir.length > 0 &&
+      (goModDir.includes('..') || goModDir.startsWith('/') || !/^[A-Za-z0-9/_.\-]+$/.test(goModDir))
+    ) {
+      e = 'Invalid Go module directory path'
     }
     if (e) {
       return toaster.error({ title: e })
@@ -218,7 +226,8 @@ export const VerifyContract = () => {
           repo_branch: gitBranch.length > 0 ? gitBranch : undefined,
           tinygo_version: tinygoVersion,
           strip_tool: wasmStripTool.length > 0 ? wasmStripTool : undefined,
-          contract_dir: contractDir.length > 0 ? contractDir : undefined
+          contract_dir: contractDir.length > 0 ? contractDir : undefined,
+          go_mod_dir: goModDir.length > 0 ? goModDir : undefined
         })
       })
       if (createReq.status !== 200) {
@@ -323,12 +332,27 @@ export const VerifyContract = () => {
                       />
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>Contract Directory</Field.Label>
+                      <Field.Label>
+                        Contract Directory
+                        <InfoTip>Subdirectory containing the contract source code to compile, relative to the Go module directory. Defaults to "contract".</InfoTip>
+                      </Field.Label>
                       <Input
                         type="text"
                         placeholder={'contract'}
                         value={contractDir}
                         onChange={(e) => setContractDir(e.target.value)}
+                      />
+                    </Field.Root>
+                    <Field.Root>
+                      <Field.Label>
+                        Go Module Directory
+                        <InfoTip>Subdirectory containing the go.mod file, if it is not in the repository root. Leave empty if go.mod is at the root.</InfoTip>
+                      </Field.Label>
+                      <Input
+                        type="text"
+                        placeholder={'repository root'}
+                        value={goModDir}
+                        onChange={(e) => setGoModDir(e.target.value)}
                       />
                     </Field.Root>
                     <Field.Root>

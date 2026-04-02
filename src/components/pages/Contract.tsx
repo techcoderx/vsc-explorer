@@ -560,6 +560,9 @@ export const Contract = () => {
                               {verifInfo.contract_dir ? (
                                 <TableRow label="Contract Directory" value={verifInfo.contract_dir} isInCard minimalSpace />
                               ) : null}
+                              {verifInfo.go_mod_dir ? (
+                                <TableRow label="Go Module Directory" value={verifInfo.go_mod_dir} isInCard minimalSpace />
+                              ) : null}
                               <TableRow
                                 label="TinyGo Version"
                                 value={`v${verifInfo.tinygo_version} (Go: v${verifInfo.go_version})`}
