@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from 'react'
+
 export interface L1OpType {
   name: string
   label: string
@@ -29,10 +31,21 @@ export const L1_OP_TYPES: L1OpType[] = [
   { name: 'fill_transfer_from_savings', label: 'Fill Transfer from Savings', filterer: 2097152 }
 ]
 
-export const parseBitmaskParam = (param: string | null): number => {
-  if (!param) return 0
-  const n = parseInt(param, 10)
-  return isNaN(n) || n < 0 ? 0 : n
+export const toggleOp = (bitmask: number, filterer: number): number => bitmask ^ filterer
+
+const _filterStore = new Map<string, number>()
+const _subscribers = new Set<() => void>()
+
+export const setL1OpsFilter = (key: string, bitmask: number) => {
+  if (bitmask > 0) _filterStore.set(key, bitmask)
+  else _filterStore.delete(key)
+  _subscribers.forEach((fn) => fn())
 }
 
-export const toggleOp = (bitmask: number, filterer: number): number => bitmask ^ filterer
+const subscribe = (fn: () => void) => {
+  _subscribers.add(fn)
+  return () => _subscribers.delete(fn)
+}
+
+export const useL1OpsFilter = (key: string): number =>
+  useSyncExternalStore(subscribe, () => _filterStore.get(key) ?? 0)

@@ -1,19 +1,18 @@
-import { useOutletContext, useParams, useSearchParams } from 'react-router'
+import { useOutletContext, useParams } from 'react-router'
 import { fetchAccHistory, fetchL1AccInfo } from '../../../requests'
 import { useQuery } from '@tanstack/react-query'
 import { TxCard } from '../../TxCard'
 import { describeL1TxBriefly } from '../../../helpers'
 import { VStack } from '@chakra-ui/react'
 import Pagination from '../../Pagination'
-import { parseBitmaskParam } from '../../../l1OpTypes'
+import { useL1OpsFilter } from '../../../l1OpTypes'
 
 const count = 50
 
 export const AddressL1Ops = () => {
   const { addr } = useOutletContext<{ addr: string }>()
   const { page } = useParams()
-  const [searchParams] = useSearchParams()
-  const bitmask = parseBitmaskParam(searchParams.get('ops'))
+  const bitmask = useL1OpsFilter(`/address/${addr}/hiveops`)
   const pageNum = parseInt(page || '1')
   const user = addr.replace('hive:', '')
   const { data: l1Accv } = useQuery({

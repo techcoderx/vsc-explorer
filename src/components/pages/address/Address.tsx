@@ -118,7 +118,7 @@ export const Address = () => {
           )}
           {tabValue === 'hiveops' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-              <L1OpTypeFilter basePath={`/address/${addr}/hiveops`} />
+              <L1OpTypeFilter filterKey={`/address/${addr}/hiveops`} />
             </Box>
           )}
         </Tabs.List>

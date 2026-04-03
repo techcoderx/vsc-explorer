@@ -11,12 +11,13 @@ import { btnGroupCss } from '../../styles/btnGroup'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
 import { useFilterOpen } from '../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
-import { parseBitmaskParam } from '../../l1OpTypes'
+import { useL1OpsFilter } from '../../l1OpTypes'
 import { L1OpTypeFilter } from '../L1OpTypeFilter'
 
+const HIVE_TXS_FILTER_KEY = '/transactions/hive'
+
 export const NewHiveTxs = () => {
-  const [searchParams] = useSearchParams()
-  const bitmask = parseBitmaskParam(searchParams.get('ops'))
+  const bitmask = useL1OpsFilter(HIVE_TXS_FILTER_KEY)
   const { data: txs } = useQuery({
     queryKey: ['vsc-latest-txs-hive', bitmask],
     queryFn: () => fetchLatestTxs(bitmask || undefined)
@@ -81,7 +82,7 @@ export const NewTxs = () => {
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
           {isMagi && <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
-          {isHive && <L1OpTypeFilter basePath="/transactions/hive" />}
+          {isHive && <L1OpTypeFilter filterKey={HIVE_TXS_FILTER_KEY} />}
           <Box css={btnGroupCss}>
             {!isMagi ? <LinkedBtn to={'/transactions'}>Magi</LinkedBtn> : <CurrentPageBtn>Magi</CurrentPageBtn>}
             {!isHive ? (

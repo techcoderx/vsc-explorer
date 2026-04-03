@@ -117,17 +117,18 @@ const DesktopNav = ({ isThemed }: { isThemed: boolean }) => {
           <Popover.Root positioning={{ placement: 'bottom-start' }}>
             <Popover.Trigger asChild>
               <Box
-                asChild
+                asChild={!!navItem.href}
                 p={2}
                 fontSize={'md'}
                 fontWeight={500}
                 color={linkColor}
+                cursor={navItem.children ? 'default' : 'pointer'}
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor
                 }}
               >
-                <ReactRouterLink to={navItem.href ?? '#'}>{navItem.label}</ReactRouterLink>
+                {navItem.href ? <ReactRouterLink to={navItem.href}>{navItem.label}</ReactRouterLink> : navItem.label}
               </Box>
             </Popover.Trigger>
 
