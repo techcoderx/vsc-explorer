@@ -52,8 +52,8 @@ export const fetchBlocksByProposer = async (proposer: string, count = 50, last_b
   ).json()
 }
 
-export const fetchLatestTxs = async (): Promise<L1Transaction[]> => {
-  return await (await fetch(`${hafBaseUrl}/haf/latest-ops/50/true`)).json()
+export const fetchLatestTxs = async (bitmask_filter?: number): Promise<L1Transaction[]> => {
+  return await (await fetch(`${hafBaseUrl}/haf/latest-ops/50/true${bitmask_filter ? `/${bitmask_filter}` : ''}`)).json()
 }
 
 export const fetchContracts = async (opts: object): Promise<Contract[]> => {
@@ -89,8 +89,18 @@ export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100,
   return await (await fetch(`${conf.beApi}/blocks?epoch=${epoch_num}&count=${count}&offset=${offset}`)).json()
 }
 
-export const fetchAccHistory = async (username: string, count: number = 50, last_nonce?: number): Promise<L1Transaction[]> => {
-  return await (await fetch(`${hafBaseUrl}/haf/user/${username}/history/${count}${last_nonce ? `/${last_nonce}` : ''}`)).json()
+export const fetchAccHistory = async (
+  username: string,
+  count: number = 50,
+  last_nonce?: number,
+  bitmask_filter?: number
+): Promise<L1Transaction[]> => {
+  let url = `${hafBaseUrl}/haf/user/${username}/history/${count}`
+  if (last_nonce !== undefined) {
+    url += `/${last_nonce}`
+    if (bitmask_filter) url += `/${bitmask_filter}`
+  }
+  return await (await fetch(url)).json()
 }
 
 export const fetchL1AccInfo = async (username: string): Promise<AccInfo> => {

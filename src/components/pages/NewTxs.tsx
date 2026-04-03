@@ -11,11 +11,15 @@ import { btnGroupCss } from '../../styles/btnGroup'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
 import { useFilterOpen } from '../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
+import { parseBitmaskParam } from '../../l1OpTypes'
+import { L1OpTypeFilter } from '../L1OpTypeFilter'
 
 export const NewHiveTxs = () => {
+  const [searchParams] = useSearchParams()
+  const bitmask = parseBitmaskParam(searchParams.get('ops'))
   const { data: txs } = useQuery({
-    queryKey: ['vsc-latest-txs-hive'],
-    queryFn: fetchLatestTxs
+    queryKey: ['vsc-latest-txs-hive', bitmask],
+    queryFn: () => fetchLatestTxs(bitmask || undefined)
   })
   return (
     <Flex direction={'column'} gap={'3'} marginTop={'15px'}>
@@ -69,6 +73,7 @@ export const NewTxs = () => {
   const location = useLocation()
   const [filtersOpen, setFiltersOpen] = useFilterOpen()
   const isMagi = location.pathname === '/transactions' || location.pathname.startsWith('/transactions/magi')
+  const isHive = location.pathname === '/transactions/hive'
   return (
     <>
       <PageTitle title="Latest Transactions" />
@@ -76,9 +81,10 @@ export const NewTxs = () => {
         <Text fontSize={'5xl'}>Latest Transactions</Text>
         <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
           {isMagi && <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
+          {isHive && <L1OpTypeFilter basePath="/transactions/hive" />}
           <Box css={btnGroupCss}>
             {!isMagi ? <LinkedBtn to={'/transactions'}>Magi</LinkedBtn> : <CurrentPageBtn>Magi</CurrentPageBtn>}
-            {location.pathname !== '/transactions/hive' ? (
+            {!isHive ? (
               <LinkedBtn to={'/transactions/hive'}>Hive</LinkedBtn>
             ) : (
               <CurrentPageBtn>Hive</CurrentPageBtn>

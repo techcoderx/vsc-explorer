@@ -14,6 +14,7 @@ import { PageTitle } from '../../PageTitle'
 import { TxFilterBar, TxFilterToggle } from '../../TxFilterBar'
 import { useFilterOpen } from '../../../hooks/useFilterOpen'
 import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
+import { L1OpTypeFilter } from '../../L1OpTypeFilter'
 
 const count = 100
 
@@ -113,6 +114,11 @@ export const Address = () => {
           {tabValue === 'txs' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
               <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+            </Box>
+          )}
+          {tabValue === 'hiveops' && (
+            <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+              <L1OpTypeFilter basePath={`/address/${addr}/hiveops`} />
             </Box>
           )}
         </Tabs.List>
