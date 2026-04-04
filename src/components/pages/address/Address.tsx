@@ -1,4 +1,4 @@
-import { Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
+import { Heading, Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
 import { useParams, Outlet, useOutletContext, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from '../404'
@@ -68,12 +68,12 @@ export const Address = () => {
       <PageTitle title={`${abbreviateHash(addr, 26, 0)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         {isL1 ? (
-          <Text fontSize={'5xl'} mb={'4'}>
+          <Heading as="h1" size="5xl" fontWeight="normal" mb={'4'}>
             {addr!.replace('hive:', '@')}
-          </Text>
+          </Heading>
         ) : (
           <Box>
-            <Text fontSize={'5xl'}>Address</Text>
+            <Heading as="h1" size="5xl" fontWeight="normal">Address</Heading>
             <Text fontSize={'2xl'} opacity={'0.7'} mb={'4'}>
               {addr}
             </Text>

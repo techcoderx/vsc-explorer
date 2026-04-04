@@ -27,6 +27,7 @@ export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
       color={'white'}
       _hover={{ bg: themeColor }}
       _light={{ borderColor: themeColor, bg: themeColorULight, color: themeColorDark, _hover: { bg: themeColorULight } }}
+      aria-current="page"
     >
       {children}
     </Button>

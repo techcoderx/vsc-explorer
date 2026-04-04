@@ -1,4 +1,4 @@
-import { Text, Table, Stack, Tabs } from '@chakra-ui/react'
+import { Heading, Text, Table, Stack, Tabs } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import { fetchBlock, fetchEpoch, fetchL2TxnsBy, getDagByCIDBatch, useDagByCID } from '../../requests'
@@ -75,7 +75,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
     <>
       <PageTitle title={`Block #${thousandSeperator(blkNum)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Text fontSize="5xl">Block #{thousandSeperator(blkNum)}</Text>
+        <Heading as="h1" size="5xl" fontWeight="normal">Block #{thousandSeperator(blkNum)}</Heading>
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/' + (blkNum! - 1) : undefined} toNext={'/block/' + (blkNum! + 1)} />
       </Stack>
       <hr />

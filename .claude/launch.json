@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["start"],
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": ["-li", "-c", "pnpm start"],
       "port": 5173
     }
   ]

@@ -213,7 +213,7 @@ export const BridgeCharts = () => {
   return (
     <>
       <PageTitle title="Native Asset Mapping (NAM) Charts" />
-      <Text fontSize={'5xl'}>Native Asset Mapping (NAM) Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Native Asset Mapping (NAM) Charts</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>

@@ -270,6 +270,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
             <Dialog.Body p="2.5">
               <InputGroup width="100%" startElement={<LuSearch />}>
                 <Input
+                  aria-label="Search account, block, transaction"
                   placeholder="Search account, block, transaction..."
                   spellCheck={false}
                   _focus={{ borderColor: themeColor }}

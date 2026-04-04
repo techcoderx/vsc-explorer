@@ -84,7 +84,7 @@ export const WitnessCharts = () => {
   return (
     <>
       <PageTitle title="Witness Charts" />
-      <Text fontSize={'5xl'}>Witness Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Witness Charts</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>

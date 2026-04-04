@@ -31,7 +31,10 @@ const Navbar = () => {
   const defaultBtnBg = useColorModeValue('gray.200', 'gray.800')
 
   return (
-    <Box>
+    <Box as="header">
+      <Box asChild position="absolute" top="-40px" left="0" bg={themeColor} color="white" p="2" zIndex="9999" _focus={{ top: '0' }}>
+        <a href="#main-content">Skip to main content</a>
+      </Box>
       <Flex
         bg={isThemed ? 'var(--magi-surface)' : defaultNavBg}
         color={useColorModeValue('gray.600', 'white')}
@@ -63,7 +66,7 @@ const Navbar = () => {
             </Tag.Root>
           )}
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={3}>
+          <Flex display={{ base: 'none', md: 'flex' }} ml={3} as="nav" aria-label="Main navigation">
             <DesktopNav isThemed={isThemed} />
           </Flex>
         </Flex>
@@ -93,11 +96,13 @@ const Navbar = () => {
 
       <Collapsible.Root open={isOpen}>
         <Collapsible.Content>
-          <MobileNav isThemed={isThemed} />
+          <Box as="nav" aria-label="Mobile navigation">
+            <MobileNav isThemed={isThemed} />
+          </Box>
         </Collapsible.Content>
       </Collapsible.Root>
 
-      <Container width={'100%'} maxW={'8xl'} marginTop={'15px'} marginBottom={'40px'}>
+      <Container as="main" id="main-content" width={'100%'} maxW={'8xl'} marginTop={'15px'} marginBottom={'40px'}>
         <Outlet />
       </Container>
     </Box>
@@ -153,8 +158,8 @@ const DesktopNav = ({ isThemed }: { isThemed: boolean }) => {
 const DesktopSubNav = ({ label, href, subLabel, isThemed }: NavItem & { isThemed: boolean }) => {
   const defaultHoverBg = useColorModeValue(themeColorULight, 'gray.900')
   return (
-    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isThemed ? 'var(--magi-surface-hover)' : defaultHoverBg }}>
-      <ReactRouterLink to={href ?? '#'}>
+    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isThemed ? 'var(--magi-surface-hover)' : defaultHoverBg }} focusWithin={{ outline: 'none' }}>
+      <ReactRouterLink to={href ?? '#'} style={{ outline: 'none' }}>
         <Stack direction={'row'} align={'center'}>
           <Box>
             <Text transition={'all .3s ease'} _groupHover={{ color: themeColor }} fontWeight={500}>
@@ -195,24 +200,30 @@ const MobileNav = ({ isThemed }: { isThemed: boolean }) => {
 const MobileNavItem = ({ label, children, href }: NavItem) => {
   const [isOpen, setIsOpen] = useState(false)
   const onToggle = () => setIsOpen((v) => !v)
+  const textColor = useColorModeValue('gray.600', 'gray.200')
+  const borderColorVal = useColorModeValue('gray.200', 'gray.700')
 
   return (
-    <Stack gap={0} onClick={children && onToggle}>
-      <Box
-        py={3}
-        asChild
-        justifyContent="space-between"
-        alignItems="center"
-        _hover={{
-          textDecoration: 'none'
-        }}
-      >
-        <ReactRouterLink to={href ?? '#'}>
-          <HStack>
-            <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
-              {label}
-            </Text>
-            {children && (
+    <Stack gap={0}>
+      {children ? (
+        <Box
+          asChild
+          py={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          width="100%"
+          background="none"
+          border="none"
+          cursor="pointer"
+          aria-expanded={isOpen}
+          focusRing="none"
+        >
+          <button type="button" onClick={onToggle}>
+            <HStack>
+              <Text fontWeight={600} color={textColor}>
+                {label}
+              </Text>
               <Box
                 as={LuChevronDown}
                 transition={'all .25s ease-in-out'}
@@ -220,30 +231,49 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
                 w={6}
                 h={6}
               />
-            )}
-          </HStack>
-        </ReactRouterLink>
-      </Box>
+            </HStack>
+          </button>
+        </Box>
+      ) : (
+        <Box
+          py={3}
+          asChild
+          justifyContent="space-between"
+          alignItems="center"
+          _hover={{
+            textDecoration: 'none'
+          }}
+        >
+          <ReactRouterLink to={href ?? '#'}>
+            <HStack>
+              <Text fontWeight={600} color={textColor}>
+                {label}
+              </Text>
+            </HStack>
+          </ReactRouterLink>
+        </Box>
+      )}
 
-      <Collapsible.Root open={isOpen}>
-        <Collapsible.Content style={{ marginTop: '0!important' }}>
-          <Stack
-            mt={0}
-            pl={4}
-            borderLeft={1}
-            borderStyle={'solid'}
-            borderColor={useColorModeValue('gray.200', 'gray.700')}
-            align={'start'}
-          >
-            {children &&
-              children.map((child) => (
+      {children && (
+        <Collapsible.Root open={isOpen}>
+          <Collapsible.Content style={{ marginTop: '0!important' }}>
+            <Stack
+              mt={0}
+              pl={4}
+              borderLeft={1}
+              borderStyle={'solid'}
+              borderColor={borderColorVal}
+              align={'start'}
+            >
+              {children.map((child) => (
                 <Box asChild key={child.label} py={2}>
                   <ReactRouterLink to={child.href ?? '#'}>{child.label}</ReactRouterLink>
                 </Box>
               ))}
-          </Stack>
-        </Collapsible.Content>
-      </Collapsible.Root>
+            </Stack>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      )}
     </Stack>
   )
 }

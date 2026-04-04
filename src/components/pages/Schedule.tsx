@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Box, Text, Table, Link, Field } from '@chakra-ui/react'
+import { Box, Heading, Text, Table, Link, Field } from '@chakra-ui/react'
 import { Switch } from '../ui/switch'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -53,13 +53,13 @@ const WitnessSchedule = () => {
   return (
     <>
       <PageTitle title="Schedule" />
-      <Text fontSize={'5xl'}>Schedule</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Schedule</Heading>
       <hr />
       <br />
       <Text>
         Hive head block:{' '}
         <Link asChild>
-          <ReactRouterLink to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank">
+          <ReactRouterLink to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank" rel="noopener noreferrer" aria-label={`Block ${isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0} (opens in new tab)`}>
             {isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0}
           </ReactRouterLink>
         </Link>
@@ -101,7 +101,7 @@ const WitnessSchedule = () => {
                       <Table.Cell>
                         {sch.bn - prop.last_processed_block < 0 ? (
                           <Link asChild>
-                            <ReactRouterLink to={beL1BlockUrl(sch.bn)} target="_blank">
+                            <ReactRouterLink to={beL1BlockUrl(sch.bn)} target="_blank" rel="noopener noreferrer" aria-label={`Block ${thousandSeperator(sch.bn)} (opens in new tab)`}>
                               {thousandSeperator(sch.bn)}
                             </ReactRouterLink>
                           </Link>

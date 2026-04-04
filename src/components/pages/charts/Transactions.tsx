@@ -47,7 +47,7 @@ export const TxCharts = () => {
   return (
     <>
       <PageTitle title="Transactions Charts" />
-      <Text fontSize={'5xl'}>Transactions Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Transactions Charts</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>

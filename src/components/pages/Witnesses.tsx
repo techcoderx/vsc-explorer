@@ -1,4 +1,4 @@
-import { Text, Table, Skeleton, Link, HStack, Box } from '@chakra-ui/react'
+import { Heading, Text, Table, Skeleton, Link, HStack, Box } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
@@ -33,7 +33,7 @@ const Witnesses = () => {
   return (
     <>
       <PageTitle title="Witnesses" />
-      <Text fontSize={'5xl'}>Witnesses</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Witnesses</Heading>
       <hr />
       <br />
       <Text>
@@ -47,8 +47,18 @@ const Witnesses = () => {
               <Table.ColumnHeader>Username</Table.ColumnHeader>
               <Table.ColumnHeader
                 cursor={'pointer'}
+                tabIndex={0}
+                role="button"
+                aria-label="Sort by weight"
+                aria-sort={sort === 'weight' ? 'descending' : sort === 'weight_asc' ? 'ascending' : 'none'}
                 onClick={() => {
                   setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
+                  }
                 }}
               >
                 <HStack>

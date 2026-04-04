@@ -319,7 +319,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                         <AccountLink val={item.from} />
                       </MinTd>
                       <MinTd>
-                        <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                        <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} aria-label="To" />
                       </MinTd>
                       <MinTd>
                         <AccountLink val={item.to} />
@@ -590,7 +590,7 @@ const L1Tx = () => {
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
-        <Text fontSize={'5xl'}>Hive Transaction</Text>
+        <Heading as="h1" size="5xl" fontWeight="normal">Hive Transaction</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
@@ -604,7 +604,7 @@ const L1Tx = () => {
               <Text fontSize={'xl'} display={'inline'}>
                 Included in L1 block{' '}
               </Text>
-              <Link href={beL1BlockUrl(data.block_num)} target="_blank" fontSize={'xl'}>
+              <Link href={beL1BlockUrl(data.block_num)} target="_blank" rel="noopener noreferrer" fontSize={'xl'} aria-label={`Block #${thousandSeperator(data.block_num)} (opens in new tab)`}>
                 {'#' + thousandSeperator(data.block_num)}
               </Link>{' '}
               <Tooltip positioning={{ placement: 'top' }} content={timestamp}>
@@ -625,7 +625,7 @@ const L1Tx = () => {
       <HStack gap={'2'}>
         {getConf().hiveBe.map((be, i) => (
           <Button key={i} asChild margin={'20px 0px'} colorPalette={themeColorScheme} variant={'outline'}>
-            <ReactRouterLink to={be.url + '/tx/' + txid} target="_blank">
+            <ReactRouterLink to={be.url + '/tx/' + txid} target="_blank" rel="noopener noreferrer" aria-label={`View in ${be.name} (opens in new tab)`}>
               View in {be.name}
             </ReactRouterLink>
           </Button>
@@ -701,7 +701,7 @@ const L2Tx = () => {
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
-        <Text fontSize={'5xl'}>Transaction</Text>
+        <Heading as="h1" size="5xl" fontWeight="normal">Transaction</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>

@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Heading, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import PageNotFound from './404'
@@ -31,7 +31,7 @@ const Blocks = () => {
   return (
     <>
       <PageTitle title="Latest Blocks" />
-      <Text fontSize={'5xl'}>Latest Blocks</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Latest Blocks</Heading>
       <hr />
       <br />
       <Text>Total {prop ? thousandSeperator(prop.l2_block_height) : 0} blocks.</Text>

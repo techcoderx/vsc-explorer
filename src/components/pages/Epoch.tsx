@@ -1,4 +1,4 @@
-import { Link, Text, Box, Grid, GridItem, Stack, Table, Tabs, Flex } from '@chakra-ui/react'
+import { Link, Heading, Text, Box, Grid, GridItem, Stack, Table, Tabs, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import PageNotFound from './404'
@@ -46,7 +46,7 @@ const Epoch = () => {
     <>
       <PageTitle title={`Epoch #${thousandSeperator(epchNum)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Text fontSize="5xl">Epoch #{thousandSeperator(epchNum)}</Text>
+        <Heading as="h1" size="5xl" fontWeight="normal">Epoch #{thousandSeperator(epchNum)}</Heading>
         <PrevNextBtns toPrev={epchNum > 0 ? '/epoch/' + (epchNum! - 1) : undefined} toNext={'/epoch/' + (epchNum! + 1)} />
       </Stack>
       <hr />

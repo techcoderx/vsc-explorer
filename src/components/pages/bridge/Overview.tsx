@@ -68,7 +68,7 @@ const HiveBridgeOverview = () => {
   return (
     <>
       <PageTitle title="Hive Asset Mapping Overview" />
-      <Text fontSize={'5xl'}>Hive Asset Mapping Overview</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Hive Asset Mapping Overview</Heading>
       <hr />
       <br />
       <Card.Root mb={'4'}>
@@ -134,7 +134,7 @@ const HiveBridgeOverview = () => {
       </Stack>
       <Text>
         <Link asChild>
-          <ReactRouterLink target="_blank" to={'https://peakd.com/vsc/@vsc.network/introducing-native-asset-mapping'}>
+          <ReactRouterLink target="_blank" rel="noopener noreferrer" to={'https://peakd.com/vsc/@vsc.network/introducing-native-asset-mapping'} aria-label="Learn more about native asset mapping here (opens in new tab)">
             Learn more about native asset mapping here.
           </ReactRouterLink>
         </Link>

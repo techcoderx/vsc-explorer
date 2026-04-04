@@ -43,15 +43,18 @@ const Settings = () => {
           <Heading size="md">Color Theme</Heading>
         </Card.Header>
         <Card.Body>
-          <HStack gap={4}>
+          <HStack gap={4} role="radiogroup" aria-label="Color theme">
             {bgOptions.map((opt) => {
               const isSelected = bgTheme === opt.value
               const previewColor = colorMode === 'light' ? opt.lightColor : opt.darkColor
               return (
                 <Box
                   key={opt.value}
+                  asChild
+                  role="radio"
+                  aria-checked={isSelected}
+                  aria-label={`${opt.label} theme`}
                   cursor="pointer"
-                  onClick={() => setBgTheme(opt.value)}
                   borderWidth="2px"
                   borderColor={isSelected ? selectedBorder : borderColor}
                   borderRadius="lg"
@@ -60,16 +63,18 @@ const Settings = () => {
                   transition="all 0.2s"
                   _hover={{ borderColor: selectedBorder }}
                 >
-                  <Box
-                    w="60px"
-                    h="40px"
-                    borderRadius="md"
-                    bg={previewColor}
-                    border="1px solid"
-                    borderColor={borderColor}
-                    mb={2}
-                  />
-                  <Text fontSize="sm">{opt.label}</Text>
+                  <button type="button" onClick={() => setBgTheme(opt.value)}>
+                    <Box
+                      w="60px"
+                      h="40px"
+                      borderRadius="md"
+                      bg={previewColor}
+                      border="1px solid"
+                      borderColor={borderColor}
+                      mb={2}
+                    />
+                    <Text fontSize="sm">{opt.label}</Text>
+                  </button>
                 </Box>
               )
             })}

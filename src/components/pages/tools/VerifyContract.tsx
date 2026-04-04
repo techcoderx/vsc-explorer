@@ -73,7 +73,7 @@ const notice = [
     body: (
       <Text>
         Contracts are compiled using the official{' '}
-        <Link href="https://hub.docker.com/r/tinygo/tinygo" target="_blank">
+        <Link href="https://hub.docker.com/r/tinygo/tinygo" target="_blank" rel="noopener noreferrer" aria-label="TinyGo Docker image (opens in new tab)">
           TinyGo Docker image
         </Link>
         .
@@ -260,7 +260,7 @@ export const VerifyContract = () => {
   return (
     <>
       <PageTitle title="Verify Contract" />
-      <Text fontSize={'5xl'}>Verify Contract</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Verify Contract</Heading>
       <Text mb={'6'}>
         Submit contract source code to Magi Blocks to verify that the resulting compiled bytecode matches the deployed contract
         bytecode.

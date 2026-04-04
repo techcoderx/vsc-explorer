@@ -47,7 +47,7 @@ export const BlocksCharts = () => {
   return (
     <>
       <PageTitle title="Blocks Charts" />
-      <Text fontSize={'5xl'}>Blocks Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Blocks Charts</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>

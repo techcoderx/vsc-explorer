@@ -436,7 +436,7 @@ export const Contract = () => {
       <PageTitle title={`Contract ${abbreviateHash(contractId || '', 18, 0)}`} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Box mb={'4'}>
-          <Text fontSize={'5xl'}>Contract</Text>
+          <Heading as="h1" size="5xl" fontWeight="normal">Contract</Heading>
           <Text fontSize={'2xl'} opacity={'0.7'}>
             {contractId}
           </Text>

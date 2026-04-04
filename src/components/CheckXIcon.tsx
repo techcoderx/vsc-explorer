@@ -21,5 +21,5 @@ export const PendingIcon = () => {
 }
 
 export const ToIcon = () => {
-  return <Box as={FaCircleArrowRight} fontSize={'lg'} color={themeColorScheme} />
+  return <Box as={FaCircleArrowRight} fontSize={'lg'} color={themeColorScheme} aria-label="To" />
 }

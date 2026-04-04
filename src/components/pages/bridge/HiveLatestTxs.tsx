@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Heading, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { getBridgeTxCounts, getDeposits, getWithdrawals } from '../../../requests'
@@ -25,7 +25,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
   return (
     <>
       <PageTitle title="Hive Asset Maps" />
-      <Text fontSize={'5xl'}>Hive Asset Maps</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Hive Asset Maps</Heading>
       <hr />
       <br />
       <Text>Total {tally.deposits} maps</Text>
@@ -48,7 +48,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
   return (
     <>
       <PageTitle title="Hive Asset Unmaps" />
-      <Text fontSize={'5xl'}>Hive Asset Unmaps</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Hive Asset Unmaps</Heading>
       <hr />
       <br />
       <Text>Total {tally.withdrawals} unmaps</Text>

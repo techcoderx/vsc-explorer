@@ -13,7 +13,7 @@ export const TxFilterToggle = ({ open, onToggle }: { open: boolean; onToggle: ()
   const [searchParams] = useSearchParams()
   const activeCount = FILTER_KEYS.filter((k) => searchParams.get(k)).length
   return (
-    <Button size={'sm'} variant={open ? 'solid' : 'outline'} colorPalette={'gray'} _focusVisible={{ outline: 'none' }} onClick={onToggle}>
+    <Button size={'sm'} variant={open ? 'solid' : 'outline'} colorPalette={'gray'} onClick={onToggle}>
       <LuFilter />
       Filters{activeCount > 0 ? ` (${activeCount})` : ''}
     </Button>

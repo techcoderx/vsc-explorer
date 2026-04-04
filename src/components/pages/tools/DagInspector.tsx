@@ -43,7 +43,7 @@ export const DagInspector = () => {
   return (
     <>
       <PageTitle title="DAG Inspector" />
-      <Text fontSize={'5xl'}>DAG Inspector</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">DAG Inspector</Heading>
       <Text mb={'6'}>View the contents of a DAG by CID pinned by nodes.</Text>
       <HStack gap={'3'} mb={'6'}>
         <Input

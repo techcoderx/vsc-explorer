@@ -54,7 +54,7 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
                     <AccountLink val={item.from} />
                   </Table.Cell>
                   <Table.Cell>
-                    <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                    <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} aria-label="To" />
                   </Table.Cell>
                   <Table.Cell>
                     <AccountLink val={item.to} />
@@ -99,7 +99,7 @@ export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
                   <AccountLink val={(item as LedgerTx).from} />
                 </Table.Cell>
                 <Table.Cell>
-                  <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} />
+                  <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} aria-label="To" />
                 </Table.Cell>
                 <Table.Cell>
                   <AccountLink val={item.to} />

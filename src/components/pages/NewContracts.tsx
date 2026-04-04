@@ -1,4 +1,4 @@
-import { Text, Table, Skeleton, Link } from '@chakra-ui/react'
+import { Heading, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
@@ -11,7 +11,7 @@ const NewContracts = () => {
   return (
     <>
       <PageTitle title="Latest Contracts" />
-      <Text fontSize={'5xl'}>Latest Contracts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Latest Contracts</Heading>
       <hr />
       <Table.ScrollArea marginTop={'15px'}>
         <Table.Root variant="line">

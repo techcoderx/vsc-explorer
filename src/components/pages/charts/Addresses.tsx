@@ -48,7 +48,7 @@ export const AddressCharts = () => {
   return (
     <>
       <PageTitle title="Address Charts" />
-      <Text fontSize={'5xl'}>Address Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Address Charts</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>

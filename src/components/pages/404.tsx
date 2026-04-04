@@ -1,11 +1,11 @@
-import { Text } from '@chakra-ui/react'
+import { Heading } from '@chakra-ui/react'
 import { PageTitle } from '../PageTitle'
 
 const PageNotFound = () => {
   return (
     <>
       <PageTitle title="404" />
-      <Text fontSize={'5xl'}>404 page not found</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">404 page not found</Heading>
     </>
   )
 }

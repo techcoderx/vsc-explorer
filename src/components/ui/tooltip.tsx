@@ -28,7 +28,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <ChakraTooltip.Root {...rest}>
         <ChakraTooltip.Trigger asChild>
-          <span style={{ display: 'inline-flex', alignItems: 'center' }}>{children}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center' }} tabIndex={0}>{children}</span>
         </ChakraTooltip.Trigger>
         <Portal disabled={!portalled} container={portalRef}>
           <ChakraTooltip.Positioner>

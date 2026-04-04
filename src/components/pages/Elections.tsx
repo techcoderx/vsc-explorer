@@ -1,4 +1,4 @@
-import { Text, Table, Skeleton, Link } from '@chakra-ui/react'
+import { Heading, Text, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { fetchElections, fetchProps } from '../../requests'
@@ -34,7 +34,7 @@ const Elections = () => {
   return (
     <>
       <PageTitle title="Elections" />
-      <Text fontSize={'5xl'}>Elections</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Elections</Heading>
       <hr />
       <br />
       <Table.ScrollArea mb={'15px'}>

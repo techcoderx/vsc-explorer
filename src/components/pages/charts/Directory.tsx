@@ -1,4 +1,4 @@
-import { Card, Flex, Grid, Image, Text } from '@chakra-ui/react'
+import { Card, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react'
 import { toaster } from '../../ui/toaster'
 import { Link as ReactRouterLink } from 'react-router'
 import { themeColor } from '../../../settings'
@@ -41,7 +41,7 @@ export const ChartsDirectory = () => {
   return (
     <Flex direction={'column'} gap={'3'}>
       <PageTitle title="Network Charts Directory" />
-      <Text fontSize={'5xl'}>Network Charts</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Network Charts</Heading>
       <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={'3'}>
         {metrics.map((m, i) => (
           <Card.Root

@@ -11,6 +11,7 @@ import {
   Spinner,
   Stack,
   Text,
+  Heading,
   useBreakpointValue
 } from '@chakra-ui/react'
 import { PageTitle } from '../../PageTitle'
@@ -123,7 +124,7 @@ export const Broadcast = () => {
   return (
     <>
       <PageTitle title="Broadcast Transaction" />
-      <Text fontSize={'5xl'}>Broadcast Transaction</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">Broadcast Transaction</Heading>
       <Text mb={'6'}>Sign and broadcast a Magi transaction.</Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>

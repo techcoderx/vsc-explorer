@@ -1,4 +1,4 @@
-import { Text, Flex, Stack, Box } from '@chakra-ui/react'
+import { Flex, Heading, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, useLocation, useOutletContext, useParams, useSearchParams } from 'react-router'
 import { TxCard } from '../TxCard'
@@ -79,7 +79,7 @@ export const NewTxs = () => {
     <>
       <PageTitle title="Latest Transactions" />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Text fontSize={'5xl'}>Latest Transactions</Text>
+        <Heading as="h1" size="5xl" fontWeight="normal">Latest Transactions</Heading>
         <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
           {isMagi && <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
           {isHive && <L1OpTypeFilter filterKey={HIVE_TXS_FILTER_KEY} />}
