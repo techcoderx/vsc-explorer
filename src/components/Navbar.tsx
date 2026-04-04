@@ -158,7 +158,7 @@ const DesktopNav = ({ isThemed }: { isThemed: boolean }) => {
 const DesktopSubNav = ({ label, href, subLabel, isThemed }: NavItem & { isThemed: boolean }) => {
   const defaultHoverBg = useColorModeValue(themeColorULight, 'gray.900')
   return (
-    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isThemed ? 'var(--magi-surface-hover)' : defaultHoverBg }} focusWithin={{ outline: 'none' }}>
+    <Box role={'group'} display={'block'} p={2} rounded={'md'} _hover={{ bg: isThemed ? 'var(--magi-surface-hover)' : defaultHoverBg }} _focusWithin={{ outline: 'none' }}>
       <ReactRouterLink to={href ?? '#'} style={{ outline: 'none' }}>
         <Stack direction={'row'} align={'center'}>
           <Box>

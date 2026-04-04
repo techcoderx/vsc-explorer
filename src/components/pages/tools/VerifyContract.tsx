@@ -137,13 +137,13 @@ export const VerifyContract = () => {
     }
     if (
       contractDir.length > 0 &&
-      (contractDir.includes('..') || contractDir.startsWith('/') || !/^[A-Za-z0-9/_.\-]+$/.test(contractDir))
+      (contractDir.includes('..') || contractDir.startsWith('/') || !/^[A-Za-z0-9/_.-]+$/.test(contractDir))
     ) {
       e = 'Invalid contract directory path'
     }
     if (
       goModDir.length > 0 &&
-      (goModDir.includes('..') || goModDir.startsWith('/') || !/^[A-Za-z0-9/_.\-]+$/.test(goModDir))
+      (goModDir.includes('..') || goModDir.startsWith('/') || !/^[A-Za-z0-9/_.-]+$/.test(goModDir))
     ) {
       e = 'Invalid Go module directory path'
     }

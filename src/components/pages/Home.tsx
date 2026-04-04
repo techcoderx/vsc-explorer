@@ -188,7 +188,7 @@ const useEpochCountdown = (epochStartBlock?: number, currentBlock?: number) => {
       setSeconds((prev) => (prev !== null && prev > 0 ? prev - 1 : 0))
     }, 1000)
     return () => clearInterval(id)
-  }, [seconds !== null && seconds > 0])
+  }, [seconds])
 
   return seconds
 }
