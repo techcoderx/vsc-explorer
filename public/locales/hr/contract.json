@@ -1,0 +1,67 @@
+{
+  "title": "Ugovor",
+  "tabs": {
+    "transactions": "Transakcije",
+    "outputs": "Izlazi",
+    "info": "Informacije",
+    "storageProof": "Dokaz pohrane",
+    "readState": "Čitaj stanje",
+    "callContract": "Pozovi ugovor",
+    "sourceCode": "Izvorni kod",
+    "history": "Povijest"
+  },
+  "info": {
+    "createdAt": "Kreirano",
+    "createdInL1Block": "Kreirano u L1 bloku",
+    "creationTx": "Transakcija kreiranja",
+    "creator": "Kreator",
+    "owner": "Vlasnik",
+    "bytecodeCid": "CID bajtkoda",
+    "runtime": "Izvršno okruženje"
+  },
+  "readState": {
+    "key": "Ključ",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "gql greška pri dohvaćanju ključa stanja",
+    "fetchError": "Nije uspjelo dohvaćanje ključa stanja"
+  },
+  "callContract": {
+    "balance": "Stanje: {{balance}}",
+    "currentAllowance": "Trenutni limit",
+    "walletNotConnected": "Novčanik nije povezan ili stanja nisu mogla biti učitana",
+    "amountMustBePositive": "Iznos mora biti veći od 0",
+    "insufficientBalance": "Nedovoljno stanje",
+    "connectFirst": "Molimo prvo povežite novčanik",
+    "methodRequired": "Metoda poziva je obavezna",
+    "simulationFailed": "Simulacija poziva ugovora nije uspjela"
+  },
+  "verification": {
+    "verified": "Izvorni kod ugovora je verificiran",
+    "verifiedDesc": "Magi Blocks je verificirao da se dostavljeni izvorni kod podudara s postavljenim bajtkodом ugovora. To ne znači da je ugovor siguran za interakciju.",
+    "queued": "Zahtjev za verifikaciju ugovora je u redu čekanja.",
+    "inProgress": "Zahtjev za verifikaciju ugovora se trenutno obrađuje.",
+    "failed": "Verifikacija ugovora nije dovršena.",
+    "notMatch": "Verifikacija ugovora nije uspjela zbog nepodudaranja postavljenog bajtkoda s kompiliranim izvornim kodom.",
+    "pending": "Zahtjev za verifikaciju ugovora čeka na obradu.",
+    "fetchError": "Nije uspjelo dohvaćanje statusa verifikacije ugovora.",
+    "loadingStatus": "Učitavanje statusa verifikacije ugovora...",
+    "notVerified": "Izvorni kod ugovora nije verificiran",
+    "unknown": "Izvorni kod ovog ugovora je nepoznat.",
+    "language": "Jezik",
+    "license": "Licenca",
+    "verifiedAt": "Verificirano",
+    "submittedBy": "Poslao/la",
+    "repository": "Repozitorij",
+    "contractDir": "Direktorij ugovora",
+    "goModDir": "Direktorij Go modula",
+    "tinygoVersion": "Verzija TinyGo",
+    "exports": "Izvozi"
+  },
+  "errors": {
+    "fetchFailed": "Nije uspjelo dohvaćanje ugovora",
+    "notExist": "Ugovor ne postoji"
+  },
+  "storageProofLoading": "Učitavanje transakcije postavljanja...",
+  "storageProofError": "Nije uspjelo učitavanje transakcije postavljanja"
+}

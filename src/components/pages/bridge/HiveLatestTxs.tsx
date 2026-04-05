@@ -1,6 +1,7 @@
 import { Heading, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { getBridgeTxCounts, getDeposits, getWithdrawals } from '../../../requests'
 import { BridgeCounter } from '../../../types/HafApiResult'
 import Pagination from '../../Pagination'
@@ -17,6 +18,7 @@ interface Commons {
 }
 
 export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
+  const { t } = useTranslation('pages')
   const offset = (pageNumber - 1) * count
   const { data: deposits } = useQuery({
     queryKey: ['vsc-list-deposits-hive', offset, count],
@@ -24,11 +26,11 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
-      <PageTitle title="Hive Asset Maps" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Hive Asset Maps</Heading>
+      <PageTitle title={t('bridge.hiveMaps')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('bridge.hiveMaps')}</Heading>
       <hr />
       <br />
-      <Text>Total {tally.deposits} maps</Text>
+      <Text>{t('bridge.totalMaps', { count: tally.deposits })}</Text>
       <LedgerDeposits txs={deposits?.deposits || []} />
       <Pagination
         path={'/bridge/hive/deposits'}
@@ -40,6 +42,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
 }
 
 export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
+  const { t } = useTranslation('pages')
   const offset = (pageNumber - 1) * count
   const { data: withdrawals } = useQuery({
     queryKey: ['vsc-list-withdrawals-hive', offset, count],
@@ -47,11 +50,11 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
   })
   return (
     <>
-      <PageTitle title="Hive Asset Unmaps" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Hive Asset Unmaps</Heading>
+      <PageTitle title={t('bridge.hiveUnmaps')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('bridge.hiveUnmaps')}</Heading>
       <hr />
       <br />
-      <Text>Total {tally.withdrawals} unmaps</Text>
+      <Text>{t('bridge.totalUnmaps', { count: tally.withdrawals })}</Text>
       <LedgerWithdrawals actions={withdrawals?.withdrawals || []} />
       <Pagination
         path={'/bridge/hive/withdrawals'}

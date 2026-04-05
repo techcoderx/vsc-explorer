@@ -1,0 +1,67 @@
+{
+  "title": "컨트랙트",
+  "tabs": {
+    "transactions": "트랜잭션",
+    "outputs": "출력",
+    "info": "정보",
+    "storageProof": "스토리지 증명",
+    "readState": "상태 읽기",
+    "callContract": "컨트랙트 호출",
+    "sourceCode": "소스 코드",
+    "history": "기록"
+  },
+  "info": {
+    "createdAt": "생성 시간",
+    "createdInL1Block": "생성된 L1 블록",
+    "creationTx": "생성 트랜잭션",
+    "creator": "생성자",
+    "owner": "소유자",
+    "bytecodeCid": "바이트코드 CID",
+    "runtime": "런타임"
+  },
+  "readState": {
+    "key": "키",
+    "utf8": "UTF-8",
+    "hex": "16진수",
+    "gqlError": "상태 키 가져오기 중 gql 오류 발생",
+    "fetchError": "상태 키 가져오기 실패"
+  },
+  "callContract": {
+    "balance": "잔액: {{balance}}",
+    "currentAllowance": "현재 허용 금액",
+    "walletNotConnected": "지갑이 연결되지 않았거나 잔액을 로드할 수 없습니다",
+    "amountMustBePositive": "금액은 0보다 커야 합니다",
+    "insufficientBalance": "잔액 부족",
+    "connectFirst": "먼저 지갑을 연결해 주세요",
+    "methodRequired": "호출 메서드는 필수입니다",
+    "simulationFailed": "컨트랙트 호출 시뮬레이션 실패"
+  },
+  "verification": {
+    "verified": "컨트랙트 소스 코드가 검증되었습니다",
+    "verifiedDesc": "Magi Blocks는 제공된 소스 코드가 컨트랙트의 배포된 바이트코드와 일치함을 검증했습니다. 이것이 컨트랙트가 안전하게 상호작용할 수 있음을 의미하지는 않습니다.",
+    "queued": "컨트랙트 검증 요청이 현재 대기열에 있습니다.",
+    "inProgress": "컨트랙트 검증 요청이 현재 처리 중입니다.",
+    "failed": "컨트랙트 검증을 완료하지 못했습니다.",
+    "notMatch": "컴파일된 소스 코드의 배포된 바이트코드가 일치하지 않아 컨트랙트 검증이 실패했습니다.",
+    "pending": "컨트랙트 검증 요청이 현재 보류 중입니다.",
+    "fetchError": "컨트랙트 검증 상태 가져오기 실패.",
+    "loadingStatus": "컨트랙트 검증 상태 로딩 중...",
+    "notVerified": "컨트랙트 소스 코드가 검증되지 않았습니다",
+    "unknown": "이 컨트랙트의 소스 코드는 알 수 없습니다.",
+    "language": "언어",
+    "license": "라이선스",
+    "verifiedAt": "검증 시간",
+    "submittedBy": "제출자",
+    "repository": "저장소",
+    "contractDir": "컨트랙트 디렉토리",
+    "goModDir": "Go 모듈 디렉토리",
+    "tinygoVersion": "TinyGo 버전",
+    "exports": "내보내기"
+  },
+  "errors": {
+    "fetchFailed": "컨트랙트 가져오기 실패",
+    "notExist": "컨트랙트가 존재하지 않습니다"
+  },
+  "storageProofLoading": "배포 트랜잭션 로딩 중...",
+  "storageProofError": "배포 트랜잭션 로드 실패"
+}

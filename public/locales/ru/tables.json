@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Ид",
+    "age": "Возраст",
+    "proposer": "Предложивший",
+    "blockHash": "Хеш блока",
+    "voted": "Проголосовавшие"
+  },
+  "transactions": {
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "method": "Метод",
+    "from": "От",
+    "to": "Кому",
+    "amount": "Сумма"
+  },
+  "contractHistory": {
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "deployer": "Развернувший",
+    "owner": "Владелец",
+    "code": "Код",
+    "latest": "Последний"
+  },
+  "contractOutput": {
+    "id": "Ид",
+    "age": "Возраст",
+    "contractId": "ID контракта",
+    "inputTx": "Входящая транзакция",
+    "output": "Вывод"
+  },
+  "contracts": {
+    "contractId": "ID контракта",
+    "age": "Возраст",
+    "creator": "Создатель",
+    "creationTx": "Транзакция создания",
+    "code": "Код",
+    "runtime": "Среда выполнения"
+  },
+  "ledger": {
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "type": "Тип",
+    "from": "От",
+    "fromUser": "От пользователя",
+    "to": "Кому",
+    "toUser": "Пользователю",
+    "amount": "Сумма",
+    "status": "Статус"
+  },
+  "bridge": {
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "toUser": "Пользователю",
+    "amount": "Сумма"
+  },
+  "elections": {
+    "epoch": "Эпоха",
+    "age": "Возраст",
+    "proposer": "Предложивший",
+    "blocks": "Блоки",
+    "members": "Участники",
+    "totalWeight": "Общий вес",
+    "voted": "Проголосовавшие",
+    "blockVotes": "Голоса за блок"
+  },
+  "witnesses": {
+    "idx": "Индекс",
+    "username": "Имя пользователя",
+    "weight": "Вес",
+    "lastBlock": "Последний блок",
+    "blocksProduced": "Произведено блоков",
+    "lastEpoch": "Последняя эпоха",
+    "elections": "Выборы",
+    "didKey": "DID ключ"
+  },
+  "schedule": {
+    "username": "Имя пользователя",
+    "l1Block": "Блок L1",
+    "magiBlock": "Блок Magi"
+  }
+}

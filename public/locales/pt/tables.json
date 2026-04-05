@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Id",
+    "age": "Idade",
+    "proposer": "Proponente",
+    "blockHash": "Hash do bloco",
+    "voted": "Votado"
+  },
+  "transactions": {
+    "txId": "ID da transação",
+    "age": "Idade",
+    "method": "Método",
+    "from": "De",
+    "to": "Para",
+    "amount": "Valor"
+  },
+  "contractHistory": {
+    "txId": "ID da transação",
+    "age": "Idade",
+    "deployer": "Implantador",
+    "owner": "Proprietário",
+    "code": "Código",
+    "latest": "Mais recente"
+  },
+  "contractOutput": {
+    "id": "Id",
+    "age": "Idade",
+    "contractId": "ID do contrato",
+    "inputTx": "Tx de entrada",
+    "output": "Saída"
+  },
+  "contracts": {
+    "contractId": "Id do contrato",
+    "age": "Idade",
+    "creator": "Criador",
+    "creationTx": "Tx de criação",
+    "code": "Código",
+    "runtime": "Ambiente de execução"
+  },
+  "ledger": {
+    "txId": "ID da Tx",
+    "age": "Idade",
+    "type": "Tipo",
+    "from": "De",
+    "fromUser": "Usuário de origem",
+    "to": "Para",
+    "toUser": "Usuário de destino",
+    "amount": "Valor",
+    "status": "Status"
+  },
+  "bridge": {
+    "txId": "ID da Tx",
+    "age": "Idade",
+    "toUser": "Usuário de destino",
+    "amount": "Valor"
+  },
+  "elections": {
+    "epoch": "Época",
+    "age": "Idade",
+    "proposer": "Proponente",
+    "blocks": "Blocos",
+    "members": "Membros",
+    "totalWeight": "Peso total",
+    "voted": "Votado",
+    "blockVotes": "Votos de bloco"
+  },
+  "witnesses": {
+    "idx": "Idx",
+    "username": "Nome de usuário",
+    "weight": "Peso",
+    "lastBlock": "Último bloco",
+    "blocksProduced": "Blocos produzidos",
+    "lastEpoch": "Última época",
+    "elections": "Eleições",
+    "didKey": "Chave DID"
+  },
+  "schedule": {
+    "username": "Nome de usuário",
+    "l1Block": "Bloco L1",
+    "magiBlock": "Bloco Magi"
+  }
+}

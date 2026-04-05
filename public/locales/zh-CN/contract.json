@@ -1,0 +1,67 @@
+{
+  "title": "合约",
+  "tabs": {
+    "transactions": "交易",
+    "outputs": "输出",
+    "info": "信息",
+    "storageProof": "存储证明",
+    "readState": "读取状态",
+    "callContract": "调用合约",
+    "sourceCode": "源代码",
+    "history": "历史"
+  },
+  "info": {
+    "createdAt": "创建时间",
+    "createdInL1Block": "创建于 L1 区块",
+    "creationTx": "创建交易",
+    "creator": "创建者",
+    "owner": "所有者",
+    "bytecodeCid": "字节码 CID",
+    "runtime": "运行时"
+  },
+  "readState": {
+    "key": "键",
+    "utf8": "UTF-8",
+    "hex": "十六进制",
+    "gqlError": "获取状态键时发生 gql 错误",
+    "fetchError": "获取状态键失败"
+  },
+  "callContract": {
+    "balance": "余额：{{balance}}",
+    "currentAllowance": "当前授权额度",
+    "walletNotConnected": "钱包未连接或余额无法加载",
+    "amountMustBePositive": "金额必须大于 0",
+    "insufficientBalance": "余额不足",
+    "connectFirst": "请先连接您的钱包",
+    "methodRequired": "调用方法为必填项",
+    "simulationFailed": "合约调用模拟失败"
+  },
+  "verification": {
+    "verified": "合约源代码已验证",
+    "verifiedDesc": "Magi Blocks 已验证提供给我们的源代码与该合约的已部署字节码匹配。这并不意味着该合约可以安全交互。",
+    "queued": "合约验证请求当前在队列中。",
+    "inProgress": "合约验证请求正在处理中。",
+    "failed": "合约验证未能完成。",
+    "notMatch": "合约验证失败，因为已部署的字节码与编译后的源代码不匹配。",
+    "pending": "合约验证请求当前处于待处理状态。",
+    "fetchError": "获取合约验证状态失败。",
+    "loadingStatus": "正在加载合约验证状态...",
+    "notVerified": "合约源代码未验证",
+    "unknown": "此合约的源代码未知。",
+    "language": "语言",
+    "license": "许可证",
+    "verifiedAt": "验证时间",
+    "submittedBy": "提交者",
+    "repository": "仓库",
+    "contractDir": "合约目录",
+    "goModDir": "Go 模块目录",
+    "tinygoVersion": "TinyGo 版本",
+    "exports": "导出"
+  },
+  "errors": {
+    "fetchFailed": "获取合约失败",
+    "notExist": "合约不存在"
+  },
+  "storageProofLoading": "正在加载部署交易...",
+  "storageProofError": "加载部署交易失败"
+}

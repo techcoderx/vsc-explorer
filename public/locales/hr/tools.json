@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Verificiraj ugovor",
+    "description": "Pošalji izvorni kod ugovora na Magi Blocks kako bi se verificiralo da rezultirajući kompilirani bajtkod odgovara postavljenom bajtkodu ugovora.",
+    "readThisFirst": "Pročitaj ovo prvo!",
+    "notice": {
+      "language": "Jezik",
+      "languageBody": "Verifikator ugovora podržava samo ugovore pisane u Go.",
+      "compilerOptions": "Opcije prevoditelja",
+      "compilerOptionsBody": "Trenutno ne postoji mogućnost postavljanja prilagođenih opcija prevoditelja. Verifikator koristi -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown za Go ugovore.",
+      "environment": "Okruženje",
+      "environmentBody": "Ugovori se kompiliraju koristeći službenu TinyGo Docker sliku.",
+      "entrypoint": "Ulazna točka",
+      "entrypointBody": "Zadani direktorij ulazne točke je contract/ za Go ugovore. Može se navesti prilagođeni poddirektorij ako se izvorni kod ugovora nalazi drugdje u repozitoriju. Osigurajte da main.go postoji kao dio glavnog paketa u navedenom direktoriju.",
+      "dependencies": "Ovisnosti",
+      "dependenciesBody": "Verifikator ugovora za sada ne podržava uvoz vanjskih paketa izvan Go standardne biblioteke.",
+      "experimental": "Eksperimentalno",
+      "experimentalBody": "Ovaj alat je trenutno eksperimentalan i mogu se očekivati određeni problemi. Dostupan je samo korisnicima na bijeloj listi."
+    },
+    "form": {
+      "contractAddress": "Adresa ugovora",
+      "githubRepoUrl": "URL GitHub repozitorija",
+      "gitBranch": "Git grana",
+      "defaultBranch": "zadana grana",
+      "contractDir": "Direktorij ugovora",
+      "contractDirTip": "Poddirektorij koji sadrži izvorni kod ugovora za kompilaciju, relativno na direktorij Go modula. Zadano je \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Direktorij Go modula",
+      "goModDirTip": "Poddirektorij koji sadrži go.mod datoteku, ako se ne nalazi u korijenu repozitorija. Ostavi prazno ako je go.mod u korijenu.",
+      "goModDirPlaceholder": "korijen repozitorija",
+      "tinygoVersion": "Verzija TinyGo",
+      "wasmStripTool": "WASM Strip alat"
+    },
+    "errors": {
+      "mustStartVsc1": "Adresa ugovora mora počinjati s 'vsc1'",
+      "mustBeGithub": "URL repozitorija mora biti GitHub veza",
+      "invalidRepoUrl": "Nevažeći URL GitHub repozitorija",
+      "invalidGithubUser": "Nevažeći Github korisnik",
+      "invalidGithubRepo": "Nevažeće ime Github repozitorija",
+      "invalidContractDir": "Nevažeća putanja direktorija ugovora",
+      "invalidGoModDir": "Nevažeća putanja direktorija Go modula",
+      "alreadyVerified": "Ugovor je već verificiran ili se verificira.",
+      "contractNotFound": "Ugovor nije pronađen",
+      "backendError": "Nije uspjelo kontaktiranje poslužitelja za status verifikacije ugovora",
+      "repoFetchError": "Nije uspjelo dohvaćanje informacija o repozitoriju, statusni kod {{statusCode}}",
+      "branchFetchError": "Nije uspjelo dohvaćanje informacija o grani, statusni kod {{statusCode}}",
+      "repoValidateError": "Nije uspjela validacija repozitorija",
+      "signatureError": "Greška potpisa",
+      "unknownError": "Došlo je do nepoznate greške"
+    },
+    "submitting": "Slanje zahtjeva za verifikaciju...",
+    "approveSignature": "Odobri zahtjev za potpis poruke u novčaniku kada se pojavi upit",
+    "submitted": "Zahtjev za verifikaciju ugovora uspješno poslan!",
+    "completionMsg": "Izvorni kod vašeg ugovora se verificira. To može potrajati nekoliko minuta ovisno o redu čekanja. Pratite status na kartici Izvorni kod na stranici ugovora.",
+    "viewContract": "Pregledaj ugovor"
+  },
+  "dagInspector": {
+    "title": "DAG Inspector",
+    "description": "Pregledaj sadržaj DAG-a prema CID-u koji su prikvačili čvorovi.",
+    "placeholder": "Zalijepi CID ovdje (bafy...)",
+    "inspect": "Pregled",
+    "dagContent": "Sadržaj DAG-a",
+    "rawJson": "Sirovi JSON",
+    "enterCid": "Molimo unesite CID",
+    "fetchError": "Nije uspjelo dohvaćanje DAG-a"
+  },
+  "broadcast": {
+    "title": "Emitiraj transakciju",
+    "description": "Potpiši i emitiraj Magi transakciju.",
+    "destAddress": "Odredišna adresa",
+    "destPlaceholder": "Uključi prefiks hive: ili did: za ne-map, zadano je pošiljatelj",
+    "txTypes": {
+      "transfer": "Prijenos",
+      "deposit": "Mapiranje",
+      "withdraw": "Odmapiranje",
+      "consensus_stake": "Ulog konsenzusa",
+      "consensus_unstake": "Povlačenje uloga konsenzusa",
+      "stake_hbd": "Ulog HBD",
+      "unstake_hbd": "Povlačenje uloga HBD"
+    },
+    "errors": {
+      "amountPositive": "Iznos mora biti veći od 0.",
+      "depositAsset": "Sredstvo za depozit mora biti HIVE ili HBD.",
+      "hiveWalletOnly": "Mapiranje je moguće samo iz Hive novčanika.",
+      "unknownType": "Nepoznata vrsta transakcije"
+    }
+  }
+}

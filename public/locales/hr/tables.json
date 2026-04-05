@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Id",
+    "age": "Starost",
+    "proposer": "Predlagač",
+    "blockHash": "Hash bloka",
+    "voted": "Glasali"
+  },
+  "transactions": {
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "method": "Metoda",
+    "from": "Od",
+    "to": "Do",
+    "amount": "Iznos"
+  },
+  "contractHistory": {
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "deployer": "Postavljač",
+    "owner": "Vlasnik",
+    "code": "Kod",
+    "latest": "Najnoviji"
+  },
+  "contractOutput": {
+    "id": "Id",
+    "age": "Starost",
+    "contractId": "ID ugovora",
+    "inputTx": "Ulazna transakcija",
+    "output": "Izlaz"
+  },
+  "contracts": {
+    "contractId": "ID ugovora",
+    "age": "Starost",
+    "creator": "Kreator",
+    "creationTx": "Transakcija kreiranja",
+    "code": "Kod",
+    "runtime": "Izvršno okruženje"
+  },
+  "ledger": {
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "type": "Vrsta",
+    "from": "Od",
+    "fromUser": "Od korisnika",
+    "to": "Do",
+    "toUser": "Do korisnika",
+    "amount": "Iznos",
+    "status": "Status"
+  },
+  "bridge": {
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "toUser": "Do korisnika",
+    "amount": "Iznos"
+  },
+  "elections": {
+    "epoch": "Epoha",
+    "age": "Starost",
+    "proposer": "Predlagač",
+    "blocks": "Blokovi",
+    "members": "Članovi",
+    "totalWeight": "Ukupna težina",
+    "voted": "Glasali",
+    "blockVotes": "Glasovi za blok"
+  },
+  "witnesses": {
+    "idx": "Idx",
+    "username": "Korisničko ime",
+    "weight": "Težina",
+    "lastBlock": "Zadnji blok",
+    "blocksProduced": "Produciranih blokova",
+    "lastEpoch": "Zadnja epoha",
+    "elections": "Izbori",
+    "didKey": "DID ključ"
+  },
+  "schedule": {
+    "username": "Korisničko ime",
+    "l1Block": "L1 blok",
+    "magiBlock": "Magi blok"
+  }
+}

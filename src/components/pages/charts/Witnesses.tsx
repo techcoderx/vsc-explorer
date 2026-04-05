@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Card, Heading, Text } from '@chakra-ui/react'
 import { useColorMode } from '../../ui/color-mode'
+import { useTranslation } from 'react-i18next'
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { roundFloat, thousandSeperator } from '../../../helpers'
@@ -81,15 +82,16 @@ const ActiveStake = () => {
 }
 
 export const WitnessCharts = () => {
+  const { t } = useTranslation('pages')
   return (
     <>
-      <PageTitle title="Witness Charts" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Witness Charts</Heading>
+      <PageTitle title={t('charts.witnessCharts')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('charts.witnessCharts')}</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>Active Stake</Heading>
-          <Text>Total eligible HIVE consensus stake for each day</Text>
+          <Heading fontSize={'xl'}>{t('charts.activeStake')}</Heading>
+          <Text>{t('charts.activeStakeDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>
@@ -99,8 +101,8 @@ export const WitnessCharts = () => {
       </Card.Root>
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>Active Witnesses</Heading>
-          <Text>Number of daily active witnesses</Text>
+          <Heading fontSize={'xl'}>{t('charts.activeWitnesses')}</Heading>
+          <Text>{t('charts.activeWitnessesDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>

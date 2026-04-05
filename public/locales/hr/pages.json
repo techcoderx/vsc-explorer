@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "Najnoviji blokovi",
+    "total": "Ukupno {{count}} blokova."
+  },
+  "block": {
+    "title": "Blok #{{num}}",
+    "blockId": "ID bloka",
+    "timestamp": "Vremenska oznaka",
+    "l1Tx": "L1 transakcija",
+    "slotHeight": "Visina slota",
+    "proposer": "Predlagač",
+    "blockHash": "Hash bloka",
+    "participation": "Sudjelovanje",
+    "tabs": {
+      "transactions": "Transakcije",
+      "opLogs": "Zapisnici operacija",
+      "contractOutputs": "Izlazi ugovora",
+      "participation": "Sudjelovanje"
+    },
+    "opLogHeaders": {
+      "txId": "ID transakcije",
+      "type": "Vrsta",
+      "from": "Od",
+      "to": "Do",
+      "amount": "Iznos"
+    }
+  },
+  "elections": {
+    "title": "Izbori"
+  },
+  "epoch": {
+    "title": "Epoha #{{num}}",
+    "epochNumber": "Broj epohe",
+    "timestamp": "Vremenska oznaka",
+    "l1Tx": "L1 transakcija",
+    "l1Block": "L1 blok",
+    "proposer": "Predlagač",
+    "electionDataCid": "CID podataka o izborima",
+    "totalWeight": "Ukupna težina",
+    "participation": "Sudjelovanje",
+    "avgBlockVotes": "Prosj. glasovi za blok",
+    "electedMembers": "Izabrani članovi ({{count}})",
+    "blocksTab": "Blokovi ({{count}})",
+    "participationTab": "Sudjelovanje",
+    "blsNotRequired": "BLS potpis nije bio potreban za prve izbore."
+  },
+  "witnesses": {
+    "title": "Svjedoci",
+    "total": "Ukupno {{count}} aktivnih svjedoka. Stopa sudjelovanja: {{rate}}%"
+  },
+  "schedule": {
+    "title": "Raspored",
+    "hiveHeadBlock": "Hive početni blok:",
+    "showOlderSlots": "Prikaži starije slotove"
+  },
+  "transactions": {
+    "title": "Najnovije transakcije",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "Najnoviji ugovori"
+  },
+  "address": {
+    "title": "Adresa",
+    "tabs": {
+      "transactions": "Transakcije",
+      "l1Ops": "L1 operacije",
+      "ledgerOps": "Operacije knjige",
+      "actions": "Akcije",
+      "maps": "Mapiranja",
+      "unmaps": "Odmapiranja",
+      "witness": "Svjedok"
+    }
+  },
+  "balances": {
+    "title": "Stanja",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "Likvidni uloženi HBD",
+    "hbdUnstaking": "HBD u povlačenju uloga",
+    "consensusStake": "Ulog konsenzusa",
+    "consensusUnstaking": "Povlačenje uloga konsenzusa"
+  },
+  "rcInfo": {
+    "title": "RC informacije",
+    "loadingBalances": "Učitavanje stanja...",
+    "noRcs": "Nemate dostupnih RC-ova. Molimo uplatite HBD kako biste dobili RC-ove."
+  },
+  "witness": {
+    "enabled": "Aktivan",
+    "lastBlock": "Zadnji blok",
+    "blocksProduced": "Produciranih blokova",
+    "lastEpoch": "Zadnja epoha",
+    "electionsHeld": "Održanih izbora",
+    "witnessInfo": "Informacije o svjedoku",
+    "clickToExpand": " (Klikni za proširivanje)",
+    "peerId": "ID čvora",
+    "consensusDidKey": "DID ključ konsenzusa",
+    "gatewayKey": "Ključ pristupnika",
+    "gitCommit": "Git commit",
+    "lastUpdate": "Zadnje ažuriranje",
+    "loadError": "Nije uspjelo učitavanje informacija o svjedoku"
+  },
+  "bridge": {
+    "title": "Pregled mapiranja Hive sredstava",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "Transakcije mapiranja",
+    "unmapTxs": "Transakcije odmapiranja",
+    "latestMaps": "Najnovija mapiranja",
+    "latestUnmaps": "Najnovija odmapiranja",
+    "viewMore": "Prikaži više",
+    "learnMore": "Saznaj više o mapiranju izvornih sredstava ovdje.",
+    "hiveMaps": "Mapiranja Hive sredstava",
+    "hiveUnmaps": "Odmapiranja Hive sredstava",
+    "totalMaps": "Ukupno {{count}} mapiranja",
+    "totalUnmaps": "Ukupno {{count}} odmapiranja"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi transakcija",
+    "requiredAuths": "Potrebne autorizacije",
+    "rcUsed": "Korišteni RC",
+    "nonce": "Nonce",
+    "ledgerOps": "Operacije knjige ({{count}})",
+    "ledgerActions": "Akcije knjige ({{count}})",
+    "callOutputs": "Izlazi poziva",
+    "logs": "Zapisnici ({{count}})",
+    "tssRequests": "TSS zahtjevi ({{count}})",
+    "opLogHeaders": {
+      "type": "Vrsta",
+      "from": "Od",
+      "to": "Do",
+      "amount": "Iznos",
+      "memo": "Napomena",
+      "status": "Status",
+      "outputId": "ID izlaza",
+      "contractId": "ID ugovora",
+      "index": "Indeks",
+      "errorSymbol": "Simbol greške",
+      "errorMessage": "Poruka greške",
+      "output": "Izlaz",
+      "log": "Zapisnik",
+      "keyId": "ID ključa",
+      "arguments": "Argumenti"
+    },
+    "deployedContract": "Postavljeni ugovor",
+    "proposedElection": "Predloženi rezultat izbora",
+    "proposedBlock": "Predloženi blok",
+    "blockNumber": "Broj bloka",
+    "hiveTransaction": "Hive transakcija",
+    "includedInL1": "Uključeno u L1 blok",
+    "noOperations": "Nema pronađenih operacija",
+    "loadingMagiOps": "Učitavanje Magi operacija...",
+    "operation": "Operacija #{{num}}",
+    "notMagi": "Ova operacija nije povezana s Magi.",
+    "transaction": "Transakcija",
+    "failedToLoad": "Nije uspjelo učitavanje transakcije",
+    "notExist": "Transakcija ne postoji",
+    "includedInL2": "Uključeno u L2 blok na visini slota",
+    "viewIn": "Pregledaj u {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "Agregacijski bitovi",
+    "votedMembers": "Glasovni članovi ({{count}})",
+    "blsSignature": "BLS potpis"
+  },
+  "charts": {
+    "directory": "Mrežni grafikoni",
+    "soon": "Uskoro",
+    "titles": {
+      "blocks": "Blokovi",
+      "transactions": "Transakcije",
+      "addresses": "Adrese",
+      "contracts": "Ugovori",
+      "witnesses": "Svjedoci",
+      "nam": "NAM"
+    },
+    "blocksCharts": "Grafikoni blokova",
+    "blockCount": "Broj blokova",
+    "blockCountDesc": "Broj blokova produciranih dnevno",
+    "txCharts": "Grafikoni transakcija",
+    "txCount": "Broj transakcija",
+    "txCountDesc": "Broj dnevnih transakcija",
+    "addressCharts": "Grafikoni adresa",
+    "dailyActiveAddresses": "Dnevno aktivne adrese",
+    "dailyActiveAddressesDesc": "Broj jedinstvenih adresa koje obavljaju transakcije dnevno",
+    "contractsCharts": "Grafikoni ugovora",
+    "newContracts": "Novi ugovori",
+    "newContractsDesc": "Broj ugovora postavljenih dnevno",
+    "witnessCharts": "Grafikoni svjedoka",
+    "activeStake": "Aktivni ulog",
+    "activeStakeDesc": "Ukupni prihvatljivi HIVE ulog konsenzusa za svaki dan",
+    "activeWitnesses": "Aktivni svjedoci",
+    "activeWitnessesDesc": "Broj dnevno aktivnih svjedoka",
+    "bridgeCharts": "Grafikoni mapiranja izvornih sredstava (NAM)",
+    "hiveTvl": "HIVE i HBD TVL",
+    "hiveTvlDesc": "Povijest stanja HIVE i HBD na pristupničkom računu kroz vrijeme",
+    "hiveNetFlow": "HIVE neto tok",
+    "hiveNetFlowDesc": "Povijest HIVE neto tokova kroz vrijeme",
+    "hbdNetFlow": "HBD neto tok",
+    "hbdNetFlowDesc": "Povijest HBD neto tokova kroz vrijeme"
+  }
+}

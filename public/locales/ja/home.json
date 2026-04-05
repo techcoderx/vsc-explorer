@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi ブロックエクスプローラー",
+  "heroSubtitle": "アカウント、ブロック、トランザクション、コントラクトを検索",
+  "networkActivity": "ネットワークアクティビティ",
+  "dailyTxs": "日次トランザクション（過去14日間）",
+  "chartTxLabel": "トランザクション",
+  "chartDateLabel": "日付：{{date}}",
+  "latestContracts": "最新コントラクト",
+  "viewAllContracts": "すべてのコントラクトを表示",
+  "viewAllBlocks": "すべてのブロックを表示",
+  "viewAllTxs": "すべてのトランザクションを表示",
+  "quickLinks": "クイックリンク",
+  "recentBlocks": "最近のブロック",
+  "recentTxs": "最近のトランザクション",
+  "latestContractsQuickLinks": "最新コントラクト＆クイックリンク",
+  "stats": {
+    "hiveBlockHeight": "Hive ブロック高さ",
+    "magiBlockHeight": "Magi ブロック高さ",
+    "transactions": "トランザクション",
+    "currentEpoch": "現在のエポック",
+    "witnesses": "ウィットネス",
+    "contracts": "コントラクト"
+  },
+  "epoch": {
+    "epoch": "エポック {{num}}",
+    "totalStake": "{{amount}} 総ステーク",
+    "nextEpochIn": "次のエポックまで約 {{countdown}}"
+  },
+  "links": {
+    "blocks": "ブロック",
+    "transactions": "トランザクション",
+    "contracts": "コントラクト",
+    "witnesses": "ウィットネス",
+    "elections": "選挙",
+    "namBridge": "NAM ブリッジ",
+    "charts": "チャート",
+    "broadcast": "ブロードキャスト"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Verify Contract",
+    "description": "Submit contract source code to Magi Blocks to verify that the resulting compiled bytecode matches the deployed contract bytecode.",
+    "readThisFirst": "Read This First!",
+    "notice": {
+      "language": "Language",
+      "languageBody": "The contract verifier supports contracts written in Go only.",
+      "compilerOptions": "Compiler Options",
+      "compilerOptionsBody": "There is currently no way to set custom compiler options yet. The verifier uses -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown for Go contracts.",
+      "environment": "Environment",
+      "environmentBody": "Contracts are compiled using the official TinyGo Docker image.",
+      "entrypoint": "Entrypoint",
+      "entrypointBody": "The default entrypoint directory is contract/ for Go contracts. A custom subdirectory may be specified if the contract source code is located elsewhere in the repository. Please ensure that main.go exists as part of the main package in the specified directory.",
+      "dependencies": "Dependencies",
+      "dependenciesBody": "The contract verifier does not support importing external packages outside of Go standard library for now.",
+      "experimental": "Experimental",
+      "experimentalBody": "This tool is currently experimental and some issues are to be expected. It is only available for whitelisted users for now."
+    },
+    "form": {
+      "contractAddress": "Contract Address",
+      "githubRepoUrl": "GitHub Repository URL",
+      "gitBranch": "Git Branch",
+      "defaultBranch": "default branch",
+      "contractDir": "Contract Directory",
+      "contractDirTip": "Subdirectory containing the contract source code to compile, relative to the Go module directory. Defaults to \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go Module Directory",
+      "goModDirTip": "Subdirectory containing the go.mod file, if it is not in the repository root. Leave empty if go.mod is at the root.",
+      "goModDirPlaceholder": "repository root",
+      "tinygoVersion": "TinyGo Version",
+      "wasmStripTool": "WASM Strip Tool"
+    },
+    "errors": {
+      "mustStartVsc1": "Contract address must start with 'vsc1'",
+      "mustBeGithub": "Repository URL must be a GitHub link",
+      "invalidRepoUrl": "Invalid GitHub repository URL",
+      "invalidGithubUser": "Invalid Github user",
+      "invalidGithubRepo": "Invalid Github repo name",
+      "invalidContractDir": "Invalid contract directory path",
+      "invalidGoModDir": "Invalid Go module directory path",
+      "alreadyVerified": "Contract is already verified or being verified.",
+      "contractNotFound": "Contract not found",
+      "backendError": "Failed to call backend for contract verification status",
+      "repoFetchError": "Failed to fetch repository info with status code {{statusCode}}",
+      "branchFetchError": "Failed to fetch branch info with status code {{statusCode}}",
+      "repoValidateError": "Failed to validate repository",
+      "signatureError": "Signature Error",
+      "unknownError": "Unknown error occurred"
+    },
+    "submitting": "Submitting verification request...",
+    "approveSignature": "Approve message signature request in wallet when prompted",
+    "submitted": "Contract verification request submitted successfully!",
+    "completionMsg": "Your contract source code is being verified. This may take a few minutes depending on the queue. Refer to the Source Code tab in contract page for status.",
+    "viewContract": "View Contract"
+  },
+  "dagInspector": {
+    "title": "DAG Inspector",
+    "description": "View the contents of a DAG by CID pinned by nodes.",
+    "placeholder": "Paste CID here (bafy...)",
+    "inspect": "Inspect",
+    "dagContent": "DAG content",
+    "rawJson": "Raw JSON",
+    "enterCid": "Please enter a CID",
+    "fetchError": "Failed to fetch DAG"
+  },
+  "broadcast": {
+    "title": "Broadcast Transaction",
+    "description": "Sign and broadcast a Magi transaction.",
+    "destAddress": "Destination Address",
+    "destPlaceholder": "Include hive: or did: prefix for non-map, defaults to sender",
+    "txTypes": {
+      "transfer": "Transfer",
+      "deposit": "Map",
+      "withdraw": "Unmap",
+      "consensus_stake": "Consensus Stake",
+      "consensus_unstake": "Consensus Unstake",
+      "stake_hbd": "Stake HBD",
+      "unstake_hbd": "Unstake HBD"
+    },
+    "errors": {
+      "amountPositive": "Amount must be greater than 0.",
+      "depositAsset": "Deposit asset must be HIVE or HBD.",
+      "hiveWalletOnly": "Can only map from Hive wallets.",
+      "unknownType": "Unknown transaction type"
+    }
+  }
+}

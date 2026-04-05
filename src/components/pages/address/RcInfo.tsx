@@ -1,14 +1,16 @@
 import { Box, Card, Heading, Text } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { ProgressBarPct } from '../../ProgressPercent'
 import { useAddrBalance } from '../../../requests'
 
 export const AddressRcInfo = ({ addr }: { addr: string }) => {
+  const { t } = useTranslation('pages')
   const { balance, isLoading } = useAddrBalance(addr)
   return (
     <Card.Root>
       <Card.Header mb={'-4'}>
         <Heading size={'md'} textAlign={'center'}>
-          RC Info
+          {t('rcInfo.title')}
         </Heading>
       </Card.Header>
       <Card.Body>
@@ -20,9 +22,9 @@ export const AddressRcInfo = ({ addr }: { addr: string }) => {
             </Text>
           </Box>
         ) : isLoading ? (
-          <Text>Loading balances...</Text>
+          <Text>{t('rcInfo.loadingBalances')}</Text>
         ) : (
-          <Text>You have no RCs available. Please deposit HBD to obtain RCs.</Text>
+          <Text>{t('rcInfo.noRcs')}</Text>
         )}
       </Card.Body>
     </Card.Root>

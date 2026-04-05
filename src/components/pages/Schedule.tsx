@@ -3,6 +3,7 @@ import { Box, Heading, Text, Table, Link, Field } from '@chakra-ui/react'
 import { Switch } from '../ui/switch'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { themeColorScheme, getConf } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
 import { abbreviateHash, beL1BlockUrl, thousandSeperator } from '../../helpers'
@@ -10,6 +11,7 @@ import { Block } from '../../types/HafApiResult'
 import { PageTitle } from '../PageTitle'
 
 const WitnessSchedule = () => {
+  const { t } = useTranslation('pages')
   const [expSchedule, setExpSchedule] = useState(false)
   const blocksProduced = useRef<{ [blockNum: string]: Block }>({})
   const { data: prop, isSuccess: isPropSuccess } = useQuery({
@@ -52,12 +54,12 @@ const WitnessSchedule = () => {
   }, [])
   return (
     <>
-      <PageTitle title="Schedule" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Schedule</Heading>
+      <PageTitle title={t('schedule.title')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('schedule.title')}</Heading>
       <hr />
       <br />
       <Text>
-        Hive head block:{' '}
+        {t('schedule.hiveHeadBlock')}{' '}
         <Link asChild>
           <ReactRouterLink to={beL1BlockUrl(prop?.last_processed_block || 0)} target="_blank" rel="noopener noreferrer" aria-label={`Block ${isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0} (opens in new tab)`}>
             {isPropSuccess ? thousandSeperator(prop.last_processed_block) : 0}
@@ -67,16 +69,16 @@ const WitnessSchedule = () => {
       <Box overflowX="auto" maxW={'xl'} margin={'10px auto 15px auto'}>
         <Field.Root display="flex" alignItems="center" mb={'10px'}>
           <Field.Label htmlFor="witsch-expand" mb="0">
-            Show Older Slots
+            {t('schedule.showOlderSlots')}
           </Field.Label>
           <Switch id="witsch-expand" colorPalette={themeColorScheme} size={'lg'} onCheckedChange={() => setExpSchedule(!expSchedule)} />
         </Field.Root>
         <Table.Root variant={'line'}>
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>Username</Table.ColumnHeader>
-              <Table.ColumnHeader>L1 Block</Table.ColumnHeader>
-              <Table.ColumnHeader>Magi Block</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('schedule.username', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('schedule.l1Block', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('schedule.magiBlock', { ns: 'tables' })}</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>

@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "ID",
+    "age": "経過時間",
+    "proposer": "提案者",
+    "blockHash": "ブロックハッシュ",
+    "voted": "投票済み"
+  },
+  "transactions": {
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "method": "メソッド",
+    "from": "送信元",
+    "to": "送信先",
+    "amount": "金額"
+  },
+  "contractHistory": {
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "deployer": "デプロイ者",
+    "owner": "オーナー",
+    "code": "コード",
+    "latest": "最新"
+  },
+  "contractOutput": {
+    "id": "ID",
+    "age": "経過時間",
+    "contractId": "コントラクト ID",
+    "inputTx": "入力トランザクション",
+    "output": "出力"
+  },
+  "contracts": {
+    "contractId": "コントラクト ID",
+    "age": "経過時間",
+    "creator": "作成者",
+    "creationTx": "作成トランザクション",
+    "code": "コード",
+    "runtime": "ランタイム"
+  },
+  "ledger": {
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "type": "タイプ",
+    "from": "送信元",
+    "fromUser": "送信ユーザー",
+    "to": "送信先",
+    "toUser": "受信ユーザー",
+    "amount": "金額",
+    "status": "ステータス"
+  },
+  "bridge": {
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "toUser": "受信ユーザー",
+    "amount": "金額"
+  },
+  "elections": {
+    "epoch": "エポック",
+    "age": "経過時間",
+    "proposer": "提案者",
+    "blocks": "ブロック",
+    "members": "メンバー",
+    "totalWeight": "総重み",
+    "voted": "投票済み",
+    "blockVotes": "ブロック投票"
+  },
+  "witnesses": {
+    "idx": "番号",
+    "username": "ユーザー名",
+    "weight": "重み",
+    "lastBlock": "最終ブロック",
+    "blocksProduced": "生成ブロック数",
+    "lastEpoch": "最終エポック",
+    "elections": "選挙",
+    "didKey": "DID キー"
+  },
+  "schedule": {
+    "username": "ユーザー名",
+    "l1Block": "L1 ブロック",
+    "magiBlock": "Magi ブロック"
+  }
+}

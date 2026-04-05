@@ -1,4 +1,5 @@
-import React from 'react'
+import './i18n'
+import React, { Suspense } from 'react'
 import { createSystem, defaultConfig } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
@@ -24,8 +25,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider system={system} defaultTheme="dark" enableSystem>
       <WagmiProvider config={wagmiAdapter.wagmiConfig} reconnectOnMount={false}>
         <QueryClientProvider client={queryClient}>
-          <App />
-          <Toaster />
+          <Suspense fallback={null}>
+            <App />
+            <Toaster />
+          </Suspense>
         </QueryClientProvider>
       </WagmiProvider>
     </Provider>

@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Verificar contrato",
+    "description": "Envía el código fuente del contrato a Magi Blocks para verificar que el bytecode compilado resultante coincide con el bytecode del contrato desplegado.",
+    "readThisFirst": "¡Lee esto primero!",
+    "notice": {
+      "language": "Lenguaje",
+      "languageBody": "El verificador de contratos solo admite contratos escritos en Go.",
+      "compilerOptions": "Opciones del compilador",
+      "compilerOptionsBody": "Actualmente no hay forma de establecer opciones de compilador personalizadas. El verificador usa -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown para contratos Go.",
+      "environment": "Entorno",
+      "environmentBody": "Los contratos se compilan usando la imagen Docker oficial de TinyGo.",
+      "entrypoint": "Punto de entrada",
+      "entrypointBody": "El directorio de punto de entrada predeterminado es contract/ para contratos Go. Se puede especificar un subdirectorio personalizado si el código fuente del contrato está en otro lugar del repositorio. Asegúrate de que main.go exista como parte del paquete principal en el directorio especificado.",
+      "dependencies": "Dependencias",
+      "dependenciesBody": "El verificador de contratos no admite la importación de paquetes externos fuera de la biblioteca estándar de Go por ahora.",
+      "experimental": "Experimental",
+      "experimentalBody": "Esta herramienta es actualmente experimental y se esperan algunos problemas. Solo está disponible para usuarios en lista blanca por ahora."
+    },
+    "form": {
+      "contractAddress": "Dirección del contrato",
+      "githubRepoUrl": "URL del repositorio GitHub",
+      "gitBranch": "Rama Git",
+      "defaultBranch": "rama predeterminada",
+      "contractDir": "Directorio del contrato",
+      "contractDirTip": "Subdirectorio que contiene el código fuente del contrato a compilar, relativo al directorio del módulo Go. Por defecto \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Directorio del módulo Go",
+      "goModDirTip": "Subdirectorio que contiene el archivo go.mod, si no está en la raíz del repositorio. Deja vacío si go.mod está en la raíz.",
+      "goModDirPlaceholder": "raíz del repositorio",
+      "tinygoVersion": "Versión TinyGo",
+      "wasmStripTool": "Herramienta de limpieza WASM"
+    },
+    "errors": {
+      "mustStartVsc1": "La dirección del contrato debe comenzar con 'vsc1'",
+      "mustBeGithub": "La URL del repositorio debe ser un enlace de GitHub",
+      "invalidRepoUrl": "URL del repositorio GitHub inválida",
+      "invalidGithubUser": "Usuario de GitHub inválido",
+      "invalidGithubRepo": "Nombre del repositorio GitHub inválido",
+      "invalidContractDir": "Ruta del directorio del contrato inválida",
+      "invalidGoModDir": "Ruta del directorio del módulo Go inválida",
+      "alreadyVerified": "El contrato ya está verificado o en proceso de verificación.",
+      "contractNotFound": "Contrato no encontrado",
+      "backendError": "Error al llamar al backend para el estado de verificación del contrato",
+      "repoFetchError": "Error al obtener la información del repositorio con código de estado {{statusCode}}",
+      "branchFetchError": "Error al obtener la información de la rama con código de estado {{statusCode}}",
+      "repoValidateError": "Error al validar el repositorio",
+      "signatureError": "Error de firma",
+      "unknownError": "Ocurrió un error desconocido"
+    },
+    "submitting": "Enviando solicitud de verificación...",
+    "approveSignature": "Aprueba la solicitud de firma del mensaje en la billetera cuando se solicite",
+    "submitted": "¡Solicitud de verificación del contrato enviada exitosamente!",
+    "completionMsg": "Tu código fuente del contrato está siendo verificado. Esto puede tomar unos minutos dependiendo de la cola. Consulta la pestaña Código Fuente en la página del contrato para ver el estado.",
+    "viewContract": "Ver contrato"
+  },
+  "dagInspector": {
+    "title": "Inspector DAG",
+    "description": "Ver el contenido de un DAG por CID fijado por los nodos.",
+    "placeholder": "Pega el CID aquí (bafy...)",
+    "inspect": "Inspeccionar",
+    "dagContent": "Contenido DAG",
+    "rawJson": "JSON sin formato",
+    "enterCid": "Por favor ingresa un CID",
+    "fetchError": "Error al obtener el DAG"
+  },
+  "broadcast": {
+    "title": "Transmitir transacción",
+    "description": "Firma y transmite una transacción Magi.",
+    "destAddress": "Dirección de destino",
+    "destPlaceholder": "Incluye el prefijo hive: o did: para no-map, por defecto el remitente",
+    "txTypes": {
+      "transfer": "Transferencia",
+      "deposit": "Mapear",
+      "withdraw": "Desmapear",
+      "consensus_stake": "Apuesta de consenso",
+      "consensus_unstake": "Retiro del consenso",
+      "stake_hbd": "Apostar HBD",
+      "unstake_hbd": "Retirar HBD"
+    },
+    "errors": {
+      "amountPositive": "La cantidad debe ser mayor que 0.",
+      "depositAsset": "El activo de depósito debe ser HIVE o HBD.",
+      "hiveWalletOnly": "Solo se puede mapear desde billeteras Hive.",
+      "unknownType": "Tipo de transacción desconocido"
+    }
+  }
+}

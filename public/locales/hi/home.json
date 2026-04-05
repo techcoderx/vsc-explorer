@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi ब्लॉक एक्सप्लोरर",
+  "heroSubtitle": "खाते, ब्लॉक, लेनदेन और अनुबंध खोजें",
+  "networkActivity": "नेटवर्क गतिविधि",
+  "dailyTxs": "दैनिक लेनदेन (पिछले 14 दिन)",
+  "chartTxLabel": "लेनदेन",
+  "chartDateLabel": "तारीख: {{date}}",
+  "latestContracts": "नवीनतम अनुबंध",
+  "viewAllContracts": "सभी अनुबंध देखें",
+  "viewAllBlocks": "सभी ब्लॉक देखें",
+  "viewAllTxs": "सभी लेनदेन देखें",
+  "quickLinks": "त्वरित लिंक",
+  "recentBlocks": "हाल के ब्लॉक",
+  "recentTxs": "हाल के लेनदेन",
+  "latestContractsQuickLinks": "नवीनतम अनुबंध और त्वरित लिंक",
+  "stats": {
+    "hiveBlockHeight": "Hive ब्लॉक ऊंचाई",
+    "magiBlockHeight": "Magi ब्लॉक ऊंचाई",
+    "transactions": "लेनदेन",
+    "currentEpoch": "वर्तमान युग",
+    "witnesses": "साक्षी",
+    "contracts": "अनुबंध"
+  },
+  "epoch": {
+    "epoch": "युग {{num}}",
+    "totalStake": "{{amount}} कुल स्टेक",
+    "nextEpochIn": "अगला युग ~{{countdown}} में"
+  },
+  "links": {
+    "blocks": "ब्लॉक",
+    "transactions": "लेनदेन",
+    "contracts": "अनुबंध",
+    "witnesses": "साक्षी",
+    "elections": "चुनाव",
+    "namBridge": "NAM ब्रिज",
+    "charts": "चार्ट",
+    "broadcast": "प्रसारण"
+  }
+}

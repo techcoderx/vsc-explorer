@@ -1,4 +1,5 @@
 import { Table, Text } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Txn, Status } from '../../types/L2ApiResult'
 import { CheckXIcon, PendingIcon, ToIcon } from '../CheckXIcon'
 import { AccountLink, ContractLink, TxLink } from '../TableLink'
@@ -52,47 +53,48 @@ const resolveFrom = (t: Txn, o: Txn['ops'][number]): string =>
 const resolveTo = (o: Txn['ops'][number]): string => (o.type === 'call' ? o.data.contract_id : o.data.to)
 
 export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader></Table.ColumnHeader>
-            <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Method</Table.ColumnHeader>
-            <Table.ColumnHeader>From</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.method')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.from')}</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
-            <Table.ColumnHeader>To</Table.ColumnHeader>
-            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.to')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('transactions.amount')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {txs.map((t) =>
-            t.ops
-              .filter((o) => !pov || pov === resolveFrom(t, o) || pov === resolveTo(o))
+          {txs.map((tx) =>
+            tx.ops
+              .filter((o) => !pov || pov === resolveFrom(tx, o) || pov === resolveTo(o))
               .map((o, j) => (
-                <Table.Row key={`${t.id}-${j}`}>
+                <Table.Row key={`${tx.id}-${j}`}>
                   <Table.Cell>
-                    <StatusIcon status={t.status} />
+                    <StatusIcon status={tx.status} />
                   </Table.Cell>
                   <Table.Cell>
-                    <TxLink val={t.id} />
+                    <TxLink val={tx.id} />
                   </Table.Cell>
                   <Table.Cell>
-                    {!!t.anchr_ts ? (
-                      <Tooltip positioning={{ placement: 'top' }} content={t.anchr_ts}>
-                        {timeAgo(t.anchr_ts)}
+                    {!!tx.anchr_ts ? (
+                      <Tooltip positioning={{ placement: 'top' }} content={tx.anchr_ts}>
+                        {timeAgo(tx.anchr_ts)}
                       </Tooltip>
                     ) : (
                       <Text opacity={'0.7'}>
-                        <i>Pending...</i>
+                        <i>{t('pending', { ns: 'common' })}</i>
                       </Text>
                     )}
                   </Table.Cell>
                   <Table.Cell>{o.type === 'call' ? abbreviateHash(o.data.action, 20, 0) : o.type}</Table.Cell>
                   <Table.Cell>
-                    <AccountLink val={resolveFrom(t, o)} />
+                    <AccountLink val={resolveFrom(tx, o)} />
                   </Table.Cell>
                   <Table.Cell>
                     <ToIcon />

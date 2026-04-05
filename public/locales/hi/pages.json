@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "नवीनतम ब्लॉक",
+    "total": "कुल {{count}} ब्लॉक।"
+  },
+  "block": {
+    "title": "ब्लॉक #{{num}}",
+    "blockId": "ब्लॉक आईडी",
+    "timestamp": "टाइमस्टैम्प",
+    "l1Tx": "L1 लेनदेन",
+    "slotHeight": "स्लॉट ऊंचाई",
+    "proposer": "प्रस्तावक",
+    "blockHash": "ब्लॉक हैश",
+    "participation": "भागीदारी",
+    "tabs": {
+      "transactions": "लेनदेन",
+      "opLogs": "ऑप लॉग",
+      "contractOutputs": "अनुबंध आउटपुट",
+      "participation": "भागीदारी"
+    },
+    "opLogHeaders": {
+      "txId": "लेनदेन आईडी",
+      "type": "प्रकार",
+      "from": "से",
+      "to": "को",
+      "amount": "राशि"
+    }
+  },
+  "elections": {
+    "title": "चुनाव"
+  },
+  "epoch": {
+    "title": "युग #{{num}}",
+    "epochNumber": "युग संख्या",
+    "timestamp": "टाइमस्टैम्प",
+    "l1Tx": "L1 लेनदेन",
+    "l1Block": "L1 ब्लॉक",
+    "proposer": "प्रस्तावक",
+    "electionDataCid": "चुनाव डेटा CID",
+    "totalWeight": "कुल भार",
+    "participation": "भागीदारी",
+    "avgBlockVotes": "औसत ब्लॉक वोट",
+    "electedMembers": "निर्वाचित सदस्य ({{count}})",
+    "blocksTab": "ब्लॉक ({{count}})",
+    "participationTab": "भागीदारी",
+    "blsNotRequired": "पहले चुनाव के लिए BLS हस्ताक्षर आवश्यक नहीं था।"
+  },
+  "witnesses": {
+    "title": "साक्षी",
+    "total": "कुल {{count}} सक्रिय साक्षी। भागीदारी दर: {{rate}}%"
+  },
+  "schedule": {
+    "title": "अनुसूची",
+    "hiveHeadBlock": "Hive हेड ब्लॉक:",
+    "showOlderSlots": "पुराने स्लॉट दिखाएं"
+  },
+  "transactions": {
+    "title": "नवीनतम लेनदेन",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "नवीनतम अनुबंध"
+  },
+  "address": {
+    "title": "पता",
+    "tabs": {
+      "transactions": "लेनदेन",
+      "l1Ops": "L1 ऑप्स",
+      "ledgerOps": "लेजर ऑप्स",
+      "actions": "क्रियाएं",
+      "maps": "मैप्स",
+      "unmaps": "अनमैप्स",
+      "witness": "साक्षी"
+    }
+  },
+  "balances": {
+    "title": "शेष",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "लिक्विड स्टेक्ड HBD",
+    "hbdUnstaking": "HBD अनस्टेकिंग",
+    "consensusStake": "सहमति स्टेक",
+    "consensusUnstaking": "सहमति अनस्टेकिंग"
+  },
+  "rcInfo": {
+    "title": "RC जानकारी",
+    "loadingBalances": "शेष लोड हो रहे हैं...",
+    "noRcs": "आपके पास कोई RC उपलब्ध नहीं है। RC प्राप्त करने के लिए कृपया HBD जमा करें।"
+  },
+  "witness": {
+    "enabled": "सक्षम",
+    "lastBlock": "अंतिम ब्लॉक",
+    "blocksProduced": "उत्पादित ब्लॉक",
+    "lastEpoch": "अंतिम युग",
+    "electionsHeld": "आयोजित चुनाव",
+    "witnessInfo": "साक्षी जानकारी",
+    "clickToExpand": " (विस्तार के लिए क्लिक करें)",
+    "peerId": "पीयर आईडी",
+    "consensusDidKey": "सहमति DID कुंजी",
+    "gatewayKey": "गेटवे कुंजी",
+    "gitCommit": "Git कमिट",
+    "lastUpdate": "अंतिम अपडेट",
+    "loadError": "साक्षी जानकारी लोड करने में विफल"
+  },
+  "bridge": {
+    "title": "Hive संपत्ति मैपिंग अवलोकन",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "मैप लेनदेन",
+    "unmapTxs": "अनमैप लेनदेन",
+    "latestMaps": "नवीनतम मैप",
+    "latestUnmaps": "नवीनतम अनमैप",
+    "viewMore": "और देखें",
+    "learnMore": "नेटिव संपत्ति मैपिंग के बारे में यहां अधिक जानें।",
+    "hiveMaps": "Hive संपत्ति मैप",
+    "hiveUnmaps": "Hive संपत्ति अनमैप",
+    "totalMaps": "कुल {{count}} मैप",
+    "totalUnmaps": "कुल {{count}} अनमैप"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi लेनदेन",
+    "requiredAuths": "आवश्यक प्राधिकरण",
+    "rcUsed": "उपयोग किया गया RC",
+    "nonce": "नॉन्स",
+    "ledgerOps": "लेजर संचालन ({{count}})",
+    "ledgerActions": "लेजर क्रियाएं ({{count}})",
+    "callOutputs": "कॉल आउटपुट",
+    "logs": "लॉग ({{count}})",
+    "tssRequests": "TSS अनुरोध ({{count}})",
+    "opLogHeaders": {
+      "type": "प्रकार",
+      "from": "से",
+      "to": "को",
+      "amount": "राशि",
+      "memo": "मेमो",
+      "status": "स्थिति",
+      "outputId": "आउटपुट आईडी",
+      "contractId": "अनुबंध आईडी",
+      "index": "अनुक्रमणिका",
+      "errorSymbol": "त्रुटि प्रतीक",
+      "errorMessage": "त्रुटि संदेश",
+      "output": "आउटपुट",
+      "log": "लॉग",
+      "keyId": "कुंजी आईडी",
+      "arguments": "तर्क"
+    },
+    "deployedContract": "तैनात अनुबंध",
+    "proposedElection": "प्रस्तावित चुनाव परिणाम",
+    "proposedBlock": "प्रस्तावित ब्लॉक",
+    "blockNumber": "ब्लॉक संख्या",
+    "hiveTransaction": "Hive लेनदेन",
+    "includedInL1": "L1 ब्लॉक में शामिल",
+    "noOperations": "कोई संचालन नहीं मिला",
+    "loadingMagiOps": "Magi संचालन लोड हो रहे हैं...",
+    "operation": "संचालन #{{num}}",
+    "notMagi": "यह संचालन Magi से संबंधित नहीं है।",
+    "transaction": "लेनदेन",
+    "failedToLoad": "लेनदेन लोड करने में विफल",
+    "notExist": "लेनदेन मौजूद नहीं है",
+    "includedInL2": "स्लॉट ऊंचाई पर L2 ब्लॉक में शामिल",
+    "viewIn": "{{name}} में देखें"
+  },
+  "participation": {
+    "aggregationBits": "एकत्रीकरण बिट्स",
+    "votedMembers": "मतदान सदस्य ({{count}})",
+    "blsSignature": "BLS हस्ताक्षर"
+  },
+  "charts": {
+    "directory": "नेटवर्क चार्ट",
+    "soon": "जल्द आ रहा है",
+    "titles": {
+      "blocks": "ब्लॉक",
+      "transactions": "लेनदेन",
+      "addresses": "पते",
+      "contracts": "अनुबंध",
+      "witnesses": "साक्षी",
+      "nam": "NAM"
+    },
+    "blocksCharts": "ब्लॉक चार्ट",
+    "blockCount": "ब्लॉक संख्या",
+    "blockCountDesc": "दैनिक उत्पादित ब्लॉकों की संख्या",
+    "txCharts": "लेनदेन चार्ट",
+    "txCount": "लेनदेन संख्या",
+    "txCountDesc": "दैनिक लेनदेन की संख्या",
+    "addressCharts": "पता चार्ट",
+    "dailyActiveAddresses": "दैनिक सक्रिय पते",
+    "dailyActiveAddressesDesc": "दैनिक अनोखे लेनदेन करने वाले पतों की संख्या",
+    "contractsCharts": "अनुबंध चार्ट",
+    "newContracts": "नए अनुबंध",
+    "newContractsDesc": "दैनिक तैनात अनुबंधों की संख्या",
+    "witnessCharts": "साक्षी चार्ट",
+    "activeStake": "सक्रिय स्टेक",
+    "activeStakeDesc": "प्रत्येक दिन के लिए कुल पात्र HIVE सहमति स्टेक",
+    "activeWitnesses": "सक्रिय साक्षी",
+    "activeWitnessesDesc": "दैनिक सक्रिय साक्षियों की संख्या",
+    "bridgeCharts": "नेटिव संपत्ति मैपिंग (NAM) चार्ट",
+    "hiveTvl": "HIVE और HBD TVL",
+    "hiveTvlDesc": "समय के साथ गेटवे खाते में HIVE और HBD शेष का इतिहास",
+    "hiveNetFlow": "HIVE नेट फ्लो",
+    "hiveNetFlowDesc": "समय के साथ HIVE नेट फ्लो का इतिहास",
+    "hbdNetFlow": "HBD नेट फ्लो",
+    "hbdNetFlowDesc": "समय के साथ HBD नेट फ्लो का इतिहास"
+  }
+}

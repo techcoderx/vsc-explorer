@@ -1,0 +1,67 @@
+{
+  "title": "Contrat",
+  "tabs": {
+    "transactions": "Transactions",
+    "outputs": "Sorties",
+    "info": "Infos",
+    "storageProof": "Preuve de stockage",
+    "readState": "Lire l'état",
+    "callContract": "Appeler le contrat",
+    "sourceCode": "Code source",
+    "history": "Historique"
+  },
+  "info": {
+    "createdAt": "Créé le",
+    "createdInL1Block": "Créé dans le bloc L1",
+    "creationTx": "Tx de création",
+    "creator": "Créateur",
+    "owner": "Propriétaire",
+    "bytecodeCid": "CID du bytecode",
+    "runtime": "Environnement d'exécution"
+  },
+  "readState": {
+    "key": "Clé",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "Erreur gql lors de la récupération de la clé d'état",
+    "fetchError": "Échec de la récupération de la clé d'état"
+  },
+  "callContract": {
+    "balance": "Solde : {{balance}}",
+    "currentAllowance": "Allocation actuelle",
+    "walletNotConnected": "Portefeuille non connecté ou soldes indisponibles",
+    "amountMustBePositive": "Le montant doit être supérieur à 0",
+    "insufficientBalance": "Solde insuffisant",
+    "connectFirst": "Veuillez d'abord connecter votre portefeuille",
+    "methodRequired": "La méthode d'appel est requise",
+    "simulationFailed": "Échec de la simulation d'appel de contrat"
+  },
+  "verification": {
+    "verified": "Code source du contrat vérifié",
+    "verifiedDesc": "Magi Blocks a vérifié que le code source fourni correspond au bytecode déployé pour le contrat. Cela ne signifie pas que le contrat est sûr à utiliser.",
+    "queued": "La demande de vérification du contrat est actuellement en file d'attente.",
+    "inProgress": "La demande de vérification du contrat est en cours de traitement.",
+    "failed": "La vérification du contrat n'a pas pu être complétée.",
+    "notMatch": "La vérification du contrat a échoué en raison d'un bytecode déployé ne correspondant pas au code source compilé.",
+    "pending": "La demande de vérification du contrat est actuellement en attente.",
+    "fetchError": "Échec de la récupération du statut de vérification du contrat.",
+    "loadingStatus": "Chargement du statut de vérification du contrat...",
+    "notVerified": "Code source du contrat non vérifié",
+    "unknown": "Le code source de ce contrat est inconnu.",
+    "language": "Langage",
+    "license": "Licence",
+    "verifiedAt": "Vérifié le",
+    "submittedBy": "Soumis par",
+    "repository": "Dépôt",
+    "contractDir": "Répertoire du contrat",
+    "goModDir": "Répertoire du module Go",
+    "tinygoVersion": "Version TinyGo",
+    "exports": "Exports"
+  },
+  "errors": {
+    "fetchFailed": "Échec de la récupération du contrat",
+    "notExist": "Le contrat n'existe pas"
+  },
+  "storageProofLoading": "Chargement de la tx de déploiement...",
+  "storageProofError": "Échec du chargement de la tx de déploiement"
+}

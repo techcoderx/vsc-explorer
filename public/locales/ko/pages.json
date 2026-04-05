@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "최신 블록",
+    "total": "총 {{count}}개 블록."
+  },
+  "block": {
+    "title": "블록 #{{num}}",
+    "blockId": "블록 ID",
+    "timestamp": "타임스탬프",
+    "l1Tx": "L1 트랜잭션",
+    "slotHeight": "슬롯 높이",
+    "proposer": "제안자",
+    "blockHash": "블록 해시",
+    "participation": "참여 현황",
+    "tabs": {
+      "transactions": "트랜잭션",
+      "opLogs": "작업 로그",
+      "contractOutputs": "컨트랙트 출력",
+      "participation": "참여 현황"
+    },
+    "opLogHeaders": {
+      "txId": "트랜잭션 ID",
+      "type": "유형",
+      "from": "발신",
+      "to": "수신",
+      "amount": "금액"
+    }
+  },
+  "elections": {
+    "title": "선거"
+  },
+  "epoch": {
+    "title": "에포크 #{{num}}",
+    "epochNumber": "에포크 번호",
+    "timestamp": "타임스탬프",
+    "l1Tx": "L1 트랜잭션",
+    "l1Block": "L1 블록",
+    "proposer": "제안자",
+    "electionDataCid": "선거 데이터 CID",
+    "totalWeight": "총 가중치",
+    "participation": "참여 현황",
+    "avgBlockVotes": "평균 블록 투표",
+    "electedMembers": "선출된 멤버 ({{count}})",
+    "blocksTab": "블록 ({{count}})",
+    "participationTab": "참여 현황",
+    "blsNotRequired": "첫 번째 선거에서는 BLS 서명이 필요하지 않았습니다."
+  },
+  "witnesses": {
+    "title": "위트니스",
+    "total": "총 {{count}}명의 활성 위트니스. 참여율: {{rate}}%"
+  },
+  "schedule": {
+    "title": "스케줄",
+    "hiveHeadBlock": "Hive 최신 블록:",
+    "showOlderSlots": "이전 슬롯 보기"
+  },
+  "transactions": {
+    "title": "최신 트랜잭션",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "최신 컨트랙트"
+  },
+  "address": {
+    "title": "주소",
+    "tabs": {
+      "transactions": "트랜잭션",
+      "l1Ops": "L1 작업",
+      "ledgerOps": "원장 작업",
+      "actions": "액션",
+      "maps": "매핑",
+      "unmaps": "언매핑",
+      "witness": "위트니스"
+    }
+  },
+  "balances": {
+    "title": "잔액",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "유동 스테이크 HBD",
+    "hbdUnstaking": "HBD 언스테이킹 중",
+    "consensusStake": "합의 스테이크",
+    "consensusUnstaking": "합의 언스테이킹 중"
+  },
+  "rcInfo": {
+    "title": "RC 정보",
+    "loadingBalances": "잔액 로딩 중...",
+    "noRcs": "사용 가능한 RC가 없습니다. RC를 얻으려면 HBD를 입금해 주세요."
+  },
+  "witness": {
+    "enabled": "활성화됨",
+    "lastBlock": "마지막 블록",
+    "blocksProduced": "생성된 블록",
+    "lastEpoch": "마지막 에포크",
+    "electionsHeld": "진행된 선거",
+    "witnessInfo": "위트니스 정보",
+    "clickToExpand": " (클릭하여 펼치기)",
+    "peerId": "피어 ID",
+    "consensusDidKey": "합의 DID 키",
+    "gatewayKey": "게이트웨이 키",
+    "gitCommit": "Git 커밋",
+    "lastUpdate": "마지막 업데이트",
+    "loadError": "위트니스 정보 로드 실패"
+  },
+  "bridge": {
+    "title": "Hive 자산 매핑 개요",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "매핑 트랜잭션",
+    "unmapTxs": "언매핑 트랜잭션",
+    "latestMaps": "최신 매핑",
+    "latestUnmaps": "최신 언매핑",
+    "viewMore": "더 보기",
+    "learnMore": "네이티브 자산 매핑에 대해 자세히 알아보기.",
+    "hiveMaps": "Hive 자산 매핑",
+    "hiveUnmaps": "Hive 자산 언매핑",
+    "totalMaps": "총 {{count}}건의 매핑",
+    "totalUnmaps": "총 {{count}}건의 언매핑"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi 트랜잭션",
+    "requiredAuths": "필요한 인증",
+    "rcUsed": "사용된 RC",
+    "nonce": "논스",
+    "ledgerOps": "원장 작업 ({{count}})",
+    "ledgerActions": "원장 액션 ({{count}})",
+    "callOutputs": "호출 출력",
+    "logs": "로그 ({{count}})",
+    "tssRequests": "TSS 요청 ({{count}})",
+    "opLogHeaders": {
+      "type": "유형",
+      "from": "발신",
+      "to": "수신",
+      "amount": "금액",
+      "memo": "메모",
+      "status": "상태",
+      "outputId": "출력 ID",
+      "contractId": "컨트랙트 ID",
+      "index": "인덱스",
+      "errorSymbol": "오류 기호",
+      "errorMessage": "오류 메시지",
+      "output": "출력",
+      "log": "로그",
+      "keyId": "키 ID",
+      "arguments": "인수"
+    },
+    "deployedContract": "배포된 컨트랙트",
+    "proposedElection": "제안된 선거 결과",
+    "proposedBlock": "제안된 블록",
+    "blockNumber": "블록 번호",
+    "hiveTransaction": "Hive 트랜잭션",
+    "includedInL1": "L1 블록에 포함됨",
+    "noOperations": "작업을 찾을 수 없습니다",
+    "loadingMagiOps": "Magi 작업 로딩 중...",
+    "operation": "작업 #{{num}}",
+    "notMagi": "이 작업은 Magi와 관련이 없습니다.",
+    "transaction": "트랜잭션",
+    "failedToLoad": "트랜잭션 로드 실패",
+    "notExist": "트랜잭션이 존재하지 않습니다",
+    "includedInL2": "L2 블록 슬롯 높이에 포함됨",
+    "viewIn": "{{name}}에서 보기"
+  },
+  "participation": {
+    "aggregationBits": "집계 비트",
+    "votedMembers": "투표한 멤버 ({{count}})",
+    "blsSignature": "BLS 서명"
+  },
+  "charts": {
+    "directory": "네트워크 차트",
+    "soon": "준비 중",
+    "titles": {
+      "blocks": "블록",
+      "transactions": "트랜잭션",
+      "addresses": "주소",
+      "contracts": "컨트랙트",
+      "witnesses": "위트니스",
+      "nam": "NAM"
+    },
+    "blocksCharts": "블록 차트",
+    "blockCount": "블록 수",
+    "blockCountDesc": "일일 생성된 블록 수",
+    "txCharts": "트랜잭션 차트",
+    "txCount": "트랜잭션 수",
+    "txCountDesc": "일일 트랜잭션 수",
+    "addressCharts": "주소 차트",
+    "dailyActiveAddresses": "일일 활성 주소",
+    "dailyActiveAddressesDesc": "일일 고유 거래 주소 수",
+    "contractsCharts": "컨트랙트 차트",
+    "newContracts": "신규 컨트랙트",
+    "newContractsDesc": "일일 배포된 컨트랙트 수",
+    "witnessCharts": "위트니스 차트",
+    "activeStake": "활성 스테이크",
+    "activeStakeDesc": "각 날의 적격 HIVE 합의 스테이크 총량",
+    "activeWitnesses": "활성 위트니스",
+    "activeWitnessesDesc": "일일 활성 위트니스 수",
+    "bridgeCharts": "네이티브 자산 매핑 (NAM) 차트",
+    "hiveTvl": "HIVE 및 HBD TVL",
+    "hiveTvlDesc": "시간 경과에 따른 게이트웨이 계정의 HIVE 및 HBD 잔액 기록",
+    "hiveNetFlow": "HIVE 순 유동",
+    "hiveNetFlowDesc": "시간 경과에 따른 HIVE 순 유동 기록",
+    "hbdNetFlow": "HBD 순 유동",
+    "hbdNetFlowDesc": "시간 경과에 따른 HBD 순 유동 기록"
+  }
+}

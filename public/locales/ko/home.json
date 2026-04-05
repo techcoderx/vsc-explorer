@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi 블록 익스플로러",
+  "heroSubtitle": "계정, 블록, 트랜잭션 및 컨트랙트 검색",
+  "networkActivity": "네트워크 활동",
+  "dailyTxs": "일일 트랜잭션 (최근 14일)",
+  "chartTxLabel": "트랜잭션",
+  "chartDateLabel": "날짜: {{date}}",
+  "latestContracts": "최신 컨트랙트",
+  "viewAllContracts": "모든 컨트랙트 보기",
+  "viewAllBlocks": "모든 블록 보기",
+  "viewAllTxs": "모든 트랜잭션 보기",
+  "quickLinks": "빠른 링크",
+  "recentBlocks": "최근 블록",
+  "recentTxs": "최근 트랜잭션",
+  "latestContractsQuickLinks": "최신 컨트랙트 및 빠른 링크",
+  "stats": {
+    "hiveBlockHeight": "Hive 블록 높이",
+    "magiBlockHeight": "Magi 블록 높이",
+    "transactions": "트랜잭션",
+    "currentEpoch": "현재 에포크",
+    "witnesses": "위트니스",
+    "contracts": "컨트랙트"
+  },
+  "epoch": {
+    "epoch": "에포크 {{num}}",
+    "totalStake": "{{amount}} 총 스테이크",
+    "nextEpochIn": "다음 에포크까지 약 {{countdown}}"
+  },
+  "links": {
+    "blocks": "블록",
+    "transactions": "트랜잭션",
+    "contracts": "컨트랙트",
+    "witnesses": "위트니스",
+    "elections": "선거",
+    "namBridge": "NAM 브리지",
+    "charts": "차트",
+    "broadcast": "브로드캐스트"
+  }
+}

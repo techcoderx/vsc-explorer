@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next'
 import { L1Transaction } from './types/HafApiResult'
 import {
   CallContractPayload,
@@ -15,7 +16,7 @@ import { getConf } from './settings'
 import { Ops } from './types/L1ApiResult'
 import { fetchL1Rest } from './requests'
 
-export const timeAgo = (date: string, one: boolean = false): string => {
+export const timeAgo = (date: string, one: boolean = false, t?: TFunction): string => {
   const now = new Date().getTime()
   const diffInSeconds = Math.abs(now - new Date(date + (!date.endsWith('Z') ? 'Z' : '')).getTime()) / 1000
 
@@ -23,6 +24,13 @@ export const timeAgo = (date: string, one: boolean = false): string => {
   const hours = Math.floor(diffInSeconds / 3600) % 24
   const minutes = Math.floor(diffInSeconds / 60) % 60
   const seconds = Math.floor(diffInSeconds % 60)
+
+  if (t) {
+    if (days > 0) return t(one ? 'timeAgo.days' : 'timeAgo.daysHrs', { days, hours })
+    if (hours > 0) return t(one ? 'timeAgo.hrs' : 'timeAgo.hrsMin', { hours, minutes })
+    if (minutes > 0) return t('timeAgo.mins', { minutes })
+    return t('timeAgo.secs', { seconds })
+  }
 
   if (days > 0) return `${days} days${!one ? ` ${hours} hrs` : ''} ago`
   if (hours > 0) return `${hours} hrs${!one ? ` ${minutes} mins` : ''} ago`
@@ -56,7 +64,25 @@ export const utf8ToHex = (val: string) => {
   return new TextEncoder().encode(val).reduce((a, c) => a + c.toString(16).padStart(2, '0'), '')
 }
 
-export const validateHiveUsername = (value: string): string | null => {
+export const validateHiveUsername = (value: string, t?: TFunction): string | null => {
+  if (t) {
+    let suffix = t('validation.hiveUsernamePrefix')
+    if (!value) return suffix + t('validation.notEmpty')
+    const length = value.length
+    if (length < 3 || length > 16) return suffix + t('validation.between3and16')
+    if (/\./.test(value)) suffix = t('validation.hiveSegmentPrefix')
+    const ref = value.split('.')
+    let label
+    for (let i = 0, len = ref.length; i < len; i++) {
+      label = ref[i]
+      if (!/^[a-z]/.test(label)) return suffix + t('validation.startWithLetter')
+      if (!/^[a-z0-9-]*$/.test(label)) return suffix + t('validation.onlyLettersDigitsDashes')
+      if (!/[a-z0-9]$/.test(label)) return suffix + t('validation.endWithLetterOrDigit')
+      if (!(label.length >= 3)) return suffix + t('validation.beLonger')
+    }
+    return null
+  }
+
   let suffix = 'Hive username must '
   if (!value) return suffix + 'not be empty.'
   const length = value.length
@@ -191,9 +217,100 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
   return { valid: false }
 }
 
-export const describeL1TxBriefly = (tx: L1Transaction): string => {
+export const describeL1TxBriefly = (tx: L1Transaction, t?: TFunction): string => {
   const conf = getConf()
   let result: string = tx.username + ' '
+  if (t) {
+    switch (tx.type) {
+      case 'announce_node':
+        result += t('tx.announcedNode')
+        break
+      case 'produce_block':
+        result += t('tx.proposedBlock', { block: (tx.payload as BlockPayload).signed_block.block })
+        break
+      case 'create_contract':
+        result += t('tx.createdContract', { code: abbreviateHash((tx.payload as NewContractPayload).code, 15, 0) })
+        break
+      case 'election_result':
+        result += t('tx.electionResult', { epoch: (tx.payload as ElectionPayload).epoch })
+        break
+      case 'transfer':
+        result += t('tx.transfer', {
+          amount: (tx.payload as TransferPayload).amount,
+          asset: (tx.payload as TransferPayload).asset.toUpperCase(),
+          to: (tx.payload as TransferPayload).to
+        })
+        break
+      case 'l1_transfer':
+        if ((tx.payload as DepositPayload).to === conf.msAccount) {
+          result += t('tx.mapped', { amount: naiToString((tx.payload as DepositPayload).amount) })
+        } else {
+          result += t('tx.unmapped', { amount: naiToString((tx.payload as DepositPayload).amount) })
+        }
+        break
+      case 'withdraw':
+        result += t('tx.unmap', {
+          amount: thousandSeperator((tx.payload as TransferPayload).amount),
+          asset: (tx.payload as TransferPayload).asset.toUpperCase(),
+          toSuffix:
+            (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+        })
+        break
+      case 'consensus_stake':
+        result += t('tx.consensusStake', {
+          amount: (tx.payload as TransferPayload).amount,
+          toSuffix:
+            (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+        })
+        break
+      case 'consensus_unstake':
+        result += t('tx.consensusUnstake', {
+          amount: (tx.payload as TransferPayload).amount,
+          toSuffix:
+            (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+        })
+        break
+      case 'stake_hbd':
+        result += t('tx.stakeHbd', {
+          amount: (tx.payload as TransferPayload).amount,
+          toSuffix:
+            (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+        })
+        break
+      case 'unstake_hbd':
+        result += t('tx.unstakeHbd', {
+          amount: (tx.payload as TransferPayload).amount,
+          toSuffix:
+            (tx.payload as TransferPayload).to !== `hive:${tx.username}` ? ` to ${(tx.payload as TransferPayload).to}` : ''
+        })
+        break
+      case 'transfer_to_savings':
+        result += t('tx.stakeL1', { amount: naiToString((tx.payload as DepositPayload).amount) })
+        break
+      case 'transfer_from_savings':
+        result += t('tx.beginUnstakeL1', { amount: naiToString((tx.payload as DepositPayload).amount) })
+        break
+      case 'fill_transfer_from_savings':
+        result += t('tx.unstakedL1', { amount: naiToString((tx.payload as DepositPayload).amount) })
+        break
+      case 'interest':
+        result += t('tx.collectInterest', { amount: naiToString((tx.payload as InterestPayload).interest) })
+        break
+      case 'call': {
+        const call = tx.payload as CallContractPayload
+        result += t('tx.call', {
+          action: abbreviateHash(call.action, 30, 0),
+          contract: abbreviateHash(call.contract_id, 20, 0)
+        })
+        break
+      }
+      default:
+        result += tx.type.replace(/_/g, ' ')
+        break
+    }
+    return result
+  }
+
   switch (tx.type) {
     case 'announce_node':
       result += 'announced node'

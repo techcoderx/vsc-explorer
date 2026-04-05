@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "Derniers blocs",
+    "total": "Total de {{count}} blocs."
+  },
+  "block": {
+    "title": "Bloc #{{num}}",
+    "blockId": "ID du bloc",
+    "timestamp": "Horodatage",
+    "l1Tx": "Tx L1",
+    "slotHeight": "Hauteur de slot",
+    "proposer": "Proposeur",
+    "blockHash": "Hash du bloc",
+    "participation": "Participation",
+    "tabs": {
+      "transactions": "Transactions",
+      "opLogs": "Journaux d'opérations",
+      "contractOutputs": "Sorties de contrats",
+      "participation": "Participation"
+    },
+    "opLogHeaders": {
+      "txId": "ID de transaction",
+      "type": "Type",
+      "from": "De",
+      "to": "À",
+      "amount": "Montant"
+    }
+  },
+  "elections": {
+    "title": "Élections"
+  },
+  "epoch": {
+    "title": "Époque #{{num}}",
+    "epochNumber": "Numéro d'époque",
+    "timestamp": "Horodatage",
+    "l1Tx": "Tx L1",
+    "l1Block": "Bloc L1",
+    "proposer": "Proposeur",
+    "electionDataCid": "CID des données d'élection",
+    "totalWeight": "Poids total",
+    "participation": "Participation",
+    "avgBlockVotes": "Votes moyens par bloc",
+    "electedMembers": "Membres élus ({{count}})",
+    "blocksTab": "Blocs ({{count}})",
+    "participationTab": "Participation",
+    "blsNotRequired": "La signature BLS n'était pas requise pour la première élection."
+  },
+  "witnesses": {
+    "title": "Témoins",
+    "total": "Total de {{count}} témoins actifs. Taux de participation : {{rate}}%"
+  },
+  "schedule": {
+    "title": "Planning",
+    "hiveHeadBlock": "Bloc de tête Hive :",
+    "showOlderSlots": "Afficher les anciens créneaux"
+  },
+  "transactions": {
+    "title": "Dernières transactions",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "Derniers contrats"
+  },
+  "address": {
+    "title": "Adresse",
+    "tabs": {
+      "transactions": "Transactions",
+      "l1Ops": "Opérations L1",
+      "ledgerOps": "Opérations du registre",
+      "actions": "Actions",
+      "maps": "Mappages",
+      "unmaps": "Démappages",
+      "witness": "Témoin"
+    }
+  },
+  "balances": {
+    "title": "Soldes",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "HBD mis en jeu liquide",
+    "hbdUnstaking": "HBD en cours de retrait",
+    "consensusStake": "Mise pour le consensus",
+    "consensusUnstaking": "Retrait du consensus"
+  },
+  "rcInfo": {
+    "title": "Infos RC",
+    "loadingBalances": "Chargement des soldes...",
+    "noRcs": "Vous n'avez pas de RC disponibles. Veuillez déposer des HBD pour obtenir des RC."
+  },
+  "witness": {
+    "enabled": "Activé",
+    "lastBlock": "Dernier bloc",
+    "blocksProduced": "Blocs produits",
+    "lastEpoch": "Dernière époque",
+    "electionsHeld": "Élections tenues",
+    "witnessInfo": "Infos du témoin",
+    "clickToExpand": " (Cliquer pour développer)",
+    "peerId": "ID du pair",
+    "consensusDidKey": "Clé DID de consensus",
+    "gatewayKey": "Clé de passerelle",
+    "gitCommit": "Commit Git",
+    "lastUpdate": "Dernière mise à jour",
+    "loadError": "Échec du chargement des infos du témoin"
+  },
+  "bridge": {
+    "title": "Aperçu du mappage des actifs Hive",
+    "hiveTvl": "TVL HIVE",
+    "hbdTvl": "TVL HBD",
+    "mapTxs": "Tx de mappage",
+    "unmapTxs": "Tx de démappage",
+    "latestMaps": "Derniers mappages",
+    "latestUnmaps": "Derniers démappages",
+    "viewMore": "Voir plus",
+    "learnMore": "En savoir plus sur le mappage des actifs natifs ici.",
+    "hiveMaps": "Mappages des actifs Hive",
+    "hiveUnmaps": "Démappages des actifs Hive",
+    "totalMaps": "Total de {{count}} mappages",
+    "totalUnmaps": "Total de {{count}} démappages"
+  },
+  "l1Tx": {
+    "magiTransaction": "Transaction Magi",
+    "requiredAuths": "Autorisations requises",
+    "rcUsed": "RC utilisés",
+    "nonce": "Nonce",
+    "ledgerOps": "Opérations du registre ({{count}})",
+    "ledgerActions": "Actions du registre ({{count}})",
+    "callOutputs": "Sorties d'appel",
+    "logs": "Journaux ({{count}})",
+    "tssRequests": "Requêtes TSS ({{count}})",
+    "opLogHeaders": {
+      "type": "Type",
+      "from": "De",
+      "to": "À",
+      "amount": "Montant",
+      "memo": "Mémo",
+      "status": "Statut",
+      "outputId": "ID de sortie",
+      "contractId": "ID du contrat",
+      "index": "Index",
+      "errorSymbol": "Symbole d'erreur",
+      "errorMessage": "Message d'erreur",
+      "output": "Sortie",
+      "log": "Journal",
+      "keyId": "ID de clé",
+      "arguments": "Arguments"
+    },
+    "deployedContract": "Contrat déployé",
+    "proposedElection": "Résultat d'élection proposé",
+    "proposedBlock": "Bloc proposé",
+    "blockNumber": "Numéro de bloc",
+    "hiveTransaction": "Transaction Hive",
+    "includedInL1": "Inclus dans le bloc L1",
+    "noOperations": "Aucune opération trouvée",
+    "loadingMagiOps": "Chargement des opérations Magi...",
+    "operation": "Opération #{{num}}",
+    "notMagi": "Cette opération n'est pas liée à Magi.",
+    "transaction": "Transaction",
+    "failedToLoad": "Échec du chargement de la transaction",
+    "notExist": "La transaction n'existe pas",
+    "includedInL2": "Inclus dans le bloc L2 à la hauteur de slot",
+    "viewIn": "Voir dans {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "Bits d'agrégation",
+    "votedMembers": "Membres votants ({{count}})",
+    "blsSignature": "Signature BLS"
+  },
+  "charts": {
+    "directory": "Graphiques réseau",
+    "soon": "Bientôt",
+    "titles": {
+      "blocks": "Blocs",
+      "transactions": "Transactions",
+      "addresses": "Adresses",
+      "contracts": "Contrats",
+      "witnesses": "Témoins",
+      "nam": "NAM"
+    },
+    "blocksCharts": "Graphiques des blocs",
+    "blockCount": "Nombre de blocs",
+    "blockCountDesc": "Nombre de blocs produits quotidiennement",
+    "txCharts": "Graphiques des transactions",
+    "txCount": "Nombre de transactions",
+    "txCountDesc": "Nombre de transactions quotidiennes",
+    "addressCharts": "Graphiques des adresses",
+    "dailyActiveAddresses": "Adresses actives quotidiennes",
+    "dailyActiveAddressesDesc": "Nombre d'adresses de transaction uniques quotidiennes",
+    "contractsCharts": "Graphiques des contrats",
+    "newContracts": "Nouveaux contrats",
+    "newContractsDesc": "Nombre de contrats déployés quotidiennement",
+    "witnessCharts": "Graphiques des témoins",
+    "activeStake": "Mise active",
+    "activeStakeDesc": "Mise totale HIVE éligible au consensus pour chaque jour",
+    "activeWitnesses": "Témoins actifs",
+    "activeWitnessesDesc": "Nombre de témoins actifs quotidiennement",
+    "bridgeCharts": "Graphiques de mappage des actifs natifs (NAM)",
+    "hiveTvl": "TVL HIVE et HBD",
+    "hiveTvlDesc": "Historique des soldes HIVE et HBD dans le compte passerelle au fil du temps",
+    "hiveNetFlow": "Flux net HIVE",
+    "hiveNetFlowDesc": "Historique des flux nets HIVE au fil du temps",
+    "hbdNetFlow": "Flux net HBD",
+    "hbdNetFlowDesc": "Historique des flux nets HBD au fil du temps"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "title": "合約",
+  "tabs": {
+    "transactions": "交易",
+    "outputs": "輸出",
+    "info": "資訊",
+    "storageProof": "儲存證明",
+    "readState": "讀取狀態",
+    "callContract": "呼叫合約",
+    "sourceCode": "原始碼",
+    "history": "歷史"
+  },
+  "info": {
+    "createdAt": "建立時間",
+    "createdInL1Block": "建立於 L1 區塊",
+    "creationTx": "建立交易",
+    "creator": "建立者",
+    "owner": "擁有者",
+    "bytecodeCid": "位元組碼 CID",
+    "runtime": "執行環境"
+  },
+  "readState": {
+    "key": "鍵",
+    "utf8": "UTF-8",
+    "hex": "十六進位",
+    "gqlError": "取得狀態鍵時發生 gql 錯誤",
+    "fetchError": "取得狀態鍵失敗"
+  },
+  "callContract": {
+    "balance": "餘額：{{balance}}",
+    "currentAllowance": "目前授權額度",
+    "walletNotConnected": "錢包未連接或餘額無法載入",
+    "amountMustBePositive": "金額必須大於 0",
+    "insufficientBalance": "餘額不足",
+    "connectFirst": "請先連接您的錢包",
+    "methodRequired": "呼叫方法為必填項",
+    "simulationFailed": "合約呼叫模擬失敗"
+  },
+  "verification": {
+    "verified": "合約原始碼已驗證",
+    "verifiedDesc": "Magi Blocks 已驗證提供給我們的原始碼與該合約的已部署位元組碼相符。這並不表示該合約可以安全互動。",
+    "queued": "合約驗證請求目前在佇列中。",
+    "inProgress": "合約驗證請求正在處理中。",
+    "failed": "合約驗證未能完成。",
+    "notMatch": "合約驗證失敗，因為已部署的位元組碼與編譯後的原始碼不符。",
+    "pending": "合約驗證請求目前處於待處理狀態。",
+    "fetchError": "取得合約驗證狀態失敗。",
+    "loadingStatus": "正在載入合約驗證狀態...",
+    "notVerified": "合約原始碼未驗證",
+    "unknown": "此合約的原始碼未知。",
+    "language": "語言",
+    "license": "授權條款",
+    "verifiedAt": "驗證時間",
+    "submittedBy": "提交者",
+    "repository": "儲存庫",
+    "contractDir": "合約目錄",
+    "goModDir": "Go 模組目錄",
+    "tinygoVersion": "TinyGo 版本",
+    "exports": "匯出"
+  },
+  "errors": {
+    "fetchFailed": "取得合約失敗",
+    "notExist": "合約不存在"
+  },
+  "storageProofLoading": "正在載入部署交易...",
+  "storageProofError": "載入部署交易失敗"
+}

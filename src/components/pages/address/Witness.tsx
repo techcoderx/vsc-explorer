@@ -4,6 +4,7 @@ import { CheckXIcon } from '../../CheckXIcon'
 import { ReactNode, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useOutletContext, Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import TableRow from '../../TableRow'
 import { timeAgo, thousandSeperator } from '../../../helpers'
 import { fetchBlocksByProposer, fetchWitnessStat, getWitness } from '../../../requests'
@@ -25,61 +26,62 @@ export const StatCard = ({ label, children }: { label: string; children?: ReactN
 }
 
 export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: WitnessStat }) => {
+  const { t } = useTranslation('pages')
   const [expMeta, setExpMeta] = useState(false)
   return !!witness ? (
     <VStack width={'full'} gap={'1'}>
       {!!stats && (
         <Stack gap={'3'} direction={'row'} w={'full'} overflowX={'scroll'}>
-          <StatCard label="Enabled">
+          <StatCard label={t('witness.enabled')}>
             <Box css={{ '& > *': { fontSize: '2rem !important' } }}>
               <CheckXIcon ok={witness.enabled} />
             </Box>
           </StatCard>
-          <StatCard label="Last Block">
+          <StatCard label={t('witness.lastBlock')}>
             <Link asChild>
               <ReactRouterLink to={'/block/' + stats.last_block}>
-                {stats.last_block ? thousandSeperator(stats.last_block) : 'N/A'}
+                {stats.last_block ? thousandSeperator(stats.last_block) : t('na', { ns: 'common' })}
               </ReactRouterLink>
             </Link>
           </StatCard>
-          <StatCard label="Blocks Produced">{thousandSeperator(stats?.block_count || 0)}</StatCard>
-          <StatCard label="Last Epoch">
+          <StatCard label={t('witness.blocksProduced')}>{thousandSeperator(stats?.block_count || 0)}</StatCard>
+          <StatCard label={t('witness.lastEpoch')}>
             <Link asChild>
               <ReactRouterLink to={'/epoch/' + stats.last_epoch}>
-                {stats.last_epoch ? thousandSeperator(stats.last_epoch) : 'N/A'}
+                {stats.last_epoch ? thousandSeperator(stats.last_epoch) : t('na', { ns: 'common' })}
               </ReactRouterLink>
             </Link>
           </StatCard>
-          <StatCard label="Elections Held">{thousandSeperator(stats.election_count || 0)}</StatCard>
+          <StatCard label={t('witness.electionsHeld')}>{thousandSeperator(stats.election_count || 0)}</StatCard>
         </Stack>
       )}
       <Card.Root width={'100%'} mt={'15px'}>
         <Card.Header pt={'4'} pb={'4'} onClick={() => setExpMeta((v) => !v)} cursor={'pointer'}>
-          <Heading size={'md'}>Witness Info{!expMeta ? ' (Click to expand)' : ''}</Heading>
+          <Heading size={'md'}>{t('witness.witnessInfo')}{!expMeta ? ' ' + t('witness.clickToExpand') : ''}</Heading>
         </Card.Header>
         {expMeta && (
           <Card.Body pt={'0'}>
             <Table.ScrollArea>
               <Table.Root>
                 <Table.Body>
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="Peer ID" value={witness.peer_id} />
+                  <TableRow isInCard minimalSpace minWidthLabel="115px" label={t('witness.peerId')} value={witness.peer_id} />
                   <TableRow
                     isInCard
                     minimalSpace
                     minWidthLabel="115px"
-                    label="Consensus DID Key"
+                    label={t('witness.consensusDidKey')}
                     value={witness.did_keys.find((k) => k.t === 'consensus')?.key}
                   />
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="Gateway Key" value={witness.gateway_key} />
+                  <TableRow isInCard minimalSpace minWidthLabel="115px" label={t('witness.gatewayKey')} value={witness.gateway_key} />
                   <TableRow
                     isInCard
                     minimalSpace
                     minWidthLabel="115px"
-                    label="Git Commit"
+                    label={t('witness.gitCommit')}
                     value={witness.git_commit}
                     link={'https://github.com/vsc-eco/go-vsc-node/commit/' + witness.git_commit}
                   />
-                  <TableRow isInCard minimalSpace minWidthLabel="115px" label="Last Update">
+                  <TableRow isInCard minimalSpace minWidthLabel="115px" label={t('witness.lastUpdate')}>
                     <Tooltip positioning={{ placement: 'top' }} content={witness.ts}>
                       <Link asChild wordBreak={'break-all'}>
                         <ReactRouterLink to={'/tx/' + witness.tx_id}>{timeAgo(witness.ts)}</ReactRouterLink>
@@ -94,7 +96,7 @@ export const WitnessInfo = ({ witness, stats }: { witness?: Witness; stats?: Wit
       </Card.Root>
     </VStack>
   ) : (
-    <Text>Failed to load witness info</Text>
+    <Text>{t('witness.loadError')}</Text>
   )
 }
 

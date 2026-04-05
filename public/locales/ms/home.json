@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Penjelajah Blok Magi",
+  "heroSubtitle": "Cari akaun, blok, transaksi, dan kontrak",
+  "networkActivity": "Aktiviti Rangkaian",
+  "dailyTxs": "Transaksi harian (14 hari terakhir)",
+  "chartTxLabel": "Transaksi",
+  "chartDateLabel": "Tarikh: {{date}}",
+  "latestContracts": "Kontrak Terkini",
+  "viewAllContracts": "Lihat Semua Kontrak",
+  "viewAllBlocks": "Lihat Semua Blok",
+  "viewAllTxs": "Lihat Semua Transaksi",
+  "quickLinks": "Pautan Pantas",
+  "recentBlocks": "Blok Terbaru",
+  "recentTxs": "Transaksi Terbaru",
+  "latestContractsQuickLinks": "Kontrak Terkini & Pautan Pantas",
+  "stats": {
+    "hiveBlockHeight": "Ketinggian Blok Hive",
+    "magiBlockHeight": "Ketinggian Blok Magi",
+    "transactions": "Transaksi",
+    "currentEpoch": "Epok Semasa",
+    "witnesses": "Saksi",
+    "contracts": "Kontrak"
+  },
+  "epoch": {
+    "epoch": "Epok {{num}}",
+    "totalStake": "{{amount}} jumlah taruhan",
+    "nextEpochIn": "Epok seterusnya dalam ~{{countdown}}"
+  },
+  "links": {
+    "blocks": "Blok",
+    "transactions": "Transaksi",
+    "contracts": "Kontrak",
+    "witnesses": "Saksi",
+    "elections": "Pilihan Raya",
+    "namBridge": "Jambatan NAM",
+    "charts": "Carta",
+    "broadcast": "Siaran"
+  }
+}

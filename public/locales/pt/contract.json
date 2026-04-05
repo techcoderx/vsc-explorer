@@ -1,0 +1,67 @@
+{
+  "title": "Contrato",
+  "tabs": {
+    "transactions": "Transações",
+    "outputs": "Saídas",
+    "info": "Info",
+    "storageProof": "Prova de armazenamento",
+    "readState": "Ler estado",
+    "callContract": "Chamar contrato",
+    "sourceCode": "Código-fonte",
+    "history": "Histórico"
+  },
+  "info": {
+    "createdAt": "Criado em",
+    "createdInL1Block": "Criado no bloco L1",
+    "creationTx": "Tx de criação",
+    "creator": "Criador",
+    "owner": "Proprietário",
+    "bytecodeCid": "CID do bytecode",
+    "runtime": "Ambiente de execução"
+  },
+  "readState": {
+    "key": "Chave",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "erro gql ao obter a chave de estado",
+    "fetchError": "Falha ao obter a chave de estado"
+  },
+  "callContract": {
+    "balance": "Saldo: {{balance}}",
+    "currentAllowance": "Permissão atual",
+    "walletNotConnected": "Carteira não conectada ou saldos não disponíveis",
+    "amountMustBePositive": "O valor deve ser maior que 0",
+    "insufficientBalance": "Saldo insuficiente",
+    "connectFirst": "Por favor conecte sua carteira primeiro",
+    "methodRequired": "O método de chamada é obrigatório",
+    "simulationFailed": "Falha na simulação de chamada de contrato"
+  },
+  "verification": {
+    "verified": "Código-fonte do contrato verificado",
+    "verifiedDesc": "Magi Blocks verificou que o código-fonte fornecido corresponde ao bytecode implantado do contrato. Isso não significa que o contrato é seguro para interagir.",
+    "queued": "A solicitação de verificação do contrato está atualmente na fila.",
+    "inProgress": "A solicitação de verificação do contrato está sendo processada.",
+    "failed": "A verificação do contrato não pôde ser concluída.",
+    "notMatch": "A verificação do contrato falhou devido ao bytecode implantado não corresponder ao código-fonte compilado.",
+    "pending": "A solicitação de verificação do contrato está atualmente pendente.",
+    "fetchError": "Falha ao obter o status de verificação do contrato.",
+    "loadingStatus": "Carregando status de verificação do contrato...",
+    "notVerified": "Código-fonte do contrato não verificado",
+    "unknown": "O código-fonte deste contrato é desconhecido.",
+    "language": "Linguagem",
+    "license": "Licença",
+    "verifiedAt": "Verificado em",
+    "submittedBy": "Enviado por",
+    "repository": "Repositório",
+    "contractDir": "Diretório do contrato",
+    "goModDir": "Diretório do módulo Go",
+    "tinygoVersion": "Versão TinyGo",
+    "exports": "Exportações"
+  },
+  "errors": {
+    "fetchFailed": "Falha ao obter o contrato",
+    "notExist": "O contrato não existe"
+  },
+  "storageProofLoading": "Carregando tx de implantação...",
+  "storageProofError": "Falha ao carregar a tx de implantação"
+}

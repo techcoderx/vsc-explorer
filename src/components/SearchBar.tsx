@@ -3,6 +3,7 @@ import { LuSearch } from 'react-icons/lu'
 import { Link as ReactRouterLink, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isAddress } from 'viem'
 import { themeColor, themeColorULight, themeColorSLight, themeColorDark, themeColorScheme } from '../settings'
 import { fetchProps, cidSearch, fetchL1Rest } from '../requests'
@@ -226,6 +227,7 @@ const useSearchResults = (query: string): SearchResultHook => {
 }
 
 const SearchBar = ({ miniBtn }: SearchBarProps) => {
+  const { t } = useTranslation('nav')
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const onOpen = () => setOpen(true)
@@ -244,7 +246,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
         justifyContent={miniBtn ? 'unset' : 'flex-start'}
         colorPalette={themeColorScheme}
         variant={'outline'}
-        aria-label={'Search account, block, tx...'}
+        aria-label={t('search.placeholder')}
         _focus={{ boxShadow: 'none' }}
         focusRingWidth={0}
       >
@@ -259,7 +261,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
             color: '#000000'
           }}
         >
-          Search account, block, tx...
+          {t('search.placeholder')}
         </Text>
       </Button>
 
@@ -270,8 +272,8 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
             <Dialog.Body p="2.5">
               <InputGroup width="100%" startElement={<LuSearch />}>
                 <Input
-                  aria-label="Search account, block, transaction"
-                  placeholder="Search account, block, transaction..."
+                  aria-label={t('search.fullPlaceholder')}
+                  placeholder={t('search.fullPlaceholder')}
                   spellCheck={false}
                   _focus={{ borderColor: themeColor }}
                   _focusVisible={{ outline: 'none' }}
@@ -302,7 +304,7 @@ const SearchBar = ({ miniBtn }: SearchBarProps) => {
                     >
                       <ReactRouterLink to={r.href}>
                         <Text transition={'all .2s ease'} _groupHover={{ color: bgColorHoveredText }} fontWeight={500}>
-                          {r.type}
+                          {t('search.types.' + r.type)}
                         </Text>
                         <Text fontSize={'sm'}>{searchQuery}</Text>
                       </ReactRouterLink>

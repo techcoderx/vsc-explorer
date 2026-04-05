@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "編號",
+    "age": "時間",
+    "proposer": "提議者",
+    "blockHash": "區塊雜湊",
+    "voted": "已投票"
+  },
+  "transactions": {
+    "txId": "交易 ID",
+    "age": "時間",
+    "method": "方法",
+    "from": "發送方",
+    "to": "接收方",
+    "amount": "金額"
+  },
+  "contractHistory": {
+    "txId": "交易 ID",
+    "age": "時間",
+    "deployer": "部署者",
+    "owner": "擁有者",
+    "code": "程式碼",
+    "latest": "最新"
+  },
+  "contractOutput": {
+    "id": "編號",
+    "age": "時間",
+    "contractId": "合約 ID",
+    "inputTx": "輸入交易",
+    "output": "輸出"
+  },
+  "contracts": {
+    "contractId": "合約 ID",
+    "age": "時間",
+    "creator": "建立者",
+    "creationTx": "建立交易",
+    "code": "程式碼",
+    "runtime": "執行環境"
+  },
+  "ledger": {
+    "txId": "交易 ID",
+    "age": "時間",
+    "type": "類型",
+    "from": "發送方",
+    "fromUser": "發送使用者",
+    "to": "接收方",
+    "toUser": "接收使用者",
+    "amount": "金額",
+    "status": "狀態"
+  },
+  "bridge": {
+    "txId": "交易 ID",
+    "age": "時間",
+    "toUser": "接收使用者",
+    "amount": "金額"
+  },
+  "elections": {
+    "epoch": "週期",
+    "age": "時間",
+    "proposer": "提議者",
+    "blocks": "區塊",
+    "members": "成員",
+    "totalWeight": "總權重",
+    "voted": "已投票",
+    "blockVotes": "區塊票數"
+  },
+  "witnesses": {
+    "idx": "序號",
+    "username": "使用者名稱",
+    "weight": "權重",
+    "lastBlock": "最後區塊",
+    "blocksProduced": "已產出區塊",
+    "lastEpoch": "最後週期",
+    "elections": "選舉",
+    "didKey": "DID 金鑰"
+  },
+  "schedule": {
+    "username": "使用者名稱",
+    "l1Block": "L1 區塊",
+    "magiBlock": "Magi 區塊"
+  }
+}

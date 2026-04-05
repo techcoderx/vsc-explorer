@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "Blok Terkini",
+    "total": "Jumlah {{count}} blok."
+  },
+  "block": {
+    "title": "Blok #{{num}}",
+    "blockId": "ID Blok",
+    "timestamp": "Cap Masa",
+    "l1Tx": "Tx L1",
+    "slotHeight": "Ketinggian Slot",
+    "proposer": "Pencadang",
+    "blockHash": "Hash Blok",
+    "participation": "Penyertaan",
+    "tabs": {
+      "transactions": "Transaksi",
+      "opLogs": "Log Op",
+      "contractOutputs": "Output Kontrak",
+      "participation": "Penyertaan"
+    },
+    "opLogHeaders": {
+      "txId": "ID Transaksi",
+      "type": "Jenis",
+      "from": "Dari",
+      "to": "Kepada",
+      "amount": "Jumlah"
+    }
+  },
+  "elections": {
+    "title": "Pilihan Raya"
+  },
+  "epoch": {
+    "title": "Epok #{{num}}",
+    "epochNumber": "Nombor Epok",
+    "timestamp": "Cap Masa",
+    "l1Tx": "Tx L1",
+    "l1Block": "Blok L1",
+    "proposer": "Pencadang",
+    "electionDataCid": "CID Data Pilihan Raya",
+    "totalWeight": "Jumlah Berat",
+    "participation": "Penyertaan",
+    "avgBlockVotes": "Purata Undi Blok",
+    "electedMembers": "Ahli Terpilih ({{count}})",
+    "blocksTab": "Blok ({{count}})",
+    "participationTab": "Penyertaan",
+    "blsNotRequired": "Tandatangan BLS tidak diperlukan untuk pilihan raya pertama."
+  },
+  "witnesses": {
+    "title": "Saksi",
+    "total": "Jumlah {{count}} saksi aktif. Kadar penyertaan: {{rate}}%"
+  },
+  "schedule": {
+    "title": "Jadual",
+    "hiveHeadBlock": "Blok kepala Hive:",
+    "showOlderSlots": "Tunjukkan Slot Lama"
+  },
+  "transactions": {
+    "title": "Transaksi Terkini",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "Kontrak Terkini"
+  },
+  "address": {
+    "title": "Alamat",
+    "tabs": {
+      "transactions": "Transaksi",
+      "l1Ops": "Op L1",
+      "ledgerOps": "Op Lejar",
+      "actions": "Tindakan",
+      "maps": "Peta",
+      "unmaps": "Nyahpeta",
+      "witness": "Saksi"
+    }
+  },
+  "balances": {
+    "title": "Baki",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "HBD Taruhan Cecair",
+    "hbdUnstaking": "Nyahtaruh HBD",
+    "consensusStake": "Taruhan Konsensus",
+    "consensusUnstaking": "Nyahtaruh Konsensus"
+  },
+  "rcInfo": {
+    "title": "Maklumat RC",
+    "loadingBalances": "Memuatkan baki...",
+    "noRcs": "Anda tiada RC yang tersedia. Sila deposit HBD untuk mendapatkan RC."
+  },
+  "witness": {
+    "enabled": "Diaktifkan",
+    "lastBlock": "Blok Terakhir",
+    "blocksProduced": "Blok Dihasilkan",
+    "lastEpoch": "Epok Terakhir",
+    "electionsHeld": "Pilihan Raya Diadakan",
+    "witnessInfo": "Maklumat Saksi",
+    "clickToExpand": " (Klik untuk kembangkan)",
+    "peerId": "ID Rakan Sejawat",
+    "consensusDidKey": "Kunci DID Konsensus",
+    "gatewayKey": "Kunci Get Way",
+    "gitCommit": "Komit Git",
+    "lastUpdate": "Kemaskini Terakhir",
+    "loadError": "Gagal memuatkan maklumat saksi"
+  },
+  "bridge": {
+    "title": "Gambaran Keseluruhan Pemetaan Aset Hive",
+    "hiveTvl": "TVL HIVE",
+    "hbdTvl": "TVL HBD",
+    "mapTxs": "Tx Peta",
+    "unmapTxs": "Tx Nyahpeta",
+    "latestMaps": "Peta Terkini",
+    "latestUnmaps": "Nyahpeta Terkini",
+    "viewMore": "Lihat Lagi",
+    "learnMore": "Ketahui lebih lanjut tentang pemetaan aset asli di sini.",
+    "hiveMaps": "Peta Aset Hive",
+    "hiveUnmaps": "Nyahpeta Aset Hive",
+    "totalMaps": "Jumlah {{count}} peta",
+    "totalUnmaps": "Jumlah {{count}} nyahpeta"
+  },
+  "l1Tx": {
+    "magiTransaction": "Transaksi Magi",
+    "requiredAuths": "Pengesahan Diperlukan",
+    "rcUsed": "RC Digunakan",
+    "nonce": "Nonce",
+    "ledgerOps": "Operasi Lejar ({{count}})",
+    "ledgerActions": "Tindakan Lejar ({{count}})",
+    "callOutputs": "Output Panggilan",
+    "logs": "Log ({{count}})",
+    "tssRequests": "Permintaan TSS ({{count}})",
+    "opLogHeaders": {
+      "type": "Jenis",
+      "from": "Dari",
+      "to": "Kepada",
+      "amount": "Jumlah",
+      "memo": "Memo",
+      "status": "Status",
+      "outputId": "ID Output",
+      "contractId": "ID Kontrak",
+      "index": "Indeks",
+      "errorSymbol": "Simbol Ralat",
+      "errorMessage": "Mesej Ralat",
+      "output": "Output",
+      "log": "Log",
+      "keyId": "ID Kunci",
+      "arguments": "Argumen"
+    },
+    "deployedContract": "Kontrak Digunakan",
+    "proposedElection": "Keputusan Pilihan Raya Dicadangkan",
+    "proposedBlock": "Blok Dicadangkan",
+    "blockNumber": "Nombor Blok",
+    "hiveTransaction": "Transaksi Hive",
+    "includedInL1": "Disertakan dalam blok L1",
+    "noOperations": "Tiada operasi dijumpai",
+    "loadingMagiOps": "Memuatkan Operasi Magi...",
+    "operation": "Operasi #{{num}}",
+    "notMagi": "Operasi ini tidak berkaitan dengan Magi.",
+    "transaction": "Transaksi",
+    "failedToLoad": "Gagal memuatkan transaksi",
+    "notExist": "Transaksi tidak wujud",
+    "includedInL2": "Disertakan dalam blok L2 pada ketinggian slot",
+    "viewIn": "Lihat dalam {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "Bit Pengagregatan",
+    "votedMembers": "Ahli Pengundi ({{count}})",
+    "blsSignature": "Tandatangan BLS"
+  },
+  "charts": {
+    "directory": "Carta Rangkaian",
+    "soon": "Tidak Lama Lagi",
+    "titles": {
+      "blocks": "Blok",
+      "transactions": "Transaksi",
+      "addresses": "Alamat",
+      "contracts": "Kontrak",
+      "witnesses": "Saksi",
+      "nam": "NAM"
+    },
+    "blocksCharts": "Carta Blok",
+    "blockCount": "Bilangan Blok",
+    "blockCountDesc": "Bilangan blok yang dihasilkan setiap hari",
+    "txCharts": "Carta Transaksi",
+    "txCount": "Bilangan Transaksi",
+    "txCountDesc": "Bilangan transaksi harian",
+    "addressCharts": "Carta Alamat",
+    "dailyActiveAddresses": "Alamat Aktif Harian",
+    "dailyActiveAddressesDesc": "Bilangan alamat bertransaksi unik setiap hari",
+    "contractsCharts": "Carta Kontrak",
+    "newContracts": "Kontrak Baru",
+    "newContractsDesc": "Bilangan kontrak yang digunakan setiap hari",
+    "witnessCharts": "Carta Saksi",
+    "activeStake": "Taruhan Aktif",
+    "activeStakeDesc": "Jumlah taruhan konsensus HIVE yang layak untuk setiap hari",
+    "activeWitnesses": "Saksi Aktif",
+    "activeWitnessesDesc": "Bilangan saksi aktif harian",
+    "bridgeCharts": "Carta Pemetaan Aset Asli (NAM)",
+    "hiveTvl": "TVL HIVE dan HBD",
+    "hiveTvlDesc": "Sejarah baki HIVE dan HBD dalam akaun get way dari masa ke masa",
+    "hiveNetFlow": "Aliran Bersih HIVE",
+    "hiveNetFlowDesc": "Sejarah aliran bersih HIVE dari masa ke masa",
+    "hbdNetFlow": "Aliran Bersih HBD",
+    "hbdNetFlowDesc": "Sejarah aliran bersih HBD dari masa ke masa"
+  }
+}

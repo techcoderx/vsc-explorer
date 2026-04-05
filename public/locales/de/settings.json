@@ -1,0 +1,13 @@
+{
+  "title": "Einstellungen",
+  "colorMode": "Farbmodus",
+  "darkMode": "Dunkelmodus",
+  "colorTheme": "Farbthema",
+  "themes": {
+    "default": "Standard",
+    "red": "Rot",
+    "green": "Grün",
+    "blue": "Blau"
+  },
+  "language": "Sprache"
+}

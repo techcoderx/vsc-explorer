@@ -2,6 +2,7 @@ import { useMemo, useEffect, useState } from 'react'
 import { Box, Card, Heading, Text } from '@chakra-ui/react'
 import { useColorMode } from '../../ui/color-mode'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import type Recharts from 'recharts'
 import { BalHistory } from '../../../types/L1ApiResult'
 import { fetchL1Rest, useNetworkStats } from '../../../requests'
@@ -210,15 +211,16 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
 }
 
 export const BridgeCharts = () => {
+  const { t } = useTranslation('pages')
   return (
     <>
-      <PageTitle title="Native Asset Mapping (NAM) Charts" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Native Asset Mapping (NAM) Charts</Heading>
+      <PageTitle title={t('charts.bridgeCharts')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('charts.bridgeCharts')}</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>HIVE and HBD TVL</Heading>
-          <Text>History of HIVE and HBD balances in gateway account over time</Text>
+          <Heading fontSize={'xl'}>{t('charts.hiveTvl')}</Heading>
+          <Text>{t('charts.hiveTvlDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>
@@ -228,8 +230,8 @@ export const BridgeCharts = () => {
       </Card.Root>
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>HIVE Net Flow</Heading>
-          <Text>History of HIVE net flows over time</Text>
+          <Heading fontSize={'xl'}>{t('charts.hiveNetFlow')}</Heading>
+          <Text>{t('charts.hiveNetFlowDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>
@@ -239,8 +241,8 @@ export const BridgeCharts = () => {
       </Card.Root>
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>HBD Net Flow</Heading>
-          <Text>History of HBD net flows over time</Text>
+          <Heading fontSize={'xl'}>{t('charts.hbdNetFlow')}</Heading>
+          <Text>{t('charts.hbdNetFlowDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>

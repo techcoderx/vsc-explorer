@@ -1,0 +1,67 @@
+{
+  "title": "Kontrakt",
+  "tabs": {
+    "transactions": "Transakcje",
+    "outputs": "Wyniki",
+    "info": "Informacje",
+    "storageProof": "Dowód przechowywania",
+    "readState": "Odczytaj stan",
+    "callContract": "Wywołaj kontrakt",
+    "sourceCode": "Kod źródłowy",
+    "history": "Historia"
+  },
+  "info": {
+    "createdAt": "Utworzono",
+    "createdInL1Block": "Utworzono w bloku L1",
+    "creationTx": "Transakcja tworzenia",
+    "creator": "Twórca",
+    "owner": "Właściciel",
+    "bytecodeCid": "CID kodu bajtowego",
+    "runtime": "Środowisko uruchomieniowe"
+  },
+  "readState": {
+    "key": "Klucz",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "Błąd gql podczas pobierania klucza stanu",
+    "fetchError": "Nie udało się pobrać klucza stanu"
+  },
+  "callContract": {
+    "balance": "Saldo: {{balance}}",
+    "currentAllowance": "Bieżący limit",
+    "walletNotConnected": "Portfel niepołączony lub nie udało się załadować sald",
+    "amountMustBePositive": "Kwota musi być większa od 0",
+    "insufficientBalance": "Niewystarczające saldo",
+    "connectFirst": "Najpierw połącz swój portfel",
+    "methodRequired": "Wymagana jest metoda wywołania",
+    "simulationFailed": "Symulacja wywołania kontraktu nie powiodła się"
+  },
+  "verification": {
+    "verified": "Kod źródłowy kontraktu zweryfikowany",
+    "verifiedDesc": "Magi Blocks zweryfikował, że dostarczony kod źródłowy odpowiada wdrożonemu kodowi bajtowemu kontraktu. Nie oznacza to, że kontrakt jest bezpieczny w interakcji.",
+    "queued": "Żądanie weryfikacji kontraktu jest w kolejce.",
+    "inProgress": "Żądanie weryfikacji kontraktu jest aktualnie przetwarzane.",
+    "failed": "Weryfikacja kontraktu nie została ukończona.",
+    "notMatch": "Weryfikacja kontraktu nie powiodła się z powodu niezgodności wdrożonego kodu bajtowego ze skompilowanym kodem źródłowym.",
+    "pending": "Żądanie weryfikacji kontraktu oczekuje na przetworzenie.",
+    "fetchError": "Nie udało się pobrać statusu weryfikacji kontraktu.",
+    "loadingStatus": "Ładowanie statusu weryfikacji kontraktu...",
+    "notVerified": "Kod źródłowy kontraktu nie jest zweryfikowany",
+    "unknown": "Kod źródłowy tego kontraktu jest nieznany.",
+    "language": "Język",
+    "license": "Licencja",
+    "verifiedAt": "Zweryfikowano",
+    "submittedBy": "Przesłane przez",
+    "repository": "Repozytorium",
+    "contractDir": "Katalog kontraktu",
+    "goModDir": "Katalog modułu Go",
+    "tinygoVersion": "Wersja TinyGo",
+    "exports": "Eksporty"
+  },
+  "errors": {
+    "fetchFailed": "Nie udało się pobrać kontraktu",
+    "notExist": "Kontrakt nie istnieje"
+  },
+  "storageProofLoading": "Ładowanie transakcji wdrożenia...",
+  "storageProofError": "Nie udało się załadować transakcji wdrożenia"
+}

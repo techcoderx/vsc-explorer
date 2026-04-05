@@ -1,0 +1,39 @@
+{
+  "heroTitle": "مستكشف كتل Magi",
+  "heroSubtitle": "ابحث عن الحسابات والكتل والمعاملات والعقود",
+  "networkActivity": "نشاط الشبكة",
+  "dailyTxs": "المعاملات اليومية (آخر 14 يومًا)",
+  "chartTxLabel": "المعاملات",
+  "chartDateLabel": "التاريخ: {{date}}",
+  "latestContracts": "أحدث العقود",
+  "viewAllContracts": "عرض كل العقود",
+  "viewAllBlocks": "عرض كل الكتل",
+  "viewAllTxs": "عرض كل المعاملات",
+  "quickLinks": "روابط سريعة",
+  "recentBlocks": "الكتل الأخيرة",
+  "recentTxs": "المعاملات الأخيرة",
+  "latestContractsQuickLinks": "أحدث العقود والروابط السريعة",
+  "stats": {
+    "hiveBlockHeight": "ارتفاع كتلة Hive",
+    "magiBlockHeight": "ارتفاع كتلة Magi",
+    "transactions": "المعاملات",
+    "currentEpoch": "الحقبة الحالية",
+    "witnesses": "الشهود",
+    "contracts": "العقود"
+  },
+  "epoch": {
+    "epoch": "الحقبة {{num}}",
+    "totalStake": "إجمالي الرهن {{amount}}",
+    "nextEpochIn": "الحقبة التالية بعد ~{{countdown}}"
+  },
+  "links": {
+    "blocks": "الكتل",
+    "transactions": "المعاملات",
+    "contracts": "العقود",
+    "witnesses": "الشهود",
+    "elections": "الانتخابات",
+    "namBridge": "جسر NAM",
+    "charts": "المخططات",
+    "broadcast": "البث"
+  }
+}

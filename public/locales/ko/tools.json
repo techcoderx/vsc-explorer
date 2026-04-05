@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "컨트랙트 검증",
+    "description": "컨트랙트 소스 코드를 Magi Blocks에 제출하여 컴파일된 바이트코드가 배포된 컨트랙트 바이트코드와 일치하는지 검증합니다.",
+    "readThisFirst": "먼저 읽어 주세요!",
+    "notice": {
+      "language": "언어",
+      "languageBody": "컨트랙트 검증기는 Go로 작성된 컨트랙트만 지원합니다.",
+      "compilerOptions": "컴파일러 옵션",
+      "compilerOptionsBody": "현재 사용자 지정 컴파일러 옵션을 설정하는 방법이 없습니다. 검증기는 Go 컨트랙트에 -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown를 사용합니다.",
+      "environment": "환경",
+      "environmentBody": "컨트랙트는 공식 TinyGo Docker 이미지를 사용하여 컴파일됩니다.",
+      "entrypoint": "진입점",
+      "entrypointBody": "Go 컨트랙트의 기본 진입점 디렉토리는 contract/입니다. 컨트랙트 소스 코드가 저장소의 다른 위치에 있는 경우 사용자 지정 하위 디렉토리를 지정할 수 있습니다. 지정된 디렉토리의 main 패키지의 일부로 main.go가 있는지 확인해 주세요.",
+      "dependencies": "종속성",
+      "dependenciesBody": "현재 컨트랙트 검증기는 Go 표준 라이브러리 이외의 외부 패키지 가져오기를 지원하지 않습니다.",
+      "experimental": "실험적",
+      "experimentalBody": "이 도구는 현재 실험적 단계이며 일부 문제가 발생할 수 있습니다. 현재는 화이트리스트 사용자만 이용 가능합니다."
+    },
+    "form": {
+      "contractAddress": "컨트랙트 주소",
+      "githubRepoUrl": "GitHub 저장소 URL",
+      "gitBranch": "Git 브랜치",
+      "defaultBranch": "기본 브랜치",
+      "contractDir": "컨트랙트 디렉토리",
+      "contractDirTip": "컴파일할 컨트랙트 소스 코드가 포함된 하위 디렉토리(Go 모듈 디렉토리 기준 상대 경로). 기본값은 \"contract\"입니다.",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go 모듈 디렉토리",
+      "goModDirTip": "go.mod 파일이 포함된 하위 디렉토리(저장소 루트에 없는 경우). go.mod가 루트에 있으면 비워 두세요.",
+      "goModDirPlaceholder": "저장소 루트",
+      "tinygoVersion": "TinyGo 버전",
+      "wasmStripTool": "WASM 스트립 도구"
+    },
+    "errors": {
+      "mustStartVsc1": "컨트랙트 주소는 'vsc1'로 시작해야 합니다",
+      "mustBeGithub": "저장소 URL은 GitHub 링크여야 합니다",
+      "invalidRepoUrl": "잘못된 GitHub 저장소 URL",
+      "invalidGithubUser": "잘못된 Github 사용자",
+      "invalidGithubRepo": "잘못된 Github 저장소 이름",
+      "invalidContractDir": "잘못된 컨트랙트 디렉토리 경로",
+      "invalidGoModDir": "잘못된 Go 모듈 디렉토리 경로",
+      "alreadyVerified": "컨트랙트가 이미 검증되었거나 검증 중입니다.",
+      "contractNotFound": "컨트랙트를 찾을 수 없습니다",
+      "backendError": "컨트랙트 검증 상태에 대한 백엔드 호출 실패",
+      "repoFetchError": "상태 코드 {{statusCode}}로 저장소 정보 가져오기 실패",
+      "branchFetchError": "상태 코드 {{statusCode}}로 브랜치 정보 가져오기 실패",
+      "repoValidateError": "저장소 검증 실패",
+      "signatureError": "서명 오류",
+      "unknownError": "알 수 없는 오류가 발생했습니다"
+    },
+    "submitting": "검증 요청 제출 중...",
+    "approveSignature": "메시지가 표시되면 지갑에서 메시지 서명 요청을 승인해 주세요",
+    "submitted": "컨트랙트 검증 요청이 성공적으로 제출되었습니다!",
+    "completionMsg": "컨트랙트 소스 코드를 검증하고 있습니다. 대기열 상황에 따라 몇 분이 걸릴 수 있습니다. 컨트랙트 페이지의 소스 코드 탭에서 상태를 확인하세요.",
+    "viewContract": "컨트랙트 보기"
+  },
+  "dagInspector": {
+    "title": "DAG 검사기",
+    "description": "노드에 고정된 CID의 DAG 내용을 확인합니다.",
+    "placeholder": "여기에 CID 붙여넣기 (bafy...)",
+    "inspect": "검사",
+    "dagContent": "DAG 내용",
+    "rawJson": "원시 JSON",
+    "enterCid": "CID를 입력해 주세요",
+    "fetchError": "DAG 가져오기 실패"
+  },
+  "broadcast": {
+    "title": "트랜잭션 브로드캐스트",
+    "description": "Magi 트랜잭션에 서명하고 브로드캐스트합니다.",
+    "destAddress": "대상 주소",
+    "destPlaceholder": "비매핑의 경우 hive: 또는 did: 접두사 포함, 기본값은 발신자",
+    "txTypes": {
+      "transfer": "전송",
+      "deposit": "매핑",
+      "withdraw": "언매핑",
+      "consensus_stake": "합의 스테이킹",
+      "consensus_unstake": "합의 언스테이킹",
+      "stake_hbd": "HBD 스테이킹",
+      "unstake_hbd": "HBD 언스테이킹"
+    },
+    "errors": {
+      "amountPositive": "금액은 0보다 커야 합니다.",
+      "depositAsset": "입금 자산은 HIVE 또는 HBD여야 합니다.",
+      "hiveWalletOnly": "Hive 지갑에서만 매핑할 수 있습니다.",
+      "unknownType": "알 수 없는 트랜잭션 유형"
+    }
+  }
+}

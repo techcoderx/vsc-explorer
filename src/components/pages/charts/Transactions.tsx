@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Card, Heading, Text } from '@chakra-ui/react'
 import { useColorMode } from '../../ui/color-mode'
+import { useTranslation } from 'react-i18next'
 import type Recharts from 'recharts'
 import { useNetworkStats } from '../../../requests'
 import { thousandSeperator } from '../../../helpers'
@@ -44,15 +45,16 @@ const DailyTxs = () => {
 }
 
 export const TxCharts = () => {
+  const { t } = useTranslation('pages')
   return (
     <>
-      <PageTitle title="Transactions Charts" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Transactions Charts</Heading>
+      <PageTitle title={t('charts.txCharts')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('charts.txCharts')}</Heading>
       <hr />
       <Card.Root my={'6'}>
         <Card.Header pb={'4'}>
-          <Heading fontSize={'xl'}>Transaction Count</Heading>
-          <Text>Number of daily transactions</Text>
+          <Heading fontSize={'xl'}>{t('charts.txCount')}</Heading>
+          <Text>{t('charts.txCountDesc')}</Text>
         </Card.Header>
         <Card.Body pt={'0'}>
           <Box h={'400px'}>

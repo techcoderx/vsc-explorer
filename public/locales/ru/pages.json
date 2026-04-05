@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "Последние блоки",
+    "total": "Всего {{count}} блоков."
+  },
+  "block": {
+    "title": "Блок #{{num}}",
+    "blockId": "ID блока",
+    "timestamp": "Временная метка",
+    "l1Tx": "Транзакция L1",
+    "slotHeight": "Высота слота",
+    "proposer": "Предложивший",
+    "blockHash": "Хеш блока",
+    "participation": "Участие",
+    "tabs": {
+      "transactions": "Транзакции",
+      "opLogs": "Журналы операций",
+      "contractOutputs": "Выходные данные контракта",
+      "participation": "Участие"
+    },
+    "opLogHeaders": {
+      "txId": "ID транзакции",
+      "type": "Тип",
+      "from": "От",
+      "to": "Кому",
+      "amount": "Сумма"
+    }
+  },
+  "elections": {
+    "title": "Выборы"
+  },
+  "epoch": {
+    "title": "Эпоха #{{num}}",
+    "epochNumber": "Номер эпохи",
+    "timestamp": "Временная метка",
+    "l1Tx": "Транзакция L1",
+    "l1Block": "Блок L1",
+    "proposer": "Предложивший",
+    "electionDataCid": "CID данных выборов",
+    "totalWeight": "Общий вес",
+    "participation": "Участие",
+    "avgBlockVotes": "Среднее число голосов за блок",
+    "electedMembers": "Избранные участники ({{count}})",
+    "blocksTab": "Блоки ({{count}})",
+    "participationTab": "Участие",
+    "blsNotRequired": "BLS подпись не требовалась для первых выборов."
+  },
+  "witnesses": {
+    "title": "Свидетели",
+    "total": "Всего {{count}} активных свидетелей. Уровень участия: {{rate}}%"
+  },
+  "schedule": {
+    "title": "Расписание",
+    "hiveHeadBlock": "Головной блок Hive:",
+    "showOlderSlots": "Показать более старые слоты"
+  },
+  "transactions": {
+    "title": "Последние транзакции",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "Последние контракты"
+  },
+  "address": {
+    "title": "Адрес",
+    "tabs": {
+      "transactions": "Транзакции",
+      "l1Ops": "Операции L1",
+      "ledgerOps": "Операции реестра",
+      "actions": "Действия",
+      "maps": "Отображения",
+      "unmaps": "Отмены отображений",
+      "witness": "Свидетель"
+    }
+  },
+  "balances": {
+    "title": "Балансы",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "Ликвидный застейканный HBD",
+    "hbdUnstaking": "HBD в процессе расстейкивания",
+    "consensusStake": "Стейк консенсуса",
+    "consensusUnstaking": "Расстейкивание консенсуса"
+  },
+  "rcInfo": {
+    "title": "Информация об RC",
+    "loadingBalances": "Загрузка балансов...",
+    "noRcs": "У вас нет доступных RC. Пожалуйста, внесите HBD, чтобы получить RC."
+  },
+  "witness": {
+    "enabled": "Активен",
+    "lastBlock": "Последний блок",
+    "blocksProduced": "Произведено блоков",
+    "lastEpoch": "Последняя эпоха",
+    "electionsHeld": "Проведено выборов",
+    "witnessInfo": "Информация о свидетеле",
+    "clickToExpand": " (Нажмите для раскрытия)",
+    "peerId": "Идентификатор узла",
+    "consensusDidKey": "DID ключ консенсуса",
+    "gatewayKey": "Ключ шлюза",
+    "gitCommit": "Git коммит",
+    "lastUpdate": "Последнее обновление",
+    "loadError": "Не удалось загрузить информацию о свидетеле"
+  },
+  "bridge": {
+    "title": "Обзор отображения активов Hive",
+    "hiveTvl": "TVL HIVE",
+    "hbdTvl": "TVL HBD",
+    "mapTxs": "Транзакции отображения",
+    "unmapTxs": "Транзакции отмены отображения",
+    "latestMaps": "Последние отображения",
+    "latestUnmaps": "Последние отмены отображений",
+    "viewMore": "Показать больше",
+    "learnMore": "Узнайте больше об отображении нативных активов здесь.",
+    "hiveMaps": "Отображения активов Hive",
+    "hiveUnmaps": "Отмены отображений активов Hive",
+    "totalMaps": "Всего {{count}} отображений",
+    "totalUnmaps": "Всего {{count}} отмен отображений"
+  },
+  "l1Tx": {
+    "magiTransaction": "Транзакция Magi",
+    "requiredAuths": "Требуемые авторизации",
+    "rcUsed": "Использовано RC",
+    "nonce": "Nonce",
+    "ledgerOps": "Операции реестра ({{count}})",
+    "ledgerActions": "Действия реестра ({{count}})",
+    "callOutputs": "Выходные данные вызова",
+    "logs": "Журналы ({{count}})",
+    "tssRequests": "TSS запросы ({{count}})",
+    "opLogHeaders": {
+      "type": "Тип",
+      "from": "От",
+      "to": "Кому",
+      "amount": "Сумма",
+      "memo": "Заметка",
+      "status": "Статус",
+      "outputId": "ID вывода",
+      "contractId": "ID контракта",
+      "index": "Индекс",
+      "errorSymbol": "Символ ошибки",
+      "errorMessage": "Сообщение об ошибке",
+      "output": "Вывод",
+      "log": "Журнал",
+      "keyId": "ID ключа",
+      "arguments": "Аргументы"
+    },
+    "deployedContract": "Развёрнутый контракт",
+    "proposedElection": "Предложенный результат выборов",
+    "proposedBlock": "Предложенный блок",
+    "blockNumber": "Номер блока",
+    "hiveTransaction": "Транзакция Hive",
+    "includedInL1": "Включён в блок L1",
+    "noOperations": "Операции не найдены",
+    "loadingMagiOps": "Загрузка операций Magi...",
+    "operation": "Операция #{{num}}",
+    "notMagi": "Эта операция не связана с Magi.",
+    "transaction": "Транзакция",
+    "failedToLoad": "Не удалось загрузить транзакцию",
+    "notExist": "Транзакция не существует",
+    "includedInL2": "Включён в блок L2 на высоте слота",
+    "viewIn": "Просмотреть в {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "Биты агрегации",
+    "votedMembers": "Проголосовавшие участники ({{count}})",
+    "blsSignature": "Подпись BLS"
+  },
+  "charts": {
+    "directory": "Графики сети",
+    "soon": "Скоро",
+    "titles": {
+      "blocks": "Блоки",
+      "transactions": "Транзакции",
+      "addresses": "Адреса",
+      "contracts": "Контракты",
+      "witnesses": "Свидетели",
+      "nam": "NAM"
+    },
+    "blocksCharts": "Графики блоков",
+    "blockCount": "Количество блоков",
+    "blockCountDesc": "Количество произведённых блоков в день",
+    "txCharts": "Графики транзакций",
+    "txCount": "Количество транзакций",
+    "txCountDesc": "Количество ежедневных транзакций",
+    "addressCharts": "Графики адресов",
+    "dailyActiveAddresses": "Ежедневные активные адреса",
+    "dailyActiveAddressesDesc": "Количество уникальных адресов, совершающих транзакции в день",
+    "contractsCharts": "Графики контрактов",
+    "newContracts": "Новые контракты",
+    "newContractsDesc": "Количество контрактов, развёрнутых в день",
+    "witnessCharts": "Графики свидетелей",
+    "activeStake": "Активный стейк",
+    "activeStakeDesc": "Общий стейк консенсуса HIVE для каждого дня",
+    "activeWitnesses": "Активные свидетели",
+    "activeWitnessesDesc": "Количество активных свидетелей в день",
+    "bridgeCharts": "Графики отображения нативных активов (NAM)",
+    "hiveTvl": "TVL HIVE и HBD",
+    "hiveTvlDesc": "История балансов HIVE и HBD в аккаунте шлюза с течением времени",
+    "hiveNetFlow": "Чистый поток HIVE",
+    "hiveNetFlowDesc": "История чистых потоков HIVE с течением времени",
+    "hbdNetFlow": "Чистый поток HBD",
+    "hbdNetFlowDesc": "История чистых потоков HBD с течением времени"
+  }
+}

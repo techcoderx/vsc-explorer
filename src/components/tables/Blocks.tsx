@@ -1,21 +1,23 @@
 import { Link, Skeleton, Table } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { Block } from '../../types/HafApiResult'
 import { abbreviateHash, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 import { Tooltip } from '../ui/tooltip'
 
 export const Blocks = ({ blocks, isLoading }: { blocks?: Block[]; isLoading?: boolean }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'} w={'full'}>
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Id</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Proposer</Table.ColumnHeader>
-            <Table.ColumnHeader>Block Hash</Table.ColumnHeader>
-            <Table.ColumnHeader>Voted</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('blocks.id')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('blocks.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('blocks.proposer')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('blocks.blockHash')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('blocks.voted')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>

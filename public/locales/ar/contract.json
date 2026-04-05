@@ -1,0 +1,67 @@
+{
+  "title": "العقد",
+  "tabs": {
+    "transactions": "المعاملات",
+    "outputs": "المخرجات",
+    "info": "المعلومات",
+    "storageProof": "دليل التخزين",
+    "readState": "قراءة الحالة",
+    "callContract": "استدعاء العقد",
+    "sourceCode": "الكود المصدري",
+    "history": "السجل"
+  },
+  "info": {
+    "createdAt": "تاريخ الإنشاء",
+    "createdInL1Block": "تم إنشاؤه في كتلة L1",
+    "creationTx": "معاملة الإنشاء",
+    "creator": "المنشئ",
+    "owner": "المالك",
+    "bytecodeCid": "CID كود البايت",
+    "runtime": "بيئة التشغيل"
+  },
+  "readState": {
+    "key": "المفتاح",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "خطأ في gql أثناء الحصول على مفتاح الحالة",
+    "fetchError": "فشل في جلب مفتاح الحالة"
+  },
+  "callContract": {
+    "balance": "الرصيد: {{balance}}",
+    "currentAllowance": "الحد المسموح به الحالي",
+    "walletNotConnected": "المحفظة غير متصلة أو تعذر تحميل الأرصدة",
+    "amountMustBePositive": "يجب أن يكون المبلغ أكبر من 0",
+    "insufficientBalance": "رصيد غير كافٍ",
+    "connectFirst": "يرجى ربط محفظتك أولاً",
+    "methodRequired": "طريقة الاستدعاء مطلوبة",
+    "simulationFailed": "فشل محاكاة استدعاء العقد"
+  },
+  "verification": {
+    "verified": "تم التحقق من الكود المصدري للعقد",
+    "verifiedDesc": "تحقق Magi Blocks من أن الكود المصدري المقدم لنا يتطابق مع كود البايت المنشور للعقد. هذا لا يعني أن العقد آمن للتفاعل معه.",
+    "queued": "طلب التحقق من العقد في قائمة الانتظار حاليًا.",
+    "inProgress": "طلب التحقق من العقد قيد المعالجة حاليًا.",
+    "failed": "فشل طلب التحقق من العقد في الاكتمال.",
+    "notMatch": "فشل التحقق من العقد بسبب عدم تطابق كود البايت المنشور مع الكود المصدري المُجمَّع.",
+    "pending": "طلب التحقق من العقد قيد الانتظار حاليًا.",
+    "fetchError": "فشل في جلب حالة التحقق من العقد.",
+    "loadingStatus": "جارٍ تحميل حالة التحقق من العقد...",
+    "notVerified": "لم يتم التحقق من الكود المصدري للعقد",
+    "unknown": "الكود المصدري لهذا العقد غير معروف.",
+    "language": "اللغة",
+    "license": "الترخيص",
+    "verifiedAt": "تاريخ التحقق",
+    "submittedBy": "مقدم بواسطة",
+    "repository": "المستودع",
+    "contractDir": "مجلد العقد",
+    "goModDir": "مجلد وحدة Go",
+    "tinygoVersion": "إصدار TinyGo",
+    "exports": "الصادرات"
+  },
+  "errors": {
+    "fetchFailed": "فشل في جلب العقد",
+    "notExist": "العقد غير موجود"
+  },
+  "storageProofLoading": "جارٍ تحميل معاملة النشر...",
+  "storageProofError": "فشل في تحميل معاملة النشر"
+}

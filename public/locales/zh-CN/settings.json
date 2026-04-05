@@ -1,0 +1,13 @@
+{
+  "title": "设置",
+  "colorMode": "颜色模式",
+  "darkMode": "深色模式",
+  "colorTheme": "颜色主题",
+  "themes": {
+    "default": "默认",
+    "red": "红色",
+    "green": "绿色",
+    "blue": "蓝色"
+  },
+  "language": "语言"
+}

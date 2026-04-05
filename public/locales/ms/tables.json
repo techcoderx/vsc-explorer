@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Id",
+    "age": "Usia",
+    "proposer": "Pencadang",
+    "blockHash": "Hash Blok",
+    "voted": "Mengundi"
+  },
+  "transactions": {
+    "txId": "ID Transaksi",
+    "age": "Usia",
+    "method": "Kaedah",
+    "from": "Dari",
+    "to": "Kepada",
+    "amount": "Jumlah"
+  },
+  "contractHistory": {
+    "txId": "ID Transaksi",
+    "age": "Usia",
+    "deployer": "Penggunaan",
+    "owner": "Pemilik",
+    "code": "Kod",
+    "latest": "Terkini"
+  },
+  "contractOutput": {
+    "id": "Id",
+    "age": "Usia",
+    "contractId": "ID Kontrak",
+    "inputTx": "Tx Input",
+    "output": "Output"
+  },
+  "contracts": {
+    "contractId": "Id Kontrak",
+    "age": "Usia",
+    "creator": "Pencipta",
+    "creationTx": "Tx Penciptaan",
+    "code": "Kod",
+    "runtime": "Runtime"
+  },
+  "ledger": {
+    "txId": "ID Tx",
+    "age": "Usia",
+    "type": "Jenis",
+    "from": "Dari",
+    "fromUser": "Pengguna Penghantar",
+    "to": "Kepada",
+    "toUser": "Pengguna Penerima",
+    "amount": "Jumlah",
+    "status": "Status"
+  },
+  "bridge": {
+    "txId": "ID Tx",
+    "age": "Usia",
+    "toUser": "Pengguna Penerima",
+    "amount": "Jumlah"
+  },
+  "elections": {
+    "epoch": "Epok",
+    "age": "Usia",
+    "proposer": "Pencadang",
+    "blocks": "Blok",
+    "members": "Ahli",
+    "totalWeight": "Jumlah Berat",
+    "voted": "Mengundi",
+    "blockVotes": "Undi Blok"
+  },
+  "witnesses": {
+    "idx": "Indeks",
+    "username": "Nama Pengguna",
+    "weight": "Berat",
+    "lastBlock": "Blok Terakhir",
+    "blocksProduced": "Blok Dihasilkan",
+    "lastEpoch": "Epok Terakhir",
+    "elections": "Pilihan Raya",
+    "didKey": "Kunci DID"
+  },
+  "schedule": {
+    "username": "Nama Pengguna",
+    "l1Block": "Blok L1",
+    "magiBlock": "Blok Magi"
+  }
+}

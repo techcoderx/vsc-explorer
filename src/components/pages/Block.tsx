@@ -1,6 +1,8 @@
 import { Heading, Text, Table, Stack, Tabs } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 import { fetchBlock, fetchEpoch, fetchL2TxnsBy, getDagByCIDBatch, useDagByCID } from '../../requests'
 import PageNotFound from './404'
 import TableRow from '../TableRow'
@@ -28,6 +30,7 @@ const BlockTxs = ({ txIds }: { txIds: string[] }) => {
 }
 
 export const BlockBy = () => {
+  const { t } = useTranslation('pages')
   const { blockId } = useParams()
   const blkNum = parseInt(blockId!)
   const invalidBlkNum = isNaN(blkNum) || blkNum < 1
@@ -45,11 +48,19 @@ export const BlockBy = () => {
     isLoading,
     isError,
     invalidBlkId,
-    !invalidBlkNum ? blkNum : data && data.be_info ? data.be_info.block_id : -1
+    !invalidBlkNum ? blkNum : data && data.be_info ? data.be_info.block_id : -1,
+    t
   )
 }
 
-const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolean, invalidBlkId: boolean, blkNum: number) => {
+const Block = (
+  block: BlockResult,
+  isBlockLoading: boolean,
+  isBlockError: boolean,
+  invalidBlkId: boolean,
+  blkNum: number,
+  t: TFunction<'pages'>
+) => {
   const { data: epoch } = useQuery({
     queryKey: ['vsc-epoch', block && !block.error && block.be_info ? block.be_info.epoch : -1],
     queryFn: async () => fetchEpoch(block && !block.error && block.be_info ? block.be_info.epoch : -1),
@@ -73,9 +84,9 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
   if (invalidBlkId) return <PageNotFound />
   return (
     <>
-      <PageTitle title={`Block #${thousandSeperator(blkNum)}`} />
+      <PageTitle title={t('block.title', { num: thousandSeperator(blkNum) })} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Heading as="h1" size="5xl" fontWeight="normal">Block #{thousandSeperator(blkNum)}</Heading>
+        <Heading as="h1" size="5xl" fontWeight="normal">{t('block.title', { num: thousandSeperator(blkNum) })}</Heading>
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/' + (blkNum! - 1) : undefined} toNext={'/block/' + (blkNum! + 1)} />
       </Stack>
       <hr />
@@ -85,37 +96,37 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
         <>
           <Table.Root marginTop="20px">
             <Table.Body>
-              <TableRow label="Block ID" value={blkNum} isLoading={isBlockLoading} />
+              <TableRow label={t('block.blockId')} value={blkNum} isLoading={isBlockLoading} />
               <TableRow
-                label="Timestamp"
+                label={t('block.timestamp')}
                 value={block ? block.ts + ' (' + timeAgo(block.ts) + ')' : ''}
                 isLoading={isBlockLoading}
               />
-              <TableRow label="L1 Tx" value={block?.id} isLoading={isBlockLoading} link={'/tx/' + block?.id} />
+              <TableRow label={t('block.l1Tx')} value={block?.id} isLoading={isBlockLoading} link={'/tx/' + block?.id} />
               <TableRow
-                label="Slot Height"
+                label={t('block.slotHeight')}
                 value={block?.slot_height}
                 isLoading={isBlockLoading}
                 link={beL1BlockUrl(block?.slot_height)}
               />
               <TableRow
-                label="Proposer"
+                label={t('block.proposer')}
                 value={block?.proposer}
                 isLoading={isBlockLoading}
                 link={'/address/hive:' + block?.proposer}
               />
               <TableRow
-                label="Block Hash"
+                label={t('block.blockHash')}
                 value={block?.block}
                 link={'/tools/dag?cid=' + block?.block}
                 isLoading={isBlockLoading}
               />
-              <TableRow label="Participation" isLoading={isBlockLoading}>
+              <TableRow label={t('block.participation')} isLoading={isBlockLoading}>
                 {block && block.be_info ? (
                   <ProgressBarPct fontSize={'md'} val={(block.be_info.voted_weight / block.be_info.eligible_weight) * 100} />
                 ) : (
                   <Text fontStyle={'italic'} opacity={'0.7'}>
-                    Indexing...
+                    {t('indexing', { ns: 'common' })}
                   </Text>
                 )}
               </TableRow>
@@ -124,10 +135,10 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
 
           <Tabs.Root mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
-              <Tabs.Trigger value="0">Transactions</Tabs.Trigger>
-              <Tabs.Trigger value="1">Op Logs</Tabs.Trigger>
-              {Array.isArray(outputs) && outputs.length > 0 && <Tabs.Trigger value="2">Contract Outputs</Tabs.Trigger>}
-              <Tabs.Trigger value="3">Participation</Tabs.Trigger>
+              <Tabs.Trigger value="0">{t('block.tabs.transactions')}</Tabs.Trigger>
+              <Tabs.Trigger value="1">{t('block.tabs.opLogs')}</Tabs.Trigger>
+              {Array.isArray(outputs) && outputs.length > 0 && <Tabs.Trigger value="2">{t('block.tabs.contractOutputs')}</Tabs.Trigger>}
+              <Tabs.Trigger value="3">{t('block.tabs.participation')}</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="0" mt={'2'} pt={'1'}>
               <BlockTxs txIds={txIds} />
@@ -138,12 +149,12 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                   <Table.Header>
                     <Table.Row>
                       <Table.ColumnHeader></Table.ColumnHeader>
-                      <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
-                      <Table.ColumnHeader>Type</Table.ColumnHeader>
-                      <Table.ColumnHeader>From</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('block.opLogHeaders.txId')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('block.opLogHeaders.type')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('block.opLogHeaders.from')}</Table.ColumnHeader>
                       <Table.ColumnHeader></Table.ColumnHeader>
-                      <Table.ColumnHeader>To</Table.ColumnHeader>
-                      <Table.ColumnHeader>Amount</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('block.opLogHeaders.to')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('block.opLogHeaders.amount')}</Table.ColumnHeader>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -177,7 +188,7 @@ const Block = (block: BlockResult, isBlockLoading: boolean, isBlockError: boolea
                           {[...Array(5)].map((_, k) => (
                             <Table.Cell key={k}>
                               <Text fontStyle={'italic'} opacity={'0.7'}>
-                                {k !== 2 ? 'N/A' : ''}
+                                {k !== 2 ? t('na', { ns: 'common' }) : ''}
                               </Text>
                             </Table.Cell>
                           ))}

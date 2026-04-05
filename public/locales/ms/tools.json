@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Sahkan Kontrak",
+    "description": "Hantar kod sumber kontrak kepada Magi Blocks untuk mengesahkan bahawa bytecode yang dikompil sepadan dengan bytecode kontrak yang digunakan.",
+    "readThisFirst": "Baca Ini Dahulu!",
+    "notice": {
+      "language": "Bahasa",
+      "languageBody": "Pengesah kontrak menyokong kontrak yang ditulis dalam Go sahaja.",
+      "compilerOptions": "Pilihan Pengkompil",
+      "compilerOptionsBody": "Tiada cara untuk menetapkan pilihan pengkompil tersuai buat masa ini. Pengesah menggunakan -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown untuk kontrak Go.",
+      "environment": "Persekitaran",
+      "environmentBody": "Kontrak dikompil menggunakan imej Docker TinyGo rasmi.",
+      "entrypoint": "Titik Masuk",
+      "entrypointBody": "Direktori titik masuk lalai ialah contract/ untuk kontrak Go. Subdirektori tersuai boleh ditentukan jika kod sumber kontrak terletak di tempat lain dalam repositori. Sila pastikan main.go wujud sebagai sebahagian daripada pakej utama dalam direktori yang ditentukan.",
+      "dependencies": "Kebergantungan",
+      "dependenciesBody": "Pengesah kontrak tidak menyokong pengimportan pakej luaran di luar pustaka standard Go buat masa ini.",
+      "experimental": "Eksperimen",
+      "experimentalBody": "Alat ini masih dalam fasa eksperimen dan beberapa isu dijangkakan. Ia hanya tersedia untuk pengguna yang disenarai putih buat masa ini."
+    },
+    "form": {
+      "contractAddress": "Alamat Kontrak",
+      "githubRepoUrl": "URL Repositori GitHub",
+      "gitBranch": "Cawangan Git",
+      "defaultBranch": "cawangan lalai",
+      "contractDir": "Direktori Kontrak",
+      "contractDirTip": "Subdirektori yang mengandungi kod sumber kontrak untuk dikompil, relatif kepada direktori modul Go. Lalai kepada \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Direktori Modul Go",
+      "goModDirTip": "Subdirektori yang mengandungi fail go.mod, jika ia tidak berada di akar repositori. Biarkan kosong jika go.mod berada di akar.",
+      "goModDirPlaceholder": "akar repositori",
+      "tinygoVersion": "Versi TinyGo",
+      "wasmStripTool": "Alat Jalur WASM"
+    },
+    "errors": {
+      "mustStartVsc1": "Alamat kontrak mestilah bermula dengan 'vsc1'",
+      "mustBeGithub": "URL repositori mestilah pautan GitHub",
+      "invalidRepoUrl": "URL repositori GitHub tidak sah",
+      "invalidGithubUser": "Pengguna Github tidak sah",
+      "invalidGithubRepo": "Nama repo Github tidak sah",
+      "invalidContractDir": "Laluan direktori kontrak tidak sah",
+      "invalidGoModDir": "Laluan direktori modul Go tidak sah",
+      "alreadyVerified": "Kontrak sudah disahkan atau sedang disahkan.",
+      "contractNotFound": "Kontrak tidak dijumpai",
+      "backendError": "Gagal menghubungi backend untuk status pengesahan kontrak",
+      "repoFetchError": "Gagal mendapatkan maklumat repositori dengan kod status {{statusCode}}",
+      "branchFetchError": "Gagal mendapatkan maklumat cawangan dengan kod status {{statusCode}}",
+      "repoValidateError": "Gagal mengesahkan repositori",
+      "signatureError": "Ralat Tandatangan",
+      "unknownError": "Ralat tidak diketahui berlaku"
+    },
+    "submitting": "Menghantar permintaan pengesahan...",
+    "approveSignature": "Luluskan permintaan tandatangan mesej dalam dompet apabila diminta",
+    "submitted": "Permintaan pengesahan kontrak berjaya dihantar!",
+    "completionMsg": "Kod sumber kontrak anda sedang disahkan. Ini mungkin mengambil beberapa minit bergantung pada barisan. Rujuk tab Kod Sumber dalam halaman kontrak untuk status.",
+    "viewContract": "Lihat Kontrak"
+  },
+  "dagInspector": {
+    "title": "DAG Inspector",
+    "description": "Lihat kandungan DAG oleh CID yang disematkan oleh nod.",
+    "placeholder": "Tampal CID di sini (bafy...)",
+    "inspect": "Periksa",
+    "dagContent": "Kandungan DAG",
+    "rawJson": "JSON Mentah",
+    "enterCid": "Sila masukkan CID",
+    "fetchError": "Gagal mendapatkan DAG"
+  },
+  "broadcast": {
+    "title": "Siarkan Transaksi",
+    "description": "Tandatangan dan siarkan transaksi Magi.",
+    "destAddress": "Alamat Destinasi",
+    "destPlaceholder": "Sertakan awalan hive: atau did: untuk bukan-peta, lalai kepada penghantar",
+    "txTypes": {
+      "transfer": "Pindahan",
+      "deposit": "Peta",
+      "withdraw": "Nyahpeta",
+      "consensus_stake": "Taruhan Konsensus",
+      "consensus_unstake": "Nyahtaruh Konsensus",
+      "stake_hbd": "Taruh HBD",
+      "unstake_hbd": "Nyahtaruh HBD"
+    },
+    "errors": {
+      "amountPositive": "Jumlah mestilah lebih daripada 0.",
+      "depositAsset": "Aset deposit mestilah HIVE atau HBD.",
+      "hiveWalletOnly": "Hanya boleh memetakan dari dompet Hive.",
+      "unknownType": "Jenis transaksi tidak diketahui"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi 區塊瀏覽器",
+  "heroSubtitle": "搜尋帳戶、區塊、交易和合約",
+  "networkActivity": "網路活動",
+  "dailyTxs": "每日交易（過去 14 天）",
+  "chartTxLabel": "交易",
+  "chartDateLabel": "日期：{{date}}",
+  "latestContracts": "最新合約",
+  "viewAllContracts": "查看所有合約",
+  "viewAllBlocks": "查看所有區塊",
+  "viewAllTxs": "查看所有交易",
+  "quickLinks": "快速連結",
+  "recentBlocks": "最近區塊",
+  "recentTxs": "最近交易",
+  "latestContractsQuickLinks": "最新合約與快速連結",
+  "stats": {
+    "hiveBlockHeight": "Hive 區塊高度",
+    "magiBlockHeight": "Magi 區塊高度",
+    "transactions": "交易",
+    "currentEpoch": "當前週期",
+    "witnesses": "見證人",
+    "contracts": "合約"
+  },
+  "epoch": {
+    "epoch": "週期 {{num}}",
+    "totalStake": "{{amount}} 總質押量",
+    "nextEpochIn": "下一週期約在 {{countdown}} 後"
+  },
+  "links": {
+    "blocks": "區塊",
+    "transactions": "交易",
+    "contracts": "合約",
+    "witnesses": "見證人",
+    "elections": "選舉",
+    "namBridge": "NAM 橋",
+    "charts": "圖表",
+    "broadcast": "廣播"
+  }
+}

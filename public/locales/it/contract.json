@@ -1,0 +1,67 @@
+{
+  "title": "Contratto",
+  "tabs": {
+    "transactions": "Transazioni",
+    "outputs": "Output",
+    "info": "Info",
+    "storageProof": "Prova di archiviazione",
+    "readState": "Leggi stato",
+    "callContract": "Chiama contratto",
+    "sourceCode": "Codice sorgente",
+    "history": "Cronologia"
+  },
+  "info": {
+    "createdAt": "Creato il",
+    "createdInL1Block": "Creato nel blocco L1",
+    "creationTx": "Tx di creazione",
+    "creator": "Creatore",
+    "owner": "Proprietario",
+    "bytecodeCid": "CID del bytecode",
+    "runtime": "Ambiente di runtime"
+  },
+  "readState": {
+    "key": "Chiave",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "errore gql nel recupero della chiave di stato",
+    "fetchError": "Impossibile recuperare la chiave di stato"
+  },
+  "callContract": {
+    "balance": "Saldo: {{balance}}",
+    "currentAllowance": "Indennità corrente",
+    "walletNotConnected": "Portafoglio non connesso o saldi non disponibili",
+    "amountMustBePositive": "L'importo deve essere maggiore di 0",
+    "insufficientBalance": "Saldo insufficiente",
+    "connectFirst": "Per favore connetti prima il tuo portafoglio",
+    "methodRequired": "Il metodo di chiamata è obbligatorio",
+    "simulationFailed": "Simulazione della chiamata al contratto fallita"
+  },
+  "verification": {
+    "verified": "Codice sorgente del contratto verificato",
+    "verifiedDesc": "Magi Blocks ha verificato che il codice sorgente fornito corrisponde al bytecode distribuito del contratto. Ciò non significa che il contratto sia sicuro con cui interagire.",
+    "queued": "La richiesta di verifica del contratto è attualmente in coda.",
+    "inProgress": "La richiesta di verifica del contratto è in fase di elaborazione.",
+    "failed": "La verifica del contratto non è stata completata.",
+    "notMatch": "La verifica del contratto è fallita perché il bytecode distribuito non corrisponde al codice sorgente compilato.",
+    "pending": "La richiesta di verifica del contratto è attualmente in attesa.",
+    "fetchError": "Impossibile recuperare lo stato di verifica del contratto.",
+    "loadingStatus": "Caricamento dello stato di verifica del contratto...",
+    "notVerified": "Codice sorgente del contratto non verificato",
+    "unknown": "Il codice sorgente di questo contratto è sconosciuto.",
+    "language": "Linguaggio",
+    "license": "Licenza",
+    "verifiedAt": "Verificato il",
+    "submittedBy": "Inviato da",
+    "repository": "Repository",
+    "contractDir": "Directory del contratto",
+    "goModDir": "Directory del modulo Go",
+    "tinygoVersion": "Versione TinyGo",
+    "exports": "Esportazioni"
+  },
+  "errors": {
+    "fetchFailed": "Impossibile recuperare il contratto",
+    "notExist": "Il contratto non esiste"
+  },
+  "storageProofLoading": "Caricamento tx di distribuzione...",
+  "storageProofError": "Impossibile caricare la tx di distribuzione"
+}

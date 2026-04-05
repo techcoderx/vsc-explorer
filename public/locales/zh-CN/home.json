@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi 区块浏览器",
+  "heroSubtitle": "搜索账户、区块、交易和合约",
+  "networkActivity": "网络活动",
+  "dailyTxs": "每日交易（过去 14 天）",
+  "chartTxLabel": "交易",
+  "chartDateLabel": "日期：{{date}}",
+  "latestContracts": "最新合约",
+  "viewAllContracts": "查看所有合约",
+  "viewAllBlocks": "查看所有区块",
+  "viewAllTxs": "查看所有交易",
+  "quickLinks": "快速链接",
+  "recentBlocks": "最近区块",
+  "recentTxs": "最近交易",
+  "latestContractsQuickLinks": "最新合约与快速链接",
+  "stats": {
+    "hiveBlockHeight": "Hive 区块高度",
+    "magiBlockHeight": "Magi 区块高度",
+    "transactions": "交易",
+    "currentEpoch": "当前周期",
+    "witnesses": "见证人",
+    "contracts": "合约"
+  },
+  "epoch": {
+    "epoch": "周期 {{num}}",
+    "totalStake": "{{amount}} 总质押量",
+    "nextEpochIn": "下一周期约在 {{countdown}} 后"
+  },
+  "links": {
+    "blocks": "区块",
+    "transactions": "交易",
+    "contracts": "合约",
+    "witnesses": "见证人",
+    "elections": "选举",
+    "namBridge": "NAM 桥",
+    "charts": "图表",
+    "broadcast": "广播"
+  }
+}

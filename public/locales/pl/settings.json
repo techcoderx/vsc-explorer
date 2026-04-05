@@ -1,0 +1,13 @@
+{
+  "title": "Ustawienia",
+  "colorMode": "Tryb kolorów",
+  "darkMode": "Tryb ciemny",
+  "colorTheme": "Motyw kolorystyczny",
+  "themes": {
+    "default": "Domyślny",
+    "red": "Czerwony",
+    "green": "Zielony",
+    "blue": "Niebieski"
+  },
+  "language": "Język"
+}

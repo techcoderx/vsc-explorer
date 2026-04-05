@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "最新ブロック",
+    "total": "合計 {{count}} ブロック。"
+  },
+  "block": {
+    "title": "ブロック #{{num}}",
+    "blockId": "ブロック ID",
+    "timestamp": "タイムスタンプ",
+    "l1Tx": "L1 トランザクション",
+    "slotHeight": "スロット高さ",
+    "proposer": "提案者",
+    "blockHash": "ブロックハッシュ",
+    "participation": "参加状況",
+    "tabs": {
+      "transactions": "トランザクション",
+      "opLogs": "操作ログ",
+      "contractOutputs": "コントラクト出力",
+      "participation": "参加状況"
+    },
+    "opLogHeaders": {
+      "txId": "トランザクション ID",
+      "type": "タイプ",
+      "from": "送信元",
+      "to": "送信先",
+      "amount": "金額"
+    }
+  },
+  "elections": {
+    "title": "選挙"
+  },
+  "epoch": {
+    "title": "エポック #{{num}}",
+    "epochNumber": "エポック番号",
+    "timestamp": "タイムスタンプ",
+    "l1Tx": "L1 トランザクション",
+    "l1Block": "L1 ブロック",
+    "proposer": "提案者",
+    "electionDataCid": "選挙データ CID",
+    "totalWeight": "総重み",
+    "participation": "参加状況",
+    "avgBlockVotes": "平均ブロック投票数",
+    "electedMembers": "当選メンバー（{{count}}）",
+    "blocksTab": "ブロック（{{count}}）",
+    "participationTab": "参加状況",
+    "blsNotRequired": "最初の選挙では BLS 署名は不要でした。"
+  },
+  "witnesses": {
+    "title": "ウィットネス",
+    "total": "合計 {{count}} 名のアクティブウィットネス。参加率：{{rate}}%"
+  },
+  "schedule": {
+    "title": "スケジュール",
+    "hiveHeadBlock": "Hive 最新ブロック：",
+    "showOlderSlots": "古いスロットを表示"
+  },
+  "transactions": {
+    "title": "最新トランザクション",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "最新コントラクト"
+  },
+  "address": {
+    "title": "アドレス",
+    "tabs": {
+      "transactions": "トランザクション",
+      "l1Ops": "L1 オペレーション",
+      "ledgerOps": "台帳オペレーション",
+      "actions": "アクション",
+      "maps": "マップ",
+      "unmaps": "アンマップ",
+      "witness": "ウィットネス"
+    }
+  },
+  "balances": {
+    "title": "残高",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "流動ステーク HBD",
+    "hbdUnstaking": "HBD アンステーク中",
+    "consensusStake": "コンセンサスステーク",
+    "consensusUnstaking": "コンセンサスアンステーク中"
+  },
+  "rcInfo": {
+    "title": "RC 情報",
+    "loadingBalances": "残高を読み込み中...",
+    "noRcs": "利用可能な RC がありません。RC を取得するには HBD をデポジットしてください。"
+  },
+  "witness": {
+    "enabled": "有効",
+    "lastBlock": "最終ブロック",
+    "blocksProduced": "生成ブロック数",
+    "lastEpoch": "最終エポック",
+    "electionsHeld": "実施選挙数",
+    "witnessInfo": "ウィットネス情報",
+    "clickToExpand": "（クリックして展開）",
+    "peerId": "ピア ID",
+    "consensusDidKey": "コンセンサス DID キー",
+    "gatewayKey": "ゲートウェイキー",
+    "gitCommit": "Git コミット",
+    "lastUpdate": "最終更新",
+    "loadError": "ウィットネス情報の読み込みに失敗"
+  },
+  "bridge": {
+    "title": "Hive アセットマッピング概要",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "マップトランザクション",
+    "unmapTxs": "アンマップトランザクション",
+    "latestMaps": "最新マップ",
+    "latestUnmaps": "最新アンマップ",
+    "viewMore": "さらに表示",
+    "learnMore": "ネイティブアセットマッピングの詳細はこちら。",
+    "hiveMaps": "Hive アセットマップ",
+    "hiveUnmaps": "Hive アセットアンマップ",
+    "totalMaps": "合計 {{count}} 件のマップ",
+    "totalUnmaps": "合計 {{count}} 件のアンマップ"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi トランザクション",
+    "requiredAuths": "必要な認証",
+    "rcUsed": "使用 RC",
+    "nonce": "ノンス",
+    "ledgerOps": "台帳オペレーション（{{count}}）",
+    "ledgerActions": "台帳アクション（{{count}}）",
+    "callOutputs": "呼び出し出力",
+    "logs": "ログ（{{count}}）",
+    "tssRequests": "TSS リクエスト（{{count}}）",
+    "opLogHeaders": {
+      "type": "タイプ",
+      "from": "送信元",
+      "to": "送信先",
+      "amount": "金額",
+      "memo": "メモ",
+      "status": "ステータス",
+      "outputId": "出力 ID",
+      "contractId": "コントラクト ID",
+      "index": "インデックス",
+      "errorSymbol": "エラーシンボル",
+      "errorMessage": "エラーメッセージ",
+      "output": "出力",
+      "log": "ログ",
+      "keyId": "キー ID",
+      "arguments": "引数"
+    },
+    "deployedContract": "デプロイ済みコントラクト",
+    "proposedElection": "提案された選挙結果",
+    "proposedBlock": "提案されたブロック",
+    "blockNumber": "ブロック番号",
+    "hiveTransaction": "Hive トランザクション",
+    "includedInL1": "L1 ブロックに含まれる",
+    "noOperations": "オペレーションが見つかりません",
+    "loadingMagiOps": "Magi オペレーションを読み込み中...",
+    "operation": "オペレーション #{{num}}",
+    "notMagi": "このオペレーションは Magi に関連していません。",
+    "transaction": "トランザクション",
+    "failedToLoad": "トランザクションの読み込みに失敗",
+    "notExist": "トランザクションが存在しません",
+    "includedInL2": "L2 ブロックのスロット高さに含まれる",
+    "viewIn": "{{name}} で表示"
+  },
+  "participation": {
+    "aggregationBits": "集約ビット",
+    "votedMembers": "投票メンバー ({{count}})",
+    "blsSignature": "BLS 署名"
+  },
+  "charts": {
+    "directory": "ネットワークチャート",
+    "soon": "近日公開",
+    "titles": {
+      "blocks": "ブロック",
+      "transactions": "トランザクション",
+      "addresses": "アドレス",
+      "contracts": "コントラクト",
+      "witnesses": "ウィットネス",
+      "nam": "NAM"
+    },
+    "blocksCharts": "ブロックチャート",
+    "blockCount": "ブロック数",
+    "blockCountDesc": "日次生成ブロック数",
+    "txCharts": "トランザクションチャート",
+    "txCount": "トランザクション数",
+    "txCountDesc": "日次トランザクション数",
+    "addressCharts": "アドレスチャート",
+    "dailyActiveAddresses": "日次アクティブアドレス",
+    "dailyActiveAddressesDesc": "日次ユニーク取引アドレス数",
+    "contractsCharts": "コントラクトチャート",
+    "newContracts": "新規コントラクト",
+    "newContractsDesc": "日次デプロイコントラクト数",
+    "witnessCharts": "ウィットネスチャート",
+    "activeStake": "アクティブステーク",
+    "activeStakeDesc": "各日の適格 HIVE コンセンサスステーク総量",
+    "activeWitnesses": "アクティブウィットネス",
+    "activeWitnessesDesc": "日次アクティブウィットネス数",
+    "bridgeCharts": "ネイティブアセットマッピング (NAM) チャート",
+    "hiveTvl": "HIVE と HBD の TVL",
+    "hiveTvlDesc": "ゲートウェイアカウントの HIVE と HBD 残高の推移",
+    "hiveNetFlow": "HIVE ネットフロー",
+    "hiveNetFlowDesc": "HIVE ネットフローの推移",
+    "hbdNetFlow": "HBD ネットフロー",
+    "hbdNetFlowDesc": "HBD ネットフローの推移"
+  }
+}

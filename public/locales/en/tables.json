@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Id",
+    "age": "Age",
+    "proposer": "Proposer",
+    "blockHash": "Block Hash",
+    "voted": "Voted"
+  },
+  "transactions": {
+    "txId": "Transaction ID",
+    "age": "Age",
+    "method": "Method",
+    "from": "From",
+    "to": "To",
+    "amount": "Amount"
+  },
+  "contractHistory": {
+    "txId": "Transaction ID",
+    "age": "Age",
+    "deployer": "Deployer",
+    "owner": "Owner",
+    "code": "Code",
+    "latest": "Latest"
+  },
+  "contractOutput": {
+    "id": "Id",
+    "age": "Age",
+    "contractId": "Contract ID",
+    "inputTx": "Input Tx",
+    "output": "Output"
+  },
+  "contracts": {
+    "contractId": "Contract Id",
+    "age": "Age",
+    "creator": "Creator",
+    "creationTx": "Creation Tx",
+    "code": "Code",
+    "runtime": "Runtime"
+  },
+  "ledger": {
+    "txId": "Tx ID",
+    "age": "Age",
+    "type": "Type",
+    "from": "From",
+    "fromUser": "From User",
+    "to": "To",
+    "toUser": "To User",
+    "amount": "Amount",
+    "status": "Status"
+  },
+  "bridge": {
+    "txId": "Tx ID",
+    "age": "Age",
+    "toUser": "To User",
+    "amount": "Amount"
+  },
+  "elections": {
+    "epoch": "Epoch",
+    "age": "Age",
+    "proposer": "Proposer",
+    "blocks": "Blocks",
+    "members": "Members",
+    "totalWeight": "Total Weight",
+    "voted": "Voted",
+    "blockVotes": "Block Votes"
+  },
+  "witnesses": {
+    "idx": "Idx",
+    "username": "Username",
+    "weight": "Weight",
+    "lastBlock": "Last Block",
+    "blocksProduced": "Blocks Produced",
+    "lastEpoch": "Last Epoch",
+    "elections": "Elections",
+    "didKey": "DID Key"
+  },
+  "schedule": {
+    "username": "Username",
+    "l1Block": "L1 Block",
+    "magiBlock": "Magi Block"
+  }
+}

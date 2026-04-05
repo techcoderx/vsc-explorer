@@ -1,0 +1,13 @@
+{
+  "title": "Paramètres",
+  "colorMode": "Mode de couleur",
+  "darkMode": "Mode sombre",
+  "colorTheme": "Thème de couleur",
+  "themes": {
+    "default": "Défaut",
+    "red": "Rouge",
+    "green": "Vert",
+    "blue": "Bleu"
+  },
+  "language": "Langue"
+}

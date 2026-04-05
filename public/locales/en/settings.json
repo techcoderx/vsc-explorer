@@ -1,0 +1,13 @@
+{
+  "title": "Settings",
+  "colorMode": "Color Mode",
+  "darkMode": "Dark Mode",
+  "colorTheme": "Color Theme",
+  "themes": {
+    "default": "Default",
+    "red": "Red",
+    "green": "Green",
+    "blue": "Blue"
+  },
+  "language": "Language"
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Card,
@@ -26,15 +27,16 @@ import { TxnTypes } from '../../../types/L2ApiResult'
 import { useNavigate } from 'react-router'
 import { useAioha } from '@aioha/providers/react'
 import { toaster } from '../../ui/toaster'
+import { TFunction } from 'i18next'
 
-const txTypes: [TxnTypes, string][] = [
-  ['transfer', 'Transfer'],
-  ['deposit', 'Map'],
-  ['withdraw', 'Unmap'],
-  ['consensus_stake', 'Consensus Stake'],
-  ['consensus_unstake', 'Consensus Unstake'],
-  ['stake_hbd', 'Stake HBD'],
-  ['unstake_hbd', 'Unstake HBD']
+const getTxTypes = (t: TFunction): [TxnTypes, string][] => [
+  ['transfer', t('broadcast.txTypes.transfer')],
+  ['deposit', t('broadcast.txTypes.map')],
+  ['withdraw', t('broadcast.txTypes.unmap')],
+  ['consensus_stake', t('broadcast.txTypes.consensusStake')],
+  ['consensus_unstake', t('broadcast.txTypes.consensusUnstake')],
+  ['stake_hbd', t('broadcast.txTypes.stakeHbd')],
+  ['unstake_hbd', t('broadcast.txTypes.unstakeHbd')]
 ]
 
 const assetToEnum: Record<string, Asset> = {
@@ -44,6 +46,8 @@ const assetToEnum: Record<string, Asset> = {
 }
 
 export const Broadcast = () => {
+  const { t } = useTranslation('tools')
+  const txTypes = getTxTypes(t)
   const { magi, user, wallet } = useMagi()
   const { aioha } = useAioha()
   const [walletOpen, setWalletOpen] = useState(false)
@@ -58,10 +62,10 @@ export const Broadcast = () => {
     const to = !!dest ? dest : magi.getUser(true)!
     const amount = parseFloat(amt || '')
     if (isNaN(amount) || amount <= 0) {
-      return toaster.error({ title: 'Amount must be greater than 0.' })
+      return toaster.error({ title: t('broadcast.errors.amountPositive') })
     }
     if (txType === 'deposit' && asset === 'hbd_savings') {
-      return toaster.error({ title: 'Deposit asset must be HIVE or HBD.' })
+      return toaster.error({ title: t('broadcast.errors.depositAsset') })
     }
     const currency = assetToEnum[asset]
     setIsSpinning(true)
@@ -69,7 +73,7 @@ export const Broadcast = () => {
     switch (txType) {
       case 'deposit':
         if (wallet !== Wallet.Hive) {
-          return toaster.error({ title: 'Can only map from Hive wallets.' })
+          return toaster.error({ title: t('broadcast.errors.mapHiveOnly') })
         }
         result = await aioha.transfer(
           getConf().msAccount,
@@ -99,14 +103,14 @@ export const Broadcast = () => {
         break
       default:
         setIsSpinning(false)
-        return toaster.error({ title: 'Unknown transaction type' })
+        return toaster.error({ title: t('broadcast.errors.unknownTxType') })
     }
     setIsSpinning(false)
     if (!result.success) {
       return toaster.error({ title: result.error })
     } else {
       return toaster.success({
-        title: 'Transaction broadcasted successfully',
+        title: t('txBroadcastSuccess', { ns: 'common' }),
         description: (
           <Link
             onClick={(evt) => {
@@ -114,7 +118,7 @@ export const Broadcast = () => {
               navigate('/tx/' + result.result)
             }}
           >
-            View transaction
+            {t('viewTransaction', { ns: 'common' })}
           </Link>
         )
       })
@@ -124,15 +128,15 @@ export const Broadcast = () => {
   return (
     <>
       <PageTitle title="Broadcast Transaction" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Broadcast Transaction</Heading>
-      <Text mb={'6'}>Sign and broadcast a Magi transaction.</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('broadcast.title')}</Heading>
+      <Text mb={'6'}>{t('broadcast.description')}</Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
           <Card.Root>
             <Card.Body>
               <Stack direction={'column'} gap={'3'} mb={'5'}>
                 <Field.Root>
-                  <Field.Label>Username</Field.Label>
+                  <Field.Label>{t('form.username', { ns: 'common' })}</Field.Label>
                   <Button
                     variant={'outline'}
                     colorPalette={'gray'}
@@ -140,11 +144,11 @@ export const Broadcast = () => {
                     onClick={() => setWalletOpen(true)}
                   >
                     {user ? <Box as={walletIcon} fontSize={'lg'} /> : null}
-                    {user ?? 'Connect Wallet'}
+                    {user ?? t('connectWallet', { ns: 'common' })}
                   </Button>
                 </Field.Root>
                 <Field.Root>
-                  <Field.Label>Type</Field.Label>
+                  <Field.Label>{t('form.type', { ns: 'common' })}</Field.Label>
                   <NativeSelect.Root>
                     <NativeSelect.Field
             
@@ -161,17 +165,17 @@ export const Broadcast = () => {
                   </NativeSelect.Root>
                 </Field.Root>
                 <Field.Root>
-                  <Field.Label>Destination Address</Field.Label>
+                  <Field.Label>{t('broadcast.destAddress')}</Field.Label>
                   <Input
-          
+
                     type="text"
-                    placeholder="Include hive: or did: prefix for non-map, defaults to sender"
+                    placeholder={t('broadcast.destPlaceholder')}
                     value={dest}
                     onChange={(e) => setDest(e.target.value)}
                   />
                 </Field.Root>
                 <Field.Root>
-                  <Field.Label>Amount</Field.Label>
+                  <Field.Label>{t('form.amount', { ns: 'common' })}</Field.Label>
                   <Stack direction={useBreakpointValue({ base: 'column', sm: 'row' })}>
                     <Stack direction={'row'}>
                       <Input
@@ -198,11 +202,11 @@ export const Broadcast = () => {
                   </Stack>
                 </Field.Root>
                 <Field.Root>
-                  <Field.Label>Memo</Field.Label>
+                  <Field.Label>{t('form.memo', { ns: 'common' })}</Field.Label>
                   <Input
-          
+
                     type="text"
-                    placeholder="Optional"
+                    placeholder={t('form.optional', { ns: 'common' })}
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
                   />
@@ -211,7 +215,7 @@ export const Broadcast = () => {
               <Button colorPalette={themeColorScheme} onClick={submitClicked} disabled={isSpinning || !user || !amt} w={'fit-content'}>
                 <Flex gap={'2'} align={'center'}>
                   <Spinner size={'sm'} hidden={!isSpinning} />
-                  <Text>Submit</Text>
+                  <Text>{t('submit', { ns: 'common' })}</Text>
                 </Flex>
               </Button>
             </Card.Body>

@@ -1,0 +1,13 @@
+{
+  "title": "設定",
+  "colorMode": "顏色模式",
+  "darkMode": "深色模式",
+  "colorTheme": "顏色主題",
+  "themes": {
+    "default": "預設",
+    "red": "紅色",
+    "green": "綠色",
+    "blue": "藍色"
+  },
+  "language": "語言"
+}

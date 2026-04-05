@@ -1,6 +1,7 @@
 import { Flex, Heading, Stack, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, useLocation, useOutletContext, useParams, useSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { TxCard } from '../TxCard'
 import { fetchLatestTxs, fetchL2TxnsBy, useHistoryStats } from '../../requests'
 import { describeL1TxBriefly } from '../../helpers'
@@ -71,24 +72,25 @@ export const NewVscTxs = () => {
 }
 
 export const NewTxs = () => {
+  const { t } = useTranslation('pages')
   const location = useLocation()
   const [filtersOpen, setFiltersOpen] = useFilterOpen()
   const isMagi = location.pathname === '/transactions' || location.pathname.startsWith('/transactions/magi')
   const isHive = location.pathname === '/transactions/hive'
   return (
     <>
-      <PageTitle title="Latest Transactions" />
+      <PageTitle title={t('transactions.title')} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Heading as="h1" size="5xl" fontWeight="normal">Latest Transactions</Heading>
+        <Heading as="h1" size="5xl" fontWeight="normal">{t('transactions.title')}</Heading>
         <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
           {isMagi && <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
           {isHive && <L1OpTypeFilter filterKey={HIVE_TXS_FILTER_KEY} />}
           <Box css={btnGroupCss}>
-            {!isMagi ? <LinkedBtn to={'/transactions'}>Magi</LinkedBtn> : <CurrentPageBtn>Magi</CurrentPageBtn>}
+            {!isMagi ? <LinkedBtn to={'/transactions'}>{t('transactions.magi')}</LinkedBtn> : <CurrentPageBtn>{t('transactions.magi')}</CurrentPageBtn>}
             {!isHive ? (
-              <LinkedBtn to={'/transactions/hive'}>Hive</LinkedBtn>
+              <LinkedBtn to={'/transactions/hive'}>{t('transactions.hive')}</LinkedBtn>
             ) : (
-              <CurrentPageBtn>Hive</CurrentPageBtn>
+              <CurrentPageBtn>{t('transactions.hive')}</CurrentPageBtn>
             )}
           </Box>
         </Flex>

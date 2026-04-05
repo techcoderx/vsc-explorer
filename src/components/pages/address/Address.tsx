@@ -1,6 +1,7 @@
 import { Heading, Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
 import { useParams, Outlet, useOutletContext, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
 import { fetchL2TxnsBy, getWitness, useHistoryStats } from '../../../requests'
@@ -49,6 +50,7 @@ export const AddressTxs = () => {
 const tabNames = ['txs', 'hiveops', 'ledger', 'actions', 'deposits', 'withdrawals', 'witness']
 
 export const Address = () => {
+  const { t } = useTranslation('pages')
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { addr } = useParams()
@@ -73,7 +75,7 @@ export const Address = () => {
           </Heading>
         ) : (
           <Box>
-            <Heading as="h1" size="5xl" fontWeight="normal">Address</Heading>
+            <Heading as="h1" size="5xl" fontWeight="normal">{t('address.title')}</Heading>
             <Text fontSize={'2xl'} opacity={'0.7'} mb={'4'}>
               {addr}
             </Text>
@@ -104,13 +106,13 @@ export const Address = () => {
         }}
       >
         <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
-          <Tabs.Trigger value="txs">Transactions</Tabs.Trigger>
-          <Tabs.Trigger value="hiveops" hidden={!isL1}>L1 Ops</Tabs.Trigger>
-          <Tabs.Trigger value="ledger">Ledger Ops</Tabs.Trigger>
-          <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
-          <Tabs.Trigger value="deposits">Maps</Tabs.Trigger>
-          <Tabs.Trigger value="withdrawals">Unmaps</Tabs.Trigger>
-          <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>Witness</Tabs.Trigger>
+          <Tabs.Trigger value="txs">{t('address.tabs.transactions')}</Tabs.Trigger>
+          <Tabs.Trigger value="hiveops" hidden={!isL1}>{t('address.tabs.l1Ops')}</Tabs.Trigger>
+          <Tabs.Trigger value="ledger">{t('address.tabs.ledgerOps')}</Tabs.Trigger>
+          <Tabs.Trigger value="actions">{t('address.tabs.actions')}</Tabs.Trigger>
+          <Tabs.Trigger value="deposits">{t('address.tabs.maps')}</Tabs.Trigger>
+          <Tabs.Trigger value="withdrawals">{t('address.tabs.unmaps')}</Tabs.Trigger>
+          <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>{t('address.tabs.witness')}</Tabs.Trigger>
           {tabValue === 'txs' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
               <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />

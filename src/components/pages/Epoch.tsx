@@ -1,6 +1,7 @@
 import { Link, Heading, Text, Box, Grid, GridItem, Stack, Table, Tabs, Flex } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
 import Pagination, { PrevNextBtns } from '../Pagination'
@@ -16,6 +17,7 @@ import { PageTitle } from '../PageTitle'
 const blockBatch = 100
 
 const Epoch = () => {
+  const { t } = useTranslation('pages')
   const { epochNum, page } = useParams()
   const pageNum = parseInt(page || '1')
   const epchNum = parseInt(epochNum!)
@@ -44,9 +46,9 @@ const Epoch = () => {
   if (invalidEpochNum) return <PageNotFound />
   return (
     <>
-      <PageTitle title={`Epoch #${thousandSeperator(epchNum)}`} />
+      <PageTitle title={t('epoch.title', { num: thousandSeperator(epchNum) })} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <Heading as="h1" size="5xl" fontWeight="normal">Epoch #{thousandSeperator(epchNum)}</Heading>
+        <Heading as="h1" size="5xl" fontWeight="normal">{t('epoch.title', { num: thousandSeperator(epchNum) })}</Heading>
         <PrevNextBtns toPrev={epchNum > 0 ? '/epoch/' + (epchNum! - 1) : undefined} toNext={'/epoch/' + (epchNum! + 1)} />
       </Stack>
       <hr />
@@ -56,40 +58,40 @@ const Epoch = () => {
         <Box>
           <Table.Root mt={'20px'}>
             <Table.Body>
-              <TableRow label="Epoch Number" value={epochNum} isLoading={isEpochLoading} />
+              <TableRow label={t('epoch.epochNumber')} value={epochNum} isLoading={isEpochLoading} />
               {epoch && epoch.be_info ? (
-                <TableRow label="Timestamp" isLoading={isEpochLoading}>
+                <TableRow label={t('epoch.timestamp')} isLoading={isEpochLoading}>
                   <Text>
                     {epoch.be_info.ts} ({timeAgo(epoch.be_info.ts)})
                   </Text>
                 </TableRow>
               ) : null}
-              <TableRow label="L1 Tx" value={epoch?.tx_id} isLoading={isEpochLoading} link={'/tx/' + epoch?.tx_id} />
+              <TableRow label={t('epoch.l1Tx')} value={epoch?.tx_id} isLoading={isEpochLoading} link={'/tx/' + epoch?.tx_id} />
               <TableRow
-                label="L1 Block"
+                label={t('epoch.l1Block')}
                 value={epoch?.block_height}
                 isLoading={isEpochLoading}
                 link={beL1BlockUrl(epoch?.block_height || 0)}
               />
               <TableRow
-                label="Proposer"
+                label={t('epoch.proposer')}
                 value={epoch?.proposer}
                 isLoading={isEpochLoading}
                 link={'/address/hive:' + epoch?.proposer}
               />
               <TableRow
-                label="Election Data CID"
+                label={t('epoch.electionDataCid')}
                 value={epoch?.data}
                 link={'/tools/dag?cid=' + epoch?.data}
                 isLoading={isEpochLoading}
               />
-              <TableRow label="Total Weight" value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
+              <TableRow label={t('epoch.totalWeight')} value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
               {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
-                <TableRow label="Participation">
+                <TableRow label={t('epoch.participation')}>
                   <ProgressBarPct fontSize={'md'} val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
                 </TableRow>
               ) : null}
-              <TableRow label="Avg Block Votes">
+              <TableRow label={t('epoch.avgBlockVotes')}>
                 <ProgressBarPct
                   fontSize={'md'}
                   val={
@@ -98,7 +100,7 @@ const Epoch = () => {
                   }
                 />
               </TableRow>
-              <TableRow label={`Elected Members (${epoch?.members.length})`} isLoading={isEpochLoading}>
+              <TableRow label={t('epoch.electedMembers', { count: epoch?.members.length })} isLoading={isEpochLoading}>
                 <Grid
                   templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
                   gap={3}
@@ -124,8 +126,8 @@ const Epoch = () => {
           </Table.Root>
           <Tabs.Root mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
-              <Tabs.Trigger value="0">Blocks ({epoch?.blocks_info?.count || 0})</Tabs.Trigger>
-              <Tabs.Trigger value="1">Participation</Tabs.Trigger>
+              <Tabs.Trigger value="0">{t('epoch.blocksTab', { count: epoch?.blocks_info?.count || 0 })}</Tabs.Trigger>
+              <Tabs.Trigger value="1">{t('epoch.participationTab')}</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="0">
               <BlocksTbl blocks={blocks} />
@@ -146,7 +148,7 @@ const Epoch = () => {
               ) : epchNum === 0 ? (
                 <Flex align={'center'} gap={'2'}>
                   <LuInfo color={themeColorScheme} />
-                  <Text fontSize={'md'}>BLS signature was not required for the first election.</Text>
+                  <Text fontSize={'md'}>{t('epoch.blsNotRequired')}</Text>
                 </Flex>
               ) : null}
             </Tabs.Content>

@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "आईडी",
+    "age": "आयु",
+    "proposer": "प्रस्तावक",
+    "blockHash": "ब्लॉक हैश",
+    "voted": "मतदान"
+  },
+  "transactions": {
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "method": "तरीका",
+    "from": "से",
+    "to": "को",
+    "amount": "राशि"
+  },
+  "contractHistory": {
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "deployer": "तैनाती करने वाला",
+    "owner": "मालिक",
+    "code": "कोड",
+    "latest": "नवीनतम"
+  },
+  "contractOutput": {
+    "id": "आईडी",
+    "age": "आयु",
+    "contractId": "अनुबंध आईडी",
+    "inputTx": "इनपुट लेनदेन",
+    "output": "आउटपुट"
+  },
+  "contracts": {
+    "contractId": "अनुबंध आईडी",
+    "age": "आयु",
+    "creator": "निर्माता",
+    "creationTx": "निर्माण लेनदेन",
+    "code": "कोड",
+    "runtime": "रनटाइम"
+  },
+  "ledger": {
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "type": "प्रकार",
+    "from": "से",
+    "fromUser": "प्रेषक उपयोगकर्ता",
+    "to": "को",
+    "toUser": "प्राप्तकर्ता उपयोगकर्ता",
+    "amount": "राशि",
+    "status": "स्थिति"
+  },
+  "bridge": {
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "toUser": "प्राप्तकर्ता उपयोगकर्ता",
+    "amount": "राशि"
+  },
+  "elections": {
+    "epoch": "युग",
+    "age": "आयु",
+    "proposer": "प्रस्तावक",
+    "blocks": "ब्लॉक",
+    "members": "सदस्य",
+    "totalWeight": "कुल भार",
+    "voted": "मतदान",
+    "blockVotes": "ब्लॉक वोट"
+  },
+  "witnesses": {
+    "idx": "क्रमांक",
+    "username": "उपयोगकर्ता नाम",
+    "weight": "भार",
+    "lastBlock": "अंतिम ब्लॉक",
+    "blocksProduced": "उत्पादित ब्लॉक",
+    "lastEpoch": "अंतिम युग",
+    "elections": "चुनाव",
+    "didKey": "DID कुंजी"
+  },
+  "schedule": {
+    "username": "उपयोगकर्ता नाम",
+    "l1Block": "L1 ब्लॉक",
+    "magiBlock": "Magi ब्लॉक"
+  }
+}

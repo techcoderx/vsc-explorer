@@ -1,0 +1,67 @@
+{
+  "title": "コントラクト",
+  "tabs": {
+    "transactions": "トランザクション",
+    "outputs": "出力",
+    "info": "情報",
+    "storageProof": "ストレージ証明",
+    "readState": "状態読み取り",
+    "callContract": "コントラクト呼び出し",
+    "sourceCode": "ソースコード",
+    "history": "履歴"
+  },
+  "info": {
+    "createdAt": "作成日時",
+    "createdInL1Block": "作成 L1 ブロック",
+    "creationTx": "作成トランザクション",
+    "creator": "作成者",
+    "owner": "オーナー",
+    "bytecodeCid": "バイトコード CID",
+    "runtime": "ランタイム"
+  },
+  "readState": {
+    "key": "キー",
+    "utf8": "UTF-8",
+    "hex": "16進数",
+    "gqlError": "状態キー取得中に gql エラーが発生",
+    "fetchError": "状態キーの取得に失敗"
+  },
+  "callContract": {
+    "balance": "残高：{{balance}}",
+    "currentAllowance": "現在の許可額",
+    "walletNotConnected": "ウォレットが未接続か残高を読み込めません",
+    "amountMustBePositive": "金額は 0 より大きくなければなりません",
+    "insufficientBalance": "残高不足",
+    "connectFirst": "先にウォレットを接続してください",
+    "methodRequired": "呼び出しメソッドは必須です",
+    "simulationFailed": "コントラクト呼び出しシミュレーション失敗"
+  },
+  "verification": {
+    "verified": "コントラクトのソースコードが検証済み",
+    "verifiedDesc": "Magi Blocks は、提供されたソースコードがコントラクトのデプロイ済みバイトコードと一致することを検証しました。これはコントラクトが安全に操作できることを意味するものではありません。",
+    "queued": "コントラクト検証リクエストは現在キューに入っています。",
+    "inProgress": "コントラクト検証リクエストは現在処理中です。",
+    "failed": "コントラクト検証が完了できませんでした。",
+    "notMatch": "コンパイルされたソースコードとデプロイ済みバイトコードが一致しないため、コントラクト検証に失敗しました。",
+    "pending": "コントラクト検証リクエストは現在保留中です。",
+    "fetchError": "コントラクト検証ステータスの取得に失敗しました。",
+    "loadingStatus": "コントラクト検証ステータスを読み込み中...",
+    "notVerified": "コントラクトのソースコードは未検証",
+    "unknown": "このコントラクトのソースコードは不明です。",
+    "language": "言語",
+    "license": "ライセンス",
+    "verifiedAt": "検証日時",
+    "submittedBy": "提出者",
+    "repository": "リポジトリ",
+    "contractDir": "コントラクトディレクトリ",
+    "goModDir": "Go モジュールディレクトリ",
+    "tinygoVersion": "TinyGo バージョン",
+    "exports": "エクスポート"
+  },
+  "errors": {
+    "fetchFailed": "コントラクトの取得に失敗",
+    "notExist": "コントラクトが存在しません"
+  },
+  "storageProofLoading": "デプロイトランザクションを読み込み中...",
+  "storageProofError": "デプロイトランザクションの読み込みに失敗"
+}

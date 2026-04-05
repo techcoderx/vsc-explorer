@@ -1,4 +1,5 @@
 import { Table, Tag } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Contract } from '../../types/L2ApiResult'
 import { AccountLink, TxLink } from '../TableLink'
 import { abbreviateHash, timeAgo } from '../../helpers'
@@ -6,16 +7,17 @@ import { themeColorScheme } from '../../settings'
 import { Tooltip } from '../ui/tooltip'
 
 export const ContractHistoryTbl = ({ history }: { history: Contract[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Transaction ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Deployer</Table.ColumnHeader>
-            <Table.ColumnHeader>Owner</Table.ColumnHeader>
-            <Table.ColumnHeader>Code</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractHistory.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractHistory.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractHistory.deployer')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractHistory.owner')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractHistory.code')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -39,7 +41,7 @@ export const ContractHistoryTbl = ({ history }: { history: Contract[] }) => {
                 <Tooltip positioning={{ placement: 'top' }} content={h.code}>
                   {i === 0 ? (
                     <Tag.Root variant={'outline'} colorPalette={themeColorScheme}>
-                      Latest
+                      {t('contractHistory.latest')}
                     </Tag.Root>
                   ) : (
                     abbreviateHash(h.code, 20, 0)

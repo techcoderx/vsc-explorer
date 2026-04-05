@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "अनुबंध सत्यापित करें",
+    "description": "Magi Blocks को अनुबंध स्रोत कोड जमा करें यह सत्यापित करने के लिए कि परिणामी संकलित बायटकोड तैनात अनुबंध बायटकोड से मेल खाता है।",
+    "readThisFirst": "पहले यह पढ़ें!",
+    "notice": {
+      "language": "भाषा",
+      "languageBody": "अनुबंध सत्यापक केवल Go में लिखे गए अनुबंधों का समर्थन करता है।",
+      "compilerOptions": "कंपाइलर विकल्प",
+      "compilerOptionsBody": "अभी तक कस्टम कंपाइलर विकल्प सेट करने का कोई तरीका नहीं है। सत्यापक Go अनुबंधों के लिए -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown का उपयोग करता है।",
+      "environment": "वातावरण",
+      "environmentBody": "अनुबंध आधिकारिक TinyGo Docker इमेज का उपयोग करके संकलित किए जाते हैं।",
+      "entrypoint": "एंट्रीपॉइंट",
+      "entrypointBody": "Go अनुबंधों के लिए डिफ़ॉल्ट एंट्रीपॉइंट निर्देशिका contract/ है। एक कस्टम उपनिर्देशिका निर्दिष्ट की जा सकती है यदि अनुबंध स्रोत कोड रिपॉजिटरी में कहीं और स्थित है। कृपया सुनिश्चित करें कि निर्दिष्ट निर्देशिका में main पैकेज के हिस्से के रूप में main.go मौजूद है।",
+      "dependencies": "निर्भरताएं",
+      "dependenciesBody": "अनुबंध सत्यापक अभी के लिए Go मानक पुस्तकालय के बाहर बाहरी पैकेज आयात करने का समर्थन नहीं करता है।",
+      "experimental": "प्रयोगात्मक",
+      "experimentalBody": "यह उपकरण वर्तमान में प्रयोगात्मक है और कुछ समस्याएं होने की उम्मीद है। अभी के लिए यह केवल श्वेतसूचीबद्ध उपयोगकर्ताओं के लिए उपलब्ध है।"
+    },
+    "form": {
+      "contractAddress": "अनुबंध पता",
+      "githubRepoUrl": "GitHub रिपॉजिटरी URL",
+      "gitBranch": "Git शाखा",
+      "defaultBranch": "डिफ़ॉल्ट शाखा",
+      "contractDir": "अनुबंध निर्देशिका",
+      "contractDirTip": "संकलित करने के लिए अनुबंध स्रोत कोड वाली उपनिर्देशिका, Go मॉड्यूल निर्देशिका के सापेक्ष। डिफ़ॉल्ट \"contract\" है।",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go मॉड्यूल निर्देशिका",
+      "goModDirTip": "go.mod फ़ाइल वाली उपनिर्देशिका, यदि यह रिपॉजिटरी रूट में नहीं है। खाली छोड़ें यदि go.mod रूट पर है।",
+      "goModDirPlaceholder": "रिपॉजिटरी रूट",
+      "tinygoVersion": "TinyGo संस्करण",
+      "wasmStripTool": "WASM स्ट्रिप उपकरण"
+    },
+    "errors": {
+      "mustStartVsc1": "अनुबंध पता 'vsc1' से शुरू होना चाहिए",
+      "mustBeGithub": "रिपॉजिटरी URL एक GitHub लिंक होना चाहिए",
+      "invalidRepoUrl": "अमान्य GitHub रिपॉजिटरी URL",
+      "invalidGithubUser": "अमान्य Github उपयोगकर्ता",
+      "invalidGithubRepo": "अमान्य Github रिपो नाम",
+      "invalidContractDir": "अमान्य अनुबंध निर्देशिका पथ",
+      "invalidGoModDir": "अमान्य Go मॉड्यूल निर्देशिका पथ",
+      "alreadyVerified": "अनुबंध पहले से सत्यापित है या सत्यापित हो रहा है।",
+      "contractNotFound": "अनुबंध नहीं मिला",
+      "backendError": "अनुबंध सत्यापन स्थिति के लिए बैकएंड कॉल करने में विफल",
+      "repoFetchError": "स्थिति कोड {{statusCode}} के साथ रिपॉजिटरी जानकारी लाने में विफल",
+      "branchFetchError": "स्थिति कोड {{statusCode}} के साथ शाखा जानकारी लाने में विफल",
+      "repoValidateError": "रिपॉजिटरी सत्यापित करने में विफल",
+      "signatureError": "हस्ताक्षर त्रुटि",
+      "unknownError": "अज्ञात त्रुटि हुई"
+    },
+    "submitting": "सत्यापन अनुरोध जमा किया जा रहा है...",
+    "approveSignature": "संकेत मिलने पर वॉलेट में संदेश हस्ताक्षर अनुरोध स्वीकृत करें",
+    "submitted": "अनुबंध सत्यापन अनुरोध सफलतापूर्वक जमा किया गया!",
+    "completionMsg": "आपका अनुबंध स्रोत कोड सत्यापित किया जा रहा है। कतार के आधार पर इसमें कुछ मिनट लग सकते हैं। स्थिति के लिए अनुबंध पृष्ठ में स्रोत कोड टैब देखें।",
+    "viewContract": "अनुबंध देखें"
+  },
+  "dagInspector": {
+    "title": "DAG इंस्पेक्टर",
+    "description": "नोड्स द्वारा पिन किए गए CID द्वारा DAG की सामग्री देखें।",
+    "placeholder": "यहां CID पेस्ट करें (bafy...)",
+    "inspect": "निरीक्षण करें",
+    "dagContent": "DAG सामग्री",
+    "rawJson": "रॉ JSON",
+    "enterCid": "कृपया CID दर्ज करें",
+    "fetchError": "DAG लाने में विफल"
+  },
+  "broadcast": {
+    "title": "लेनदेन प्रसारित करें",
+    "description": "Magi लेनदेन पर हस्ताक्षर करें और प्रसारित करें।",
+    "destAddress": "गंतव्य पता",
+    "destPlaceholder": "गैर-मैप के लिए hive: या did: उपसर्ग शामिल करें, डिफ़ॉल्ट प्रेषक है",
+    "txTypes": {
+      "transfer": "ट्रांसफर",
+      "deposit": "मैप",
+      "withdraw": "अनमैप",
+      "consensus_stake": "सहमति स्टेक",
+      "consensus_unstake": "सहमति अनस्टेक",
+      "stake_hbd": "HBD स्टेक",
+      "unstake_hbd": "HBD अनस्टेक"
+    },
+    "errors": {
+      "amountPositive": "राशि 0 से अधिक होनी चाहिए।",
+      "depositAsset": "जमा संपत्ति HIVE या HBD होनी चाहिए।",
+      "hiveWalletOnly": "केवल Hive वॉलेट से मैप किया जा सकता है।",
+      "unknownType": "अज्ञात लेनदेन प्रकार"
+    }
+  }
+}

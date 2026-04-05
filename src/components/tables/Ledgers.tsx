@@ -1,6 +1,7 @@
 import { Badge, Icon, Link, Table } from '@chakra-ui/react'
 import { FaCircleArrowRight } from 'react-icons/fa6'
 import { Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { LedgerActions, LedgerTx } from '../../types/L2ApiResult'
 import { AccountLink, TxLink } from '../TableLink'
 import { fmtmAmount, timeAgo } from '../../helpers'
@@ -21,18 +22,19 @@ export const StatusBadge = ({ status, action_id }: { status: 'complete' | 'pendi
 }
 
 export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root variant={'line'}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Tx ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Type</Table.ColumnHeader>
-            <Table.ColumnHeader>From</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.type')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.from')}</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
-            <Table.ColumnHeader>To</Table.ColumnHeader>
-            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.to')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.amount')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -70,17 +72,18 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
 }
 
 export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root variant={'line'}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Tx ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>From User</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.fromUser')}</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
-            <Table.ColumnHeader>To User</Table.ColumnHeader>
-            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.toUser')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.amount')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -114,17 +117,18 @@ export const LedgerDeposits = ({ txs }: { txs?: LedgerTx[] }) => {
 }
 
 export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root variant={'line'}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Tx ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Type</Table.ColumnHeader>
-            <Table.ColumnHeader>To User</Table.ColumnHeader>
-            <Table.ColumnHeader>Amount</Table.ColumnHeader>
-            <Table.ColumnHeader>Status</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.type')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.toUser')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.amount')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.status')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -162,16 +166,17 @@ export const LedgerActionsTbl = ({ actions }: { actions?: LedgerActions[] }) => 
 }
 
 export const LedgerWithdrawals = ({ actions }: { actions?: LedgerActions[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'}>
       <Table.Root variant={'line'}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Tx ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>To User</Table.ColumnHeader>
-            <Table.ColumnHeader>Amount</Table.ColumnHeader>
-            <Table.ColumnHeader>Status</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.txId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.toUser')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.amount')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('ledger.status')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>

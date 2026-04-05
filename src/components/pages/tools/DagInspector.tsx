@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import {
   Box,
@@ -21,6 +22,7 @@ import { PageTitle } from '../../PageTitle'
 import { toaster } from '../../ui/toaster'
 
 export const DagInspector = () => {
+  const { t } = useTranslation('tools')
   const [searchParams] = useSearchParams()
   const [rawJson, setRawJson] = useState<boolean>(false)
   const [cid, setCid] = useState<string>(searchParams.get('cid') || '')
@@ -29,26 +31,26 @@ export const DagInspector = () => {
   useEffect(() => {
     if (isError) {
       toaster.error({
-        title: 'Failed to fetch DAG'
+        title: t('dagInspector.fetchError')
       })
     }
-  }, [isError])
+  }, [isError, t])
   const inspectClicked = () => {
     if (!cid)
       return toaster.error({
-        title: 'Please enter a CID'
+        title: t('dagInspector.enterCid')
       })
     setCidToQuery(cid)
   }
   return (
     <>
       <PageTitle title="DAG Inspector" />
-      <Heading as="h1" size="5xl" fontWeight="normal">DAG Inspector</Heading>
-      <Text mb={'6'}>View the contents of a DAG by CID pinned by nodes.</Text>
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('dagInspector.title')}</Heading>
+      <Text mb={'6'}>{t('dagInspector.description')}</Text>
       <HStack gap={'3'} mb={'6'}>
         <Input
           type="text"
-          placeholder="Paste CID here (bafy...)"
+          placeholder={t('dagInspector.placeholder')}
           value={cid}
           onChange={(e) => setCid(e.target.value)}
           onKeyDown={(e) => (e.key === 'Enter' ? inspectClicked() : null)}
@@ -57,7 +59,7 @@ export const DagInspector = () => {
         <Button colorPalette={themeColorScheme} onClick={inspectClicked} disabled={isLoading}>
           <Flex gap={'2'} align={'center'}>
             <Spinner size={'sm'} hidden={!isLoading} />
-            <Text>Inspect</Text>
+            <Text>{t('dagInspector.inspect')}</Text>
           </Flex>
         </Button>
       </HStack>
@@ -68,7 +70,7 @@ export const DagInspector = () => {
           </Box>
           <Card.Header pb={'4'}>
             <HStack gap={'4'}>
-              <Heading fontSize={'xl'}>DAG content</Heading>
+              <Heading fontSize={'xl'}>{t('dagInspector.dagContent')}</Heading>
               <HStack gap={'2'}>
                 <Switch.Root colorPalette={themeColorScheme} checked={rawJson} onCheckedChange={(e) => setRawJson(e.checked)}>
                   <Switch.HiddenInput />
@@ -76,7 +78,7 @@ export const DagInspector = () => {
                     <Switch.Thumb />
                   </Switch.Control>
                 </Switch.Root>
-                <Text>Raw JSON</Text>
+                <Text>{t('dagInspector.rawJson')}</Text>
               </HStack>
             </HStack>
           </Card.Header>

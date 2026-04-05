@@ -1,0 +1,67 @@
+{
+  "title": "Kontrak",
+  "tabs": {
+    "transactions": "Transaksi",
+    "outputs": "Output",
+    "info": "Maklumat",
+    "storageProof": "Bukti Storan",
+    "readState": "Baca Keadaan",
+    "callContract": "Panggil Kontrak",
+    "sourceCode": "Kod Sumber",
+    "history": "Sejarah"
+  },
+  "info": {
+    "createdAt": "Dicipta Pada",
+    "createdInL1Block": "Dicipta Dalam Blok L1",
+    "creationTx": "Tx Penciptaan",
+    "creator": "Pencipta",
+    "owner": "Pemilik",
+    "bytecodeCid": "CID Bytecode",
+    "runtime": "Runtime"
+  },
+  "readState": {
+    "key": "Kunci",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "ralat gql semasa mendapatkan kunci keadaan",
+    "fetchError": "Gagal mendapatkan kunci keadaan"
+  },
+  "callContract": {
+    "balance": "Baki: {{balance}}",
+    "currentAllowance": "Elaun Semasa",
+    "walletNotConnected": "Dompet tidak disambungkan atau baki tidak dapat dimuatkan",
+    "amountMustBePositive": "Jumlah mestilah lebih daripada 0",
+    "insufficientBalance": "Baki tidak mencukupi",
+    "connectFirst": "Sila sambungkan dompet anda terlebih dahulu",
+    "methodRequired": "Kaedah panggilan diperlukan",
+    "simulationFailed": "Simulasi Panggilan Kontrak Gagal"
+  },
+  "verification": {
+    "verified": "Kod sumber kontrak telah disahkan",
+    "verifiedDesc": "Magi Blocks telah mengesahkan bahawa kod sumber yang diberikan kepada kami sepadan dengan bytecode yang digunakan untuk kontrak. Ini tidak bermakna kontrak selamat untuk berinteraksi.",
+    "queued": "Permintaan pengesahan kontrak sedang dalam barisan.",
+    "inProgress": "Permintaan pengesahan kontrak sedang diproses.",
+    "failed": "Pengesahan kontrak gagal diselesaikan.",
+    "notMatch": "Pengesahan kontrak gagal kerana bytecode yang digunakan tidak sepadan dengan kod sumber yang dikompil.",
+    "pending": "Permintaan pengesahan kontrak sedang menunggu.",
+    "fetchError": "Gagal mendapatkan status pengesahan kontrak.",
+    "loadingStatus": "Memuatkan status pengesahan kontrak...",
+    "notVerified": "Kod sumber kontrak tidak disahkan",
+    "unknown": "Kod sumber untuk kontrak ini tidak diketahui.",
+    "language": "Bahasa",
+    "license": "Lesen",
+    "verifiedAt": "Disahkan Pada",
+    "submittedBy": "Dihantar Oleh",
+    "repository": "Repositori",
+    "contractDir": "Direktori Kontrak",
+    "goModDir": "Direktori Modul Go",
+    "tinygoVersion": "Versi TinyGo",
+    "exports": "Eksport"
+  },
+  "errors": {
+    "fetchFailed": "Gagal mendapatkan kontrak",
+    "notExist": "Kontrak tidak wujud"
+  },
+  "storageProofLoading": "Memuatkan tx penggunaan...",
+  "storageProofError": "Gagal memuatkan tx penggunaan"
+}

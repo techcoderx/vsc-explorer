@@ -1,6 +1,7 @@
 import { Heading, Text, Table, Skeleton, Link, HStack, Box } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
 import { fetchEpoch, fetchWitnessesStats } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
@@ -9,6 +10,7 @@ import { PageTitle } from '../PageTitle'
 import { Tooltip } from '../ui/tooltip'
 
 const Witnesses = () => {
+  const { t } = useTranslation('pages')
   const [sort, setSort] = useState<string>('')
   const { data: epoch } = useQuery({
     queryKey: ['vsc-epoch', -1],
@@ -32,19 +34,19 @@ const Witnesses = () => {
   }, [stats, sort, statsUnsorted])
   return (
     <>
-      <PageTitle title="Witnesses" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Witnesses</Heading>
+      <PageTitle title={t('witnesses.title')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('witnesses.title')}</Heading>
       <hr />
       <br />
       <Text>
-        Total {epoch ? epoch.members.length : 0} active witnesses. Participation rate: {participation.toFixed(2)}%
+        {t('witnesses.total', { count: epoch ? epoch.members.length : 0, rate: participation.toFixed(2) })}
       </Text>
       <Table.ScrollArea my={'3'}>
         <Table.Root variant="line">
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>Idx</Table.ColumnHeader>
-              <Table.ColumnHeader>Username</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.idx', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.username', { ns: 'tables' })}</Table.ColumnHeader>
               <Table.ColumnHeader
                 cursor={'pointer'}
                 tabIndex={0}
@@ -62,15 +64,15 @@ const Witnesses = () => {
                 }}
               >
                 <HStack>
-                  <Box>Weight</Box>
+                  <Box>{t('witnesses.weight', { ns: 'tables' })}</Box>
                   {sort === 'weight' ? <FaAngleDown /> : sort === 'weight_asc' ? <FaAngleUp /> : <FaArrowsUpDown />}
                 </HStack>
               </Table.ColumnHeader>
-              <Table.ColumnHeader>Last Block</Table.ColumnHeader>
-              <Table.ColumnHeader>Blocks Produced</Table.ColumnHeader>
-              <Table.ColumnHeader>Last Epoch</Table.ColumnHeader>
-              <Table.ColumnHeader>Elections</Table.ColumnHeader>
-              <Table.ColumnHeader>DID Key</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.lastBlock', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.blocksProduced', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.lastEpoch', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.elections', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('witnesses.didKey', { ns: 'tables' })}</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -98,7 +100,7 @@ const Witnesses = () => {
                         <ReactRouterLink to={'/block/' + m.last_block}>{thousandSeperator(m.last_block || 0)}</ReactRouterLink>
                       </Link>
                     ) : (
-                      'N/A'
+                      t('na', { ns: 'common' })
                     )}
                   </Table.Cell>
                   <Table.Cell>{thousandSeperator(m.block_count || 0)}</Table.Cell>
@@ -108,7 +110,7 @@ const Witnesses = () => {
                         <ReactRouterLink to={'/epoch/' + m.last_epoch}>{thousandSeperator(m.last_epoch)}</ReactRouterLink>
                       </Link>
                     ) : (
-                      'N/A'
+                      t('na', { ns: 'common' })
                     )}
                   </Table.Cell>
                   <Table.Cell>{thousandSeperator(m.election_count || 0)}</Table.Cell>

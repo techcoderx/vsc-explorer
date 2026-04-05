@@ -1,6 +1,7 @@
 import { Heading, Text, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { fetchElections, fetchProps } from '../../requests'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
@@ -12,6 +13,7 @@ import { Tooltip } from '../ui/tooltip'
 const count = 100
 
 const Elections = () => {
+  const { t } = useTranslation('pages')
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
@@ -33,22 +35,22 @@ const Elections = () => {
   if (invalidPage) return <PageNotFound />
   return (
     <>
-      <PageTitle title="Elections" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Elections</Heading>
+      <PageTitle title={t('elections.title')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('elections.title')}</Heading>
       <hr />
       <br />
       <Table.ScrollArea mb={'15px'}>
         <Table.Root variant={'line'}>
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>Epoch</Table.ColumnHeader>
-              <Table.ColumnHeader>Age</Table.ColumnHeader>
-              <Table.ColumnHeader>Proposer</Table.ColumnHeader>
-              <Table.ColumnHeader>Blocks</Table.ColumnHeader>
-              <Table.ColumnHeader>Members</Table.ColumnHeader>
-              <Table.ColumnHeader>Total Weight</Table.ColumnHeader>
-              <Table.ColumnHeader>Voted</Table.ColumnHeader>
-              <Table.ColumnHeader>Block Votes</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.epoch', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.age', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.proposer', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.blocks', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.members', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.totalWeight', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.voted', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('elections.blockVotes', { ns: 'tables' })}</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -77,7 +79,7 @@ const Elections = () => {
                       </Tooltip>
                     ) : (
                       <Text fontStyle={'italic'} opacity={'0.7'}>
-                        Indexing...
+                        {t('indexing', { ns: 'common' })}
                       </Text>
                     )}
                   </Table.Cell>
@@ -93,12 +95,12 @@ const Elections = () => {
                   <Table.Cell>{fmtmAmount(epoch.total_weight, 'HIVE')}</Table.Cell>
                   <Table.Cell maxW={'200px'}>
                     {epoch.epoch === 0 ? (
-                      <Text>N/A</Text>
+                      <Text>{t('na', { ns: 'common' })}</Text>
                     ) : epoch.be_info ? (
                       <ProgressBarPct val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />
                     ) : (
                       <Text fontStyle={'italic'} opacity={'0.7'}>
-                        Indexing...
+                        {t('indexing', { ns: 'common' })}
                       </Text>
                     )}
                   </Table.Cell>

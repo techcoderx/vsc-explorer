@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "المعرف",
+    "age": "العمر",
+    "proposer": "المقترح",
+    "blockHash": "تجزئة الكتلة",
+    "voted": "صوّت"
+  },
+  "transactions": {
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "method": "الطريقة",
+    "from": "من",
+    "to": "إلى",
+    "amount": "المبلغ"
+  },
+  "contractHistory": {
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "deployer": "المنشر",
+    "owner": "المالك",
+    "code": "الكود",
+    "latest": "الأحدث"
+  },
+  "contractOutput": {
+    "id": "المعرف",
+    "age": "العمر",
+    "contractId": "معرف العقد",
+    "inputTx": "معاملة الإدخال",
+    "output": "الإخراج"
+  },
+  "contracts": {
+    "contractId": "معرف العقد",
+    "age": "العمر",
+    "creator": "المنشئ",
+    "creationTx": "معاملة الإنشاء",
+    "code": "الكود",
+    "runtime": "بيئة التشغيل"
+  },
+  "ledger": {
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "type": "النوع",
+    "from": "من",
+    "fromUser": "المستخدم المرسل",
+    "to": "إلى",
+    "toUser": "المستخدم المستلم",
+    "amount": "المبلغ",
+    "status": "الحالة"
+  },
+  "bridge": {
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "toUser": "المستخدم المستلم",
+    "amount": "المبلغ"
+  },
+  "elections": {
+    "epoch": "الحقبة",
+    "age": "العمر",
+    "proposer": "المقترح",
+    "blocks": "الكتل",
+    "members": "الأعضاء",
+    "totalWeight": "إجمالي الوزن",
+    "voted": "صوّت",
+    "blockVotes": "أصوات الكتلة"
+  },
+  "witnesses": {
+    "idx": "الترتيب",
+    "username": "اسم المستخدم",
+    "weight": "الوزن",
+    "lastBlock": "آخر كتلة",
+    "blocksProduced": "الكتل المنتجة",
+    "lastEpoch": "آخر حقبة",
+    "elections": "الانتخابات",
+    "didKey": "مفتاح DID"
+  },
+  "schedule": {
+    "username": "اسم المستخدم",
+    "l1Block": "كتلة L1",
+    "magiBlock": "كتلة Magi"
+  }
+}

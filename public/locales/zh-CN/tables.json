@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "编号",
+    "age": "时间",
+    "proposer": "提议者",
+    "blockHash": "区块哈希",
+    "voted": "已投票"
+  },
+  "transactions": {
+    "txId": "交易 ID",
+    "age": "时间",
+    "method": "方法",
+    "from": "发送方",
+    "to": "接收方",
+    "amount": "金额"
+  },
+  "contractHistory": {
+    "txId": "交易 ID",
+    "age": "时间",
+    "deployer": "部署者",
+    "owner": "所有者",
+    "code": "代码",
+    "latest": "最新"
+  },
+  "contractOutput": {
+    "id": "编号",
+    "age": "时间",
+    "contractId": "合约 ID",
+    "inputTx": "输入交易",
+    "output": "输出"
+  },
+  "contracts": {
+    "contractId": "合约 ID",
+    "age": "时间",
+    "creator": "创建者",
+    "creationTx": "创建交易",
+    "code": "代码",
+    "runtime": "运行时"
+  },
+  "ledger": {
+    "txId": "交易 ID",
+    "age": "时间",
+    "type": "类型",
+    "from": "发送方",
+    "fromUser": "发送用户",
+    "to": "接收方",
+    "toUser": "接收用户",
+    "amount": "金额",
+    "status": "状态"
+  },
+  "bridge": {
+    "txId": "交易 ID",
+    "age": "时间",
+    "toUser": "接收用户",
+    "amount": "金额"
+  },
+  "elections": {
+    "epoch": "周期",
+    "age": "时间",
+    "proposer": "提议者",
+    "blocks": "区块",
+    "members": "成员",
+    "totalWeight": "总权重",
+    "voted": "已投票",
+    "blockVotes": "区块票数"
+  },
+  "witnesses": {
+    "idx": "序号",
+    "username": "用户名",
+    "weight": "权重",
+    "lastBlock": "最后区块",
+    "blocksProduced": "已产出区块",
+    "lastEpoch": "最后周期",
+    "elections": "选举",
+    "didKey": "DID 密钥"
+  },
+  "schedule": {
+    "username": "用户名",
+    "l1Block": "L1 区块",
+    "magiBlock": "Magi 区块"
+  }
+}

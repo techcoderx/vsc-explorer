@@ -1,6 +1,7 @@
 import { Flex, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { Link as ReactRouterLink, To, useSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
 import { btnGroupCss } from '../styles/btnGroup'
 
@@ -45,6 +46,7 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
 }
 
 const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationProps) => {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const link = (page: number) => {
     if (buildLink) return buildLink(page)
@@ -54,7 +56,7 @@ const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationP
   return (
     <Flex justifyContent={'center'}>
       <Box css={btnGroupCss}>
-        {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>Previous</LinkedBtn> : null}
+        {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>{t('previous')}</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={link(currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
         <CurrentPageBtn>{currentPageNum}</CurrentPageBtn>
@@ -70,7 +72,7 @@ const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationP
           </Button>
         ) : null}
         {maxPageNum >= currentPageNum + 3 ? <LinkedBtn to={link(maxPageNum)}>{maxPageNum}</LinkedBtn> : null}
-        {currentPageNum < maxPageNum ? <LinkedBtn to={link((currentPageNum || 1) + 1)}>Next</LinkedBtn> : null}
+        {currentPageNum < maxPageNum ? <LinkedBtn to={link((currentPageNum || 1) + 1)}>{t('next')}</LinkedBtn> : null}
       </Box>
     </Flex>
   )
@@ -82,11 +84,12 @@ interface prevNextBtnProps {
 }
 
 export const PrevNextBtns = ({ toPrev, toNext }: prevNextBtnProps) => {
+  const { t } = useTranslation()
   return (
     <Box margin="10px 0px">
       <Box css={btnGroupCss} float="right">
-        {toPrev ? <LinkedBtn to={toPrev}>Previous</LinkedBtn> : null}
-        {toNext ? <LinkedBtn to={toNext}>Next</LinkedBtn> : null}
+        {toPrev ? <LinkedBtn to={toPrev}>{t('previous')}</LinkedBtn> : null}
+        {toNext ? <LinkedBtn to={toNext}>{t('next')}</LinkedBtn> : null}
       </Box>
     </Box>
   )

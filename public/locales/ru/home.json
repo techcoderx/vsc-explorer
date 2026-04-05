@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Обозреватель блоков Magi",
+  "heroSubtitle": "Поиск аккаунтов, блоков, транзакций и контрактов",
+  "networkActivity": "Активность сети",
+  "dailyTxs": "Ежедневные транзакции (последние 14 дней)",
+  "chartTxLabel": "Транзакции",
+  "chartDateLabel": "Дата: {{date}}",
+  "latestContracts": "Последние контракты",
+  "viewAllContracts": "Просмотреть все контракты",
+  "viewAllBlocks": "Просмотреть все блоки",
+  "viewAllTxs": "Просмотреть все транзакции",
+  "quickLinks": "Быстрые ссылки",
+  "recentBlocks": "Последние блоки",
+  "recentTxs": "Последние транзакции",
+  "latestContractsQuickLinks": "Последние контракты и быстрые ссылки",
+  "stats": {
+    "hiveBlockHeight": "Высота блока Hive",
+    "magiBlockHeight": "Высота блока Magi",
+    "transactions": "Транзакции",
+    "currentEpoch": "Текущая эпоха",
+    "witnesses": "Свидетели",
+    "contracts": "Контракты"
+  },
+  "epoch": {
+    "epoch": "Эпоха {{num}}",
+    "totalStake": "{{amount}} общий стейк",
+    "nextEpochIn": "Следующая эпоха через ~{{countdown}}"
+  },
+  "links": {
+    "blocks": "Блоки",
+    "transactions": "Транзакции",
+    "contracts": "Контракты",
+    "witnesses": "Свидетели",
+    "elections": "Выборы",
+    "namBridge": "Мост NAM",
+    "charts": "Графики",
+    "broadcast": "Отправить"
+  }
+}

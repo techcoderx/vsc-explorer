@@ -1,5 +1,6 @@
 import { Table, Grid, GridItem, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import BitSet from 'bitset'
 import TableRow from './TableRow'
 import { WeightedMembers } from '../types/HafApiResult'
@@ -86,15 +87,16 @@ export const ParticipatedMembers = ({
   members: WeightedMembers[]
   weights: number[]
 }) => {
+  const { t } = useTranslation('pages')
   const bvHex = base64UrlToHex(bv)
   const { votedMembers } = getVotedMembers(bvHex, members, weights)
   return (
     <Table.Root>
       <Table.Body>
-        <TableRow overflowWrap={'normal'} whitespace={'pre'} label={'Aggregation Bits'}>
+        <TableRow overflowWrap={'normal'} whitespace={'pre'} label={t('participation.aggregationBits')}>
           {bitsGrid(getBitsetStrFromHex(bvHex), members.length)}
         </TableRow>
-        <TableRow label={`Voted Members (${votedMembers.length})`}>
+        <TableRow label={t('participation.votedMembers', { count: votedMembers.length })}>
           <Grid
             templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
             gap={3}
@@ -112,7 +114,7 @@ export const ParticipatedMembers = ({
             })}
           </Grid>
         </TableRow>
-        <TableRow label="BLS Signature" value={sig} overflowWrap={'anywhere'} />
+        <TableRow label={t('participation.blsSignature')} value={sig} overflowWrap={'anywhere'} />
       </Table.Body>
     </Table.Root>
   )

@@ -1,5 +1,6 @@
 import { Heading, Table, Skeleton, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { useContracts } from '../../requests'
 import { PageTitle } from '../PageTitle'
@@ -7,22 +8,23 @@ import { AccountLink, ContractLink } from '../TableLink'
 import { Tooltip } from '../ui/tooltip'
 
 const NewContracts = () => {
+  const { t } = useTranslation(['pages', 'tables'])
   const { contracts, isLoading } = useContracts({})
   return (
     <>
-      <PageTitle title="Latest Contracts" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Latest Contracts</Heading>
+      <PageTitle title={t('contracts.title', { ns: 'pages' })} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('contracts.title', { ns: 'pages' })}</Heading>
       <hr />
       <Table.ScrollArea marginTop={'15px'}>
         <Table.Root variant="line">
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>Contract Id</Table.ColumnHeader>
-              <Table.ColumnHeader>Age</Table.ColumnHeader>
-              <Table.ColumnHeader>Creator</Table.ColumnHeader>
-              <Table.ColumnHeader>Creation Tx</Table.ColumnHeader>
-              <Table.ColumnHeader>Code</Table.ColumnHeader>
-              <Table.ColumnHeader>Runtime</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.contractId', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.age', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.creator', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.creationTx', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.code', { ns: 'tables' })}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('contracts.runtime', { ns: 'tables' })}</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>

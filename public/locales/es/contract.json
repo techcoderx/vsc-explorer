@@ -1,0 +1,67 @@
+{
+  "title": "Contrato",
+  "tabs": {
+    "transactions": "Transacciones",
+    "outputs": "Salidas",
+    "info": "Info",
+    "storageProof": "Prueba de almacenamiento",
+    "readState": "Leer estado",
+    "callContract": "Llamar contrato",
+    "sourceCode": "Código fuente",
+    "history": "Historial"
+  },
+  "info": {
+    "createdAt": "Creado en",
+    "createdInL1Block": "Creado en el bloque L1",
+    "creationTx": "Tx de creación",
+    "creator": "Creador",
+    "owner": "Propietario",
+    "bytecodeCid": "CID del bytecode",
+    "runtime": "Entorno de ejecución"
+  },
+  "readState": {
+    "key": "Clave",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "Error gql al obtener la clave de estado",
+    "fetchError": "Error al obtener la clave de estado"
+  },
+  "callContract": {
+    "balance": "Saldo: {{balance}}",
+    "currentAllowance": "Asignación actual",
+    "walletNotConnected": "Billetera no conectada o saldos no disponibles",
+    "amountMustBePositive": "La cantidad debe ser mayor que 0",
+    "insufficientBalance": "Saldo insuficiente",
+    "connectFirst": "Por favor conecta tu billetera primero",
+    "methodRequired": "El método de llamada es obligatorio",
+    "simulationFailed": "Fallo en la simulación de llamada al contrato"
+  },
+  "verification": {
+    "verified": "Código fuente del contrato verificado",
+    "verifiedDesc": "Magi Blocks ha verificado que el código fuente proporcionado coincide con el bytecode desplegado del contrato. Esto no significa que el contrato sea seguro para interactuar.",
+    "queued": "La solicitud de verificación del contrato está actualmente en cola.",
+    "inProgress": "La solicitud de verificación del contrato está siendo procesada.",
+    "failed": "La verificación del contrato no se pudo completar.",
+    "notMatch": "La verificación del contrato falló debido a que el bytecode desplegado no coincide con el código fuente compilado.",
+    "pending": "La solicitud de verificación del contrato está actualmente pendiente.",
+    "fetchError": "Error al obtener el estado de verificación del contrato.",
+    "loadingStatus": "Cargando estado de verificación del contrato...",
+    "notVerified": "Código fuente del contrato no verificado",
+    "unknown": "El código fuente de este contrato es desconocido.",
+    "language": "Lenguaje",
+    "license": "Licencia",
+    "verifiedAt": "Verificado en",
+    "submittedBy": "Enviado por",
+    "repository": "Repositorio",
+    "contractDir": "Directorio del contrato",
+    "goModDir": "Directorio del módulo Go",
+    "tinygoVersion": "Versión TinyGo",
+    "exports": "Exportaciones"
+  },
+  "errors": {
+    "fetchFailed": "Error al obtener el contrato",
+    "notExist": "El contrato no existe"
+  },
+  "storageProofLoading": "Cargando tx de despliegue...",
+  "storageProofError": "Error al cargar la tx de despliegue"
+}

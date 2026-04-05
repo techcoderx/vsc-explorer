@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { LuInfo } from 'react-icons/lu'
 import {
   Box,
@@ -29,6 +30,7 @@ import { generateMessageToSign } from '../../../helpers'
 import { FaHive } from 'react-icons/fa6'
 import { toaster } from '../../ui/toaster'
 import { InfoTip } from '../../ui/toggle-tip'
+import { TFunction } from 'i18next'
 
 const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
   '0.40.1': {
@@ -54,25 +56,25 @@ const wasmStripTools = [
   ['wasm-tools', 'Wasm Tools (v1.239.0)']
 ]
 
-const notice = [
+const getNotice = (t: TFunction) => [
   {
-    title: 'Language',
-    body: <Text>The contract verifier supports contracts written in Go only.</Text>
+    title: t('verifyContract.notice.language'),
+    body: <Text>{t('verifyContract.notice.languageBody')}</Text>
   },
   {
-    title: 'Compiler Options',
+    title: t('verifyContract.notice.compilerOptions'),
     body: (
       <Text>
-        There is currently no way to set custom compiler options yet. The verifier uses{' '}
-        <Code>-gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown</Code> for Go contracts.
+        {t('verifyContract.notice.compilerOptionsBody')}{' '}
+        <Code>-gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown</Code>
       </Text>
     )
   },
   {
-    title: 'Environment',
+    title: t('verifyContract.notice.environment'),
     body: (
       <Text>
-        Contracts are compiled using the official{' '}
+        {t('verifyContract.notice.environmentBody')}{' '}
         <Link href="https://hub.docker.com/r/tinygo/tinygo" target="_blank" rel="noopener noreferrer" aria-label="TinyGo Docker image (opens in new tab)">
           TinyGo Docker image
         </Link>
@@ -81,31 +83,32 @@ const notice = [
     )
   },
   {
-    title: 'Entrypoint',
+    title: t('verifyContract.notice.entrypoint'),
     body: (
       <Text>
-        The default entrypoint directory is <Code>contract/</Code> for Go contracts. A custom subdirectory may be specified if the
-        contract source code is located elsewhere in the repository (e.g. <Code>contracts/dex</Code>). Please ensure that{' '}
-        <Code>main.go</Code> exists as part of the main package in the specified directory.
+        {t('verifyContract.notice.entrypointBody1')} <Code>contract/</Code> {t('verifyContract.notice.entrypointBody2')}{' '}
+        <Code>contracts/dex</Code>{t('verifyContract.notice.entrypointBody3')}{' '}
+        <Code>main.go</Code> {t('verifyContract.notice.entrypointBody4')}
       </Text>
     )
   },
   {
-    title: 'Dependencies',
-    body: <Text>The contract verifier does not support importing external packages outside of Go standard library for now.</Text>
+    title: t('verifyContract.notice.dependencies'),
+    body: <Text>{t('verifyContract.notice.dependenciesBody')}</Text>
   },
   {
-    title: 'Experimental',
+    title: t('verifyContract.notice.experimental'),
     body: (
       <Text>
-        This tool is currently <b>experimental</b> and some issues are to be expected. It is only available for whitelisted users
-        for now.
+        {t('verifyContract.notice.experimentalBody1')} <b>{t('verifyContract.notice.experimentalBold')}</b> {t('verifyContract.notice.experimentalBody2')}
       </Text>
     )
   }
 ]
 
 export const VerifyContract = () => {
+  const { t } = useTranslation('tools')
+  const notice = getNotice(t)
   const [searchParams] = useSearchParams()
   const { aioha, user, provider } = useAioha()
   const [stage, setStage] = useState(searchParams.get('skipnotice') === '1' ? 1 : 0)
@@ -122,30 +125,30 @@ export const VerifyContract = () => {
   const submitClicked = async () => {
     let e = ''
     if (!addr.startsWith('vsc1')) {
-      e = "Contract address must start with 'vsc1'"
+      e = t('verifyContract.errors.mustStartVsc1')
     } else if (!repoUrl.startsWith('https://github.com/')) {
-      e = 'Repository URL must be a GitHub link'
+      e = t('verifyContract.errors.mustBeGithub')
     }
     const repoId = repoUrl.replace('https://github.com/', '')
     const repoIdParts = repoId.split('/')
     if (repoIdParts.length !== 2) {
-      e = 'Invalid GitHub repository URL'
+      e = t('verifyContract.errors.invalidRepoUrl')
     } else if (repoIdParts[0].length > 39 || !/^[A-Za-z0-9-]+$/.test(repoIdParts[0])) {
-      e = 'Invalid Github user'
+      e = t('verifyContract.errors.invalidGithubUser')
     } else if (repoIdParts[1].length > 100 || !/^[A-Za-z0-9._-]+$/.test(repoIdParts[1])) {
-      e = 'Invalid Github repo name'
+      e = t('verifyContract.errors.invalidRepoName')
     }
     if (
       contractDir.length > 0 &&
       (contractDir.includes('..') || contractDir.startsWith('/') || !/^[A-Za-z0-9/_.-]+$/.test(contractDir))
     ) {
-      e = 'Invalid contract directory path'
+      e = t('verifyContract.errors.invalidContractDir')
     }
     if (
       goModDir.length > 0 &&
       (goModDir.includes('..') || goModDir.startsWith('/') || !/^[A-Za-z0-9/_.-]+$/.test(goModDir))
     ) {
-      e = 'Invalid Go module directory path'
+      e = t('verifyContract.errors.invalidGoModDir')
     }
     if (e) {
       return toaster.error({ title: e })
@@ -156,37 +159,37 @@ export const VerifyContract = () => {
       const verifInfo = await cvInfo(addr)
       if (verifInfo && (verifInfo.status === 'queued' || verifInfo.status === 'in progress' || verifInfo.status === 'success')) {
         setIsSpinning(false)
-        return toaster.error({ title: 'Contract is already verified or being verified.' })
+        return toaster.error({ title: t('verifyContract.errors.alreadyVerified') })
       }
       if (!verifInfo) {
         const ct = await fetchContracts({ byId: addr })
         if (!ct || ct.length === 0) {
           setIsSpinning(false)
-          return toaster.error({ title: 'Contract not found' })
+          return toaster.error({ title: t('verifyContract.errors.contractNotFound') })
         }
       }
     } catch {
       setIsSpinning(false)
-      return toaster.error({ title: 'Failed to call backend for contract verification status' })
+      return toaster.error({ title: t('verifyContract.errors.backendFailed') })
     }
     try {
       const fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
       if (fetchedRepo.status !== 200) {
-        return toaster.error({ title: 'Failed to fetch repository info with status code ' + fetchedRepo.status })
+        return toaster.error({ title: t('verifyContract.errors.fetchRepoFailed', { status: fetchedRepo.status }) })
       }
       if (gitBranch.length > 0) {
         const fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
         if (fetchedBranch.status !== 200) {
-          return toaster.error({ title: 'Failed to fetch branch info with status code ' + fetchedBranch.status })
+          return toaster.error({ title: t('verifyContract.errors.fetchBranchFailed', { status: fetchedBranch.status }) })
         }
       }
     } catch {
       setIsSpinning(false)
-      return toaster.error({ title: 'Failed to validate repository' })
+      return toaster.error({ title: t('verifyContract.errors.validateRepoFailed') })
     }
     toastIdRef.current = toaster.create({
-      title: 'Submitting verification request...',
-      description: 'Approve message signature request in wallet when prompted',
+      title: t('verifyContract.submitting'),
+      description: t('verifyContract.approveSignature'),
       type: 'loading',
       duration: Infinity
     })
@@ -197,7 +200,7 @@ export const VerifyContract = () => {
         if (toastIdRef.current) {
           toaster.dismiss(toastIdRef.current)
         }
-        toaster.error({ title: 'Signature Error', description: sign.error })
+        toaster.error({ title: t('verifyContract.errors.signatureError'), description: sign.error })
         return
       }
       const authReq = await fetch(`${cvApi}/login`, {
@@ -209,7 +212,7 @@ export const VerifyContract = () => {
           toaster.dismiss(toastIdRef.current)
         }
         toaster.error({
-          title: 'Error',
+          title: t('error', { ns: 'common' }),
           description: (await authReq.json()).error
         })
         return
@@ -236,15 +239,15 @@ export const VerifyContract = () => {
         if (toastIdRef.current) {
           toaster.dismiss(toastIdRef.current)
         }
-        toaster.error({ title: 'Error', description: e.error })
+        toaster.error({ title: t('error', { ns: 'common' }), description: e.error })
         return
       }
       if (toastIdRef.current) {
         toaster.dismiss(toastIdRef.current)
       }
       toaster.success({
-        title: 'Success',
-        description: 'Contract verification request submitted successfully!'
+        title: t('success', { ns: 'common' }),
+        description: t('verifyContract.submitted')
       })
       setIsSpinning(false)
       setStage(2)
@@ -253,17 +256,16 @@ export const VerifyContract = () => {
       if (toastIdRef.current) {
         toaster.dismiss(toastIdRef.current)
       }
-      toaster.error({ title: 'Error', description: 'Unknown error occurred' })
+      toaster.error({ title: t('error', { ns: 'common' }), description: t('verifyContract.errors.unknownError') })
       return
     }
   }
   return (
     <>
       <PageTitle title="Verify Contract" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Verify Contract</Heading>
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('verifyContract.title')}</Heading>
       <Text mb={'6'}>
-        Submit contract source code to Magi Blocks to verify that the resulting compiled bytecode matches the deployed contract
-        bytecode.
+        {t('verifyContract.description')}
       </Text>
       <Center>
         <Stack direction="column" gap={'6'} maxW={'4xl'} w={'100%'}>
@@ -274,7 +276,7 @@ export const VerifyContract = () => {
                   <Heading fontSize={'2xl'}>
                     <Flex align={'center'} gap={'2'}>
                       <LuInfo />
-                      Read This First!
+                      {t('verifyContract.readThisFirst')}
                     </Flex>
                   </Heading>
                 </Card.Header>
@@ -293,7 +295,7 @@ export const VerifyContract = () => {
               </Card.Root>
               <Center>
                 <Button colorPalette={themeColorScheme} onClick={() => setStage(1)}>
-                  Next
+                  {t('next', { ns: 'common' })}
                 </Button>
               </Center>
             </Box>
@@ -303,18 +305,18 @@ export const VerifyContract = () => {
                 <Card.Body>
                   <Stack direction={'column'} gap={'3'}>
                     <Field.Root>
-                      <Field.Label>Username</Field.Label>
+                      <Field.Label>{t('form.username', { ns: 'common' })}</Field.Label>
                       <Button variant={'outline'} colorPalette={'gray'} _focus={{ boxShadow: 'none' }} onClick={() => setWalletOpen(true)}>
                         {user ? <Box as={FaHive} fontSize={'lg'} /> : null}
-                        {user ?? 'Connect Wallet'}
+                        {user ?? t('connectWallet', { ns: 'common' })}
                       </Button>
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>Contract Address</Field.Label>
+                      <Field.Label>{t('verifyContract.form.contractAddress')}</Field.Label>
                       <Input type="text" placeholder="vsc1..." value={addr} onChange={(e) => setAddr(e.target.value)} />
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>GitHub Repository URL</Field.Label>
+                      <Field.Label>{t('verifyContract.form.repoUrl')}</Field.Label>
                       <Input
                         type="text"
                         placeholder="https://github.com/..."
@@ -323,7 +325,7 @@ export const VerifyContract = () => {
                       />
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>Git Branch</Field.Label>
+                      <Field.Label>{t('verifyContract.form.gitBranch')}</Field.Label>
                       <Input
                         type="text"
                         placeholder={'default branch'}
@@ -333,8 +335,8 @@ export const VerifyContract = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>
-                        Contract Directory
-                        <InfoTip>Subdirectory containing the contract source code to compile, relative to the Go module directory. Defaults to "contract".</InfoTip>
+                        {t('verifyContract.form.contractDirectory')}
+                        <InfoTip>{t('verifyContract.form.contractDirectoryTip')}</InfoTip>
                       </Field.Label>
                       <Input
                         type="text"
@@ -345,8 +347,8 @@ export const VerifyContract = () => {
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>
-                        Go Module Directory
-                        <InfoTip>Subdirectory containing the go.mod file, if it is not in the repository root. Leave empty if go.mod is at the root.</InfoTip>
+                        {t('verifyContract.form.goModDirectory')}
+                        <InfoTip>{t('verifyContract.form.goModDirectoryTip')}</InfoTip>
                       </Field.Label>
                       <Input
                         type="text"
@@ -356,7 +358,7 @@ export const VerifyContract = () => {
                       />
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>TinyGo Version</Field.Label>
+                      <Field.Label>{t('verifyContract.form.tinygoVersion')}</Field.Label>
                       <NativeSelect.Root>
                         <NativeSelect.Field value={tinygoVersion} onChange={(e) => setTinyGoVersion(e.target.value)}>
                           {Object.keys(tinygoVersions).map((val, i) => (
@@ -369,7 +371,7 @@ export const VerifyContract = () => {
                       </NativeSelect.Root>
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>WASM Strip Tool</Field.Label>
+                      <Field.Label>{t('verifyContract.form.wasmStripTool')}</Field.Label>
                       <NativeSelect.Root>
                         <NativeSelect.Field value={wasmStripTool} onChange={(e) => setWasmStripTool(e.target.value)}>
                           {wasmStripTools.map((val, i) => (
@@ -386,7 +388,7 @@ export const VerifyContract = () => {
               </Card.Root>
               <Center>
                 <Stack direction="row" gap="3">
-                  <Button onClick={() => setStage(0)}>Previous</Button>
+                  <Button onClick={() => setStage(0)}>{t('previous', { ns: 'common' })}</Button>
                   <Button
                     colorPalette={themeColorScheme}
                     onClick={submitClicked}
@@ -396,7 +398,7 @@ export const VerifyContract = () => {
                   >
                     <Flex gap={'2'} align={'center'}>
                       <Spinner size={'sm'} hidden={!isSpinning} />
-                      <Text>{provider === Providers.MetaMaskSnap ? 'Unsupported Wallet' : 'Submit'}</Text>
+                      <Text>{provider === Providers.MetaMaskSnap ? t('unsupportedWallet', { ns: 'common' }) : t('submit', { ns: 'common' })}</Text>
                     </Flex>
                   </Button>
                 </Stack>
@@ -406,11 +408,10 @@ export const VerifyContract = () => {
             <Flex direction="column" gap={'5'} align={'center'}>
               <Text fontSize={'9xl'}>🎉</Text>
               <Text>
-                Your contract source code is being verified. This may take a few minutes depending on the queue. Refer to the
-                Source Code tab in contract page for status.
+                {t('verifyContract.submittedDescription')}
               </Text>
               <Button asChild colorPalette={themeColorScheme}>
-                <ReactRouterLink to={`/contract/${addr}`}>View Contract</ReactRouterLink>
+                <ReactRouterLink to={`/contract/${addr}`}>{t('verifyContract.viewContract')}</ReactRouterLink>
               </Button>
             </Flex>
           ) : null}

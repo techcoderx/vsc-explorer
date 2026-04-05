@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "Id",
+    "age": "Antigüedad",
+    "proposer": "Proponente",
+    "blockHash": "Hash del bloque",
+    "voted": "Votado"
+  },
+  "transactions": {
+    "txId": "ID de transacción",
+    "age": "Antigüedad",
+    "method": "Método",
+    "from": "De",
+    "to": "A",
+    "amount": "Cantidad"
+  },
+  "contractHistory": {
+    "txId": "ID de transacción",
+    "age": "Antigüedad",
+    "deployer": "Desplegador",
+    "owner": "Propietario",
+    "code": "Código",
+    "latest": "Último"
+  },
+  "contractOutput": {
+    "id": "Id",
+    "age": "Antigüedad",
+    "contractId": "ID del contrato",
+    "inputTx": "Tx de entrada",
+    "output": "Salida"
+  },
+  "contracts": {
+    "contractId": "Id del contrato",
+    "age": "Antigüedad",
+    "creator": "Creador",
+    "creationTx": "Tx de creación",
+    "code": "Código",
+    "runtime": "Entorno de ejecución"
+  },
+  "ledger": {
+    "txId": "ID de Tx",
+    "age": "Antigüedad",
+    "type": "Tipo",
+    "from": "De",
+    "fromUser": "Usuario origen",
+    "to": "A",
+    "toUser": "Usuario destino",
+    "amount": "Cantidad",
+    "status": "Estado"
+  },
+  "bridge": {
+    "txId": "ID de Tx",
+    "age": "Antigüedad",
+    "toUser": "Usuario destino",
+    "amount": "Cantidad"
+  },
+  "elections": {
+    "epoch": "Época",
+    "age": "Antigüedad",
+    "proposer": "Proponente",
+    "blocks": "Bloques",
+    "members": "Miembros",
+    "totalWeight": "Peso total",
+    "voted": "Votado",
+    "blockVotes": "Votos de bloque"
+  },
+  "witnesses": {
+    "idx": "Idx",
+    "username": "Nombre de usuario",
+    "weight": "Peso",
+    "lastBlock": "Último bloque",
+    "blocksProduced": "Bloques producidos",
+    "lastEpoch": "Última época",
+    "elections": "Elecciones",
+    "didKey": "Clave DID"
+  },
+  "schedule": {
+    "username": "Nombre de usuario",
+    "l1Block": "Bloque L1",
+    "magiBlock": "Bloque Magi"
+  }
+}

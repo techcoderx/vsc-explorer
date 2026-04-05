@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "コントラクト検証",
+    "description": "コントラクトのソースコードを Magi Blocks に提出して、コンパイルされたバイトコードがデプロイ済みコントラクトのバイトコードと一致するか検証します。",
+    "readThisFirst": "最初にお読みください！",
+    "notice": {
+      "language": "言語",
+      "languageBody": "コントラクト検証ツールは Go で書かれたコントラクトのみをサポートしています。",
+      "compilerOptions": "コンパイラオプション",
+      "compilerOptionsBody": "現時点ではカスタムコンパイラオプションを設定する方法はありません。検証ツールは Go コントラクトに -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown を使用します。",
+      "environment": "環境",
+      "environmentBody": "コントラクトは公式の TinyGo Docker イメージを使用してコンパイルされます。",
+      "entrypoint": "エントリーポイント",
+      "entrypointBody": "Go コントラクトのデフォルトエントリーポイントディレクトリは contract/ です。コントラクトのソースコードがリポジトリ内の別の場所にある場合は、カスタムサブディレクトリを指定できます。指定されたディレクトリの main パッケージの一部として main.go が存在することを確認してください。",
+      "dependencies": "依存関係",
+      "dependenciesBody": "現時点では、コントラクト検証ツールは Go 標準ライブラリ以外の外部パッケージのインポートをサポートしていません。",
+      "experimental": "実験的",
+      "experimentalBody": "このツールは現在実験的な段階にあり、いくつかの問題が発生することが予想されます。現時点ではホワイトリストユーザーのみ利用可能です。"
+    },
+    "form": {
+      "contractAddress": "コントラクトアドレス",
+      "githubRepoUrl": "GitHub リポジトリ URL",
+      "gitBranch": "Git ブランチ",
+      "defaultBranch": "デフォルトブランチ",
+      "contractDir": "コントラクトディレクトリ",
+      "contractDirTip": "コンパイルするコントラクトのソースコードを含むサブディレクトリ（Go モジュールディレクトリからの相対パス）。デフォルトは \"contract\" です。",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go モジュールディレクトリ",
+      "goModDirTip": "go.mod ファイルを含むサブディレクトリ（リポジトリのルートにない場合）。go.mod がルートにある場合は空のままにしてください。",
+      "goModDirPlaceholder": "リポジトリルート",
+      "tinygoVersion": "TinyGo バージョン",
+      "wasmStripTool": "WASM ストリップツール"
+    },
+    "errors": {
+      "mustStartVsc1": "コントラクトアドレスは 'vsc1' で始まる必要があります",
+      "mustBeGithub": "リポジトリ URL は GitHub リンクである必要があります",
+      "invalidRepoUrl": "無効な GitHub リポジトリ URL",
+      "invalidGithubUser": "無効な Github ユーザー",
+      "invalidGithubRepo": "無効な Github リポジトリ名",
+      "invalidContractDir": "無効なコントラクトディレクトリパス",
+      "invalidGoModDir": "無効な Go モジュールディレクトリパス",
+      "alreadyVerified": "コントラクトはすでに検証済みか検証中です。",
+      "contractNotFound": "コントラクトが見つかりません",
+      "backendError": "コントラクト検証ステータスのバックエンド呼び出しに失敗",
+      "repoFetchError": "ステータスコード {{statusCode}} でリポジトリ情報の取得に失敗",
+      "branchFetchError": "ステータスコード {{statusCode}} でブランチ情報の取得に失敗",
+      "repoValidateError": "リポジトリの検証に失敗",
+      "signatureError": "署名エラー",
+      "unknownError": "不明なエラーが発生しました"
+    },
+    "submitting": "検証リクエストを送信中...",
+    "approveSignature": "プロンプトが表示されたらウォレットでメッセージ署名リクエストを承認してください",
+    "submitted": "コントラクト検証リクエストが正常に送信されました！",
+    "completionMsg": "コントラクトのソースコードを検証中です。キューの状況によって数分かかる場合があります。コントラクトページの「ソースコード」タブでステータスを確認してください。",
+    "viewContract": "コントラクトを表示"
+  },
+  "dagInspector": {
+    "title": "DAG インスペクター",
+    "description": "ノードにピン留めされた CID の DAG コンテンツを表示します。",
+    "placeholder": "CID をここに貼り付け（bafy...）",
+    "inspect": "検査",
+    "dagContent": "DAG コンテンツ",
+    "rawJson": "生の JSON",
+    "enterCid": "CID を入力してください",
+    "fetchError": "DAG の取得に失敗"
+  },
+  "broadcast": {
+    "title": "トランザクションのブロードキャスト",
+    "description": "Magi トランザクションに署名してブロードキャストします。",
+    "destAddress": "送信先アドレス",
+    "destPlaceholder": "非マップの場合は hive: または did: プレフィックスを含める、デフォルトは送信者",
+    "txTypes": {
+      "transfer": "送金",
+      "deposit": "マップ",
+      "withdraw": "アンマップ",
+      "consensus_stake": "コンセンサスステーク",
+      "consensus_unstake": "コンセンサスアンステーク",
+      "stake_hbd": "HBD ステーク",
+      "unstake_hbd": "HBD アンステーク"
+    },
+    "errors": {
+      "amountPositive": "金額は 0 より大きくなければなりません。",
+      "depositAsset": "デポジット資産は HIVE または HBD でなければなりません。",
+      "hiveWalletOnly": "Hive ウォレットからのみマップできます。",
+      "unknownType": "不明なトランザクションタイプ"
+    }
+  }
+}

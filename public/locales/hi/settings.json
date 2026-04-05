@@ -1,0 +1,13 @@
+{
+  "title": "सेटिंग्स",
+  "colorMode": "रंग मोड",
+  "darkMode": "डार्क मोड",
+  "colorTheme": "रंग थीम",
+  "themes": {
+    "default": "डिफ़ॉल्ट",
+    "red": "लाल",
+    "green": "हरा",
+    "blue": "नीला"
+  },
+  "language": "भाषा"
+}

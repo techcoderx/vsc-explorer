@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "التحقق من العقد",
+    "description": "أرسل الكود المصدري للعقد إلى Magi Blocks للتحقق من أن كود البايت المُجمَّع الناتج يتطابق مع كود البايت للعقد المنشور.",
+    "readThisFirst": "اقرأ هذا أولاً!",
+    "notice": {
+      "language": "اللغة",
+      "languageBody": "يدعم محقق العقود فقط العقود المكتوبة بلغة Go.",
+      "compilerOptions": "خيارات المترجم",
+      "compilerOptionsBody": "لا توجد طريقة لتعيين خيارات مترجم مخصصة حتى الآن. يستخدم المحقق -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown لعقود Go.",
+      "environment": "البيئة",
+      "environmentBody": "يتم تجميع العقود باستخدام صورة Docker الرسمية لـ TinyGo.",
+      "entrypoint": "نقطة الدخول",
+      "entrypointBody": "مجلد نقطة الدخول الافتراضي هو contract/ لعقود Go. يمكن تحديد مجلد فرعي مخصص إذا كان الكود المصدري للعقد موجودًا في مكان آخر بالمستودع. يرجى التأكد من وجود main.go كجزء من الحزمة الرئيسية في المجلد المحدد.",
+      "dependencies": "التبعيات",
+      "dependenciesBody": "لا يدعم محقق العقود استيراد حزم خارجية خارج المكتبة القياسية لـ Go في الوقت الحالي.",
+      "experimental": "تجريبي",
+      "experimentalBody": "هذه الأداة تجريبية حاليًا وقد تواجه بعض المشكلات. متاحة فقط للمستخدمين المدرجين في القائمة البيضاء حتى الآن."
+    },
+    "form": {
+      "contractAddress": "عنوان العقد",
+      "githubRepoUrl": "رابط مستودع GitHub",
+      "gitBranch": "فرع Git",
+      "defaultBranch": "الفرع الافتراضي",
+      "contractDir": "مجلد العقد",
+      "contractDirTip": "المجلد الفرعي الذي يحتوي على الكود المصدري للعقد للتجميع، نسبة إلى مجلد وحدة Go. الافتراضي هو \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "مجلد وحدة Go",
+      "goModDirTip": "المجلد الفرعي الذي يحتوي على ملف go.mod، إذا لم يكن في جذر المستودع. اتركه فارغًا إذا كان go.mod في الجذر.",
+      "goModDirPlaceholder": "جذر المستودع",
+      "tinygoVersion": "إصدار TinyGo",
+      "wasmStripTool": "أداة تجريد WASM"
+    },
+    "errors": {
+      "mustStartVsc1": "يجب أن يبدأ عنوان العقد بـ 'vsc1'",
+      "mustBeGithub": "يجب أن يكون رابط المستودع رابط GitHub",
+      "invalidRepoUrl": "رابط مستودع GitHub غير صالح",
+      "invalidGithubUser": "مستخدم Github غير صالح",
+      "invalidGithubRepo": "اسم مستودع Github غير صالح",
+      "invalidContractDir": "مسار مجلد العقد غير صالح",
+      "invalidGoModDir": "مسار مجلد وحدة Go غير صالح",
+      "alreadyVerified": "العقد محقق بالفعل أو قيد التحقق.",
+      "contractNotFound": "العقد غير موجود",
+      "backendError": "فشل في الاتصال بالخادم الخلفي للتحقق من حالة العقد",
+      "repoFetchError": "فشل في جلب معلومات المستودع بكود الحالة {{statusCode}}",
+      "branchFetchError": "فشل في جلب معلومات الفرع بكود الحالة {{statusCode}}",
+      "repoValidateError": "فشل في التحقق من صحة المستودع",
+      "signatureError": "خطأ في التوقيع",
+      "unknownError": "حدث خطأ غير معروف"
+    },
+    "submitting": "جارٍ إرسال طلب التحقق...",
+    "approveSignature": "وافق على طلب توقيع الرسالة في المحفظة عند المطالبة",
+    "submitted": "تم إرسال طلب التحقق من العقد بنجاح!",
+    "completionMsg": "جارٍ التحقق من الكود المصدري للعقد. قد يستغرق هذا بضع دقائق اعتمادًا على قائمة الانتظار. راجع تبويب الكود المصدري في صفحة العقد للاطلاع على الحالة.",
+    "viewContract": "عرض العقد"
+  },
+  "dagInspector": {
+    "title": "فاحص DAG",
+    "description": "عرض محتويات DAG بواسطة CID المثبت بواسطة العقد.",
+    "placeholder": "الصق CID هنا (bafy...)",
+    "inspect": "فحص",
+    "dagContent": "محتوى DAG",
+    "rawJson": "JSON الخام",
+    "enterCid": "يرجى إدخال CID",
+    "fetchError": "فشل في جلب DAG"
+  },
+  "broadcast": {
+    "title": "بث المعاملة",
+    "description": "توقيع وبث معاملة Magi.",
+    "destAddress": "عنوان الوجهة",
+    "destPlaceholder": "أدرج بادئة hive: أو did: للحالات غير المربوطة، يعود افتراضيًا إلى المرسل",
+    "txTypes": {
+      "transfer": "تحويل",
+      "deposit": "ربط",
+      "withdraw": "فك ربط",
+      "consensus_stake": "رهن التوافق",
+      "consensus_unstake": "فك رهن التوافق",
+      "stake_hbd": "رهن HBD",
+      "unstake_hbd": "فك رهن HBD"
+    },
+    "errors": {
+      "amountPositive": "يجب أن يكون المبلغ أكبر من 0.",
+      "depositAsset": "يجب أن يكون أصل الإيداع HIVE أو HBD.",
+      "hiveWalletOnly": "يمكن الربط فقط من محافظ Hive.",
+      "unknownType": "نوع المعاملة غير معروف"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Postavke",
+  "colorMode": "Način boja",
+  "darkMode": "Tamni način",
+  "colorTheme": "Tema boja",
+  "themes": {
+    "default": "Zadana",
+    "red": "Crvena",
+    "green": "Zelena",
+    "blue": "Plava"
+  },
+  "language": "Jezik"
+}

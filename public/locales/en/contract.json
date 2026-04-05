@@ -1,0 +1,67 @@
+{
+  "title": "Contract",
+  "tabs": {
+    "transactions": "Transactions",
+    "outputs": "Outputs",
+    "info": "Info",
+    "storageProof": "Storage Proof",
+    "readState": "Read State",
+    "callContract": "Call Contract",
+    "sourceCode": "Source Code",
+    "history": "History"
+  },
+  "info": {
+    "createdAt": "Created At",
+    "createdInL1Block": "Created In L1 Block",
+    "creationTx": "Creation Tx",
+    "creator": "Creator",
+    "owner": "Owner",
+    "bytecodeCid": "Bytecode CID",
+    "runtime": "Runtime"
+  },
+  "readState": {
+    "key": "Key",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "gql error while getting state key",
+    "fetchError": "Failed to fetch state key"
+  },
+  "callContract": {
+    "balance": "Balance: {{balance}}",
+    "currentAllowance": "Current Allowance",
+    "walletNotConnected": "Wallet not connected or balances could not be loaded",
+    "amountMustBePositive": "Amount must be greater than 0",
+    "insufficientBalance": "Insufficient balance",
+    "connectFirst": "Please connect your wallet first",
+    "methodRequired": "Call method is required",
+    "simulationFailed": "Contract Call Simulation Failed"
+  },
+  "verification": {
+    "verified": "Contract source code verified",
+    "verifiedDesc": "Magi Blocks has verified that the source code provided to us matches the deployed bytecode for the contract. This does not mean the contract is safe to interact with.",
+    "queued": "Contract verification request is currently in queue.",
+    "inProgress": "Contract verification request is currently being processed.",
+    "failed": "Contract verification failed to complete.",
+    "notMatch": "Contract verification failed due to non-matching deployed bytecode from compiled source code.",
+    "pending": "Contract verification request is currently pending.",
+    "fetchError": "Failed to fetch contract verification status.",
+    "loadingStatus": "Loading contract verification status...",
+    "notVerified": "Contract source code not verified",
+    "unknown": "Source code for this contract is unknown.",
+    "language": "Language",
+    "license": "License",
+    "verifiedAt": "Verified At",
+    "submittedBy": "Submitted By",
+    "repository": "Repository",
+    "contractDir": "Contract Directory",
+    "goModDir": "Go Module Directory",
+    "tinygoVersion": "TinyGo Version",
+    "exports": "Exports"
+  },
+  "errors": {
+    "fetchFailed": "Failed to fetch contract",
+    "notExist": "Contract does not exist"
+  },
+  "storageProofLoading": "Loading deployment tx...",
+  "storageProofError": "Failed to load deployment tx"
+}

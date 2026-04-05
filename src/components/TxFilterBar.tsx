@@ -3,6 +3,7 @@ import { parseDate } from '@chakra-ui/react/date-picker'
 import type { DateValue } from '@chakra-ui/react/date-picker'
 import { useSearchParams, useNavigate } from 'react-router'
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TX_STATUS_OPTIONS, TX_TYPE_OPTIONS } from '../types/TxFilters'
 import { themeColorScheme } from '../settings'
 import { LuCalendar, LuX, LuFilter } from 'react-icons/lu'
@@ -11,11 +12,12 @@ const FILTER_KEYS = ['status', 'type', 'from', 'to', 'account', 'contract']
 
 export const TxFilterToggle = ({ open, onToggle }: { open: boolean; onToggle: () => void }) => {
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation('filters')
   const activeCount = FILTER_KEYS.filter((k) => searchParams.get(k)).length
   return (
     <Button size={'sm'} variant={open ? 'solid' : 'outline'} colorPalette={'gray'} onClick={onToggle}>
       <LuFilter />
-      Filters{activeCount > 0 ? ` (${activeCount})` : ''}
+      {t('filters')}{activeCount > 0 ? ` (${activeCount})` : ''}
     </Button>
   )
 }
@@ -106,6 +108,7 @@ const readParam = (sp: URLSearchParams, key: string) => sp.get(key) || ''
 export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFilterBarProps) => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { t } = useTranslation('filters')
 
   const initState = useCallback(
     () => ({
@@ -145,12 +148,12 @@ export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFil
       <Collapsible.Content>
         <Flex gap={'3'} my={'3'} wrap={'wrap'} align={'end'}>
           <Field.Root maxW={'180px'}>
-            <Field.Label fontSize={'xs'}>Status</Field.Label>
+            <Field.Label fontSize={'xs'}>{t('statusLabel')}</Field.Label>
             <NativeSelect.Root size={'sm'}>
               <NativeSelect.Field value={draft.status} onChange={(e) => set('status', e.target.value)}>
                 {TX_STATUS_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
-                    {o.label}
+                    {t(`status.${o.value}`)}
                   </option>
                 ))}
               </NativeSelect.Field>
@@ -158,23 +161,23 @@ export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFil
             </NativeSelect.Root>
           </Field.Root>
           <Field.Root maxW={'180px'}>
-            <Field.Label fontSize={'xs'}>Type</Field.Label>
+            <Field.Label fontSize={'xs'}>{t('typeLabel')}</Field.Label>
             <NativeSelect.Root size={'sm'}>
               <NativeSelect.Field value={draft.type} onChange={(e) => set('type', e.target.value)}>
                 {TX_TYPE_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
-                    {o.label}
+                    {t(`txType.${o.value}`)}
                   </option>
                 ))}
               </NativeSelect.Field>
               <NativeSelect.Indicator />
             </NativeSelect.Root>
           </Field.Root>
-          <DateFilterField label="From" value={draft.from} onChange={(v) => set('from', v)} />
-          <DateFilterField label="To" value={draft.to} onChange={(v) => set('to', v)} />
+          <DateFilterField label={t('fromDate')} value={draft.from} onChange={(v) => set('from', v)} />
+          <DateFilterField label={t('toDate')} value={draft.to} onChange={(v) => set('to', v)} />
           {showAccount && (
             <Field.Root maxW={'240px'}>
-              <Field.Label fontSize={'xs'}>Account</Field.Label>
+              <Field.Label fontSize={'xs'}>{t('account')}</Field.Label>
               <Input
                 size={'sm'}
                 placeholder="hive:username"
@@ -185,7 +188,7 @@ export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFil
           )}
           {showContract && (
             <Field.Root maxW={'240px'}>
-              <Field.Label fontSize={'xs'}>Contract</Field.Label>
+              <Field.Label fontSize={'xs'}>{t('contract')}</Field.Label>
               <Input
                 size={'sm'}
                 placeholder="vsc1..."
@@ -195,10 +198,10 @@ export const TxFilterBar = ({ open, showAccount, showContract, basePath }: TxFil
             </Field.Root>
           )}
           <Button size={'sm'} colorPalette={themeColorScheme} onClick={applyFilters}>
-            Apply
+            {t('apply')}
           </Button>
           <Button size={'sm'} variant={'outline'} colorPalette={'gray'} onClick={resetFilters}>
-            Reset
+            {t('reset')}
           </Button>
         </Flex>
       </Collapsible.Content>

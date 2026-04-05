@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Explorateur de blocs Magi",
+  "heroSubtitle": "Recherchez des comptes, blocs, transactions et contrats",
+  "networkActivity": "Activité réseau",
+  "dailyTxs": "Transactions quotidiennes (14 derniers jours)",
+  "chartTxLabel": "Transactions",
+  "chartDateLabel": "Date : {{date}}",
+  "latestContracts": "Derniers contrats",
+  "viewAllContracts": "Voir tous les contrats",
+  "viewAllBlocks": "Voir tous les blocs",
+  "viewAllTxs": "Voir toutes les transactions",
+  "quickLinks": "Liens rapides",
+  "recentBlocks": "Blocs récents",
+  "recentTxs": "Transactions récentes",
+  "latestContractsQuickLinks": "Derniers contrats & liens rapides",
+  "stats": {
+    "hiveBlockHeight": "Hauteur de bloc Hive",
+    "magiBlockHeight": "Hauteur de bloc Magi",
+    "transactions": "Transactions",
+    "currentEpoch": "Époque actuelle",
+    "witnesses": "Témoins",
+    "contracts": "Contrats"
+  },
+  "epoch": {
+    "epoch": "Époque {{num}}",
+    "totalStake": "{{amount}} de mise totale",
+    "nextEpochIn": "Prochaine époque dans ~{{countdown}}"
+  },
+  "links": {
+    "blocks": "Blocs",
+    "transactions": "Transactions",
+    "contracts": "Contrats",
+    "witnesses": "Témoins",
+    "elections": "Élections",
+    "namBridge": "Pont NAM",
+    "charts": "Graphiques",
+    "broadcast": "Diffuser"
+  }
+}

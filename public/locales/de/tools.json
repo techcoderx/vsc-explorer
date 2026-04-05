@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Vertrag verifizieren",
+    "description": "Reiche den Vertrags-Quellcode bei Magi Blocks ein, um zu verifizieren, dass der resultierende kompilierte Bytecode mit dem bereitgestellten Vertragsbytecode übereinstimmt.",
+    "readThisFirst": "Bitte zuerst lesen!",
+    "notice": {
+      "language": "Sprache",
+      "languageBody": "Der Vertragsverifizierer unterstützt nur in Go geschriebene Verträge.",
+      "compilerOptions": "Compileroptionen",
+      "compilerOptionsBody": "Es gibt derzeit keine Möglichkeit, benutzerdefinierte Compileroptionen festzulegen. Der Verifizierer verwendet -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown für Go-Verträge.",
+      "environment": "Umgebung",
+      "environmentBody": "Verträge werden mit dem offiziellen TinyGo-Docker-Image kompiliert.",
+      "entrypoint": "Einstiegspunkt",
+      "entrypointBody": "Das Standard-Einstiegspunktverzeichnis ist contract/ für Go-Verträge. Ein benutzerdefiniertes Unterverzeichnis kann angegeben werden, wenn sich der Vertrags-Quellcode anderswo im Repository befindet. Stelle sicher, dass main.go als Teil des Hauptpakets im angegebenen Verzeichnis vorhanden ist.",
+      "dependencies": "Abhängigkeiten",
+      "dependenciesBody": "Der Vertragsverifizierer unterstützt derzeit nicht den Import externer Pakete außerhalb der Go-Standardbibliothek.",
+      "experimental": "Experimentell",
+      "experimentalBody": "Dieses Tool ist derzeit experimentell und einige Probleme sind zu erwarten. Es ist vorerst nur für Benutzer auf der Whitelist verfügbar."
+    },
+    "form": {
+      "contractAddress": "Vertragsadresse",
+      "githubRepoUrl": "GitHub-Repository-URL",
+      "gitBranch": "Git-Branch",
+      "defaultBranch": "Standard-Branch",
+      "contractDir": "Vertragsverzeichnis",
+      "contractDirTip": "Unterverzeichnis mit dem zu kompilierenden Vertrags-Quellcode, relativ zum Go-Modulverzeichnis. Standard ist \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go-Modulverzeichnis",
+      "goModDirTip": "Unterverzeichnis mit der go.mod-Datei, falls sie sich nicht im Repository-Stammverzeichnis befindet. Leer lassen, wenn go.mod im Stammverzeichnis liegt.",
+      "goModDirPlaceholder": "Repository-Stammverzeichnis",
+      "tinygoVersion": "TinyGo-Version",
+      "wasmStripTool": "WASM-Strip-Tool"
+    },
+    "errors": {
+      "mustStartVsc1": "Vertragsadresse muss mit 'vsc1' beginnen",
+      "mustBeGithub": "Repository-URL muss ein GitHub-Link sein",
+      "invalidRepoUrl": "Ungültige GitHub-Repository-URL",
+      "invalidGithubUser": "Ungültiger GitHub-Benutzer",
+      "invalidGithubRepo": "Ungültiger GitHub-Repository-Name",
+      "invalidContractDir": "Ungültiger Vertragsverzeichnispfad",
+      "invalidGoModDir": "Ungültiger Go-Modulverzeichnispfad",
+      "alreadyVerified": "Vertrag ist bereits verifiziert oder wird verifiziert.",
+      "contractNotFound": "Vertrag nicht gefunden",
+      "backendError": "Fehler beim Aufrufen des Backends für den Verifizierungsstatus des Vertrags",
+      "repoFetchError": "Fehler beim Abrufen der Repository-Informationen mit Statuscode {{statusCode}}",
+      "branchFetchError": "Fehler beim Abrufen der Branch-Informationen mit Statuscode {{statusCode}}",
+      "repoValidateError": "Fehler bei der Validierung des Repositorys",
+      "signatureError": "Signaturfehler",
+      "unknownError": "Unbekannter Fehler aufgetreten"
+    },
+    "submitting": "Verifizierungsanfrage wird eingereicht...",
+    "approveSignature": "Genehmige die Nachrichtensignaturanfrage im Wallet, wenn aufgefordert",
+    "submitted": "Verifizierungsanfrage für Vertrag erfolgreich eingereicht!",
+    "completionMsg": "Dein Vertrags-Quellcode wird verifiziert. Dies kann je nach Warteschlange einige Minuten dauern. Sieh im Tab Quellcode auf der Vertragsseite nach dem Status.",
+    "viewContract": "Vertrag anzeigen"
+  },
+  "dagInspector": {
+    "title": "DAG-Inspektor",
+    "description": "Den Inhalt eines DAG nach von Knoten gepinnter CID anzeigen.",
+    "placeholder": "CID hier einfügen (bafy...)",
+    "inspect": "Inspizieren",
+    "dagContent": "DAG-Inhalt",
+    "rawJson": "Rohes JSON",
+    "enterCid": "Bitte eine CID eingeben",
+    "fetchError": "Fehler beim Abrufen des DAG"
+  },
+  "broadcast": {
+    "title": "Transaktion übertragen",
+    "description": "Eine Magi-Transaktion signieren und übertragen.",
+    "destAddress": "Zieladresse",
+    "destPlaceholder": "hive:- oder did:-Präfix für Nicht-Map angeben, Standard ist Absender",
+    "txTypes": {
+      "transfer": "Übertragung",
+      "deposit": "Mappen",
+      "withdraw": "Entmappen",
+      "consensus_stake": "Konsens-Einsatz",
+      "consensus_unstake": "Konsens-Rückzug",
+      "stake_hbd": "HBD einsetzen",
+      "unstake_hbd": "HBD zurückziehen"
+    },
+    "errors": {
+      "amountPositive": "Der Betrag muss größer als 0 sein.",
+      "depositAsset": "Das Einzahlungsgut muss HIVE oder HBD sein.",
+      "hiveWalletOnly": "Mapping ist nur von Hive-Wallets aus möglich.",
+      "unknownType": "Unbekannter Transaktionstyp"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "驗證合約",
+    "description": "將合約原始碼提交給 Magi Blocks，以驗證編譯後的位元組碼是否與已部署的合約位元組碼相符。",
+    "readThisFirst": "請先閱讀！",
+    "notice": {
+      "language": "語言",
+      "languageBody": "合約驗證器僅支援以 Go 撰寫的合約。",
+      "compilerOptions": "編譯器選項",
+      "compilerOptionsBody": "目前尚無法設定自訂編譯器選項。驗證器對 Go 合約使用 -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown。",
+      "environment": "環境",
+      "environmentBody": "合約使用官方 TinyGo Docker 映像進行編譯。",
+      "entrypoint": "進入點",
+      "entrypointBody": "Go 合約的預設進入點目錄為 contract/。如果合約原始碼位於儲存庫中的其他位置，可以指定自訂子目錄。請確保 main.go 作為 main 套件的一部分存在於指定目錄中。",
+      "dependencies": "相依項",
+      "dependenciesBody": "目前合約驗證器不支援匯入 Go 標準程式庫之外的外部套件。",
+      "experimental": "實驗性",
+      "experimentalBody": "此工具目前處於實驗階段，可能會遇到一些問題。目前僅對白名單使用者開放。"
+    },
+    "form": {
+      "contractAddress": "合約地址",
+      "githubRepoUrl": "GitHub 儲存庫 URL",
+      "gitBranch": "Git 分支",
+      "defaultBranch": "預設分支",
+      "contractDir": "合約目錄",
+      "contractDirTip": "包含要編譯的合約原始碼的子目錄，相對於 Go 模組目錄。預設為 \"contract\"。",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Go 模組目錄",
+      "goModDirTip": "包含 go.mod 檔案的子目錄（如果不在儲存庫根目錄中）。如果 go.mod 在根目錄，請留空。",
+      "goModDirPlaceholder": "儲存庫根目錄",
+      "tinygoVersion": "TinyGo 版本",
+      "wasmStripTool": "WASM 剝離工具"
+    },
+    "errors": {
+      "mustStartVsc1": "合約地址必須以 'vsc1' 開頭",
+      "mustBeGithub": "儲存庫 URL 必須是 GitHub 連結",
+      "invalidRepoUrl": "無效的 GitHub 儲存庫 URL",
+      "invalidGithubUser": "無效的 Github 使用者",
+      "invalidGithubRepo": "無效的 Github 儲存庫名稱",
+      "invalidContractDir": "無效的合約目錄路徑",
+      "invalidGoModDir": "無效的 Go 模組目錄路徑",
+      "alreadyVerified": "合約已驗證或正在驗證中。",
+      "contractNotFound": "合約未找到",
+      "backendError": "呼叫後端取得合約驗證狀態失敗",
+      "repoFetchError": "取得儲存庫資訊失敗，狀態碼 {{statusCode}}",
+      "branchFetchError": "取得分支資訊失敗，狀態碼 {{statusCode}}",
+      "repoValidateError": "驗證儲存庫失敗",
+      "signatureError": "簽名錯誤",
+      "unknownError": "發生未知錯誤"
+    },
+    "submitting": "正在提交驗證請求...",
+    "approveSignature": "在提示時批准錢包中的訊息簽名請求",
+    "submitted": "合約驗證請求提交成功！",
+    "completionMsg": "您的合約原始碼正在驗證中。根據佇列情況，這可能需要幾分鐘。請在合約頁面的「原始碼」標籤頁中查看狀態。",
+    "viewContract": "查看合約"
+  },
+  "dagInspector": {
+    "title": "DAG 檢查器",
+    "description": "查看節點固定的 CID 的 DAG 內容。",
+    "placeholder": "在此貼上 CID（bafy...）",
+    "inspect": "檢查",
+    "dagContent": "DAG 內容",
+    "rawJson": "原始 JSON",
+    "enterCid": "請輸入 CID",
+    "fetchError": "取得 DAG 失敗"
+  },
+  "broadcast": {
+    "title": "廣播交易",
+    "description": "簽名並廣播 Magi 交易。",
+    "destAddress": "目標地址",
+    "destPlaceholder": "非映射時包含 hive: 或 did: 前綴，預設為發送者",
+    "txTypes": {
+      "transfer": "轉帳",
+      "deposit": "映射",
+      "withdraw": "取消映射",
+      "consensus_stake": "共識質押",
+      "consensus_unstake": "共識取消質押",
+      "stake_hbd": "質押 HBD",
+      "unstake_hbd": "取消質押 HBD"
+    },
+    "errors": {
+      "amountPositive": "金額必須大於 0。",
+      "depositAsset": "存入資產必須為 HIVE 或 HBD。",
+      "hiveWalletOnly": "只能從 Hive 錢包進行映射。",
+      "unknownType": "未知的交易類型"
+    }
+  }
+}

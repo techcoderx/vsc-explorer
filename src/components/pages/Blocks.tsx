@@ -1,6 +1,7 @@
 import { Heading, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import PageNotFound from './404'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
 import Pagination from '../Pagination'
@@ -11,6 +12,7 @@ import { PageTitle } from '../PageTitle'
 const count = 50
 
 const Blocks = () => {
+  const { t } = useTranslation('pages')
   const { page } = useParams()
   const pageNumber = parseInt(page || '1')
   const invalidPage = (page && isNaN(pageNumber)) || pageNumber < 1
@@ -30,11 +32,11 @@ const Blocks = () => {
 
   return (
     <>
-      <PageTitle title="Latest Blocks" />
-      <Heading as="h1" size="5xl" fontWeight="normal">Latest Blocks</Heading>
+      <PageTitle title={t('blocks.title')} />
+      <Heading as="h1" size="5xl" fontWeight="normal">{t('blocks.title')}</Heading>
       <hr />
       <br />
-      <Text>Total {prop ? thousandSeperator(prop.l2_block_height) : 0} blocks.</Text>
+      <Text>{t('blocks.total', { count: prop ? thousandSeperator(prop.l2_block_height) : 0 })}</Text>
       <BlocksTbl blocks={blocks} isLoading={isLoading} />
       <Pagination path="/blocks" currentPageNum={pageNumber} maxPageNum={Math.ceil((height || 0) / count)} />
     </>

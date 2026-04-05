@@ -1,0 +1,88 @@
+{
+  "verifyContract": {
+    "title": "Zweryfikuj kontrakt",
+    "description": "Prześlij kod źródłowy kontraktu do Magi Blocks, aby zweryfikować, że wynikowy skompilowany kod bajtowy odpowiada wdrożonemu kodowi bajtowemu kontraktu.",
+    "readThisFirst": "Przeczytaj najpierw!",
+    "notice": {
+      "language": "Język",
+      "languageBody": "Weryfikator kontraktów obsługuje tylko kontrakty napisane w Go.",
+      "compilerOptions": "Opcje kompilatora",
+      "compilerOptionsBody": "Obecnie nie ma możliwości ustawienia niestandardowych opcji kompilatora. Weryfikator używa -gc=custom -scheduler=none -panic=trap -no-debug -target=wasm-unknown dla kontraktów Go.",
+      "environment": "Środowisko",
+      "environmentBody": "Kontrakty są kompilowane przy użyciu oficjalnego obrazu Docker TinyGo.",
+      "entrypoint": "Punkt wejścia",
+      "entrypointBody": "Domyślny katalog punktu wejścia to contract/ dla kontraktów Go. Można podać niestandardowy podkatalog, jeśli kod źródłowy kontraktu znajduje się w innym miejscu w repozytorium. Upewnij się, że main.go istnieje jako część pakietu głównego w określonym katalogu.",
+      "dependencies": "Zależności",
+      "dependenciesBody": "Weryfikator kontraktów na razie nie obsługuje importowania zewnętrznych pakietów spoza standardowej biblioteki Go.",
+      "experimental": "Eksperymentalne",
+      "experimentalBody": "To narzędzie jest obecnie eksperymentalne i mogą wystąpić pewne problemy. Jest dostępne tylko dla użytkowników na białej liście."
+    },
+    "form": {
+      "contractAddress": "Adres kontraktu",
+      "githubRepoUrl": "URL repozytorium GitHub",
+      "gitBranch": "Gałąź Git",
+      "defaultBranch": "gałąź domyślna",
+      "contractDir": "Katalog kontraktu",
+      "contractDirTip": "Podkatalog zawierający kod źródłowy kontraktu do skompilowania, względem katalogu modułu Go. Domyślnie \"contract\".",
+      "contractDirPlaceholder": "contract",
+      "goModDir": "Katalog modułu Go",
+      "goModDirTip": "Podkatalog zawierający plik go.mod, jeśli nie znajduje się w katalogu głównym repozytorium. Pozostaw puste, jeśli go.mod jest w katalogu głównym.",
+      "goModDirPlaceholder": "katalog główny repozytorium",
+      "tinygoVersion": "Wersja TinyGo",
+      "wasmStripTool": "Narzędzie WASM Strip"
+    },
+    "errors": {
+      "mustStartVsc1": "Adres kontraktu musi zaczynać się od 'vsc1'",
+      "mustBeGithub": "URL repozytorium musi być linkiem do GitHub",
+      "invalidRepoUrl": "Nieprawidłowy URL repozytorium GitHub",
+      "invalidGithubUser": "Nieprawidłowy użytkownik Github",
+      "invalidGithubRepo": "Nieprawidłowa nazwa repozytorium Github",
+      "invalidContractDir": "Nieprawidłowa ścieżka katalogu kontraktu",
+      "invalidGoModDir": "Nieprawidłowa ścieżka katalogu modułu Go",
+      "alreadyVerified": "Kontrakt jest już zweryfikowany lub jest w trakcie weryfikacji.",
+      "contractNotFound": "Nie znaleziono kontraktu",
+      "backendError": "Nie udało się skontaktować z serwerem w celu uzyskania statusu weryfikacji kontraktu",
+      "repoFetchError": "Nie udało się pobrać informacji o repozytorium, kod statusu {{statusCode}}",
+      "branchFetchError": "Nie udało się pobrać informacji o gałęzi, kod statusu {{statusCode}}",
+      "repoValidateError": "Nie udało się zweryfikować repozytorium",
+      "signatureError": "Błąd podpisu",
+      "unknownError": "Wystąpił nieznany błąd"
+    },
+    "submitting": "Wysyłanie żądania weryfikacji...",
+    "approveSignature": "Zatwierdź żądanie podpisu wiadomości w portfelu, gdy pojawi się monit",
+    "submitted": "Żądanie weryfikacji kontraktu zostało pomyślnie wysłane!",
+    "completionMsg": "Kod źródłowy Twojego kontraktu jest weryfikowany. Może to potrwać kilka minut w zależności od kolejki. Sprawdzaj status na karcie Kod źródłowy na stronie kontraktu.",
+    "viewContract": "Zobacz kontrakt"
+  },
+  "dagInspector": {
+    "title": "DAG Inspector",
+    "description": "Wyświetl zawartość DAG według CID przypiętego przez węzły.",
+    "placeholder": "Wklej CID tutaj (bafy...)",
+    "inspect": "Sprawdź",
+    "dagContent": "Zawartość DAG",
+    "rawJson": "Surowy JSON",
+    "enterCid": "Proszę wprowadzić CID",
+    "fetchError": "Nie udało się pobrać DAG"
+  },
+  "broadcast": {
+    "title": "Nadaj transakcję",
+    "description": "Podpisz i nadaj transakcję Magi.",
+    "destAddress": "Adres docelowy",
+    "destPlaceholder": "Dodaj przedrostek hive: lub did: dla innych niż map, domyślnie nadawca",
+    "txTypes": {
+      "transfer": "Przelew",
+      "deposit": "Mapowanie",
+      "withdraw": "Odmapowanie",
+      "consensus_stake": "Stake konsensusu",
+      "consensus_unstake": "Odblokowanie stake konsensusu",
+      "stake_hbd": "Stake HBD",
+      "unstake_hbd": "Odblokowanie stake HBD"
+    },
+    "errors": {
+      "amountPositive": "Kwota musi być większa od 0.",
+      "depositAsset": "Aktywo do depozytu musi być HIVE lub HBD.",
+      "hiveWalletOnly": "Mapowanie możliwe tylko z portfeli Hive.",
+      "unknownType": "Nieznany typ transakcji"
+    }
+  }
+}

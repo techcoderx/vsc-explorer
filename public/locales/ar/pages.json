@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "أحدث الكتل",
+    "total": "إجمالي {{count}} كتلة."
+  },
+  "block": {
+    "title": "الكتلة #{{num}}",
+    "blockId": "معرف الكتلة",
+    "timestamp": "الطابع الزمني",
+    "l1Tx": "معاملة L1",
+    "slotHeight": "ارتفاع الفتحة",
+    "proposer": "المقترح",
+    "blockHash": "تجزئة الكتلة",
+    "participation": "المشاركة",
+    "tabs": {
+      "transactions": "المعاملات",
+      "opLogs": "سجلات العمليات",
+      "contractOutputs": "مخرجات العقود",
+      "participation": "المشاركة"
+    },
+    "opLogHeaders": {
+      "txId": "معرف المعاملة",
+      "type": "النوع",
+      "from": "من",
+      "to": "إلى",
+      "amount": "المبلغ"
+    }
+  },
+  "elections": {
+    "title": "الانتخابات"
+  },
+  "epoch": {
+    "title": "الحقبة #{{num}}",
+    "epochNumber": "رقم الحقبة",
+    "timestamp": "الطابع الزمني",
+    "l1Tx": "معاملة L1",
+    "l1Block": "كتلة L1",
+    "proposer": "المقترح",
+    "electionDataCid": "CID بيانات الانتخاب",
+    "totalWeight": "إجمالي الوزن",
+    "participation": "المشاركة",
+    "avgBlockVotes": "متوسط أصوات الكتلة",
+    "electedMembers": "الأعضاء المنتخبون ({{count}})",
+    "blocksTab": "الكتل ({{count}})",
+    "participationTab": "المشاركة",
+    "blsNotRequired": "لم يكن توقيع BLS مطلوبًا للانتخاب الأول."
+  },
+  "witnesses": {
+    "title": "الشهود",
+    "total": "إجمالي {{count}} شاهد نشط. معدل المشاركة: {{rate}}%"
+  },
+  "schedule": {
+    "title": "الجدول الزمني",
+    "hiveHeadBlock": "كتلة رأس Hive:",
+    "showOlderSlots": "عرض الفتحات الأقدم"
+  },
+  "transactions": {
+    "title": "أحدث المعاملات",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "أحدث العقود"
+  },
+  "address": {
+    "title": "العنوان",
+    "tabs": {
+      "transactions": "المعاملات",
+      "l1Ops": "عمليات L1",
+      "ledgerOps": "عمليات دفتر الأستاذ",
+      "actions": "الإجراءات",
+      "maps": "الربط",
+      "unmaps": "فك الربط",
+      "witness": "الشاهد"
+    }
+  },
+  "balances": {
+    "title": "الأرصدة",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "HBD المرهون السائل",
+    "hbdUnstaking": "فك رهن HBD",
+    "consensusStake": "رهن التوافق",
+    "consensusUnstaking": "فك رهن التوافق"
+  },
+  "rcInfo": {
+    "title": "معلومات RC",
+    "loadingBalances": "جارٍ تحميل الأرصدة...",
+    "noRcs": "ليس لديك RCs متاحة. يرجى إيداع HBD للحصول على RCs."
+  },
+  "witness": {
+    "enabled": "مفعّل",
+    "lastBlock": "آخر كتلة",
+    "blocksProduced": "الكتل المنتجة",
+    "lastEpoch": "آخر حقبة",
+    "electionsHeld": "الانتخابات المُجراة",
+    "witnessInfo": "معلومات الشاهد",
+    "clickToExpand": " (انقر للتوسيع)",
+    "peerId": "معرف النظير",
+    "consensusDidKey": "مفتاح DID للتوافق",
+    "gatewayKey": "مفتاح البوابة",
+    "gitCommit": "توثيق Git",
+    "lastUpdate": "آخر تحديث",
+    "loadError": "فشل في تحميل معلومات الشاهد"
+  },
+  "bridge": {
+    "title": "نظرة عامة على ربط أصول Hive",
+    "hiveTvl": "القيمة الإجمالية المقفلة HIVE",
+    "hbdTvl": "القيمة الإجمالية المقفلة HBD",
+    "mapTxs": "معاملات الربط",
+    "unmapTxs": "معاملات فك الربط",
+    "latestMaps": "أحدث الربط",
+    "latestUnmaps": "أحدث فك الربط",
+    "viewMore": "عرض المزيد",
+    "learnMore": "تعرف على المزيد حول ربط الأصول الأصلية هنا.",
+    "hiveMaps": "ربط أصول Hive",
+    "hiveUnmaps": "فك ربط أصول Hive",
+    "totalMaps": "إجمالي {{count}} ربط",
+    "totalUnmaps": "إجمالي {{count}} فك ربط"
+  },
+  "l1Tx": {
+    "magiTransaction": "معاملة Magi",
+    "requiredAuths": "التفويضات المطلوبة",
+    "rcUsed": "RC المستخدم",
+    "nonce": "الرقم العشوائي",
+    "ledgerOps": "عمليات دفتر الأستاذ ({{count}})",
+    "ledgerActions": "إجراءات دفتر الأستاذ ({{count}})",
+    "callOutputs": "مخرجات الاستدعاء",
+    "logs": "السجلات ({{count}})",
+    "tssRequests": "طلبات TSS ({{count}})",
+    "opLogHeaders": {
+      "type": "النوع",
+      "from": "من",
+      "to": "إلى",
+      "amount": "المبلغ",
+      "memo": "ملاحظة",
+      "status": "الحالة",
+      "outputId": "معرف الإخراج",
+      "contractId": "معرف العقد",
+      "index": "الفهرس",
+      "errorSymbol": "رمز الخطأ",
+      "errorMessage": "رسالة الخطأ",
+      "output": "الإخراج",
+      "log": "السجل",
+      "keyId": "معرف المفتاح",
+      "arguments": "الوسائط"
+    },
+    "deployedContract": "العقد المنشور",
+    "proposedElection": "نتيجة الانتخاب المقترحة",
+    "proposedBlock": "الكتلة المقترحة",
+    "blockNumber": "رقم الكتلة",
+    "hiveTransaction": "معاملة Hive",
+    "includedInL1": "مدرج في كتلة L1",
+    "noOperations": "لم يتم العثور على عمليات",
+    "loadingMagiOps": "جارٍ تحميل عمليات Magi...",
+    "operation": "العملية #{{num}}",
+    "notMagi": "هذه العملية غير مرتبطة بـ Magi.",
+    "transaction": "المعاملة",
+    "failedToLoad": "فشل في تحميل المعاملة",
+    "notExist": "المعاملة غير موجودة",
+    "includedInL2": "مدرج في كتلة L2 عند ارتفاع الفتحة",
+    "viewIn": "عرض في {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "بتات التجميع",
+    "votedMembers": "الأعضاء المصوتون ({{count}})",
+    "blsSignature": "توقيع BLS"
+  },
+  "charts": {
+    "directory": "مخططات الشبكة",
+    "soon": "قريبًا",
+    "titles": {
+      "blocks": "الكتل",
+      "transactions": "المعاملات",
+      "addresses": "العناوين",
+      "contracts": "العقود",
+      "witnesses": "الشهود",
+      "nam": "NAM"
+    },
+    "blocksCharts": "مخططات الكتل",
+    "blockCount": "عدد الكتل",
+    "blockCountDesc": "عدد الكتل المنتجة يوميًا",
+    "txCharts": "مخططات المعاملات",
+    "txCount": "عدد المعاملات",
+    "txCountDesc": "عدد المعاملات اليومية",
+    "addressCharts": "مخططات العناوين",
+    "dailyActiveAddresses": "العناوين النشطة يوميًا",
+    "dailyActiveAddressesDesc": "عدد العناوين المتعاملة الفريدة يوميًا",
+    "contractsCharts": "مخططات العقود",
+    "newContracts": "عقود جديدة",
+    "newContractsDesc": "عدد العقود المنشورة يوميًا",
+    "witnessCharts": "مخططات الشهود",
+    "activeStake": "الرهن النشط",
+    "activeStakeDesc": "إجمالي رهن توافق HIVE المؤهل لكل يوم",
+    "activeWitnesses": "الشهود النشطون",
+    "activeWitnessesDesc": "عدد الشهود النشطين يوميًا",
+    "bridgeCharts": "مخططات ربط الأصول الأصلية (NAM)",
+    "hiveTvl": "القيمة الإجمالية المقفلة لـ HIVE وHBD",
+    "hiveTvlDesc": "سجل أرصدة HIVE وHBD في حساب البوابة عبر الزمن",
+    "hiveNetFlow": "صافي تدفق HIVE",
+    "hiveNetFlowDesc": "سجل صافي تدفقات HIVE عبر الزمن",
+    "hbdNetFlow": "صافي تدفق HBD",
+    "hbdNetFlowDesc": "سجل صافي تدفقات HBD عبر الزمن"
+  }
+}

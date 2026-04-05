@@ -1,5 +1,6 @@
 import { Link, Table } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { ContractOutput } from '../../types/L2ApiResult'
 import { abbreviateHash, timeAgo } from '../../helpers'
 import { CheckXIcon } from '../CheckXIcon'
@@ -7,17 +8,18 @@ import { ContractLink, TxLink } from '../TableLink'
 import { Tooltip } from '../ui/tooltip'
 
 export const ContractOutputTbl = ({ outputs }: { outputs: ContractOutput[] }) => {
+  const { t } = useTranslation('tables')
   return (
     <Table.ScrollArea my={'3'} w={'full'}>
       <Table.Root>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader></Table.ColumnHeader>
-            <Table.ColumnHeader>Id</Table.ColumnHeader>
-            <Table.ColumnHeader>Age</Table.ColumnHeader>
-            <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Input Tx</Table.ColumnHeader>
-            <Table.ColumnHeader>Output</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractOutput.id')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractOutput.age')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractOutput.contractId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractOutput.inputTx')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('contractOutput.output')}</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>

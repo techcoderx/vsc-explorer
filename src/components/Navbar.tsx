@@ -14,6 +14,8 @@ import {
 } from '@chakra-ui/react'
 import { LuMenu, LuX, LuChevronDown, LuChevronRight, LuMoon, LuSun, LuSettings } from 'react-icons/lu'
 import { Link as ReactRouterLink, Outlet } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 import { getConf, themeColor, themeColorScheme, themeColorULight } from '../settings'
 import SearchBar from './SearchBar'
 import { useColorMode, useColorModeValue } from './ui/color-mode'
@@ -21,6 +23,7 @@ import { useBgTheme } from '../hooks/useBgTheme'
 import { useState } from 'react'
 
 const Navbar = () => {
+  const { t } = useTranslation('nav')
   const { colorMode, toggleColorMode } = useColorMode()
   const { bgTheme } = useBgTheme()
   const isThemed = bgTheme !== 'default'
@@ -33,7 +36,7 @@ const Navbar = () => {
   return (
     <Box as="header">
       <Box asChild position="absolute" top="-40px" left="0" bg={themeColor} color="white" p="2" zIndex="9999" _focus={{ top: '0' }}>
-        <a href="#main-content">Skip to main content</a>
+        <a href="#main-content">{t('skipToMain', { ns: 'common' })}</a>
       </Box>
       <Flex
         bg={isThemed ? 'var(--magi-surface)' : defaultNavBg}
@@ -47,7 +50,7 @@ const Navbar = () => {
         align={'center'}
       >
         <Flex flex={{ base: 1, md: 'auto' }} ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
-          <IconButton onClick={onToggle} variant={'ghost'} aria-label={'Toggle Navigation'}>
+          <IconButton onClick={onToggle} variant={'ghost'} aria-label={t('toggleNav')}>
             {isOpen ? <LuX size={12} /> : <LuMenu size={20} />}
           </IconButton>
         </Flex>
@@ -57,17 +60,17 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <ReactRouterLink to="/">Magi Blocks</ReactRouterLink>
+            <ReactRouterLink to="/">{t('magiBlocks')}</ReactRouterLink>
           </Text>
 
           {getConf().netId === 'vsc-testnet' && (
             <Tag.Root size={'sm'} variant={'outline'} colorPalette={themeColorScheme}>
-              Testnet
+              {t('testnet')}
             </Tag.Root>
           )}
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={3} as="nav" aria-label="Main navigation">
-            <DesktopNav isThemed={isThemed} />
+            <DesktopNav isThemed={isThemed} t={t} />
           </Flex>
         </Flex>
 
@@ -80,13 +83,13 @@ const Navbar = () => {
             colorPalette={'gray'}
             bg={isThemed ? 'var(--magi-surface-hover)' : defaultBtnBg}
             onClick={toggleColorMode}
-            aria-label={'Switch color theme'}
+            aria-label={t('switchColorTheme')}
           >
             {colorMode === 'light' ? <LuMoon /> : <LuSun />}
           </Button>
           <Box asChild>
             <ReactRouterLink to="/settings">
-              <Button variant={'subtle'} colorPalette={'gray'} bg={isThemed ? 'var(--magi-surface-hover)' : defaultBtnBg} aria-label={'Settings'}>
+              <Button variant={'subtle'} colorPalette={'gray'} bg={isThemed ? 'var(--magi-surface-hover)' : defaultBtnBg} aria-label={t('settings')}>
                 <LuSettings />
               </Button>
             </ReactRouterLink>
@@ -97,7 +100,7 @@ const Navbar = () => {
       <Collapsible.Root open={isOpen}>
         <Collapsible.Content>
           <Box as="nav" aria-label="Mobile navigation">
-            <MobileNav isThemed={isThemed} />
+            <MobileNav isThemed={isThemed} t={t} />
           </Box>
         </Collapsible.Content>
       </Collapsible.Root>
@@ -109,15 +112,46 @@ const Navbar = () => {
   )
 }
 
-const DesktopNav = ({ isThemed }: { isThemed: boolean }) => {
+const getNavItems = (t: TFunction): NavItem[] => [
+  {
+    label: t('witnesses'),
+    children: [
+      { label: t('overview'), subLabel: t('overviewSub'), href: '/witnesses' },
+      { label: t('elections'), subLabel: t('electionsSub'), href: '/elections' },
+      { label: t('multisigAccount'), subLabel: t('multisigAccountSub'), href: '/address/hive:' + getConf().msAccount + '/hiveops' },
+      { label: t('schedule'), subLabel: t('scheduleSub'), href: '/schedule' }
+    ]
+  },
+  {
+    label: t('blockchain'),
+    children: [
+      { label: t('blocks'), subLabel: t('blocksSub'), href: '/blocks' },
+      { label: t('transactions'), subLabel: t('transactionsSub'), href: '/transactions' },
+      { label: t('contracts'), subLabel: t('contractsSub'), href: '/contracts' }
+    ]
+  },
+  { label: t('nam'), href: '/bridge/hive' },
+  { label: t('charts'), href: '/charts' },
+  {
+    label: t('tools'),
+    children: [
+      { label: t('verifyContract'), subLabel: t('verifyContractSub'), href: '/tools/verify/contract' },
+      { label: t('dagInspector'), subLabel: t('dagInspectorSub'), href: '/tools/dag' },
+      { label: t('broadcastTransaction'), subLabel: t('broadcastTransactionSub'), href: '/tools/broadcast' }
+    ]
+  }
+]
+
+const DesktopNav = ({ isThemed, t }: { isThemed: boolean; t: TFunction }) => {
   const linkColor = useColorModeValue('gray.600', 'gray.200')
   const linkHoverColor = useColorModeValue('gray.800', 'white')
   const defaultPopoverBg = useColorModeValue('white', 'gray.800')
   const popoverContentBgColor = isThemed ? 'var(--magi-popover)' : defaultPopoverBg
+  const navItems = getNavItems(t)
 
   return (
     <Stack direction={'row'} gap={4}>
-      {NAV_ITEMS.map((navItem) => (
+      {navItems.map((navItem) => (
         <Box key={navItem.label}>
           <Popover.Root positioning={{ placement: 'bottom-start' }}>
             <Popover.Trigger asChild>
@@ -186,11 +220,12 @@ const DesktopSubNav = ({ label, href, subLabel, isThemed }: NavItem & { isThemed
   )
 }
 
-const MobileNav = ({ isThemed }: { isThemed: boolean }) => {
+const MobileNav = ({ isThemed, t }: { isThemed: boolean; t: TFunction }) => {
   const defaultBg = useColorModeValue('gray.100', 'gray.900')
+  const navItems = getNavItems(t)
   return (
     <Stack bg={isThemed ? 'var(--magi-surface)' : defaultBg} px={5} display={{ md: 'none' }}>
-      {NAV_ITEMS.map((navItem) => (
+      {navItems.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
     </Stack>
@@ -284,81 +319,5 @@ interface NavItem {
   children?: Array<NavItem>
   href?: string
 }
-
-const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: 'Witnesses',
-    children: [
-      {
-        label: 'Overview',
-        subLabel: 'List of active witnesses',
-        href: '/witnesses'
-      },
-      {
-        label: 'Elections',
-        subLabel: 'Witness selection of each epoch',
-        href: '/elections'
-      },
-      {
-        label: 'Multisig Account',
-        subLabel: 'Activities of multisig account',
-        href: '/address/hive:' + getConf().msAccount + '/hiveops'
-      },
-      {
-        label: 'Schedule',
-        subLabel: 'Block production schedule',
-        href: '/schedule'
-      }
-    ]
-  },
-  {
-    label: 'Blockchain',
-    children: [
-      {
-        label: 'Blocks',
-        subLabel: 'Latest Magi blocks',
-        href: '/blocks'
-      },
-      {
-        label: 'Transactions',
-        subLabel: 'Latest Magi transactions',
-        href: '/transactions'
-      },
-      {
-        label: 'Contracts',
-        subLabel: 'Deployed smart contracts',
-        href: '/contracts'
-      }
-    ]
-  },
-  {
-    label: 'NAM',
-    href: '/bridge/hive'
-  },
-  {
-    label: 'Charts',
-    href: '/charts'
-  },
-  {
-    label: 'Tools',
-    children: [
-      {
-        label: 'Verify Contract',
-        subLabel: 'Submit contract source code for verification',
-        href: '/tools/verify/contract'
-      },
-      {
-        label: 'DAG Inspector',
-        subLabel: 'View a DAG by CID pinned by nodes',
-        href: '/tools/dag'
-      },
-      {
-        label: 'Broadcast Transaction',
-        subLabel: 'Sign and broadcast a Magi transaction',
-        href: '/tools/broadcast'
-      }
-    ]
-  }
-]
 
 export default Navbar

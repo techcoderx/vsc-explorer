@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "Latest Blocks",
+    "total": "Total {{count}} blocks."
+  },
+  "block": {
+    "title": "Block #{{num}}",
+    "blockId": "Block ID",
+    "timestamp": "Timestamp",
+    "l1Tx": "L1 Tx",
+    "slotHeight": "Slot Height",
+    "proposer": "Proposer",
+    "blockHash": "Block Hash",
+    "participation": "Participation",
+    "tabs": {
+      "transactions": "Transactions",
+      "opLogs": "Op Logs",
+      "contractOutputs": "Contract Outputs",
+      "participation": "Participation"
+    },
+    "opLogHeaders": {
+      "txId": "Transaction ID",
+      "type": "Type",
+      "from": "From",
+      "to": "To",
+      "amount": "Amount"
+    }
+  },
+  "elections": {
+    "title": "Elections"
+  },
+  "epoch": {
+    "title": "Epoch #{{num}}",
+    "epochNumber": "Epoch Number",
+    "timestamp": "Timestamp",
+    "l1Tx": "L1 Tx",
+    "l1Block": "L1 Block",
+    "proposer": "Proposer",
+    "electionDataCid": "Election Data CID",
+    "totalWeight": "Total Weight",
+    "participation": "Participation",
+    "avgBlockVotes": "Avg Block Votes",
+    "electedMembers": "Elected Members ({{count}})",
+    "blocksTab": "Blocks ({{count}})",
+    "participationTab": "Participation",
+    "blsNotRequired": "BLS signature was not required for the first election."
+  },
+  "witnesses": {
+    "title": "Witnesses",
+    "total": "Total {{count}} active witnesses. Participation rate: {{rate}}%"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "hiveHeadBlock": "Hive head block:",
+    "showOlderSlots": "Show Older Slots"
+  },
+  "transactions": {
+    "title": "Latest Transactions",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "Latest Contracts"
+  },
+  "address": {
+    "title": "Address",
+    "tabs": {
+      "transactions": "Transactions",
+      "l1Ops": "L1 Ops",
+      "ledgerOps": "Ledger Ops",
+      "actions": "Actions",
+      "maps": "Maps",
+      "unmaps": "Unmaps",
+      "witness": "Witness"
+    }
+  },
+  "balances": {
+    "title": "Balances",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "Liquid Staked HBD",
+    "hbdUnstaking": "HBD Unstaking",
+    "consensusStake": "Consensus Stake",
+    "consensusUnstaking": "Consensus Unstaking"
+  },
+  "rcInfo": {
+    "title": "RC Info",
+    "loadingBalances": "Loading balances...",
+    "noRcs": "You have no RCs available. Please deposit HBD to obtain RCs."
+  },
+  "witness": {
+    "enabled": "Enabled",
+    "lastBlock": "Last Block",
+    "blocksProduced": "Blocks Produced",
+    "lastEpoch": "Last Epoch",
+    "electionsHeld": "Elections Held",
+    "witnessInfo": "Witness Info",
+    "clickToExpand": " (Click to expand)",
+    "peerId": "Peer ID",
+    "consensusDidKey": "Consensus DID Key",
+    "gatewayKey": "Gateway Key",
+    "gitCommit": "Git Commit",
+    "lastUpdate": "Last Update",
+    "loadError": "Failed to load witness info"
+  },
+  "bridge": {
+    "title": "Hive Asset Mapping Overview",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "Map Txs",
+    "unmapTxs": "Unmap Txs",
+    "latestMaps": "Latest Maps",
+    "latestUnmaps": "Latest Unmaps",
+    "viewMore": "View More",
+    "learnMore": "Learn more about native asset mapping here.",
+    "hiveMaps": "Hive Asset Maps",
+    "hiveUnmaps": "Hive Asset Unmaps",
+    "totalMaps": "Total {{count}} maps",
+    "totalUnmaps": "Total {{count}} unmaps"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi Transaction",
+    "requiredAuths": "Required Auths",
+    "rcUsed": "RC Used",
+    "nonce": "Nonce",
+    "ledgerOps": "Ledger Operations ({{count}})",
+    "ledgerActions": "Ledger Actions ({{count}})",
+    "callOutputs": "Call Outputs",
+    "logs": "Logs ({{count}})",
+    "tssRequests": "TSS Requests ({{count}})",
+    "opLogHeaders": {
+      "type": "Type",
+      "from": "From",
+      "to": "To",
+      "amount": "Amount",
+      "memo": "Memo",
+      "status": "Status",
+      "outputId": "Output ID",
+      "contractId": "Contract ID",
+      "index": "Index",
+      "errorSymbol": "Error Symbol",
+      "errorMessage": "Error Message",
+      "output": "Output",
+      "log": "Log",
+      "keyId": "Key ID",
+      "arguments": "Arguments"
+    },
+    "deployedContract": "Deployed Contract",
+    "proposedElection": "Proposed Election Result",
+    "proposedBlock": "Proposed Block",
+    "blockNumber": "Block Number",
+    "hiveTransaction": "Hive Transaction",
+    "includedInL1": "Included in L1 block",
+    "noOperations": "No operations found",
+    "loadingMagiOps": "Loading Magi Operations...",
+    "operation": "Operation #{{num}}",
+    "notMagi": "This operation is not related to Magi.",
+    "transaction": "Transaction",
+    "failedToLoad": "Failed to load transaction",
+    "notExist": "Transaction does not exist",
+    "includedInL2": "Included in L2 block at slot height",
+    "viewIn": "View in {{name}}"
+  },
+  "participation": {
+    "aggregationBits": "Aggregation Bits",
+    "votedMembers": "Voted Members ({{count}})",
+    "blsSignature": "BLS Signature"
+  },
+  "charts": {
+    "directory": "Network Charts",
+    "soon": "Soon",
+    "titles": {
+      "blocks": "Blocks",
+      "transactions": "Transactions",
+      "addresses": "Addresses",
+      "contracts": "Contracts",
+      "witnesses": "Witnesses",
+      "nam": "NAM"
+    },
+    "blocksCharts": "Blocks Charts",
+    "blockCount": "Block Count",
+    "blockCountDesc": "Number of blocks produced daily",
+    "txCharts": "Transactions Charts",
+    "txCount": "Transaction Count",
+    "txCountDesc": "Number of daily transactions",
+    "addressCharts": "Address Charts",
+    "dailyActiveAddresses": "Daily Active Addresses",
+    "dailyActiveAddressesDesc": "Number of daily unique transacting addresses",
+    "contractsCharts": "Contracts Charts",
+    "newContracts": "New Contracts",
+    "newContractsDesc": "Number of contracts deployed daily",
+    "witnessCharts": "Witness Charts",
+    "activeStake": "Active Stake",
+    "activeStakeDesc": "Total eligible HIVE consensus stake for each day",
+    "activeWitnesses": "Active Witnesses",
+    "activeWitnessesDesc": "Number of daily active witnesses",
+    "bridgeCharts": "Native Asset Mapping (NAM) Charts",
+    "hiveTvl": "HIVE and HBD TVL",
+    "hiveTvlDesc": "History of HIVE and HBD balances in gateway account over time",
+    "hiveNetFlow": "HIVE Net Flow",
+    "hiveNetFlowDesc": "History of HIVE net flows over time",
+    "hbdNetFlow": "HBD Net Flow",
+    "hbdNetFlowDesc": "History of HBD net flows over time"
+  }
+}

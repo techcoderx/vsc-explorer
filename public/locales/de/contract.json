@@ -1,0 +1,67 @@
+{
+  "title": "Vertrag",
+  "tabs": {
+    "transactions": "Transaktionen",
+    "outputs": "Ausgaben",
+    "info": "Info",
+    "storageProof": "Speichernachweis",
+    "readState": "Zustand lesen",
+    "callContract": "Vertrag aufrufen",
+    "sourceCode": "Quellcode",
+    "history": "Verlauf"
+  },
+  "info": {
+    "createdAt": "Erstellt am",
+    "createdInL1Block": "Erstellt in L1-Block",
+    "creationTx": "Erstellungs-Tx",
+    "creator": "Ersteller",
+    "owner": "Eigentümer",
+    "bytecodeCid": "Bytecode-CID",
+    "runtime": "Laufzeitumgebung"
+  },
+  "readState": {
+    "key": "Schlüssel",
+    "utf8": "UTF-8",
+    "hex": "Hex",
+    "gqlError": "gql-Fehler beim Abrufen des Zustandsschlüssels",
+    "fetchError": "Fehler beim Abrufen des Zustandsschlüssels"
+  },
+  "callContract": {
+    "balance": "Guthaben: {{balance}}",
+    "currentAllowance": "Aktuelles Guthaben",
+    "walletNotConnected": "Wallet nicht verbunden oder Guthaben konnte nicht geladen werden",
+    "amountMustBePositive": "Der Betrag muss größer als 0 sein",
+    "insufficientBalance": "Unzureichendes Guthaben",
+    "connectFirst": "Bitte verbinde zuerst dein Wallet",
+    "methodRequired": "Aufrufmethode ist erforderlich",
+    "simulationFailed": "Vertragsaufruf-Simulation fehlgeschlagen"
+  },
+  "verification": {
+    "verified": "Vertrags-Quellcode verifiziert",
+    "verifiedDesc": "Magi Blocks hat verifiziert, dass der bereitgestellte Quellcode mit dem bereitgestellten Bytecode des Vertrags übereinstimmt. Dies bedeutet nicht, dass der Vertrag sicher zu verwenden ist.",
+    "queued": "Die Verifizierungsanfrage des Vertrags befindet sich derzeit in der Warteschlange.",
+    "inProgress": "Die Verifizierungsanfrage des Vertrags wird derzeit verarbeitet.",
+    "failed": "Die Verifizierung des Vertrags konnte nicht abgeschlossen werden.",
+    "notMatch": "Die Verifizierung des Vertrags ist fehlgeschlagen, da der bereitgestellte Bytecode nicht mit dem kompilierten Quellcode übereinstimmt.",
+    "pending": "Die Verifizierungsanfrage des Vertrags ist derzeit ausstehend.",
+    "fetchError": "Fehler beim Abrufen des Verifizierungsstatus des Vertrags.",
+    "loadingStatus": "Verifizierungsstatus des Vertrags wird geladen...",
+    "notVerified": "Vertrags-Quellcode nicht verifiziert",
+    "unknown": "Der Quellcode für diesen Vertrag ist unbekannt.",
+    "language": "Sprache",
+    "license": "Lizenz",
+    "verifiedAt": "Verifiziert am",
+    "submittedBy": "Eingereicht von",
+    "repository": "Repository",
+    "contractDir": "Vertragsverzeichnis",
+    "goModDir": "Go-Modulverzeichnis",
+    "tinygoVersion": "TinyGo-Version",
+    "exports": "Exporte"
+  },
+  "errors": {
+    "fetchFailed": "Fehler beim Abrufen des Vertrags",
+    "notExist": "Vertrag existiert nicht"
+  },
+  "storageProofLoading": "Bereitstellungs-Tx wird geladen...",
+  "storageProofError": "Fehler beim Laden der Bereitstellungs-Tx"
+}

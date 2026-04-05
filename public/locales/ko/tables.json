@@ -1,0 +1,82 @@
+{
+  "blocks": {
+    "id": "ID",
+    "age": "경과 시간",
+    "proposer": "제안자",
+    "blockHash": "블록 해시",
+    "voted": "투표됨"
+  },
+  "transactions": {
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "method": "메서드",
+    "from": "발신",
+    "to": "수신",
+    "amount": "금액"
+  },
+  "contractHistory": {
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "deployer": "배포자",
+    "owner": "소유자",
+    "code": "코드",
+    "latest": "최신"
+  },
+  "contractOutput": {
+    "id": "ID",
+    "age": "경과 시간",
+    "contractId": "컨트랙트 ID",
+    "inputTx": "입력 트랜잭션",
+    "output": "출력"
+  },
+  "contracts": {
+    "contractId": "컨트랙트 ID",
+    "age": "경과 시간",
+    "creator": "생성자",
+    "creationTx": "생성 트랜잭션",
+    "code": "코드",
+    "runtime": "런타임"
+  },
+  "ledger": {
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "type": "유형",
+    "from": "발신",
+    "fromUser": "발신 사용자",
+    "to": "수신",
+    "toUser": "수신 사용자",
+    "amount": "금액",
+    "status": "상태"
+  },
+  "bridge": {
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "toUser": "수신 사용자",
+    "amount": "금액"
+  },
+  "elections": {
+    "epoch": "에포크",
+    "age": "경과 시간",
+    "proposer": "제안자",
+    "blocks": "블록",
+    "members": "멤버",
+    "totalWeight": "총 가중치",
+    "voted": "투표됨",
+    "blockVotes": "블록 투표"
+  },
+  "witnesses": {
+    "idx": "번호",
+    "username": "사용자 이름",
+    "weight": "가중치",
+    "lastBlock": "마지막 블록",
+    "blocksProduced": "생성된 블록",
+    "lastEpoch": "마지막 에포크",
+    "elections": "선거",
+    "didKey": "DID 키"
+  },
+  "schedule": {
+    "username": "사용자 이름",
+    "l1Block": "L1 블록",
+    "magiBlock": "Magi 블록"
+  }
+}

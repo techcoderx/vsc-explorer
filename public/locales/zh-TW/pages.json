@@ -1,0 +1,205 @@
+{
+  "blocks": {
+    "title": "最新區塊",
+    "total": "共 {{count}} 個區塊。"
+  },
+  "block": {
+    "title": "區塊 #{{num}}",
+    "blockId": "區塊 ID",
+    "timestamp": "時間戳記",
+    "l1Tx": "L1 交易",
+    "slotHeight": "插槽高度",
+    "proposer": "提議者",
+    "blockHash": "區塊雜湊",
+    "participation": "參與情況",
+    "tabs": {
+      "transactions": "交易",
+      "opLogs": "操作日誌",
+      "contractOutputs": "合約輸出",
+      "participation": "參與情況"
+    },
+    "opLogHeaders": {
+      "txId": "交易 ID",
+      "type": "類型",
+      "from": "發送方",
+      "to": "接收方",
+      "amount": "金額"
+    }
+  },
+  "elections": {
+    "title": "選舉"
+  },
+  "epoch": {
+    "title": "週期 #{{num}}",
+    "epochNumber": "週期編號",
+    "timestamp": "時間戳記",
+    "l1Tx": "L1 交易",
+    "l1Block": "L1 區塊",
+    "proposer": "提議者",
+    "electionDataCid": "選舉資料 CID",
+    "totalWeight": "總權重",
+    "participation": "參與情況",
+    "avgBlockVotes": "平均區塊票數",
+    "electedMembers": "當選成員（{{count}}）",
+    "blocksTab": "區塊（{{count}}）",
+    "participationTab": "參與情況",
+    "blsNotRequired": "首次選舉不需要 BLS 簽名。"
+  },
+  "witnesses": {
+    "title": "見證人",
+    "total": "共 {{count}} 位活躍見證人。參與率：{{rate}}%"
+  },
+  "schedule": {
+    "title": "排程",
+    "hiveHeadBlock": "Hive 最新區塊：",
+    "showOlderSlots": "顯示更早的插槽"
+  },
+  "transactions": {
+    "title": "最新交易",
+    "magi": "Magi",
+    "hive": "Hive"
+  },
+  "contracts": {
+    "title": "最新合約"
+  },
+  "address": {
+    "title": "地址",
+    "tabs": {
+      "transactions": "交易",
+      "l1Ops": "L1 操作",
+      "ledgerOps": "帳本操作",
+      "actions": "操作",
+      "maps": "映射",
+      "unmaps": "取消映射",
+      "witness": "見證人"
+    }
+  },
+  "balances": {
+    "title": "餘額",
+    "hive": "Hive",
+    "hbd": "HBD",
+    "liquidStakedHbd": "流動質押 HBD",
+    "hbdUnstaking": "HBD 取消質押中",
+    "consensusStake": "共識質押",
+    "consensusUnstaking": "共識取消質押中"
+  },
+  "rcInfo": {
+    "title": "RC 資訊",
+    "loadingBalances": "正在載入餘額...",
+    "noRcs": "您沒有可用的 RC。請存入 HBD 以取得 RC。"
+  },
+  "witness": {
+    "enabled": "已啟用",
+    "lastBlock": "最後區塊",
+    "blocksProduced": "已產出區塊",
+    "lastEpoch": "最後週期",
+    "electionsHeld": "已舉行選舉",
+    "witnessInfo": "見證人資訊",
+    "clickToExpand": "（點擊展開）",
+    "peerId": "節點 ID",
+    "consensusDidKey": "共識 DID 金鑰",
+    "gatewayKey": "閘道金鑰",
+    "gitCommit": "Git 提交",
+    "lastUpdate": "最後更新",
+    "loadError": "載入見證人資訊失敗"
+  },
+  "bridge": {
+    "title": "Hive 資產映射概覽",
+    "hiveTvl": "HIVE TVL",
+    "hbdTvl": "HBD TVL",
+    "mapTxs": "映射交易",
+    "unmapTxs": "取消映射交易",
+    "latestMaps": "最新映射",
+    "latestUnmaps": "最新取消映射",
+    "viewMore": "查看更多",
+    "learnMore": "在此了解更多關於原生資產映射的資訊。",
+    "hiveMaps": "Hive 資產映射",
+    "hiveUnmaps": "Hive 資產取消映射",
+    "totalMaps": "共 {{count}} 筆映射",
+    "totalUnmaps": "共 {{count}} 筆取消映射"
+  },
+  "l1Tx": {
+    "magiTransaction": "Magi 交易",
+    "requiredAuths": "所需授權",
+    "rcUsed": "已使用 RC",
+    "nonce": "隨機數",
+    "ledgerOps": "帳本操作（{{count}}）",
+    "ledgerActions": "帳本動作（{{count}}）",
+    "callOutputs": "呼叫輸出",
+    "logs": "日誌（{{count}}）",
+    "tssRequests": "TSS 請求（{{count}}）",
+    "opLogHeaders": {
+      "type": "類型",
+      "from": "發送方",
+      "to": "接收方",
+      "amount": "金額",
+      "memo": "備註",
+      "status": "狀態",
+      "outputId": "輸出 ID",
+      "contractId": "合約 ID",
+      "index": "索引",
+      "errorSymbol": "錯誤符號",
+      "errorMessage": "錯誤訊息",
+      "output": "輸出",
+      "log": "日誌",
+      "keyId": "金鑰 ID",
+      "arguments": "參數"
+    },
+    "deployedContract": "已部署合約",
+    "proposedElection": "提議的選舉結果",
+    "proposedBlock": "提議的區塊",
+    "blockNumber": "區塊編號",
+    "hiveTransaction": "Hive 交易",
+    "includedInL1": "包含在 L1 區塊中",
+    "noOperations": "未找到操作",
+    "loadingMagiOps": "正在載入 Magi 操作...",
+    "operation": "操作 #{{num}}",
+    "notMagi": "此操作與 Magi 無關。",
+    "transaction": "交易",
+    "failedToLoad": "載入交易失敗",
+    "notExist": "交易不存在",
+    "includedInL2": "包含在 L2 區塊插槽高度",
+    "viewIn": "在 {{name}} 中查看"
+  },
+  "participation": {
+    "aggregationBits": "聚合位元",
+    "votedMembers": "投票成員 ({{count}})",
+    "blsSignature": "BLS 簽名"
+  },
+  "charts": {
+    "directory": "網路圖表",
+    "soon": "即將推出",
+    "titles": {
+      "blocks": "區塊",
+      "transactions": "交易",
+      "addresses": "地址",
+      "contracts": "合約",
+      "witnesses": "見證人",
+      "nam": "NAM"
+    },
+    "blocksCharts": "區塊圖表",
+    "blockCount": "區塊數量",
+    "blockCountDesc": "每日產出的區塊數量",
+    "txCharts": "交易圖表",
+    "txCount": "交易數量",
+    "txCountDesc": "每日交易數量",
+    "addressCharts": "地址圖表",
+    "dailyActiveAddresses": "每日活躍地址",
+    "dailyActiveAddressesDesc": "每日唯一交易地址數量",
+    "contractsCharts": "合約圖表",
+    "newContracts": "新合約",
+    "newContractsDesc": "每日部署的合約數量",
+    "witnessCharts": "見證人圖表",
+    "activeStake": "活躍質押",
+    "activeStakeDesc": "每日符合條件的 HIVE 共識質押總量",
+    "activeWitnesses": "活躍見證人",
+    "activeWitnessesDesc": "每日活躍見證人數量",
+    "bridgeCharts": "原生資產映射 (NAM) 圖表",
+    "hiveTvl": "HIVE 和 HBD TVL",
+    "hiveTvlDesc": "閘道帳戶中 HIVE 和 HBD 餘額的歷史記錄",
+    "hiveNetFlow": "HIVE 淨流量",
+    "hiveNetFlowDesc": "HIVE 淨流量的歷史記錄",
+    "hbdNetFlow": "HBD 淨流量",
+    "hbdNetFlowDesc": "HBD 淨流量的歷史記錄"
+  }
+}

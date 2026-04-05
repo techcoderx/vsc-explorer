@@ -1,0 +1,13 @@
+{
+  "title": "설정",
+  "colorMode": "색상 모드",
+  "darkMode": "다크 모드",
+  "colorTheme": "색상 테마",
+  "themes": {
+    "default": "기본",
+    "red": "빨간색",
+    "green": "초록색",
+    "blue": "파란색"
+  },
+  "language": "언어"
+}

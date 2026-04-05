@@ -1,0 +1,13 @@
+{
+  "title": "Tetapan",
+  "colorMode": "Mod Warna",
+  "darkMode": "Mod Gelap",
+  "colorTheme": "Tema Warna",
+  "themes": {
+    "default": "Lalai",
+    "red": "Merah",
+    "green": "Hijau",
+    "blue": "Biru"
+  },
+  "language": "Bahasa"
+}

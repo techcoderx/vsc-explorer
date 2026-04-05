@@ -1,0 +1,39 @@
+{
+  "heroTitle": "Magi preglednik blokova",
+  "heroSubtitle": "Pretražuj račune, blokove, transakcije i ugovore",
+  "networkActivity": "Aktivnost mreže",
+  "dailyTxs": "Dnevne transakcije (zadnjih 14 dana)",
+  "chartTxLabel": "Transakcije",
+  "chartDateLabel": "Datum: {{date}}",
+  "latestContracts": "Najnoviji ugovori",
+  "viewAllContracts": "Pregledaj sve ugovore",
+  "viewAllBlocks": "Pregledaj sve blokove",
+  "viewAllTxs": "Pregledaj sve transakcije",
+  "quickLinks": "Brze poveznice",
+  "recentBlocks": "Nedavni blokovi",
+  "recentTxs": "Nedavne transakcije",
+  "latestContractsQuickLinks": "Najnoviji ugovori i brze poveznice",
+  "stats": {
+    "hiveBlockHeight": "Visina Hive bloka",
+    "magiBlockHeight": "Visina Magi bloka",
+    "transactions": "Transakcije",
+    "currentEpoch": "Trenutna epoha",
+    "witnesses": "Svjedoci",
+    "contracts": "Ugovori"
+  },
+  "epoch": {
+    "epoch": "Epoha {{num}}",
+    "totalStake": "{{amount}} ukupni ulog",
+    "nextEpochIn": "Sljedeća epoha za ~{{countdown}}"
+  },
+  "links": {
+    "blocks": "Blokovi",
+    "transactions": "Transakcije",
+    "contracts": "Ugovori",
+    "witnesses": "Svjedoci",
+    "elections": "Izbori",
+    "namBridge": "NAM most",
+    "charts": "Grafikoni",
+    "broadcast": "Emitiraj"
+  }
+}

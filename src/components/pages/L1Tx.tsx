@@ -21,6 +21,7 @@ import {
 import { Tooltip } from '../ui/tooltip'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
 import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch, fetchTssReqStatuses } from '../../requests'
@@ -75,17 +76,18 @@ const CallOutputs = ({
   outputs: { id: string; index: number[] }[]
   outContents: ContractOutputDag[]
 }) => {
+  const { t } = useTranslation('pages')
   return (
     <Table.ScrollArea>
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Output ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
-            <Table.ColumnHeader>Index</Table.ColumnHeader>
-            {!success && <Table.ColumnHeader>Error Symbol</Table.ColumnHeader>}
-            {!success && <Table.ColumnHeader>Error Message</Table.ColumnHeader>}
-            {success && <Table.ColumnHeader>Output</Table.ColumnHeader>}
+            <Table.ColumnHeader>{t('l1Tx.opLogHeaders.outputId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('l1Tx.opLogHeaders.contractId')}</Table.ColumnHeader>
+            <Table.ColumnHeader>{t('l1Tx.opLogHeaders.index')}</Table.ColumnHeader>
+            {!success && <Table.ColumnHeader>{t('l1Tx.opLogHeaders.errorSymbol')}</Table.ColumnHeader>}
+            {!success && <Table.ColumnHeader>{t('l1Tx.opLogHeaders.errorMessage')}</Table.ColumnHeader>}
+            {success && <Table.ColumnHeader>{t('l1Tx.opLogHeaders.output')}</Table.ColumnHeader>}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -109,7 +111,7 @@ const CallOutputs = ({
                       outContents[i].results[o].ret
                     ) : (
                       <Text opacity={'0.7'}>
-                        <i>Empty</i>
+                        <i>{t('empty', { ns: 'common' })}</i>
                       </Text>
                     )}
                   </MinTd>
@@ -141,6 +143,7 @@ const TssRequest = ({
   req: TssOp
   status?: TssKeyStatus | TssReqStatus[]
 }) => {
+  const { t } = useTranslation('pages')
   const s = Array.isArray(status) ? status[0] : status
   const out = (s as TssKeyStatus | undefined)?.public_key || (s as TssReqStatus | undefined)?.sig
   return (
@@ -159,7 +162,7 @@ const TssRequest = ({
       <MinTd>
         {out ?? (
           <Text opacity={'0.7'}>
-            <i>N/A</i>
+            <i>{t('na', { ns: 'common' })}</i>
           </Text>
         )}
       </MinTd>
@@ -173,6 +176,7 @@ const shouldRefetch = (txn?: Txn | null) =>
   (!txn.anchr_ts || Math.abs(new Date().getTime() - new Date(txn.anchr_ts + 'Z').getTime()) < 3600000)
 
 const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
+  const { t } = useTranslation('pages')
   // prettier-ignore
   const rcUsed = txn.status === 'CONFIRMED' && !txn.ops.find((o) => o.type === 'call') ? txn.ops.reduce((p, o) => p + RC_COSTS[o.type], 0) : 0
   return (
@@ -180,7 +184,7 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
       <Card.Header pb={'4'}>
         <Flex gap={'3'} direction={'row'} alignItems={'center'}>
           <Heading fontSize={'2xl'} display={'inline'}>
-            Magi Transaction
+            {t('l1Tx.magiTransaction')}
           </Heading>
           <Tag.Root
             py={'2px'}
@@ -198,7 +202,7 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
             <Table.Body>
               <Table.Row>
                 <MinTd py={'2.5'} fontWeight={'bold'}>
-                  Required Auths
+                  {t('l1Tx.requiredAuths')}
                 </MinTd>
                 <MinTd py={'2.5'}>
                   <Grid
@@ -219,17 +223,17 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
               </Table.Row>
               <Table.Row>
                 <MinTd py={'2.5'} fontWeight={'bold'}>
-                  RC Used
+                  {t('l1Tx.rcUsed')}
                 </MinTd>
                 <MinTd>
-                  {rcUsed > 0 ? rcUsed : '🤔'} / {txn.rc_limit} (
-                  {txn.rc_limit > 0 ? Math.round((100 * rcUsed) / txn.rc_limit) : '👀'}%)
+                  {rcUsed > 0 ? rcUsed : '\uD83E\uDD14'} / {txn.rc_limit} (
+                  {txn.rc_limit > 0 ? Math.round((100 * rcUsed) / txn.rc_limit) : '\uD83D\uDC40'}%)
                 </MinTd>
               </Table.Row>
               {type === 'vsc' && (
                 <Table.Row>
                   <MinTd py={'2.5'} fontWeight={'bold'}>
-                    Nonce
+                    {t('l1Tx.nonce')}
                   </MinTd>
                   <MinTd>{txn.nonce}</MinTd>
                 </Table.Row>
@@ -244,6 +248,7 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
 }
 
 const TxOut = ({ txn }: { txn: Txn }) => {
+  const { t } = useTranslation('pages')
   const { data: outContents } = useQuery({
     queryKey: ['vsc-tx-outputs', txn.id],
     queryFn: () => getDagByCIDBatch<ContractOutputDag>(txn.output!.map((o) => o.id)),
@@ -293,7 +298,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
       <Accordion.Item value="ledger-ops">
         <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
           <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-            Ledger Operations ({txn.ledger.length})
+            {t('l1Tx.ledgerOps', { count: txn.ledger.length })}
           </Box>
           <Accordion.ItemIndicator />
         </Accordion.ItemTrigger>
@@ -302,12 +307,12 @@ const TxOut = ({ txn }: { txn: Txn }) => {
             <Table.Root>
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeader>Type</Table.ColumnHeader>
-                  <Table.ColumnHeader>From</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.type')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.from')}</Table.ColumnHeader>
                   <Table.ColumnHeader></Table.ColumnHeader>
-                  <Table.ColumnHeader>To</Table.ColumnHeader>
-                  <Table.ColumnHeader>Amount</Table.ColumnHeader>
-                  <Table.ColumnHeader>Memo</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.to')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.amount')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.memo')}</Table.ColumnHeader>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -337,7 +342,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
       <Accordion.Item value="ledger-actions">
         <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
           <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-            Ledger Actions ({txn.ledger_actions.length})
+            {t('l1Tx.ledgerActions', { count: txn.ledger_actions.length })}
           </Box>
           <Accordion.ItemIndicator />
         </Accordion.ItemTrigger>
@@ -346,11 +351,11 @@ const TxOut = ({ txn }: { txn: Txn }) => {
             <Table.Root>
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeader>Type</Table.ColumnHeader>
-                  <Table.ColumnHeader>To</Table.ColumnHeader>
-                  <Table.ColumnHeader>Amount</Table.ColumnHeader>
-                  <Table.ColumnHeader>Status</Table.ColumnHeader>
-                  <Table.ColumnHeader>Memo</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.type')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.to')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.amount')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.status')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('l1Tx.opLogHeaders.memo')}</Table.ColumnHeader>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -378,7 +383,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
         <Accordion.Item value="call-outputs">
           <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-              Call Outputs
+              {t('l1Tx.callOutputs')}
             </Box>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
@@ -391,7 +396,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
         <Accordion.Item value="logs">
           <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-              Logs ({logCount})
+              {t('l1Tx.logs', { count: logCount })}
             </Box>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
@@ -401,8 +406,8 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                 <Table.Root>
                   <Table.Header>
                     <Table.Row>
-                      <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
-                      <Table.ColumnHeader>Log</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.contractId')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.log')}</Table.ColumnHeader>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -424,7 +429,7 @@ const TxOut = ({ txn }: { txn: Txn }) => {
         <Accordion.Item value="tss-requests">
           <Accordion.ItemTrigger pl={'3'} fontSize={'sm'}>
             <Box as="span" flex="1" textAlign="left" fontWeight={'bold'}>
-              TSS Requests ({tssCount})
+              {t('l1Tx.tssRequests', { count: tssCount })}
             </Box>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
@@ -434,12 +439,12 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                 <Table.Root>
                   <Table.Header>
                     <Table.Row>
-                      <Table.ColumnHeader>Contract ID</Table.ColumnHeader>
-                      <Table.ColumnHeader>Type</Table.ColumnHeader>
-                      <Table.ColumnHeader>Key ID</Table.ColumnHeader>
-                      <Table.ColumnHeader>Arguments</Table.ColumnHeader>
-                      <Table.ColumnHeader>Status</Table.ColumnHeader>
-                      <Table.ColumnHeader>Output</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.contractId')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.type')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.keyId')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.arguments')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.status')}</Table.ColumnHeader>
+                      <Table.ColumnHeader>{t('l1Tx.opLogHeaders.output')}</Table.ColumnHeader>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -468,10 +473,11 @@ const TxOut = ({ txn }: { txn: Txn }) => {
 }
 
 const ContractResult = ({ out }: { out: Contract }) => {
+  const { t } = useTranslation('pages')
   return (
     <>
       <Card.Header pb={'4'}>
-        <Heading fontSize={'xl'}>Deployed Contract</Heading>
+        <Heading fontSize={'xl'}>{t('l1Tx.deployedContract')}</Heading>
       </Card.Header>
       <Card.Body pt={'0'}>
         <Table.Root>
@@ -483,10 +489,11 @@ const ContractResult = ({ out }: { out: Contract }) => {
 }
 
 const ElectionResult = ({ out }: { out: Election }) => {
+  const { t } = useTranslation('pages')
   return (
     <>
       <Card.Header pb={'4'}>
-        <Heading fontSize={'xl'}>Proposed Election Result</Heading>
+        <Heading fontSize={'xl'}>{t('l1Tx.proposedElection')}</Heading>
       </Card.Header>
       <Card.Body pt={'0'}>
         <Table.Root margin={'0'}>
@@ -499,7 +506,7 @@ const ElectionResult = ({ out }: { out: Election }) => {
                   <ProgressBarPct fontSize={'md'} val={(out.be_info.voted_weight / out.be_info.eligible_weight) * 100} />
                 ) : (
                   <Text fontStyle={'italic'} opacity={'0.7'}>
-                    Indexing...
+                    {t('indexing', { ns: 'common' })}
                   </Text>
                 )}
               </TableRow>
@@ -512,15 +519,16 @@ const ElectionResult = ({ out }: { out: Election }) => {
 }
 
 const BlockResult = ({ out }: { out: Block }) => {
+  const { t } = useTranslation('pages')
   return (
     <>
       <Card.Header pb={'4'}>
-        <Heading fontSize={'xl'}>Proposed Block</Heading>
+        <Heading fontSize={'xl'}>{t('l1Tx.proposedBlock')}</Heading>
       </Card.Header>
       <Card.Body pt={'0'}>
         <Table.Root margin={'0'}>
           <Table.Body>
-            <TableRow minimalSpace isInCard allCardBorders label="Block Number">
+            <TableRow minimalSpace isInCard allCardBorders label={t('l1Tx.blockNumber')}>
               {out.be_info ? (
                 <Link asChild>
                   <ReactRouterLink to={'/block/' + out.be_info.block_id}>
@@ -529,7 +537,7 @@ const BlockResult = ({ out }: { out: Block }) => {
                 </Link>
               ) : (
                 <Text fontStyle={'italic'} opacity={'0.7'}>
-                  Indexing...
+                  {t('indexing', { ns: 'common' })}
                 </Text>
               )}
             </TableRow>
@@ -539,7 +547,7 @@ const BlockResult = ({ out }: { out: Block }) => {
                 <ProgressBarPct fontSize={'md'} val={(out.be_info.voted_weight / out.be_info.eligible_weight) * 100} />
               ) : (
                 <Text fontStyle={'italic'} opacity={'0.7'}>
-                  Indexing...
+                  {t('indexing', { ns: 'common' })}
                 </Text>
               )}
             </TableRow>
@@ -558,6 +566,7 @@ export const Tx = () => {
 }
 
 const L1Tx = () => {
+  const { t } = useTranslation('pages')
   const { txid } = useParams()
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['vsc-l1-tx', txid],
@@ -567,11 +576,11 @@ const L1Tx = () => {
     queryKey: ['vsc-l1-tx-output', txid],
     queryFn: async () => fetchL1TxOutput(txid!)
   })
-  const { data: t, refetch } = useQuery({
+  const { data: txData, refetch } = useQuery({
     queryKey: ['vsc-tx', txid],
     queryFn: async () => fetchL2TxnsDetailed(txid!)
   })
-  const vscTx = t?.txns
+  const vscTx = txData?.txns
   const timestamp = Array.isArray(vscTx) && vscTx.length > 0 ? vscTx[0].anchr_ts : (data?.timestamp ?? '')
   const operations = data && !data.code ? data.transaction_json.operations : []
   const parsedOps = operations.map((v) => parseOperation(v))
@@ -590,7 +599,7 @@ const L1Tx = () => {
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
-        <Heading as="h1" size="5xl" fontWeight="normal">Hive Transaction</Heading>
+        <Heading as="h1" size="5xl" fontWeight="normal">{t('l1Tx.hiveTransaction')}</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
@@ -602,7 +611,7 @@ const L1Tx = () => {
           operations.length > 0 ? (
             <Box marginTop={'10px'}>
               <Text fontSize={'xl'} display={'inline'}>
-                Included in L1 block{' '}
+                {t('l1Tx.includedInL1')}{' '}
               </Text>
               <Link href={beL1BlockUrl(data.block_num)} target="_blank" rel="noopener noreferrer" fontSize={'xl'} aria-label={`Block #${thousandSeperator(data.block_num)} (opens in new tab)`}>
                 {'#' + thousandSeperator(data.block_num)}
@@ -615,7 +624,7 @@ const L1Tx = () => {
             </Box>
           ) : (
             <Text fontSize={'xl'} marginTop={'10px'}>
-              No operations found
+              {t('l1Tx.noOperations')}
             </Text>
           )
         ) : null}
@@ -626,7 +635,7 @@ const L1Tx = () => {
         {getConf().hiveBe.map((be, i) => (
           <Button key={i} asChild margin={'20px 0px'} colorPalette={themeColorScheme} variant={'outline'}>
             <ReactRouterLink to={be.url + '/tx/' + txid} target="_blank" rel="noopener noreferrer" aria-label={`View in ${be.name} (opens in new tab)`}>
-              View in {be.name}
+              {t('l1Tx.viewIn', { name: be.name })}
             </ReactRouterLink>
           </Button>
         ))}
@@ -635,14 +644,14 @@ const L1Tx = () => {
         {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (
           <Card.Root w="100%">
-            <Card.Body>Loading Magi Operations...</Card.Body>
+            <Card.Body>{t('l1Tx.loadingMagiOps')}</Card.Body>
           </Card.Root>
         ) : isSuccess && !data.code ? (
           parsedOps.map((trx, i) => (
             <Card.Root key={i}>
               <Card.Header pb={'4'}>
                 <Flex gap={'3'} direction={'row'} alignItems={'center'}>
-                  <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                  <Heading fontSize={'2xl'}>{t('l1Tx.operation', { num: i })}</Heading>
                   {trx.valid && (
                     <Tag.Root variant={'outline'} colorPalette={themeColorScheme} size={'lg'}>
                       {trx.type}
@@ -667,7 +676,7 @@ const L1Tx = () => {
                 </>
               ) : (
                 <Card.Body pt={'0'}>
-                  <Text fontStyle={'italic'}>This operation is not related to Magi.</Text>
+                  <Text fontStyle={'italic'}>{t('l1Tx.notMagi')}</Text>
                 </Card.Body>
               )}
             </Card.Root>
@@ -679,6 +688,7 @@ const L1Tx = () => {
 }
 
 const L2Tx = () => {
+  const { t } = useTranslation('pages')
   const { txid } = useParams()
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['vsc-tx', txid],
@@ -701,20 +711,20 @@ const L2Tx = () => {
     <>
       <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
       <Box mb={'3'}>
-        <Heading as="h1" size="5xl" fontWeight="normal">Transaction</Heading>
+        <Heading as="h1" size="5xl" fontWeight="normal">{t('l1Tx.transaction')}</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>
           {txid}
         </Text>
         {isLoading ? (
           <Skeleton h={'6'} />
         ) : isError ? (
-          <Text fontSize={'xl'}>Failed to load transaction</Text>
+          <Text fontSize={'xl'}>{t('l1Tx.failedToLoad')}</Text>
         ) : !tx ? (
-          <Text fontSize={'xl'}>Transaction does not exist</Text>
+          <Text fontSize={'xl'}>{t('l1Tx.notExist')}</Text>
         ) : !!tx.anchr_ts ? (
           <Box marginTop={'10px'}>
             <Text fontSize={'xl'} display={'inline'}>
-              Included in L2 block at slot height{' '}
+              {t('l1Tx.includedInL2')}{' '}
             </Text>
             <Link asChild fontSize={'xl'}>
               <ReactRouterLink to={`/block/${tx.anchr_id}`}>{thousandSeperator(tx.anchr_height)}</ReactRouterLink>
@@ -729,7 +739,7 @@ const L2Tx = () => {
       </Box>
       <hr />
       <Button asChild my={'5'} colorPalette={themeColorScheme} variant={'outline'}>
-        <ReactRouterLink to={`/tools/dag?cid=${txid}`}>View in DAG Inspector</ReactRouterLink>
+        <ReactRouterLink to={`/tools/dag?cid=${txid}`}>{t('viewInDagInspector', { ns: 'common' })}</ReactRouterLink>
       </Button>
       {!!tx && (
         <Flex gap="6" direction="column">
@@ -738,7 +748,7 @@ const L2Tx = () => {
             <Card.Root key={i}>
               <Card.Header pb={'4'}>
                 <Flex gap={'3'} direction={'row'} alignItems={'center'}>
-                  <Heading fontSize={'2xl'}>Operation #{i}</Heading>
+                  <Heading fontSize={'2xl'}>{t('l1Tx.operation', { num: i })}</Heading>
                   <Tag.Root variant={'outline'} colorPalette={themeColorScheme} size={'lg'}>
                     {op.type}
                   </Tag.Root>
