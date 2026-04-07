@@ -8,7 +8,9 @@
     "readState": "状態読み取り",
     "callContract": "コントラクト呼び出し",
     "sourceCode": "ソースコード",
-    "history": "履歴"
+    "history": "履歴",
+    "ledgerOps": "台帳オペレーション",
+    "actions": "アクション"
   },
   "info": {
     "createdAt": "作成日時",

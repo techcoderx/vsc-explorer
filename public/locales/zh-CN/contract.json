@@ -8,7 +8,9 @@
     "readState": "读取状态",
     "callContract": "调用合约",
     "sourceCode": "源代码",
-    "history": "历史"
+    "history": "历史",
+    "ledgerOps": "账本操作",
+    "actions": "操作"
   },
   "info": {
     "createdAt": "创建时间",

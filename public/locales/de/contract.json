@@ -8,7 +8,9 @@
     "readState": "Zustand lesen",
     "callContract": "Vertrag aufrufen",
     "sourceCode": "Quellcode",
-    "history": "Verlauf"
+    "history": "Verlauf",
+    "ledgerOps": "Hauptbuch-Operationen",
+    "actions": "Aktionen"
   },
   "info": {
     "createdAt": "Erstellt am",

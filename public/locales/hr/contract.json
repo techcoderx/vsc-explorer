@@ -8,7 +8,9 @@
     "readState": "Čitaj stanje",
     "callContract": "Pozovi ugovor",
     "sourceCode": "Izvorni kod",
-    "history": "Povijest"
+    "history": "Povijest",
+    "ledgerOps": "Operacije knjige",
+    "actions": "Akcije"
   },
   "info": {
     "createdAt": "Kreirano",

@@ -8,7 +8,9 @@
     "readState": "상태 읽기",
     "callContract": "컨트랙트 호출",
     "sourceCode": "소스 코드",
-    "history": "기록"
+    "history": "기록",
+    "ledgerOps": "원장 작업",
+    "actions": "액션"
   },
   "info": {
     "createdAt": "생성 시간",

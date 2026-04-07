@@ -8,7 +8,9 @@
     "readState": "स्थिति पढ़ें",
     "callContract": "अनुबंध कॉल करें",
     "sourceCode": "स्रोत कोड",
-    "history": "इतिहास"
+    "history": "इतिहास",
+    "ledgerOps": "लेजर ऑप्स",
+    "actions": "क्रियाएं"
   },
   "info": {
     "createdAt": "निर्माण तिथि",

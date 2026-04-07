@@ -8,7 +8,9 @@
     "readState": "Baca Keadaan",
     "callContract": "Panggil Kontrak",
     "sourceCode": "Kod Sumber",
-    "history": "Sejarah"
+    "history": "Sejarah",
+    "ledgerOps": "Op Lejar",
+    "actions": "Tindakan"
   },
   "info": {
     "createdAt": "Dicipta Pada",

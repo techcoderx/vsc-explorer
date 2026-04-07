@@ -8,7 +8,9 @@
     "readState": "Read State",
     "callContract": "Call Contract",
     "sourceCode": "Source Code",
-    "history": "History"
+    "history": "History",
+    "ledgerOps": "Ledger Ops",
+    "actions": "Actions"
   },
   "info": {
     "createdAt": "Created At",

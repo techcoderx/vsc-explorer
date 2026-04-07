@@ -8,7 +8,9 @@
     "readState": "Читать состояние",
     "callContract": "Вызвать контракт",
     "sourceCode": "Исходный код",
-    "history": "История"
+    "history": "История",
+    "ledgerOps": "Операции реестра",
+    "actions": "Действия"
   },
   "info": {
     "createdAt": "Создан",

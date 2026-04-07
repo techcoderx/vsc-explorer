@@ -28,7 +28,9 @@ import {
   fetchL1Rest,
   fetchL2TxnsBy,
   fetchMembersAtL1Block,
+  getDeposits,
   getStateKeys,
+  getWithdrawals,
   simulateContractCalls,
   useAddrBalance,
   useContract,
@@ -59,6 +61,7 @@ import { Wallet, KeyTypes } from '@aioha/magi'
 import { AiohaModal } from '../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
+import { LedgerTxsTbl, LedgerActionsTbl } from '../tables/Ledgers'
 import { toaster } from '../ui/toaster'
 import { btnGroupCss } from '../../styles/btnGroup'
 
@@ -414,12 +417,51 @@ export const Contract = () => {
   const txns = txData?.txns
   const txStats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { contract: contractId }), !invalidContractId)
 
+  const contractAddr = 'contract:' + contractId
+  const ledgerPage = parseInt(searchParams.get('lpage') || '1')
+  const ledgerOffset = (ledgerPage - 1) * txCount
+  const { data: ledgerData } = useQuery({
+    queryKey: ['vsc-contract-ledgers', contractId, ledgerOffset, txCount],
+    queryFn: () => getDeposits(ledgerOffset, txCount, { byToFrom: contractAddr }),
+    enabled: !invalidContractId
+  })
+  const ledgerStats = useHistoryStats('ledger_txs', { user: contractAddr }, !invalidContractId)
+
+  const actionsPage = parseInt(searchParams.get('apage') || '1')
+  const actionsOffset = (actionsPage - 1) * txCount
+  const { data: actionsData } = useQuery({
+    queryKey: ['vsc-contract-actions', contractId, actionsOffset, txCount],
+    queryFn: () => getWithdrawals(actionsOffset, txCount, { byAccount: contractAddr }),
+    enabled: !invalidContractId
+  })
+  const actionsStats = useHistoryStats('ledger_actions', { user: contractAddr }, !invalidContractId)
+
   const buildTxPageLink = (page: number) => {
     const params = new URLSearchParams(searchParams)
     if (page > 1) {
       params.set('page', String(page))
     } else {
       params.delete('page')
+    }
+    const qs = params.toString()
+    return `/contract/${contractId}` + (qs ? '?' + qs : '')
+  }
+  const buildLedgerPageLink = (page: number) => {
+    const params = new URLSearchParams(searchParams)
+    if (page > 1) {
+      params.set('lpage', String(page))
+    } else {
+      params.delete('lpage')
+    }
+    const qs = params.toString()
+    return `/contract/${contractId}` + (qs ? '?' + qs : '')
+  }
+  const buildActionsPageLink = (page: number) => {
+    const params = new URLSearchParams(searchParams)
+    if (page > 1) {
+      params.set('apage', String(page))
+    } else {
+      params.delete('apage')
     }
     const qs = params.toString()
     return `/contract/${contractId}` + (qs ? '?' + qs : '')
@@ -461,6 +503,8 @@ export const Contract = () => {
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
               <Tabs.Trigger value="0">{t('tabs.transactions')}</Tabs.Trigger>
               <Tabs.Trigger value="1">{t('tabs.outputs')}</Tabs.Trigger>
+              <Tabs.Trigger value="8">{t('tabs.ledgerOps')}</Tabs.Trigger>
+              <Tabs.Trigger value="9">{t('tabs.actions')}</Tabs.Trigger>
               <Tabs.Trigger value="2">{t('tabs.info')}</Tabs.Trigger>
               <Tabs.Trigger value="3">{t('tabs.storageProof')}</Tabs.Trigger>
               <Tabs.Trigger value="4">{t('tabs.readState')}</Tabs.Trigger>
@@ -485,6 +529,24 @@ export const Contract = () => {
             </Tabs.Content>
             <Tabs.Content value="1" px={'0'} pt={'2'}>
               <ContractOutputTbl outputs={outputs || []} />
+            </Tabs.Content>
+            <Tabs.Content value="8" pt={'2'} px={'0'}>
+              <LedgerTxsTbl txs={ledgerData?.deposits || []} />
+              <Pagination
+                path={`/contract/${contractId}`}
+                currentPageNum={ledgerPage}
+                maxPageNum={Math.min(100, Math.ceil((ledgerStats?.count || 0) / txCount))}
+                buildLink={buildLedgerPageLink}
+              />
+            </Tabs.Content>
+            <Tabs.Content value="9" pt={'2'} px={'0'}>
+              <LedgerActionsTbl actions={actionsData?.withdrawals || []} />
+              <Pagination
+                path={`/contract/${contractId}`}
+                currentPageNum={actionsPage}
+                maxPageNum={Math.min(100, Math.ceil((actionsStats?.count || 0) / txCount))}
+                buildLink={buildActionsPageLink}
+              />
             </Tabs.Content>
             <Tabs.Content value="2" px={'0'}>
               <Table.ScrollArea>
