@@ -1,6 +1,6 @@
 import { Flex, Button, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
-import { Link as ReactRouterLink, To, useSearchParams } from 'react-router'
+import { Link as ReactRouterLink, To } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
 import { btnGroupCss } from '../styles/btnGroup'
@@ -47,11 +47,9 @@ export const LinkedBtn = ({ to, children }: Wrapper) => {
 
 const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationProps) => {
   const { t } = useTranslation()
-  const [searchParams] = useSearchParams()
   const link = (page: number) => {
     if (buildLink) return buildLink(page)
-    const qs = searchParams.toString()
-    return path + '/' + page + (qs ? '?' + qs : '')
+    return path + '/' + page
   }
   return (
     <Flex justifyContent={'center'}>

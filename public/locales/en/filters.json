@@ -8,6 +8,7 @@
   "toDate": "To",
   "account": "Account",
   "contract": "Contract",
+  "assetLabel": "Asset",
   "opTypes": "Op Types",
   "status": {
     "": "All",
@@ -26,6 +27,12 @@
     "stake_hbd": "Stake HBD",
     "unstake_hbd": "Unstake HBD",
     "withdraw": "Withdraw"
+  },
+  "asset": {
+    "": "All",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   },
   "l1OpType": {
     "fr_sync": "FR Sync",

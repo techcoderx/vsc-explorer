@@ -1,13 +1,14 @@
-import { Flex, NativeSelect, Input, Field, DatePicker, IconButton, Button, Collapsible } from '@chakra-ui/react'
+import { Flex, NativeSelect, Field, Button, Collapsible, Input, IconButton, DatePicker } from '@chakra-ui/react'
 import { parseDate } from '@chakra-ui/react/date-picker'
 import type { DateValue } from '@chakra-ui/react/date-picker'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TxFilterState, TX_STATUS_OPTIONS, TX_TYPE_OPTIONS, emptyTxFilters } from '../types/TxFilters'
+import { LEDGER_TX_TYPE_OPTIONS, LEDGER_ACTION_TYPE_OPTIONS, LEDGER_ASSET_OPTIONS } from '../types/LedgerFilters'
 import { themeColorScheme } from '../settings'
-import { LuCalendar, LuX, LuFilter } from 'react-icons/lu'
+import { LuFilter, LuCalendar, LuX } from 'react-icons/lu'
+import { LedgerFilterState, LedgerFilterVariant, emptyLedgerFilters } from '../ledgerFilterHelpers'
 
-export const TxFilterToggle = ({
+export const LedgerFilterToggle = ({
   activeCount,
   open,
   onToggle
@@ -20,7 +21,8 @@ export const TxFilterToggle = ({
   return (
     <Button size={'sm'} variant={open ? 'solid' : 'outline'} colorPalette={'gray'} onClick={onToggle}>
       <LuFilter />
-      {t('filters')}{activeCount > 0 ? ` (${activeCount})` : ''}
+      {t('filters')}
+      {activeCount > 0 ? ` (${activeCount})` : ''}
     </Button>
   )
 }
@@ -99,27 +101,27 @@ const DateFilterField = ({
   )
 }
 
-interface TxFilterBarProps {
+interface LedgerFilterBarProps {
   open: boolean
-  showAccount?: boolean
-  showContract?: boolean
-  onApply: (filters: TxFilterState) => void
+  variant: LedgerFilterVariant
+  onApply: (filters: LedgerFilterState) => void
   onReset: () => void
 }
 
-export const TxFilterBar = ({ open, showAccount, showContract, onApply, onReset }: TxFilterBarProps) => {
+export const LedgerFilterBar = ({ open, variant, onApply, onReset }: LedgerFilterBarProps) => {
   const { t } = useTranslation('filters')
+  const typeOptions = variant === 'ledger_txs' ? LEDGER_TX_TYPE_OPTIONS : LEDGER_ACTION_TYPE_OPTIONS
 
-  const [draft, setDraft] = useState<TxFilterState>(emptyTxFilters)
+  const [draft, setDraft] = useState<LedgerFilterState>(emptyLedgerFilters)
 
-  const set = (key: string, value: string) => setDraft((prev) => ({ ...prev, [key]: value }))
+  const set = (key: keyof LedgerFilterState, value: string) => setDraft((prev) => ({ ...prev, [key]: value }))
 
   const applyFilters = () => {
     onApply(draft)
   }
 
   const resetFilters = () => {
-    setDraft(emptyTxFilters)
+    setDraft(emptyLedgerFilters)
     onReset()
   }
 
@@ -128,23 +130,10 @@ export const TxFilterBar = ({ open, showAccount, showContract, onApply, onReset 
       <Collapsible.Content>
         <Flex gap={'3'} my={'3'} wrap={'wrap'} align={'end'}>
           <Field.Root maxW={'180px'}>
-            <Field.Label fontSize={'xs'}>{t('statusLabel')}</Field.Label>
-            <NativeSelect.Root size={'sm'}>
-              <NativeSelect.Field value={draft.status || ''} onChange={(e) => set('status', e.target.value)}>
-                {TX_STATUS_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {t(`status.${o.value}`)}
-                  </option>
-                ))}
-              </NativeSelect.Field>
-              <NativeSelect.Indicator />
-            </NativeSelect.Root>
-          </Field.Root>
-          <Field.Root maxW={'180px'}>
             <Field.Label fontSize={'xs'}>{t('typeLabel')}</Field.Label>
             <NativeSelect.Root size={'sm'}>
-              <NativeSelect.Field value={draft.type || ''} onChange={(e) => set('type', e.target.value)}>
-                {TX_TYPE_OPTIONS.map((o) => (
+              <NativeSelect.Field value={draft.opType} onChange={(e) => set('opType', e.target.value)}>
+                {typeOptions.map((o) => (
                   <option key={o.value} value={o.value}>
                     {t(`txType.${o.value}`)}
                   </option>
@@ -153,30 +142,21 @@ export const TxFilterBar = ({ open, showAccount, showContract, onApply, onReset 
               <NativeSelect.Indicator />
             </NativeSelect.Root>
           </Field.Root>
-          <DateFilterField label={t('fromDate')} value={draft.fromDate || ''} onChange={(v) => set('fromDate', v)} />
-          <DateFilterField label={t('toDate')} value={draft.toDate || ''} onChange={(v) => set('toDate', v)} />
-          {showAccount && (
-            <Field.Root maxW={'240px'}>
-              <Field.Label fontSize={'xs'}>{t('account')}</Field.Label>
-              <Input
-                size={'sm'}
-                placeholder="hive:username"
-                value={draft.account || ''}
-                onChange={(e) => set('account', e.target.value)}
-              />
-            </Field.Root>
-          )}
-          {showContract && (
-            <Field.Root maxW={'240px'}>
-              <Field.Label fontSize={'xs'}>{t('contract')}</Field.Label>
-              <Input
-                size={'sm'}
-                placeholder="vsc1..."
-                value={draft.contract || ''}
-                onChange={(e) => set('contract', e.target.value)}
-              />
-            </Field.Root>
-          )}
+          <Field.Root maxW={'180px'}>
+            <Field.Label fontSize={'xs'}>{t('assetLabel')}</Field.Label>
+            <NativeSelect.Root size={'sm'}>
+              <NativeSelect.Field value={draft.asset} onChange={(e) => set('asset', e.target.value)}>
+                {LEDGER_ASSET_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {t(`asset.${o.value}`)}
+                  </option>
+                ))}
+              </NativeSelect.Field>
+              <NativeSelect.Indicator />
+            </NativeSelect.Root>
+          </Field.Root>
+          <DateFilterField label={t('fromDate')} value={draft.fromDate} onChange={(v) => set('fromDate', v)} />
+          <DateFilterField label={t('toDate')} value={draft.toDate} onChange={(v) => set('toDate', v)} />
           <Button size={'sm'} colorPalette={themeColorScheme} onClick={applyFilters}>
             {t('apply')}
           </Button>

@@ -46,8 +46,7 @@ import { AddressBalanceCard } from './address/Balances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import Pagination from '../Pagination'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
-import { useFilterOpen } from '../../hooks/useFilterOpen'
-import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
+import { buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 import { L1TxHeader } from '../../types/L1ApiResult'
 import { useTranslation } from 'react-i18next'
 import { useMemo, useRef, useState } from 'react'
@@ -62,6 +61,9 @@ import { AiohaModal } from '../Aioha'
 import { FaEthereum, FaHive } from 'react-icons/fa6'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
 import { LedgerTxsTbl, LedgerActionsTbl } from '../tables/Ledgers'
+import { LedgerFilterBar, LedgerFilterToggle } from '../LedgerFilterBar'
+import { emptyLedgerFilters, countActiveFilters, buildLedgerGqlOpts, buildLedgerStatOpts, LedgerFilterState } from '../../ledgerFilterHelpers'
+import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../types/TxFilters'
 import { toaster } from '../ui/toaster'
 import { btnGroupCss } from '../../styles/btnGroup'
 
@@ -397,16 +399,18 @@ export const Contract = () => {
   const { t } = useTranslation('contract')
   const { contractId } = useParams()
   const [searchParams] = useSearchParams()
-  const [filtersOpen, setFiltersOpen] = useFilterOpen()
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('0')
+  const [txFilters, setTxFilters] = useState<TxFilterState>(emptyTxFilters)
+  const [ledgerFilters, setLedgerFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
+  const [actionFilters, setActionFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
   const ct = data?.data.contract
   const outputs = data?.data.outputs
 
-  const filters = parseFiltersFromSearchParams(searchParams)
-  const blockRange = useBlockRange(filters)
-  const filterOpts = buildTxFilterOptions(filters, blockRange, { byContract: contractId })
+  const blockRange = useBlockRange(txFilters)
+  const filterOpts = buildTxFilterOptions(txFilters, blockRange, { byContract: contractId })
   const txPage = parseInt(searchParams.get('page') || '1')
   const txOffset = (txPage - 1) * txCount
   const { data: txData } = useQuery({
@@ -415,26 +419,30 @@ export const Contract = () => {
     enabled: !invalidContractId
   })
   const txns = txData?.txns
-  const txStats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { contract: contractId }), !invalidContractId)
+  const txStats = useHistoryStats('txs', buildHistoryStatOpts(txFilters, blockRange, { contract: contractId }), !invalidContractId)
 
   const contractAddr = 'contract:' + contractId
+  const ledgerBlockRange = useBlockRange(ledgerFilters)
+  const ledgerGqlOpts = buildLedgerGqlOpts(ledgerFilters, ledgerBlockRange, { byToFrom: contractAddr })
   const ledgerPage = parseInt(searchParams.get('lpage') || '1')
   const ledgerOffset = (ledgerPage - 1) * txCount
   const { data: ledgerData } = useQuery({
-    queryKey: ['vsc-contract-ledgers', contractId, ledgerOffset, txCount],
-    queryFn: () => getDeposits(ledgerOffset, txCount, { byToFrom: contractAddr }),
+    queryKey: ['vsc-contract-ledgers', contractId, ledgerOffset, txCount, ledgerGqlOpts],
+    queryFn: () => getDeposits(ledgerOffset, txCount, ledgerGqlOpts),
     enabled: !invalidContractId
   })
-  const ledgerStats = useHistoryStats('ledger_txs', { user: contractAddr }, !invalidContractId)
+  const ledgerStats = useHistoryStats('ledger_txs', buildLedgerStatOpts(ledgerFilters, ledgerBlockRange, { user: contractAddr }), !invalidContractId)
 
+  const actionBlockRange = useBlockRange(actionFilters)
+  const actionGqlOpts = buildLedgerGqlOpts(actionFilters, actionBlockRange, { byAccount: contractAddr })
   const actionsPage = parseInt(searchParams.get('apage') || '1')
   const actionsOffset = (actionsPage - 1) * txCount
   const { data: actionsData } = useQuery({
-    queryKey: ['vsc-contract-actions', contractId, actionsOffset, txCount],
-    queryFn: () => getWithdrawals(actionsOffset, txCount, { byAccount: contractAddr }),
+    queryKey: ['vsc-contract-actions', contractId, actionsOffset, txCount, actionGqlOpts],
+    queryFn: () => getWithdrawals(actionsOffset, txCount, actionGqlOpts),
     enabled: !invalidContractId
   })
-  const actionsStats = useHistoryStats('ledger_actions', { user: contractAddr }, !invalidContractId)
+  const actionsStats = useHistoryStats('ledger_actions', buildLedgerStatOpts(actionFilters, actionBlockRange, { user: contractAddr }), !invalidContractId)
 
   const buildTxPageLink = (page: number) => {
     const params = new URLSearchParams(searchParams)
@@ -513,12 +521,22 @@ export const Contract = () => {
               <Tabs.Trigger value="7">{t('tabs.history')}</Tabs.Trigger>
               {activeTab === '0' && (
                 <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-                  <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                  <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                </Box>
+              )}
+              {activeTab === '8' && (
+                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                  <LedgerFilterToggle activeCount={countActiveFilters(ledgerFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                </Box>
+              )}
+              {activeTab === '9' && (
+                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                  <LedgerFilterToggle activeCount={countActiveFilters(actionFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
                 </Box>
               )}
             </Tabs.List>
             <Tabs.Content value="0" pt={'2'} px={'0'}>
-              <TxFilterBar open={filtersOpen} basePath={`/contract/${contractId}`} />
+              <TxFilterBar open={filtersOpen} onApply={setTxFilters} onReset={() => setTxFilters(emptyTxFilters)} />
               <Txns txs={txns || []} pov={contractId} />
               <Pagination
                 path={`/contract/${contractId}`}
@@ -531,6 +549,12 @@ export const Contract = () => {
               <ContractOutputTbl outputs={outputs || []} />
             </Tabs.Content>
             <Tabs.Content value="8" pt={'2'} px={'0'}>
+              <LedgerFilterBar
+                open={filtersOpen}
+                variant="ledger_txs"
+                onApply={setLedgerFilters}
+                onReset={() => setLedgerFilters(emptyLedgerFilters)}
+              />
               <LedgerTxsTbl txs={ledgerData?.deposits || []} />
               <Pagination
                 path={`/contract/${contractId}`}
@@ -540,6 +564,12 @@ export const Contract = () => {
               />
             </Tabs.Content>
             <Tabs.Content value="9" pt={'2'} px={'0'}>
+              <LedgerFilterBar
+                open={filtersOpen}
+                variant="ledger_actions"
+                onApply={setActionFilters}
+                onReset={() => setActionFilters(emptyLedgerFilters)}
+              />
               <LedgerActionsTbl actions={actionsData?.withdrawals || []} />
               <Pagination
                 path={`/contract/${contractId}`}

@@ -28,3 +28,13 @@ export const TX_TYPE_OPTIONS: { value: string; label: string }[] = [
   { value: 'unstake_hbd', label: 'Unstake HBD' },
   { value: 'withdraw', label: 'Withdraw' }
 ]
+
+export const emptyTxFilters: TxFilterState = {}
+
+export const countActiveTxFilters = (filters: TxFilterState): number =>
+  (filters.status ? 1 : 0) +
+  (filters.type ? 1 : 0) +
+  (filters.fromDate ? 1 : 0) +
+  (filters.toDate ? 1 : 0) +
+  (filters.account ? 1 : 0) +
+  (filters.contract ? 1 : 0)

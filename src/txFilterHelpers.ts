@@ -1,24 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { TxFilterState, TX_STATUS_OPTIONS, TX_TYPE_OPTIONS } from './types/TxFilters'
-import { Status, TxnTypes } from './types/L2ApiResult'
+import { TxFilterState } from './types/TxFilters'
 import { fetchBlockNumByTimestamp } from './requests'
-
-export const parseFiltersFromSearchParams = (sp: URLSearchParams): TxFilterState => {
-  const filters: TxFilterState = {}
-  const status = sp.get('status')
-  if (status && TX_STATUS_OPTIONS.some((o) => o.value === status)) filters.status = status as Status
-  const type = sp.get('type')
-  if (type && TX_TYPE_OPTIONS.some((o) => o.value === type)) filters.type = type as TxnTypes
-  const account = sp.get('account')
-  if (account) filters.account = account
-  const contract = sp.get('contract')
-  if (contract) filters.contract = contract
-  const fromDate = sp.get('from')
-  if (fromDate) filters.fromDate = fromDate
-  const toDate = sp.get('to')
-  if (toDate) filters.toDate = toDate
-  return filters
-}
 
 const dateToTimestamp = (date: string, end?: boolean): string => {
   return end ? `${date} 23:59:59` : `${date} 00:00:00`

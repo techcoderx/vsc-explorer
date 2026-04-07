@@ -1,6 +1,7 @@
 import { Heading, Text, Grid, Tabs, Box, Stack, Tag } from '@chakra-ui/react'
-import { useParams, Outlet, useOutletContext, useLocation, useNavigate, useSearchParams } from 'react-router'
+import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
@@ -13,19 +14,24 @@ import { getConf, themeColorScheme } from '../../../settings'
 import Pagination from '../../Pagination'
 import { PageTitle } from '../../PageTitle'
 import { TxFilterBar, TxFilterToggle } from '../../TxFilterBar'
-import { useFilterOpen } from '../../../hooks/useFilterOpen'
-import { parseFiltersFromSearchParams, buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
+import { LedgerFilterToggle } from '../../LedgerFilterBar'
+import { buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
 import { L1OpTypeFilter } from '../../L1OpTypeFilter'
+import { LedgerFilterState, emptyLedgerFilters, countActiveFilters } from '../../../ledgerFilterHelpers'
+import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../../types/TxFilters'
 
 const count = 100
 
 export const AddressTxs = () => {
-  const { addr, filtersOpen } = useOutletContext<{ addr: string; filtersOpen: boolean }>()
+  const { addr, filtersOpen, txFilters, setTxFilters } = useOutletContext<{
+    addr: string
+    filtersOpen: boolean
+    txFilters: TxFilterState
+    setTxFilters: Dispatch<SetStateAction<TxFilterState>>
+  }>()
   const { page } = useParams()
-  const [searchParams] = useSearchParams()
-  const filters = parseFiltersFromSearchParams(searchParams)
-  const blockRange = useBlockRange(filters)
-  const filterOpts = buildTxFilterOptions(filters, blockRange, { byAccount: addr })
+  const blockRange = useBlockRange(txFilters)
+  const filterOpts = buildTxFilterOptions(txFilters, blockRange, { byAccount: addr })
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data: txs } = useQuery({
@@ -33,10 +39,10 @@ export const AddressTxs = () => {
     queryFn: async () => fetchL2TxnsBy(offset, count, filterOpts),
     staleTime: 60000
   })
-  const stats = useHistoryStats('txs', buildHistoryStatOpts(filters, blockRange, { user: addr }))
+  const stats = useHistoryStats('txs', buildHistoryStatOpts(txFilters, blockRange, { user: addr }))
   return (
     <Box>
-      <TxFilterBar open={filtersOpen} basePath={`/address/${addr}/txs`} />
+      <TxFilterBar open={filtersOpen} onApply={setTxFilters} onReset={() => setTxFilters(emptyTxFilters)} />
       <Txns txs={txs?.txns || []} pov={addr} />
       <Pagination
         path={`/address/${addr}/txs`}
@@ -58,7 +64,10 @@ export const Address = () => {
   const validAddr = isL1 || addr!.startsWith('did:') || addr!.startsWith('system:')
   const segments = pathname.split('/')
   const tabValue = segments.length >= 4 ? segments[3] : tabNames[0]
-  const [filtersOpen, setFiltersOpen] = useFilterOpen()
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [txFilters, setTxFilters] = useState<TxFilterState>(emptyTxFilters)
+  const [ledgerFilters, setLedgerFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
+  const [actionFilters, setActionFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
   const { data: witness } = useQuery({
     queryKey: ['vsc-witness', addr!.replace('hive:', '')],
     queryFn: async () => getWitness(addr!.replace('hive:', '')),
@@ -115,7 +124,7 @@ export const Address = () => {
           <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>{t('address.tabs.witness')}</Tabs.Trigger>
           {tabValue === 'txs' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-              <TxFilterToggle open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+              <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
             </Box>
           )}
           {tabValue === 'hiveops' && (
@@ -123,9 +132,19 @@ export const Address = () => {
               <L1OpTypeFilter filterKey={`/address/${addr}/hiveops`} />
             </Box>
           )}
+          {tabValue === 'ledger' && (
+            <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+              <LedgerFilterToggle activeCount={countActiveFilters(ledgerFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+            </Box>
+          )}
+          {tabValue === 'actions' && (
+            <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+              <LedgerFilterToggle activeCount={countActiveFilters(actionFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+            </Box>
+          )}
         </Tabs.List>
         <Box pt={'2'}>
-          <Outlet context={{ addr, filtersOpen }} />
+          <Outlet context={{ addr, filtersOpen, txFilters, setTxFilters, ledgerFilters, setLedgerFilters, actionFilters, setActionFilters }} />
         </Box>
       </Tabs.Root>
     </>
