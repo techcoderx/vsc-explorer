@@ -55,7 +55,7 @@ export const Address = () => {
   const { pathname } = useLocation()
   const { addr } = useParams()
   const isL1 = addr!.startsWith('hive:') && validateHiveUsername(addr!.replace('hive:', '')) === null
-  const validAddr = isL1 || addr!.startsWith('did:')
+  const validAddr = isL1 || addr!.startsWith('did:') || addr!.startsWith('system:')
   const segments = pathname.split('/')
   const tabValue = segments.length >= 4 ? segments[3] : tabNames[0]
   const [filtersOpen, setFiltersOpen] = useFilterOpen()

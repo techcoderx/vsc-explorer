@@ -11,7 +11,7 @@ type TableLinkParams = { val: string; ttVal?: string; truncate?: number; icon?: 
 const iconByAddr = (addr: string) => {
   if (addr.startsWith('hive:')) return <FaHive />
   else if (addr.startsWith('did:pkh:eip155:1:0x')) return <FaEthereum />
-  else if (addr.startsWith('did:vsc:')) return <FaNetworkWired />
+  else if (addr.startsWith('did:vsc:') || addr.startsWith('system:')) return <FaNetworkWired />
 }
 
 const rmPrefix = (addr: string) => {
