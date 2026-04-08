@@ -4,11 +4,11 @@
   "toggleNav": "Navigation umschalten",
   "switchColorTheme": "Farbthema wechseln",
   "settings": "Einstellungen",
-  "witnesses": "Zeugen",
+  "witnesses": "Witnesses",
   "overview": "Übersicht",
-  "overviewSub": "Liste der aktiven Zeugen",
+  "overviewSub": "Liste der aktiven Witnesses",
   "elections": "Wahlen",
-  "electionsSub": "Zeugenauswahl jeder Epoche",
+  "electionsSub": "Witness-Auswahl jeder Epoche",
   "multisigAccount": "Multisig-Konto",
   "multisigAccountSub": "Aktivitäten des Multisig-Kontos",
   "schedule": "Zeitplan",
@@ -18,15 +18,15 @@
   "blocksSub": "Neueste Magi-Blöcke",
   "transactions": "Transaktionen",
   "transactionsSub": "Neueste Magi-Transaktionen",
-  "contracts": "Verträge",
+  "contracts": "Contracts",
   "contractsSub": "Bereitgestellte Smart Contracts",
   "nam": "NAM",
   "charts": "Diagramme",
   "tools": "Werkzeuge",
-  "verifyContract": "Vertrag verifizieren",
-  "verifyContractSub": "Vertrags-Quellcode zur Verifizierung einreichen",
+  "verifyContract": "Contract verifizieren",
+  "verifyContractSub": "Contract-Quellcode zur Verifizierung einreichen",
   "dagInspector": "DAG-Inspektor",
-  "dagInspectorSub": "Einen DAG nach von Knoten gepinnter CID anzeigen",
+  "dagInspectorSub": "Einen DAG nach von Node gepinnter CID anzeigen",
   "broadcastTransaction": "Transaktion übertragen",
   "broadcastTransactionSub": "Eine Magi-Transaktion signieren und übertragen",
   "search": {
@@ -41,7 +41,7 @@
       "Ethereum Address": "Ethereum-Adresse",
       "Transaction": "Transaktion",
       "Epoch": "Epoche",
-      "Contract": "Vertrag"
+      "Contract": "Contract"
     }
   }
 }

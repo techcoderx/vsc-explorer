@@ -1,38 +1,38 @@
 {
   "heroTitle": "Magi Block-Explorer",
-  "heroSubtitle": "Konten, Blöcke, Transaktionen und Verträge suchen",
+  "heroSubtitle": "Nodes, Blöcke, Transaktionen und Contracts suchen",
   "networkActivity": "Netzwerkaktivität",
   "dailyTxs": "Tägliche Transaktionen (letzte 14 Tage)",
   "chartTxLabel": "Transaktionen",
   "chartDateLabel": "Datum: {{date}}",
-  "latestContracts": "Neueste Verträge",
-  "viewAllContracts": "Alle Verträge anzeigen",
+  "latestContracts": "Neueste Contracts",
+  "viewAllContracts": "Alle Contracts anzeigen",
   "viewAllBlocks": "Alle Blöcke anzeigen",
   "viewAllTxs": "Alle Transaktionen anzeigen",
   "quickLinks": "Schnelllinks",
   "recentBlocks": "Aktuelle Blöcke",
   "recentTxs": "Aktuelle Transaktionen",
-  "latestContractsQuickLinks": "Neueste Verträge & Schnelllinks",
+  "latestContractsQuickLinks": "Neueste Contracts & Schnelllinks",
   "stats": {
     "hiveBlockHeight": "Hive-Blockhöhe",
     "magiBlockHeight": "Magi-Blockhöhe",
     "transactions": "Transaktionen",
     "currentEpoch": "Aktuelle Epoche",
-    "witnesses": "Zeugen",
-    "contracts": "Verträge"
+    "witnesses": "Witnesses",
+    "contracts": "Contracts"
   },
   "epoch": {
     "epoch": "Epoche {{num}}",
-    "totalStake": "{{amount}} Gesamteinsatz",
+    "totalStake": "{{amount}} Stake",
     "nextEpochIn": "Nächste Epoche in ~{{countdown}}"
   },
   "links": {
     "blocks": "Blöcke",
     "transactions": "Transaktionen",
-    "contracts": "Verträge",
-    "witnesses": "Zeugen",
+    "contracts": "Contracts",
+    "witnesses": "Witnesses",
     "elections": "Wahlen",
-    "namBridge": "NAM-Brücke",
+    "namBridge": "NAM-Bridge",
     "charts": "Diagramme",
     "broadcast": "Übertragen"
   }
