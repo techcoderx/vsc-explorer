@@ -2,7 +2,7 @@
   "blocks": {
     "id": "Id",
     "age": "Alter",
-    "proposer": "Vorschlagender",
+    "proposer": "Proposer",
     "blockHash": "Block-Hash",
     "voted": "Abgestimmt"
   },
@@ -25,12 +25,12 @@
   "contractOutput": {
     "id": "Id",
     "age": "Alter",
-    "contractId": "Vertrags-ID",
+    "contractId": "Contract-ID",
     "inputTx": "Eingabe-Tx",
     "output": "Ausgabe"
   },
   "contracts": {
-    "contractId": "Vertrags-Id",
+    "contractId": "Contract-ID",
     "age": "Alter",
     "creator": "Ersteller",
     "creationTx": "Erstellungs-Tx",
@@ -42,32 +42,32 @@
     "age": "Alter",
     "type": "Typ",
     "from": "Von",
-    "fromUser": "Quellbenutzer",
+    "fromUser": "Sender",
     "to": "An",
-    "toUser": "Zielbenutzer",
+    "toUser": "Empfänger",
     "amount": "Betrag",
     "status": "Status"
   },
   "bridge": {
     "txId": "Tx-ID",
     "age": "Alter",
-    "toUser": "Zielbenutzer",
+    "toUser": "Empfänger",
     "amount": "Betrag"
   },
   "elections": {
     "epoch": "Epoche",
     "age": "Alter",
-    "proposer": "Vorschlagender",
+    "proposer": "Proposer",
     "blocks": "Blöcke",
     "members": "Mitglieder",
-    "totalWeight": "Gesamtgewicht",
+    "totalWeight": "Gesamtgewichtung",
     "voted": "Abgestimmt",
     "blockVotes": "Blockvotes"
   },
   "witnesses": {
     "idx": "Idx",
     "username": "Benutzername",
-    "weight": "Gewicht",
+    "weight": "Gewichtung",
     "lastBlock": "Letzter Block",
     "blocksProduced": "Produzierte Blöcke",
     "lastEpoch": "Letzte Epoche",
