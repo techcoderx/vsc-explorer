@@ -161,7 +161,7 @@ const DesktopNav = ({ isThemed, t }: { isThemed: boolean; t: TFunction }) => {
                 fontSize={'md'}
                 fontWeight={500}
                 color={linkColor}
-                cursor={navItem.children ? 'default' : 'pointer'}
+                cursor={'pointer'}
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor
