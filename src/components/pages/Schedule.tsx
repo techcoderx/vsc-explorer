@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Box, Heading, Text, Table, Link, Field } from '@chakra-ui/react'
+import { Box, Flex, Heading, Text, Table, Link } from '@chakra-ui/react'
 import { Switch } from '../ui/switch'
 import { Link as ReactRouterLink } from 'react-router'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { themeColorScheme, getConf } from '../../settings'
 import { fetchBlock, fetchProps, getWitnessSchedule } from '../../requests'
@@ -25,7 +25,8 @@ const WitnessSchedule = () => {
     queryFn: async () => getWitnessSchedule(prop!.last_processed_block),
     refetchOnWindowFocus: false,
     refetchInterval: 60000,
-    enabled: !!prop && !!prop.last_processed_block
+    enabled: !!prop && !!prop.last_processed_block,
+    placeholderData: keepPreviousData
   })
   const currentSlot = prop ? prop.last_processed_block - (prop.last_processed_block % 10) : 0
   const { data: blockAtCurrentSlot } = useQuery({
@@ -67,12 +68,10 @@ const WitnessSchedule = () => {
         </Link>
       </Text>
       <Box overflowX="auto" maxW={'xl'} margin={'10px auto 15px auto'}>
-        <Field.Root display="flex" alignItems="center" mb={'10px'}>
-          <Field.Label htmlFor="witsch-expand" mb="0">
-            {t('schedule.showOlderSlots')}
-          </Field.Label>
+        <Flex alignItems="center" gap={3} mb={'10px'}>
+          <label htmlFor="witsch-expand">{t('schedule.showOlderSlots')}</label>
           <Switch id="witsch-expand" colorPalette={themeColorScheme} size={'lg'} onCheckedChange={() => setExpSchedule(!expSchedule)} />
-        </Field.Root>
+        </Flex>
         <Table.Root variant={'line'}>
           <Table.Header>
             <Table.Row>
