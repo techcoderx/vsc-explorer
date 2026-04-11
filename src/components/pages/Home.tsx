@@ -17,7 +17,7 @@ import {
 import type Recharts from 'recharts'
 import { fetchProps, fetchBlocks, fetchL2TxnsBy, fetchEpoch, useNetworkStats, useContracts } from '../../requests'
 import { thousandSeperator, timeAgo, fmtmAmount } from '../../helpers'
-import { themeColor } from '../../settings'
+import { getConf, themeColor } from '../../settings'
 import { useColorMode } from '../ui/color-mode'
 import { useAnimatedCounter } from '../../hooks/useAnimatedCounter'
 import { Blocks } from '../tables/Blocks'
@@ -158,7 +158,6 @@ const LatestContracts = () => {
   )
 }
 
-const EPOCH_HIVE_BLOCKS = 7200
 const HIVE_BLOCK_SECONDS = 3
 
 const formatCountdown = (totalSeconds: number): string => {
@@ -176,7 +175,7 @@ const formatCountdown = (totalSeconds: number): string => {
 const useEpochCountdown = (epochStartBlock?: number, currentBlock?: number) => {
   const initialSeconds = useMemo(() => {
     if (!epochStartBlock || !currentBlock) return null
-    const blocksRemaining = EPOCH_HIVE_BLOCKS - (currentBlock - epochStartBlock)
+    const blocksRemaining = getConf().electionInterval - (currentBlock - epochStartBlock)
     return Math.max(0, blocksRemaining * HIVE_BLOCK_SECONDS)
   }, [epochStartBlock, currentBlock])
 
