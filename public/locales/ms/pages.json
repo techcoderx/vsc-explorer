@@ -43,6 +43,7 @@
     "electedMembers": "Ahli Terpilih ({{count}})",
     "blocksTab": "Blok ({{count}})",
     "participationTab": "Penyertaan",
+    "tssCommitmentsTab": "Komitmen TSS ({{count}})",
     "blsNotRequired": "Tandatangan BLS tidak diperlukan untuk pilihan raya pertama."
   },
   "witnesses": {

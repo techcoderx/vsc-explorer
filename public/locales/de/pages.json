@@ -43,6 +43,7 @@
     "electedMembers": "Gewählte Mitglieder ({{count}})",
     "blocksTab": "Blöcke ({{count}})",
     "participationTab": "Beteiligung",
+    "tssCommitmentsTab": "TSS-Commitments ({{count}})",
     "blsNotRequired": "BLS-Signatur war für die erste Wahl nicht erforderlich."
   },
   "witnesses": {

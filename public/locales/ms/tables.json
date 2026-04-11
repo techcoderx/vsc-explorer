@@ -74,6 +74,14 @@
     "elections": "Pilihan Raya",
     "didKey": "Kunci DID"
   },
+  "tssCommitments": {
+    "type": "Jenis",
+    "age": "Umur",
+    "contractId": "ID Kontrak",
+    "keyId": "ID Kunci",
+    "txId": "ID Tx",
+    "publicKey": "Kunci Awam"
+  },
   "schedule": {
     "username": "Nama Pengguna",
     "l1Block": "Blok L1",

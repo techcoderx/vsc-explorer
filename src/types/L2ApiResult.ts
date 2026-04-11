@@ -285,6 +285,17 @@ export interface TssReqStatus {
   sig: string
 }
 
+export interface TssCommitment {
+  type: string
+  block_height: number
+  epoch: number
+  commitment: string
+  key_id: string
+  tx_id: string
+  public_key: string | null
+  timestamp: string
+}
+
 export interface TssKeyStatus {
   id: string
   status: 'created' | 'active' | 'deleted'

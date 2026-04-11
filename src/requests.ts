@@ -24,6 +24,7 @@ import {
   AddrBalance,
   ContractOutput,
   TssOp,
+  TssCommitment,
   TssKeyStatus,
   TssReqStatus,
   SimulateCallResult,
@@ -448,4 +449,12 @@ export const fetchTssReqStatuses = async (reqs: { [k: string]: TssOp }) => {
 
   const result = await gql<GqlResponse<{ [k: string]: TssKeyStatus | TssReqStatus[] }>>(query, variables)
   return result.data
+}
+
+export const fetchTssCommitments = async (epoch: number): Promise<TssCommitment[]> => {
+  const result = await gql<GqlResponse<{ commitments: TssCommitment[] }>>(
+    `query TssCommitments($opts: TssCommitmentFilter) { commitments: findTssCommitments(filterOptions: $opts) { type block_height epoch commitment key_id tx_id public_key timestamp }}`,
+    { opts: { byEpoch: epoch } }
+  )
+  return result.data.commitments ?? []
 }

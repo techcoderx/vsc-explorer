@@ -43,6 +43,7 @@
     "electedMembers": "当選メンバー（{{count}}）",
     "blocksTab": "ブロック（{{count}}）",
     "participationTab": "参加状況",
+    "tssCommitmentsTab": "TSSコミットメント ({{count}})",
     "blsNotRequired": "最初の選挙では BLS 署名は不要でした。"
   },
   "witnesses": {

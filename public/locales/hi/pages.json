@@ -43,6 +43,7 @@
     "electedMembers": "निर्वाचित सदस्य ({{count}})",
     "blocksTab": "ब्लॉक ({{count}})",
     "participationTab": "भागीदारी",
+    "tssCommitmentsTab": "TSS प्रतिबद्धताएँ ({{count}})",
     "blsNotRequired": "पहले चुनाव के लिए BLS हस्ताक्षर आवश्यक नहीं था।"
   },
   "witnesses": {

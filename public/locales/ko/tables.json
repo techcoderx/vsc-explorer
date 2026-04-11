@@ -74,6 +74,14 @@
     "elections": "선거",
     "didKey": "DID 키"
   },
+  "tssCommitments": {
+    "type": "유형",
+    "age": "경과 시간",
+    "contractId": "계약 ID",
+    "keyId": "키 ID",
+    "txId": "Tx ID",
+    "publicKey": "공개 키"
+  },
   "schedule": {
     "username": "사용자 이름",
     "l1Block": "L1 블록",

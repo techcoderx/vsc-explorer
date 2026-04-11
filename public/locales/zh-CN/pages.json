@@ -43,6 +43,7 @@
     "electedMembers": "当选成员（{{count}}）",
     "blocksTab": "区块（{{count}}）",
     "participationTab": "参与情况",
+    "tssCommitmentsTab": "TSS 承诺 ({{count}})",
     "blsNotRequired": "首次选举不需要 BLS 签名。"
   },
   "witnesses": {

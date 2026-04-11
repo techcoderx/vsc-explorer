@@ -74,6 +74,14 @@
     "elections": "Élections",
     "didKey": "Clé DID"
   },
+  "tssCommitments": {
+    "type": "Type",
+    "age": "Âge",
+    "contractId": "ID du contrat",
+    "keyId": "ID de clé",
+    "txId": "ID de Tx",
+    "publicKey": "Clé publique"
+  },
   "schedule": {
     "username": "Nom d'utilisateur",
     "l1Block": "Bloc L1",

@@ -43,6 +43,7 @@
     "electedMembers": "Izabrani članovi ({{count}})",
     "blocksTab": "Blokovi ({{count}})",
     "participationTab": "Sudjelovanje",
+    "tssCommitmentsTab": "TSS obveze ({{count}})",
     "blsNotRequired": "BLS potpis nije bio potreban za prve izbore."
   },
   "witnesses": {

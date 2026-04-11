@@ -43,6 +43,7 @@
     "electedMembers": "當選成員（{{count}}）",
     "blocksTab": "區塊（{{count}}）",
     "participationTab": "參與情況",
+    "tssCommitmentsTab": "TSS 承諾 ({{count}})",
     "blsNotRequired": "首次選舉不需要 BLS 簽名。"
   },
   "witnesses": {

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import PageNotFound from './404'
-import { fetchBlocksInEpoch, fetchEpoch } from '../../requests'
+import { fetchBlocksInEpoch, fetchEpoch, fetchTssCommitments } from '../../requests'
 import Pagination, { PrevNextBtns } from '../Pagination'
 import { beL1BlockUrl, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
@@ -12,6 +12,7 @@ import { themeColorScheme } from '../../settings'
 import { ParticipatedMembers } from '../BlsAggMembers'
 import { LuInfo } from 'react-icons/lu'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
+import { TssCommitments as TssCommitmentsTbl } from '../tables/TssCommitments'
 import { PageTitle } from '../PageTitle'
 
 const blockBatch = 100
@@ -40,6 +41,11 @@ const Epoch = () => {
   const { data: blocks } = useQuery({
     queryKey: ['vsc-blocks-in-epoch', epchNum, blockBatch, offset],
     queryFn: async () => fetchBlocksInEpoch(epchNum, blockBatch, offset),
+    enabled: !invalidEpochNum
+  })
+  const { data: tssCommitments, isLoading: isTssLoading } = useQuery({
+    queryKey: ['vsc-tss-commitments-epoch', epchNum],
+    queryFn: async () => fetchTssCommitments(epchNum),
     enabled: !invalidEpochNum
   })
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
@@ -128,6 +134,7 @@ const Epoch = () => {
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
               <Tabs.Trigger value="0">{t('epoch.blocksTab', { count: epoch?.blocks_info?.count || 0 })}</Tabs.Trigger>
               <Tabs.Trigger value="1">{t('epoch.participationTab')}</Tabs.Trigger>
+              <Tabs.Trigger value="2">{t('epoch.tssCommitmentsTab', { count: tssCommitments?.length || 0 })}</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="0">
               <BlocksTbl blocks={blocks} />
@@ -151,6 +158,9 @@ const Epoch = () => {
                   <Text fontSize={'md'}>{t('epoch.blsNotRequired')}</Text>
                 </Flex>
               ) : null}
+            </Tabs.Content>
+            <Tabs.Content value="2">
+              <TssCommitmentsTbl commitments={tssCommitments} isLoading={isTssLoading} />
             </Tabs.Content>
           </Tabs.Root>
         </Box>

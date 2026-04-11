@@ -43,6 +43,7 @@
     "electedMembers": "선출된 멤버 ({{count}})",
     "blocksTab": "블록 ({{count}})",
     "participationTab": "참여 현황",
+    "tssCommitmentsTab": "TSS 커밋먼트 ({{count}})",
     "blsNotRequired": "첫 번째 선거에서는 BLS 서명이 필요하지 않았습니다."
   },
   "witnesses": {

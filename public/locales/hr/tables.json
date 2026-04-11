@@ -74,6 +74,14 @@
     "elections": "Izbori",
     "didKey": "DID ključ"
   },
+  "tssCommitments": {
+    "type": "Vrsta",
+    "age": "Starost",
+    "contractId": "ID ugovora",
+    "keyId": "ID ključa",
+    "txId": "ID Tx",
+    "publicKey": "Javni ključ"
+  },
   "schedule": {
     "username": "Korisničko ime",
     "l1Block": "L1 blok",

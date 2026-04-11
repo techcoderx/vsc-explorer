@@ -74,6 +74,14 @@
     "elections": "Выборы",
     "didKey": "DID ключ"
   },
+  "tssCommitments": {
+    "type": "Тип",
+    "age": "Возраст",
+    "contractId": "ID контракта",
+    "keyId": "ID ключа",
+    "txId": "ID Tx",
+    "publicKey": "Открытый ключ"
+  },
   "schedule": {
     "username": "Имя пользователя",
     "l1Block": "Блок L1",

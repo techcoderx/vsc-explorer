@@ -43,6 +43,7 @@
     "electedMembers": "الأعضاء المنتخبون ({{count}})",
     "blocksTab": "الكتل ({{count}})",
     "participationTab": "المشاركة",
+    "tssCommitmentsTab": "التزامات TSS ({{count}})",
     "blsNotRequired": "لم يكن توقيع BLS مطلوبًا للانتخاب الأول."
   },
   "witnesses": {

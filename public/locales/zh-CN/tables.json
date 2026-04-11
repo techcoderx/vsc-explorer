@@ -74,6 +74,14 @@
     "elections": "选举",
     "didKey": "DID 密钥"
   },
+  "tssCommitments": {
+    "type": "类型",
+    "age": "时间",
+    "contractId": "合约 ID",
+    "keyId": "密钥 ID",
+    "txId": "交易 ID",
+    "publicKey": "公钥"
+  },
   "schedule": {
     "username": "用户名",
     "l1Block": "L1 区块",

@@ -74,6 +74,14 @@
     "elections": "चुनाव",
     "didKey": "DID कुंजी"
   },
+  "tssCommitments": {
+    "type": "प्रकार",
+    "age": "आयु",
+    "contractId": "अनुबंध ID",
+    "keyId": "कुंजी ID",
+    "txId": "Tx ID",
+    "publicKey": "सार्वजनिक कुंजी"
+  },
   "schedule": {
     "username": "उपयोगकर्ता नाम",
     "l1Block": "L1 ब्लॉक",

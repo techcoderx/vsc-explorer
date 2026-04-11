@@ -74,6 +74,14 @@
     "elections": "الانتخابات",
     "didKey": "مفتاح DID"
   },
+  "tssCommitments": {
+    "type": "النوع",
+    "age": "العمر",
+    "contractId": "معرف العقد",
+    "keyId": "معرف المفتاح",
+    "txId": "معرف المعاملة",
+    "publicKey": "المفتاح العام"
+  },
   "schedule": {
     "username": "اسم المستخدم",
     "l1Block": "كتلة L1",
