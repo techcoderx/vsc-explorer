@@ -17,6 +17,7 @@ interface Conf {
   hiveApi: string
   beApi: string
   gqlApi: string
+  hasuraApi: string
   hiveBe: HiveBlockExplorer[]
   hiveChainId: string
   netId: string
@@ -33,6 +34,7 @@ const testnetConf: Conf = {
   hiveApi: 'https://testnet.techcoderx.com',
   beApi: 'https://magi-test.techcoderx.com/be-api/v1',
   gqlApi: 'https://magi-test.techcoderx.com/api/v1/graphql',
+  hasuraApi: 'https://magi-test.techcoderx.com/hasura/v1/graphql',
   hiveBe: [
     {
       url: 'https://testnet.techcoderx.com/explorer',
@@ -50,6 +52,7 @@ const mainnetConf: Conf = {
   hiveApi: 'https://techcoderx.com',
   beApi: 'https://vsc.techcoderx.com/be-api/v1',
   gqlApi: 'https://vsc.techcoderx.com/api/v1/graphql',
+  hasuraApi: 'https://vsc.techcoderx.com/hasura/v1/graphql',
   hiveBe: [
     {
       url: 'https://hivehub.dev',
@@ -71,11 +74,13 @@ const mainnetConf: Conf = {
 const devnetHiveApi = import.meta.env.VITE_DEVNET_HIVE_API || 'http://localhost:10710'
 const devnetBeApi = import.meta.env.VITE_DEVNET_BE_API || 'http://localhost:10719/be-api/v1'
 const devnetGqlApi = import.meta.env.VITE_DEVNET_GQL_API || 'http://localhost:8080/api/v1/graphql'
+const devnetHasuraApi = import.meta.env.VITE_DEVNET_HASURA_API || 'http://localhost:8081/v1/graphql'
 
 const devnetConf: Conf = {
   hiveApi: devnetHiveApi,
   beApi: devnetBeApi,
   gqlApi: devnetGqlApi,
+  hasuraApi: devnetHasuraApi,
   hiveBe: [
     {
       url: devnetHiveApi + '/explorer',

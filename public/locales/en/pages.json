@@ -72,7 +72,9 @@
       "actions": "Actions",
       "maps": "Maps",
       "unmaps": "Unmaps",
-      "witness": "Witness"
+      "witness": "Witness",
+      "tokens": "Tokens",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,37 @@
     "hiveNetFlowDesc": "History of HIVE net flows over time",
     "hbdNetFlow": "HBD Net Flow",
     "hbdNetFlowDesc": "History of HBD net flows over time"
+  },
+  "tokens": {
+    "title": "Tokens",
+    "noTokens": "No tokens found",
+    "currentSupply": "Current Supply",
+    "maxSupply": "Max Supply",
+    "decimals": "Decimals",
+    "owner": "Owner",
+    "created": "Created",
+    "tabs": {
+      "transfers": "Transfers",
+      "holders": "Holders"
+    }
+  },
+  "nfts": {
+    "title": "NFT Collections",
+    "noNfts": "No NFT collections found",
+    "owner": "Owner",
+    "baseUri": "Base URI",
+    "created": "Created",
+    "tabs": {
+      "tokens": "Tokens",
+      "transfers": "Transfers"
+    }
+  },
+  "btc": {
+    "title": "BTC Mapping",
+    "volume24h": "24h Volume",
+    "deposits24h": "24h Deposits",
+    "topBalances": "Top Balances",
+    "recentDeposits": "Recent Deposits",
+    "recentTransfers": "Recent Transfers"
   }
 }

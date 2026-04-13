@@ -86,5 +86,46 @@
     "username": "Username",
     "l1Block": "L1 Block",
     "magiBlock": "Magi Block"
+  },
+  "tokens": {
+    "name": "Name",
+    "symbol": "Symbol",
+    "contractId": "Contract ID",
+    "decimals": "Decimals",
+    "maxSupply": "Max Supply",
+    "owner": "Owner",
+    "age": "Age",
+    "from": "From",
+    "to": "To",
+    "amount": "Amount",
+    "block": "Block",
+    "account": "Account",
+    "balance": "Balance",
+    "noBalances": "No token balances"
+  },
+  "nfts": {
+    "name": "Name",
+    "symbol": "Symbol",
+    "contractId": "Contract ID",
+    "owner": "Owner",
+    "age": "Age",
+    "from": "From",
+    "to": "To",
+    "tokenId": "Token ID",
+    "value": "Value",
+    "block": "Block",
+    "maxSupply": "Max Supply",
+    "soulbound": "Soulbound",
+    "created": "Created",
+    "noHoldings": "No NFT holdings"
+  },
+  "btc": {
+    "account": "Account",
+    "balance": "Balance",
+    "age": "Age",
+    "recipient": "Recipient",
+    "amount": "Amount",
+    "from": "From",
+    "to": "To"
   }
 }

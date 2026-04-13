@@ -30,6 +30,13 @@ import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
+import { AddressTokenBalances } from './components/pages/address/TokenBalances'
+import { AddressNftHoldings } from './components/pages/address/NftHoldings'
+import TokenList from './components/pages/tokens/TokenList'
+import TokenDetail, { TokenTransfersTab, TokenHoldersTab } from './components/pages/tokens/TokenDetail'
+import NftList from './components/pages/nfts/NftList'
+import NftDetail, { NftTokensTab, NftTransfersTab } from './components/pages/nfts/NftDetail'
+import BtcMapping from './components/pages/btc/BtcMapping'
 import { ChartsDirectory } from './components/pages/charts/Directory'
 import { BridgeCharts } from './components/pages/charts/Bridge'
 import { BlocksCharts } from './components/pages/charts/Blocks'
@@ -84,6 +91,14 @@ const router = createBrowserRouter([
           {
             path: '/address/:addr/witness',
             element: <AddressWitness />
+          },
+          {
+            path: '/address/:addr/tokens',
+            element: <AddressTokenBalances />
+          },
+          {
+            path: '/address/:addr/nfts',
+            element: <AddressNftHoldings />
           }
         ]
       },
@@ -132,6 +147,54 @@ const router = createBrowserRouter([
       {
         path: '/contracts',
         element: <NewContracts />
+      },
+      {
+        path: '/tokens',
+        element: <TokenList />
+      },
+      {
+        path: '/tokens/:contractId',
+        element: <TokenDetail />,
+        children: [
+          {
+            path: '/tokens/:contractId',
+            element: <TokenTransfersTab />
+          },
+          {
+            path: '/tokens/:contractId/transfers/:page?',
+            element: <TokenTransfersTab />
+          },
+          {
+            path: '/tokens/:contractId/holders/:page?',
+            element: <TokenHoldersTab />
+          }
+        ]
+      },
+      {
+        path: '/nfts',
+        element: <NftList />
+      },
+      {
+        path: '/nfts/:contractId',
+        element: <NftDetail />,
+        children: [
+          {
+            path: '/nfts/:contractId',
+            element: <NftTokensTab />
+          },
+          {
+            path: '/nfts/:contractId/tokens/:page?',
+            element: <NftTokensTab />
+          },
+          {
+            path: '/nfts/:contractId/transfers/:page?',
+            element: <NftTransfersTab />
+          }
+        ]
+      },
+      {
+        path: '/btc',
+        element: <BtcMapping />
       },
       {
         path: '/contract/:contractId',

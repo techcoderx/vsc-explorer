@@ -1,0 +1,268 @@
+import { useQuery } from '@tanstack/react-query'
+import { getConf } from './settings'
+import {
+  HasuraResponse,
+  TokenRegistry,
+  TokenOverview,
+  TokenBalance,
+  TokenTransfer,
+  NftRegistry,
+  NftTransfer,
+  NftTokenInfo,
+  BtcMappingBalance,
+  BtcMappingDeposit,
+  BtcMappingTransfer,
+  BtcMappingVolume
+} from './types/HasuraResult'
+
+const conf = getConf()
+
+const hasuraGql = async <T>(query: string, variables: { [key: string]: unknown } = {}) => {
+  return (await (
+    await fetch(conf.hasuraApi, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query,
+        variables
+      }),
+      signal: AbortSignal.timeout(10000)
+    })
+  ).json()) as HasuraResponse<T>
+}
+
+// Token queries
+export const fetchTokenRegistry = async (): Promise<TokenRegistry[]> => {
+  const result = await hasuraGql<{ magi_token_registry: TokenRegistry[] }>(
+    `query { magi_token_registry(order_by: { init_block: desc }) { contract_id name symbol decimals max_supply owner init_block init_ts } }`
+  )
+  return result.data.magi_token_registry
+}
+
+export const fetchTokenOverview = async (contractId: string): Promise<TokenOverview | null> => {
+  const result = await hasuraGql<{ magi_token_overview: TokenOverview[] }>(
+    `query TokenOverview($contractId: String!) {
+      magi_token_overview(where: { contract_id: { _eq: $contractId } }) {
+        contract_id name symbol decimals max_supply owner init_block init_ts current_supply paused
+      }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_token_overview[0] ?? null
+}
+
+export const fetchTokenBalances = async (contractId: string, limit: number, offset: number): Promise<TokenBalance[]> => {
+  const result = await hasuraGql<{ magi_token_balances: TokenBalance[] }>(
+    `query TokenBalances($contractId: String!, $limit: Int!, $offset: Int!) {
+      magi_token_balances(where: { contract_id: { _eq: $contractId } }, order_by: { balance: desc }, limit: $limit, offset: $offset) {
+        contract_id account balance
+      }
+    }`,
+    { contractId, limit, offset }
+  )
+  return result.data.magi_token_balances
+}
+
+export const fetchTokenBalancesByAccount = async (account: string): Promise<TokenBalance[]> => {
+  const result = await hasuraGql<{ magi_token_balances: TokenBalance[] }>(
+    `query TokenBalancesByAccount($account: String!) {
+      magi_token_balances(where: { account: { _eq: $account } }, order_by: { balance: desc }) {
+        contract_id account balance
+      }
+    }`,
+    { account }
+  )
+  return result.data.magi_token_balances
+}
+
+export const fetchTokenTransfers = async (contractId: string, limit: number, offset: number): Promise<TokenTransfer[]> => {
+  const result = await hasuraGql<{ magi_token_transfer_events: TokenTransfer[] }>(
+    `query TokenTransfers($contractId: String!, $limit: Int!, $offset: Int!) {
+      magi_token_transfer_events(where: { indexer_contract_id: { _eq: $contractId } }, order_by: { indexer_id: desc }, limit: $limit, offset: $offset) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id from to amount
+      }
+    }`,
+    { contractId, limit, offset }
+  )
+  return result.data.magi_token_transfer_events
+}
+
+export const fetchTokenTransferCount = async (contractId: string): Promise<number> => {
+  const result = await hasuraGql<{ magi_token_transfer_events_aggregate: { aggregate: { count: number } } }>(
+    `query TokenTransferCount($contractId: String!) {
+      magi_token_transfer_events_aggregate(where: { indexer_contract_id: { _eq: $contractId } }) { aggregate { count } }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_token_transfer_events_aggregate.aggregate.count
+}
+
+export const fetchTokenBalanceCount = async (contractId: string): Promise<number> => {
+  const result = await hasuraGql<{ magi_token_balances_aggregate: { aggregate: { count: number } } }>(
+    `query TokenBalanceCount($contractId: String!) {
+      magi_token_balances_aggregate(where: { contract_id: { _eq: $contractId } }) { aggregate { count } }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_token_balances_aggregate.aggregate.count
+}
+
+// Token hooks
+export const useTokenRegistry = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['hasura-token-registry'],
+    queryFn: fetchTokenRegistry,
+    staleTime: 60000
+  })
+  return { tokens: data, isLoading }
+}
+
+export const useTokenOverview = (contractId: string) => {
+  return useQuery({
+    queryKey: ['hasura-token-overview', contractId],
+    queryFn: () => fetchTokenOverview(contractId),
+    staleTime: 60000
+  })
+}
+
+// NFT queries
+export const fetchNftRegistry = async (): Promise<NftRegistry[]> => {
+  const result = await hasuraGql<{ magi_nft_registry: NftRegistry[] }>(
+    `query { magi_nft_registry(order_by: { init_block: desc }) { contract_id name symbol base_uri owner init_block init_ts } }`
+  )
+  return result.data.magi_nft_registry
+}
+
+export const fetchNftTransfers = async (contractId: string, limit: number, offset: number): Promise<NftTransfer[]> => {
+  const result = await hasuraGql<{ magi_nft_all_transfers: NftTransfer[] }>(
+    `query NftTransfers($contractId: String!, $limit: Int!, $offset: Int!) {
+      magi_nft_all_transfers(where: { indexer_contract_id: { _eq: $contractId } }, order_by: { indexer_ts: desc }, limit: $limit, offset: $offset) {
+        indexer_contract_id operator from to token_id value indexer_block_height indexer_ts
+      }
+    }`,
+    { contractId, limit, offset }
+  )
+  return result.data.magi_nft_all_transfers
+}
+
+export const fetchNftTransferCount = async (contractId: string): Promise<number> => {
+  const result = await hasuraGql<{ magi_nft_all_transfers_aggregate: { aggregate: { count: number } } }>(
+    `query NftTransferCount($contractId: String!) {
+      magi_nft_all_transfers_aggregate(where: { indexer_contract_id: { _eq: $contractId } }) { aggregate { count } }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_nft_all_transfers_aggregate.aggregate.count
+}
+
+export const fetchNftTokens = async (contractId: string, limit: number, offset: number): Promise<NftTokenInfo[]> => {
+  const result = await hasuraGql<{ magi_nft_token_info: NftTokenInfo[] }>(
+    `query NftTokens($contractId: String!, $limit: Int!, $offset: Int!) {
+      magi_nft_token_info(where: { contract_id: { _eq: $contractId } }, order_by: { token_id: asc }, limit: $limit, offset: $offset) {
+        contract_id token_id max_supply soulbound indexer_block_height created_ts has_properties
+      }
+    }`,
+    { contractId, limit, offset }
+  )
+  return result.data.magi_nft_token_info
+}
+
+export const fetchNftTokenCount = async (contractId: string): Promise<number> => {
+  const result = await hasuraGql<{ magi_nft_token_info_aggregate: { aggregate: { count: number } } }>(
+    `query NftTokenCount($contractId: String!) {
+      magi_nft_token_info_aggregate(where: { contract_id: { _eq: $contractId } }) { aggregate { count } }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_nft_token_info_aggregate.aggregate.count
+}
+
+export const useNftRegistry = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['hasura-nft-registry'],
+    queryFn: fetchNftRegistry,
+    staleTime: 60000
+  })
+  return { nfts: data, isLoading }
+}
+
+// BTC Mapping queries
+export const fetchBtcBalances = async (limit: number, offset: number): Promise<BtcMappingBalance[]> => {
+  const result = await hasuraGql<{ btc_mapping_balances: BtcMappingBalance[] }>(
+    `query BtcBalances($limit: Int!, $offset: Int!) {
+      btc_mapping_balances(order_by: { balance_sats: desc }, limit: $limit, offset: $offset) {
+        account balance_sats
+      }
+    }`,
+    { limit, offset }
+  )
+  return result.data.btc_mapping_balances
+}
+
+export const fetchBtcRecentDeposits = async (limit: number): Promise<BtcMappingDeposit[]> => {
+  const result = await hasuraGql<{ btc_mapping_deposit_events: BtcMappingDeposit[] }>(
+    `query BtcDeposits($limit: Int!) {
+      btc_mapping_deposit_events(order_by: { indexer_id: desc }, limit: $limit) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id recipient sender amount
+      }
+    }`,
+    { limit }
+  )
+  return result.data.btc_mapping_deposit_events
+}
+
+export const fetchBtcRecentTransfers = async (limit: number): Promise<BtcMappingTransfer[]> => {
+  const result = await hasuraGql<{ btc_mapping_transfer_events: BtcMappingTransfer[] }>(
+    `query BtcTransfers($limit: Int!) {
+      btc_mapping_transfer_events(order_by: { indexer_id: desc }, limit: $limit) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id from_addr to_addr amount
+      }
+    }`,
+    { limit }
+  )
+  return result.data.btc_mapping_transfer_events
+}
+
+export const fetchBtcVolume24h = async (): Promise<BtcMappingVolume | null> => {
+  const result = await hasuraGql<{ btc_mapping_volume_24h: BtcMappingVolume[] }>(
+    `query { btc_mapping_volume_24h { deposit_count total_sats } }`
+  )
+  return result.data.btc_mapping_volume_24h[0] ?? null
+}
+
+export const fetchBtcVolume7d = async (): Promise<BtcMappingVolume | null> => {
+  const result = await hasuraGql<{ btc_mapping_volume_7d: BtcMappingVolume[] }>(
+    `query { btc_mapping_volume_7d { deposit_count total_sats } }`
+  )
+  return result.data.btc_mapping_volume_7d[0] ?? null
+}
+
+export const fetchBtcVolume30d = async (): Promise<BtcMappingVolume | null> => {
+  const result = await hasuraGql<{ btc_mapping_volume_30d: BtcMappingVolume[] }>(
+    `query { btc_mapping_volume_30d { deposit_count total_sats } }`
+  )
+  return result.data.btc_mapping_volume_30d[0] ?? null
+}
+
+// Address token/NFT balance hooks
+export const useTokenBalancesByAccount = (account: string) => {
+  return useQuery({
+    queryKey: ['hasura-token-balances-account', account],
+    queryFn: () => fetchTokenBalancesByAccount(account),
+    staleTime: 60000
+  })
+}
+
+export const fetchNftBalancesByAccount = async (account: string): Promise<NftTransfer[]> => {
+  const result = await hasuraGql<{ magi_nft_all_transfers: NftTransfer[] }>(
+    `query NftByAccount($account: String!) {
+      magi_nft_all_transfers(where: { to: { _eq: $account } }, order_by: { indexer_ts: desc }) {
+        indexer_contract_id operator from to token_id value indexer_block_height indexer_ts
+      }
+    }`,
+    { account }
+  )
+  return result.data.magi_nft_all_transfers
+}

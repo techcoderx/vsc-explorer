@@ -425,6 +425,15 @@ export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {
   return `${trx_id}-${opidx}`
 }
 
+export const formatTokenAmount = (rawAmount: string | number, decimals: number): string => {
+  const str = rawAmount.toString()
+  if (decimals === 0) return thousandSeperator(str)
+  const padded = str.padStart(decimals + 1, '0')
+  const intPart = padded.slice(0, padded.length - decimals)
+  const fracPart = padded.slice(padded.length - decimals).replace(/0+$/, '')
+  return thousandSeperator(intPart) + (fracPart ? '.' + fracPart : '')
+}
+
 export const beL1BlockUrl = (num: number) => {
   // Use the first one as default
   const be = getConf().hiveBe[0]

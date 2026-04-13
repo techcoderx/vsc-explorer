@@ -130,6 +130,14 @@ const getNavItems = (t: TFunction): NavItem[] => [
       { label: t('contracts'), subLabel: t('contractsSub'), href: '/contracts' }
     ]
   },
+  {
+    label: t('dapps'),
+    children: [
+      { label: t('tokens'), subLabel: t('tokensSub'), href: '/tokens' },
+      { label: t('nftCollections'), subLabel: t('nftCollectionsSub'), href: '/nfts' },
+      { label: t('btcMapping'), subLabel: t('btcMappingSub'), href: '/btc' }
+    ]
+  },
   { label: t('nam'), href: '/bridge/hive' },
   { label: t('charts'), href: '/charts' },
   {

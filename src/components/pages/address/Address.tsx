@@ -53,7 +53,7 @@ export const AddressTxs = () => {
   )
 }
 
-const tabNames = ['txs', 'hiveops', 'ledger', 'actions', 'deposits', 'withdrawals', 'witness']
+const tabNames = ['txs', 'hiveops', 'ledger', 'actions', 'deposits', 'withdrawals', 'witness', 'tokens', 'nfts']
 
 export const Address = () => {
   const { t } = useTranslation('pages')
@@ -122,6 +122,8 @@ export const Address = () => {
           <Tabs.Trigger value="deposits">{t('address.tabs.maps')}</Tabs.Trigger>
           <Tabs.Trigger value="withdrawals">{t('address.tabs.unmaps')}</Tabs.Trigger>
           <Tabs.Trigger value="witness" hidden={!isL1 || !witness}>{t('address.tabs.witness')}</Tabs.Trigger>
+          <Tabs.Trigger value="tokens">{t('address.tabs.tokens')}</Tabs.Trigger>
+          <Tabs.Trigger value="nfts">{t('address.tabs.nfts')}</Tabs.Trigger>
           {tabValue === 'txs' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
               <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
