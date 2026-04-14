@@ -73,9 +73,17 @@
       "maps": "マップ",
       "unmaps": "アンマップ",
       "witness": "ウィットネス",
-      "tokens": "トークン",
+      "balances": "トークン",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "残高",

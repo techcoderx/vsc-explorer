@@ -73,9 +73,17 @@
       "maps": "Peta",
       "unmaps": "Nyahpeta",
       "witness": "Saksi",
-      "tokens": "Token",
+      "balances": "Token",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "Baki",

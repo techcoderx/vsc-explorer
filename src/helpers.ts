@@ -117,6 +117,12 @@ export const fmtmAmount = (amount: number, asset: Coin | CoinLower) => {
   return `${thousandSeperator(roundFloat(amount / 1000, 3))} ${asset.toUpperCase()}`
 }
 
+export const formatSats = (sats: string): string => {
+  const num = parseInt(sats, 10)
+  if (isNaN(num)) return sats
+  return (num / 1e8).toFixed(8) + ' BTC'
+}
+
 export const naiToString = (nai: NAI) => {
   let result = thousandSeperator(parseInt(nai.amount) / Math.pow(10, nai.precision)) + ' '
   if (nai.nai === '@@000000021') result += 'HIVE'

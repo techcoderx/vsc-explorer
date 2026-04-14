@@ -73,9 +73,17 @@
       "maps": "Mapeos",
       "unmaps": "Desmapeos",
       "witness": "Testigo",
-      "tokens": "Tokens",
+      "balances": "Tokens",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "Saldos",

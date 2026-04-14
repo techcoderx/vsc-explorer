@@ -1,12 +1,10 @@
 import { Box, Table, Text } from '@chakra-ui/react'
-import { useOutletContext } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useTokenBalancesByAccount } from '../../../hasuraRequests'
 import { formatTokenAmount } from '../../../helpers'
 import { ContractLink } from '../../TableLink'
 
-export const AddressTokenBalances = () => {
-  const { addr } = useOutletContext<{ addr: string }>()
+export const TokensTable = ({ addr }: { addr: string }) => {
   const { t } = useTranslation('tables')
   const { data: balances, isLoading } = useTokenBalancesByAccount(addr)
   return (

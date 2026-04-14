@@ -234,6 +234,26 @@ export const fetchBtcBalances = async (limit: number, offset: number): Promise<B
   return result.data.btc_mapping_balances
 }
 
+export const fetchBtcBalanceByAccount = async (account: string): Promise<BtcMappingBalance | null> => {
+  const result = await hasuraGql<{ btc_mapping_balances: BtcMappingBalance[] }>(
+    `query BtcBalanceByAccount($account: String!) {
+      btc_mapping_balances(where: { account: { _eq: $account } }) {
+        account balance_sats
+      }
+    }`,
+    { account }
+  )
+  return result.data.btc_mapping_balances[0] ?? null
+}
+
+export const useBtcBalanceByAccount = (account: string) => {
+  return useQuery({
+    queryKey: ['hasura-btc-balance-account', account],
+    queryFn: () => fetchBtcBalanceByAccount(account),
+    staleTime: 60000
+  })
+}
+
 export const fetchBtcRecentDeposits = async (limit: number): Promise<BtcMappingDeposit[]> => {
   const result = await hasuraGql<{ btc_mapping_deposit_events: BtcMappingDeposit[] }>(
     `query BtcDeposits($limit: Int!) {

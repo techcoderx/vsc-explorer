@@ -2,18 +2,13 @@ import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box } from '@chakra-
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcVolume24h } from '../../../hasuraRequests'
-import { thousandSeperator, timeAgo } from '../../../helpers'
+import { thousandSeperator, timeAgo, formatSats } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
 import { AccountLink } from '../../TableLink'
 import { Tooltip } from '../../ui/tooltip'
 import TransfersTable from '../../tables/Transfers'
 
-const formatSats = (sats: string): string => {
-  const num = parseInt(sats, 10)
-  if (isNaN(num)) return sats
-  const btc = num / 1e8
-  return btc.toFixed(8) + ' BTC'
-}
+
 
 const BtcMapping = () => {
   const { t } = useTranslation(['pages', 'tables'])

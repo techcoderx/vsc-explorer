@@ -73,9 +73,17 @@
       "maps": "Отображения",
       "unmaps": "Отмены отображений",
       "witness": "Свидетель",
-      "tokens": "Токены",
+      "balances": "Токены",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "Балансы",

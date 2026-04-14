@@ -30,7 +30,7 @@ import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
 import { AddressL1Ops } from './components/pages/address/L1Ops'
-import { AddressTokenBalances } from './components/pages/address/TokenBalances'
+import { AddressBalances } from './components/pages/address/AddressBalances'
 import { AddressNftHoldings } from './components/pages/address/NftHoldings'
 import TokenList from './components/pages/tokens/TokenList'
 import TokenDetail, { TokenInfoTab, TokenTransfersTab, TokenHoldersTab } from './components/pages/tokens/TokenDetail'
@@ -93,8 +93,8 @@ const router = createBrowserRouter([
             element: <AddressWitness />
           },
           {
-            path: '/address/:addr/tokens',
-            element: <AddressTokenBalances />
+            path: '/address/:addr/balances',
+            element: <AddressBalances />
           },
           {
             path: '/address/:addr/nfts',

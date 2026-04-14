@@ -73,9 +73,17 @@
       "maps": "Maps",
       "unmaps": "Unmaps",
       "witness": "Witness",
-      "tokens": "Tokens",
+      "balances": "Balances",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "Balances",

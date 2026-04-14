@@ -73,9 +73,17 @@
       "maps": "매핑",
       "unmaps": "언매핑",
       "witness": "위트니스",
-      "tokens": "토큰",
+      "balances": "토큰",
       "nfts": "NFTs"
     }
+  },
+  "balancesTab": {
+    "nativeAssets": "Native Assets",
+    "tokens": "Tokens",
+    "asset": "Asset",
+    "balance": "Balance",
+    "noNativeBalances": "No native balances",
+    "btc": "BTC"
   },
   "balances": {
     "title": "잔액",
