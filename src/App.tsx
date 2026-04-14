@@ -97,7 +97,7 @@ const router = createBrowserRouter([
             element: <AddressBalances />
           },
           {
-            path: '/address/:addr/nfts',
+            path: '/address/:addr/nfts/:page?',
             element: <AddressNftHoldings />
           }
         ]

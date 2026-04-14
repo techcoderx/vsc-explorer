@@ -1,18 +1,29 @@
 import { Box, Table, Text } from '@chakra-ui/react'
-import { useOutletContext } from 'react-router'
+import { useOutletContext, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { fetchNftBalancesByAccount } from '../../../hasuraRequests'
+import { fetchNftBalancesByAccount, fetchNftBalanceCountByAccount } from '../../../hasuraRequests'
 import { timeAgo } from '../../../helpers'
 import { ContractLink } from '../../TableLink'
 import { Tooltip } from '../../ui/tooltip'
+import Pagination from '../../Pagination'
+
+const count = 100
 
 export const AddressNftHoldings = () => {
   const { addr } = useOutletContext<{ addr: string }>()
+  const { page } = useParams()
   const { t } = useTranslation('tables')
+  const pageNum = parseInt(page || '1')
+  const offset = (pageNum - 1) * count
   const { data: nfts, isLoading } = useQuery({
-    queryKey: ['hasura-nft-by-account', addr],
-    queryFn: () => fetchNftBalancesByAccount(addr),
+    queryKey: ['hasura-nft-by-account', addr, offset, count],
+    queryFn: () => fetchNftBalancesByAccount(addr, count, offset),
+    staleTime: 60000
+  })
+  const { data: totalCount } = useQuery({
+    queryKey: ['hasura-nft-by-account-count', addr],
+    queryFn: () => fetchNftBalanceCountByAccount(addr),
     staleTime: 60000
   })
   return (
@@ -53,6 +64,9 @@ export const AddressNftHoldings = () => {
           </Table.Body>
         </Table.Root>
       </Table.ScrollArea>
+      <Box mt="4">
+        <Pagination path={`/address/${addr}/nfts`} currentPageNum={pageNum} maxPageNum={Math.ceil((totalCount || 0) / count)} />
+      </Box>
     </Box>
   )
 }

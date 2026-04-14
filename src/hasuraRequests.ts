@@ -308,14 +308,24 @@ export const useTokenBalancesByAccount = (account: string) => {
   })
 }
 
-export const fetchNftBalancesByAccount = async (account: string): Promise<NftTransfer[]> => {
+export const fetchNftBalancesByAccount = async (account: string, limit: number, offset: number): Promise<NftTransfer[]> => {
   const result = await hasuraGql<{ magi_nft_all_transfers: NftTransfer[] }>(
-    `query NftByAccount($account: String!) {
-      magi_nft_all_transfers(where: { to: { _eq: $account } }, order_by: { indexer_ts: desc }) {
+    `query NftByAccount($account: String!, $limit: Int!, $offset: Int!) {
+      magi_nft_all_transfers(where: { to: { _eq: $account } }, order_by: { indexer_ts: desc }, limit: $limit, offset: $offset) {
         indexer_contract_id operator from to token_id value indexer_block_height indexer_ts
       }
     }`,
-    { account }
+    { account, limit, offset }
   )
   return result.data.magi_nft_all_transfers
+}
+
+export const fetchNftBalanceCountByAccount = async (account: string): Promise<number> => {
+  const result = await hasuraGql<{ magi_nft_all_transfers_aggregate: { aggregate: { count: number } } }>(
+    `query NftBalanceCountByAccount($account: String!) {
+      magi_nft_all_transfers_aggregate(where: { to: { _eq: $account } }) { aggregate { count } }
+    }`,
+    { account }
+  )
+  return result.data.magi_nft_all_transfers_aggregate.aggregate.count
 }
