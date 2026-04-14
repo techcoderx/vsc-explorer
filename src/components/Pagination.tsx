@@ -1,9 +1,8 @@
-import { Flex, Button, Box } from '@chakra-ui/react'
+import { Flex, Button, ButtonGroup, Box } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 import { Link as ReactRouterLink, To } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { themeColor, themeColorULight, themeColorDark, themeColorScheme } from '../settings'
-import { btnGroupCss } from '../styles/btnGroup'
 
 interface PaginationProps {
   path: string
@@ -17,7 +16,7 @@ interface Wrapper {
   children: ReactNode
 }
 
-export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
+export const CurrentPageBtn = ({ children, ...rest }: { children: ReactNode } & Record<string, unknown>) => {
   return (
     <Button
       size="md"
@@ -29,15 +28,16 @@ export const CurrentPageBtn = ({ children }: { children: ReactNode }) => {
       _hover={{ bg: themeColor }}
       _light={{ borderColor: themeColor, bg: themeColorULight, color: themeColorDark, _hover: { bg: themeColorULight } }}
       aria-current="page"
+      {...rest}
     >
       {children}
     </Button>
   )
 }
 
-export const LinkedBtn = ({ to, children }: Wrapper) => {
+export const LinkedBtn = ({ to, children, ...rest }: Wrapper & Record<string, unknown>) => {
   return (
-    <Button size="md" variant="outline" colorPalette="gray" padding="0 0">
+    <Button size="md" variant="outline" colorPalette="gray" padding="0 0" {...rest}>
       <Box asChild w="100%" h="100%" display="flex" alignItems="center" justifyContent="center" padding="0px 16px">
         <ReactRouterLink to={to}>{children}</ReactRouterLink>
       </Box>
@@ -53,7 +53,7 @@ const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationP
   }
   return (
     <Flex justifyContent={'center'}>
-      <Box css={btnGroupCss}>
+      <ButtonGroup variant="outline" size="md" attached>
         {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>{t('previous')}</LinkedBtn> : null}
         {currentPageNum > 2 ? <LinkedBtn to={link(currentPageNum - 2)}>{currentPageNum - 2}</LinkedBtn> : null}
         {currentPageNum > 1 ? <LinkedBtn to={link(currentPageNum - 1)}>{currentPageNum - 1}</LinkedBtn> : null}
@@ -71,7 +71,7 @@ const Pagination = ({ path, currentPageNum, maxPageNum, buildLink }: PaginationP
         ) : null}
         {maxPageNum >= currentPageNum + 3 ? <LinkedBtn to={link(maxPageNum)}>{maxPageNum}</LinkedBtn> : null}
         {currentPageNum < maxPageNum ? <LinkedBtn to={link((currentPageNum || 1) + 1)}>{t('next')}</LinkedBtn> : null}
-      </Box>
+      </ButtonGroup>
     </Flex>
   )
 }
@@ -85,10 +85,10 @@ export const PrevNextBtns = ({ toPrev, toNext }: prevNextBtnProps) => {
   const { t } = useTranslation()
   return (
     <Box margin="10px 0px">
-      <Box css={btnGroupCss} float="right">
+      <ButtonGroup variant="outline" size="md" attached css={{ float: 'right' }}>
         {toPrev ? <LinkedBtn to={toPrev}>{t('previous')}</LinkedBtn> : null}
         {toNext ? <LinkedBtn to={toNext}>{t('next')}</LinkedBtn> : null}
-      </Box>
+      </ButtonGroup>
     </Box>
   )
 }

@@ -13,6 +13,7 @@ import {
   Input,
   HStack,
   Button,
+  ButtonGroup,
   VStack,
   RadioGroup,
   Alert,
@@ -65,7 +66,6 @@ import { LedgerFilterBar, LedgerFilterToggle } from '../LedgerFilterBar'
 import { emptyLedgerFilters, countActiveFilters, buildLedgerGqlOpts, buildLedgerStatOpts, LedgerFilterState } from '../../ledgerFilterHelpers'
 import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../types/TxFilters'
 import { toaster } from '../ui/toaster'
-import { btnGroupCss } from '../../styles/btnGroup'
 import { useContractType, useTokenRegistry, useNftRegistry } from '../../hasuraRequests'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
@@ -365,22 +365,22 @@ const CallContract = ({ contractId }: { contractId: string }) => {
             {wallet === Wallet.Hive && (
               <Field.Root>
                 <Field.Label>{t('form.keyType', { ns: 'common' })}</Field.Label>
-                <Box css={btnGroupCss}>
+                <ButtonGroup variant="outline" attached>
                   <Button
                     colorPalette={keyType === KeyTypes.Posting ? themeColorScheme : 'gray'}
-                    variant="outline"
+                    zIndex={keyType === KeyTypes.Posting ? 2 : undefined}
                     onClick={() => setKeyType(KeyTypes.Posting)}
                   >
                     {t('form.posting', { ns: 'common' })}
                   </Button>
                   <Button
                     colorPalette={keyType === KeyTypes.Active ? themeColorScheme : 'gray'}
-                    variant="outline"
+                    zIndex={keyType === KeyTypes.Active ? 2 : undefined}
                     onClick={() => setKeyType(KeyTypes.Active)}
                   >
                     {t('form.active', { ns: 'common' })}
                   </Button>
-                </Box>
+                </ButtonGroup>
               </Field.Root>
             )}
           </Stack>

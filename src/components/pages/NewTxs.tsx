@@ -1,4 +1,4 @@
-import { Flex, Heading, Stack, Box } from '@chakra-ui/react'
+import { Flex, Heading, Stack, ButtonGroup } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, useLocation, useOutletContext, useParams } from 'react-router'
 import { Dispatch, SetStateAction, useState } from 'react'
@@ -9,7 +9,6 @@ import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
 import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
-import { btnGroupCss } from '../../styles/btnGroup'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
 import { buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../types/TxFilters'
@@ -89,14 +88,14 @@ export const NewTxs = () => {
         <Flex my={'auto'} py={'1'} gap={'3'} align={'center'}>
           {isMagi && <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />}
           {isHive && <L1OpTypeFilter filterKey={HIVE_TXS_FILTER_KEY} />}
-          <Box css={btnGroupCss}>
+          <ButtonGroup variant="outline" size="md" attached>
             {!isMagi ? <LinkedBtn to={'/transactions'}>{t('transactions.magi')}</LinkedBtn> : <CurrentPageBtn>{t('transactions.magi')}</CurrentPageBtn>}
             {!isHive ? (
               <LinkedBtn to={'/transactions/hive'}>{t('transactions.hive')}</LinkedBtn>
             ) : (
               <CurrentPageBtn>{t('transactions.hive')}</CurrentPageBtn>
             )}
-          </Box>
+          </ButtonGroup>
         </Flex>
       </Stack>
       <hr />
