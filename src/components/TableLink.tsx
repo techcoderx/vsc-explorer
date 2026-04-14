@@ -41,6 +41,13 @@ export const TxLink = ({ val, truncate = 15 }: TableLinkParams) => {
 }
 
 export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
+  if (val === '')
+    return (
+      <HStack gap={'1.5'}>
+        <FaNetworkWired />
+        Null
+      </HStack>
+    )
   if (val.startsWith('contract:') || (val.startsWith('vsc') && validateHiveUsername(val) !== null))
     return <ContractLink val={val} truncate={truncate} />
   const href = `/address/${val}`

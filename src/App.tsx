@@ -33,9 +33,9 @@ import { AddressL1Ops } from './components/pages/address/L1Ops'
 import { AddressTokenBalances } from './components/pages/address/TokenBalances'
 import { AddressNftHoldings } from './components/pages/address/NftHoldings'
 import TokenList from './components/pages/tokens/TokenList'
-import TokenDetail, { TokenTransfersTab, TokenHoldersTab } from './components/pages/tokens/TokenDetail'
+import TokenDetail, { TokenInfoTab, TokenTransfersTab, TokenHoldersTab } from './components/pages/tokens/TokenDetail'
 import NftList from './components/pages/nfts/NftList'
-import NftDetail, { NftTokensTab, NftTransfersTab } from './components/pages/nfts/NftDetail'
+import NftDetail, { NftInfoTab, NftTokensTab, NftTransfersTab } from './components/pages/nfts/NftDetail'
 import BtcMapping from './components/pages/btc/BtcMapping'
 import { ChartsDirectory } from './components/pages/charts/Directory'
 import { BridgeCharts } from './components/pages/charts/Bridge'
@@ -153,20 +153,24 @@ const router = createBrowserRouter([
         element: <TokenList />
       },
       {
-        path: '/tokens/:contractId',
+        path: '/token/:contractId',
         element: <TokenDetail />,
         children: [
           {
-            path: '/tokens/:contractId',
+            path: '/token/:contractId',
             element: <TokenTransfersTab />
           },
           {
-            path: '/tokens/:contractId/transfers/:page?',
+            path: '/token/:contractId/transfers/:page?',
             element: <TokenTransfersTab />
           },
           {
-            path: '/tokens/:contractId/holders/:page?',
+            path: '/token/:contractId/holders/:page?',
             element: <TokenHoldersTab />
+          },
+          {
+            path: '/token/:contractId/info',
+            element: <TokenInfoTab />
           }
         ]
       },
@@ -175,25 +179,29 @@ const router = createBrowserRouter([
         element: <NftList />
       },
       {
-        path: '/nfts/:contractId',
+        path: '/nft/:contractId',
         element: <NftDetail />,
         children: [
           {
-            path: '/nfts/:contractId',
+            path: '/nft/:contractId',
             element: <NftTokensTab />
           },
           {
-            path: '/nfts/:contractId/tokens/:page?',
+            path: '/nft/:contractId/tokens/:page?',
             element: <NftTokensTab />
           },
           {
-            path: '/nfts/:contractId/transfers/:page?',
+            path: '/nft/:contractId/transfers/:page?',
             element: <NftTransfersTab />
+          },
+          {
+            path: '/nft/:contractId/info',
+            element: <NftInfoTab />
           }
         ]
       },
       {
-        path: '/btc',
+        path: '/nam/btc',
         element: <BtcMapping />
       },
       {
@@ -209,15 +217,15 @@ const router = createBrowserRouter([
         element: <Tx />
       },
       {
-        path: '/bridge/hive',
+        path: '/nam/hive',
         element: <HiveBridgeOverview />
       },
       {
-        path: '/bridge/hive/deposits/:page?',
+        path: '/nam/hive/maps/:page?',
         element: <HiveBridgeLatestTxs kind="d" />
       },
       {
-        path: '/bridge/hive/withdrawals/:page?',
+        path: '/nam/hive/unmaps/:page?',
         element: <HiveBridgeLatestTxs kind="w" />
       },
       {

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getConf } from './settings'
 import {
   HasuraResponse,
+  ContractTypeLookup,
   TokenRegistry,
   TokenOverview,
   TokenBalance,
@@ -31,6 +32,28 @@ const hasuraGql = async <T>(query: string, variables: { [key: string]: unknown }
       signal: AbortSignal.timeout(10000)
     })
   ).json()) as HasuraResponse<T>
+}
+
+// Contract type lookup
+export const fetchContractType = async (contractId: string): Promise<string | null> => {
+  const result = await hasuraGql<{ contract_type_lookup: ContractTypeLookup[] }>(
+    `query ContractType($contractId: String!) {
+      contract_type_lookup(where: { contract_id: { _eq: $contractId } }) {
+        contract_type
+      }
+    }`,
+    { contractId }
+  )
+  return result.data.contract_type_lookup[0]?.contract_type ?? null
+}
+
+export const useContractType = (contractId: string, enabled = true) => {
+  return useQuery({
+    queryKey: ['hasura-contract-type', contractId],
+    queryFn: () => fetchContractType(contractId),
+    staleTime: 300000,
+    enabled
+  })
 }
 
 // Token queries
@@ -139,7 +162,7 @@ export const fetchNftTransfers = async (contractId: string, limit: number, offse
   const result = await hasuraGql<{ magi_nft_all_transfers: NftTransfer[] }>(
     `query NftTransfers($contractId: String!, $limit: Int!, $offset: Int!) {
       magi_nft_all_transfers(where: { indexer_contract_id: { _eq: $contractId } }, order_by: { indexer_ts: desc }, limit: $limit, offset: $offset) {
-        indexer_contract_id operator from to token_id value indexer_block_height indexer_ts
+        indexer_contract_id indexer_tx_hash operator from to token_id value indexer_block_height indexer_ts
       }
     }`,
     { contractId, limit, offset }

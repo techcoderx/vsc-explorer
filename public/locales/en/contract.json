@@ -60,6 +60,8 @@
     "tinygoVersion": "TinyGo Version",
     "exports": "Exports"
   },
+  "viewToken": "Token",
+  "viewNftCollection": "NFT Collection",
   "errors": {
     "fetchFailed": "Failed to fetch contract",
     "notExist": "Contract does not exist"

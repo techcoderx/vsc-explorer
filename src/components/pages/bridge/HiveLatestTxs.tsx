@@ -33,7 +33,7 @@ export const HiveDeposits = ({ tally, pageNumber }: Commons) => {
       <Text>{t('bridge.totalMaps', { count: tally.deposits })}</Text>
       <LedgerDeposits txs={deposits?.deposits || []} />
       <Pagination
-        path={'/bridge/hive/deposits'}
+        path={'/nam/hive/maps'}
         currentPageNum={pageNumber}
         maxPageNum={Math.min(maxPage, Math.ceil(tally.deposits / count))}
       />
@@ -57,7 +57,7 @@ export const HiveWithdrawals = ({ tally, pageNumber }: Commons) => {
       <Text>{t('bridge.totalUnmaps', { count: tally.withdrawals })}</Text>
       <LedgerWithdrawals actions={withdrawals?.withdrawals || []} />
       <Pagination
-        path={'/bridge/hive/withdrawals'}
+        path={'/nam/hive/unmaps'}
         currentPageNum={pageNumber}
         maxPageNum={Math.min(maxPage, Math.ceil(tally.withdrawals / count))}
       />

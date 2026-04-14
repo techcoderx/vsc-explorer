@@ -214,6 +214,7 @@
     "owner": "Owner",
     "created": "Created",
     "tabs": {
+      "info": "Info",
       "transfers": "Transfers",
       "holders": "Holders"
     }
@@ -225,6 +226,7 @@
     "baseUri": "Base URI",
     "created": "Created",
     "tabs": {
+      "info": "Info",
       "tokens": "Tokens",
       "transfers": "Transfers"
     }

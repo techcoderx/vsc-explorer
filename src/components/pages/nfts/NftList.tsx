@@ -40,7 +40,7 @@ const NftList = () => {
                 <Table.Row key={i}>
                   <Table.Cell>
                     <Link asChild fontWeight="medium">
-                      <ReactRouterLink to={`/nfts/${nft.contract_id}`}>{nft.name}</ReactRouterLink>
+                      <ReactRouterLink to={`/nft/${nft.contract_id}`}>{nft.name}</ReactRouterLink>
                     </Link>
                   </Table.Cell>
                   <Table.Cell>{nft.symbol}</Table.Cell>

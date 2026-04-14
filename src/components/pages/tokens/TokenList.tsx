@@ -42,7 +42,7 @@ const TokenList = () => {
                 <Table.Row key={i}>
                   <Table.Cell>
                     <Link asChild fontWeight="medium">
-                      <ReactRouterLink to={`/tokens/${token.contract_id}`}>{token.name}</ReactRouterLink>
+                      <ReactRouterLink to={`/token/${token.contract_id}`}>{token.name}</ReactRouterLink>
                     </Link>
                   </Table.Cell>
                   <Table.Cell>{token.symbol}</Table.Cell>

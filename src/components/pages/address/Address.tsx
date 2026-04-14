@@ -92,7 +92,7 @@ export const Address = () => {
         )}
         {/* Note: Wrap with another HStack when there are more than one flair */}
         {Flairs[addr] && (
-          <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
+          <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'} px={'10px'} h={'32px'}>
             {Flairs[addr]}
           </Tag.Root>
         )}

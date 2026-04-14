@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { LuCircleCheck, LuCircleHelp, LuTriangleAlert, LuPlus } from 'react-icons/lu'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, useNavigate, useSearchParams } from 'react-router'
+import { useParams, useNavigate, useSearchParams, Link as ReactRouterLink } from 'react-router'
 import {
   fetchL1Rest,
   fetchL2TxnsBy,
@@ -66,6 +66,7 @@ import { emptyLedgerFilters, countActiveFilters, buildLedgerGqlOpts, buildLedger
 import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../types/TxFilters'
 import { toaster } from '../ui/toaster'
 import { btnGroupCss } from '../../styles/btnGroup'
+import { useContractType, useTokenRegistry, useNftRegistry } from '../../hasuraRequests'
 
 const StorageProof = ({ contract }: { contract: ContractType }) => {
   const { t } = useTranslation('contract')
@@ -406,6 +407,9 @@ export const Contract = () => {
   const [actionFilters, setActionFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
+  const { data: contractType } = useContractType(contractId!, !invalidContractId)
+  const { tokens } = useTokenRegistry()
+  const { nfts } = useNftRegistry()
   const ct = data?.data.contract
   const outputs = data?.data.outputs
 
@@ -497,9 +501,11 @@ export const Contract = () => {
           </Text>
         </Box>
         {Flairs[contractId!] && (
-          <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} alignSelf={'end'} mb={'3'}>
-            {Flairs[contractId!]}
-          </Tag.Root>
+          <HStack alignSelf={'end'} mb={'3'} gap={'3'}>
+            <Tag.Root colorPalette={themeColorScheme} size={'lg'} variant={'outline'} px={'10px'} h={'32px'}>
+              {Flairs[contractId!]}
+            </Tag.Root>
+          </HStack>
         )}
       </Stack>
       <hr />
@@ -578,7 +584,7 @@ export const Contract = () => {
                 buildLink={buildActionsPageLink}
               />
             </Tabs.Content>
-            <Tabs.Content value="2" px={'0'}>
+            <Tabs.Content value="2" px={'0'} pb={'4'}>
               <Table.ScrollArea>
                 <Table.Root>
                   <Table.Body>
@@ -609,6 +615,30 @@ export const Contract = () => {
                       </Flex>
                     </TableRow>
                     <TableRow label={t('info.runtime')} value={contract.runtime} />
+                    {contractType === 'init_magi_token' && (() => {
+                      const token = tokens?.find((tk) => tk.contract_id === contractId)
+                      return (
+                        <TableRow label={t('viewToken')}>
+                          <Link asChild colorPalette={themeColorScheme}>
+                            <ReactRouterLink to={`/token/${contractId}`}>
+                              {token ? `${token.symbol}: ${token.name}` : contractId}
+                            </ReactRouterLink>
+                          </Link>
+                        </TableRow>
+                      )
+                    })()}
+                    {contractType === 'init_magi_nft' && (() => {
+                      const nft = nfts?.find((n) => n.contract_id === contractId)
+                      return (
+                        <TableRow label={t('viewNftCollection')}>
+                          <Link asChild colorPalette={themeColorScheme}>
+                            <ReactRouterLink to={`/nft/${contractId}`}>
+                              {nft ? `${nft.symbol}: ${nft.name}` : contractId}
+                            </ReactRouterLink>
+                          </Link>
+                        </TableRow>
+                      )
+                    })()}
                   </Table.Body>
                 </Table.Root>
               </Table.ScrollArea>

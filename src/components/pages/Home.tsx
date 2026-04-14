@@ -202,7 +202,7 @@ const getQuickLinks = (t: (key: string) => string) => [
   { label: t('links.contracts'), href: '/contracts', icon: LuFileCode },
   { label: t('links.witnesses'), href: '/witnesses', icon: LuUsers },
   { label: t('links.elections'), href: '/elections', icon: LuVote },
-  { label: t('links.namBridge'), href: '/bridge/hive', icon: LuLandmark },
+  { label: t('links.namBridge'), href: '/nam/hive', icon: LuLandmark },
   { label: t('links.charts'), href: '/charts', icon: LuChartNoAxesCombined },
   { label: t('links.broadcast'), href: '/tools/broadcast', icon: LuRadio }
 ]

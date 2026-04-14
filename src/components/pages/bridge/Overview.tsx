@@ -117,7 +117,7 @@ const HiveBridgeOverview = () => {
           </Card.Body>
           <CardFooter paddingTop={'3'}>
             <Button asChild colorPalette={themeColorScheme}>
-              <ReactRouterLink to={'/bridge/hive/deposits'}>{t('bridge.viewMore')}</ReactRouterLink>
+              <ReactRouterLink to={'/nam/hive/maps'}>{t('bridge.viewMore')}</ReactRouterLink>
             </Button>
           </CardFooter>
         </Card.Root>
@@ -130,7 +130,7 @@ const HiveBridgeOverview = () => {
           </Card.Body>
           <CardFooter paddingTop={'3'}>
             <Button asChild colorPalette={themeColorScheme}>
-              <ReactRouterLink to={'/bridge/hive/withdrawals'}>{t('bridge.viewMore')}</ReactRouterLink>
+              <ReactRouterLink to={'/nam/hive/unmaps'}>{t('bridge.viewMore')}</ReactRouterLink>
             </Button>
           </CardFooter>
         </Card.Root>

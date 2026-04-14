@@ -53,6 +53,7 @@ export interface NftRegistry {
 
 export interface NftTransfer {
   indexer_contract_id: string
+  indexer_tx_hash: string
   operator: string
   from: string
   to: string
@@ -70,6 +71,14 @@ export interface NftTokenInfo {
   indexer_block_height: number
   created_ts: string
   has_properties: boolean
+}
+
+// Contract type lookup
+export interface ContractTypeLookup {
+  contract_id: string
+  contract_type: string
+  block_height: number
+  discovered_at: string
 }
 
 // BTC Mapping types
