@@ -1,10 +1,12 @@
-import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box } from '@chakra-ui/react'
+import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box, Icon } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
+import { FaCircleArrowRight } from 'react-icons/fa6'
 import { useTranslation } from 'react-i18next'
 import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcVolume24h } from '../../../hasuraRequests'
 import { thousandSeperator, timeAgo } from '../../../helpers'
+import { themeColorScheme } from '../../../settings'
 import { PageTitle } from '../../PageTitle'
-import { AccountLink } from '../../TableLink'
+import { AccountLink, TxLink } from '../../TableLink'
 import { Tooltip } from '../../ui/tooltip'
 
 const formatSats = (sats: string): string => {
@@ -56,7 +58,7 @@ const BtcMapping = () => {
         <Card.Root flex="1">
           <Card.Body>
             <Stat.Root>
-              <Stat.Label>{t('btc.deposits24h', { ns: 'pages' })}</Stat.Label>
+              <Stat.Label>{t('btc.maps24h', { ns: 'pages' })}</Stat.Label>
               <Stat.ValueText>
                 {volume24h ? thousandSeperator(volume24h.deposit_count) : <Skeleton height="24px" width="80px" />}
               </Stat.ValueText>
@@ -97,7 +99,7 @@ const BtcMapping = () => {
         </Box>
 
         <Box flex="1">
-          <Text fontSize="xl" fontWeight="bold" mb="3">{t('btc.recentDeposits', { ns: 'pages' })}</Text>
+          <Text fontSize="xl" fontWeight="bold" mb="3">{t('btc.recentMaps', { ns: 'pages' })}</Text>
           <Table.ScrollArea>
             <Table.Root variant="line">
               <Table.Header>
@@ -137,8 +139,10 @@ const BtcMapping = () => {
           <Table.Root variant="line">
             <Table.Header>
               <Table.Row>
+                <Table.ColumnHeader>{t('btc.txId', { ns: 'tables' })}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('btc.age', { ns: 'tables' })}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('btc.from', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader></Table.ColumnHeader>
                 <Table.ColumnHeader>{t('btc.to', { ns: 'tables' })}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('btc.amount', { ns: 'tables' })}</Table.ColumnHeader>
               </Table.Row>
@@ -146,18 +150,22 @@ const BtcMapping = () => {
             <Table.Body>
               {transfersLoading ? (
                 <Table.Row>
-                  {[...Array(4)].map((_, i) => (
+                  {[...Array(6)].map((_, i) => (
                     <Table.Cell key={i}><Skeleton height="20px" /></Table.Cell>
                   ))}
                 </Table.Row>
               ) : transfers?.map((tx, i) => (
                 <Table.Row key={i}>
+                  <Table.Cell><TxLink val={tx.indexer_tx_hash.split('-')[0]} /></Table.Cell>
                   <Table.Cell css={{ whiteSpace: 'nowrap' }}>
                     <Tooltip content={tx.indexer_ts} positioning={{ placement: 'top' }}>
                       {timeAgo(tx.indexer_ts)}
                     </Tooltip>
                   </Table.Cell>
                   <Table.Cell><AccountLink val={tx.from_addr} truncate={16} /></Table.Cell>
+                  <Table.Cell>
+                    <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} aria-label="To" />
+                  </Table.Cell>
                   <Table.Cell><AccountLink val={tx.to_addr} truncate={16} /></Table.Cell>
                   <Table.Cell>{formatSats(tx.amount)}</Table.Cell>
                 </Table.Row>
