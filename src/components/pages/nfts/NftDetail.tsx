@@ -3,7 +3,7 @@ import { useParams, Outlet, useOutletContext, useLocation, useNavigate } from 'r
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import {
-  fetchNftRegistry,
+  fetchNftRegistryByContract,
   fetchNftTransfers,
   fetchNftTransferCount,
   fetchNftTokens,
@@ -31,6 +31,8 @@ export const NftInfoTab = () => {
     <Table.ScrollArea>
       <Table.Root>
         <Table.Body>
+          <TableRow label={t('nfts.name')} value={nft.name} />
+          <TableRow label={t('nfts.symbol')} value={nft.symbol} />
           <TableRow label={t('nfts.owner')}>
             <AccountLink val={nft.owner} />
           </TableRow>
@@ -165,12 +167,9 @@ const NftDetail = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { contractId } = useParams()
-  const { data: nfts, isLoading } = useQuery({
+  const { data: nft, isLoading } = useQuery({
     queryKey: ['hasura-nft-registry-detail', contractId],
-    queryFn: async () => {
-      const all = await fetchNftRegistry()
-      return all.find((n) => n.contract_id === contractId) ?? null
-    },
+    queryFn: () => fetchNftRegistryByContract(contractId!),
     staleTime: 60000
   })
   const segments = pathname.split('/')
@@ -184,17 +183,17 @@ const NftDetail = () => {
         <Skeleton height="200px" />
       </>
     )
-  if (!nfts) return <PageNotFound />
+  if (!nft) return <PageNotFound />
 
   return (
     <>
-      <PageTitle title={`${nfts.name} (${nfts.symbol})`} />
+      <PageTitle title={`${nft.name} (${nft.symbol})`} />
       <Box>
         <Heading as="h1" size="5xl" fontWeight="normal">
           NFT
         </Heading>
         <Box fontSize="lg" opacity="0.7" mb="4">
-          <ContractLink val={nfts.contract_id} truncate={30} />
+          <ContractLink val={nft.contract_id} truncate={30} />
         </Box>
       </Box>
       <hr />
@@ -214,7 +213,7 @@ const NftDetail = () => {
           <Tabs.Trigger value="info">{t('nfts.tabs.info')}</Tabs.Trigger>
         </Tabs.List>
         <Box pt="2">
-          <Outlet context={{ contractId, nft: nfts }} />
+          <Outlet context={{ contractId, nft }} />
         </Box>
       </Tabs.Root>
     </>

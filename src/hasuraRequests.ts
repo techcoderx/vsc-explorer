@@ -158,6 +158,16 @@ export const fetchNftRegistry = async (): Promise<NftRegistry[]> => {
   return result.data.magi_nft_registry
 }
 
+export const fetchNftRegistryByContract = async (contractId: string): Promise<NftRegistry | null> => {
+  const result = await hasuraGql<{ magi_nft_registry: NftRegistry[] }>(
+    `query NftRegistryByContract($contractId: String!) {
+      magi_nft_registry(where: { contract_id: { _eq: $contractId } }) { contract_id name symbol base_uri owner init_block init_ts }
+    }`,
+    { contractId }
+  )
+  return result.data.magi_nft_registry[0] ?? null
+}
+
 export const fetchNftTransfers = async (contractId: string, limit: number, offset: number): Promise<NftTransfer[]> => {
   const result = await hasuraGql<{ magi_nft_all_transfers: NftTransfer[] }>(
     `query NftTransfers($contractId: String!, $limit: Int!, $offset: Int!) {

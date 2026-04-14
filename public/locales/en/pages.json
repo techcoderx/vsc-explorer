@@ -222,6 +222,9 @@
   "nfts": {
     "title": "NFT Collections",
     "noNfts": "No NFT collections found",
+    "name": "Name",
+    "symbol": "Symbol",
+    "contractId": "Contract ID",
     "owner": "Owner",
     "baseUri": "Base URI",
     "created": "Created",
