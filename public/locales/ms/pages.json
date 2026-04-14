@@ -203,7 +203,18 @@
     "hiveNetFlow": "Aliran Bersih HIVE",
     "hiveNetFlowDesc": "Sejarah aliran bersih HIVE dari masa ke masa",
     "hbdNetFlow": "Aliran Bersih HBD",
-    "hbdNetFlowDesc": "Sejarah aliran bersih HBD dari masa ke masa"
+    "hbdNetFlowDesc": "Sejarah aliran bersih HBD dari masa ke masa",
+    "dateLabel": "Date: {{date}}",
+    "blocksProduced": "Blocks Produced",
+    "hiveAccounts": "Hive Accounts",
+    "offchainAccounts": "Offchain Accounts",
+    "activeAddressesLabel": "Active Addresses",
+    "stakedHive": "Staked HIVE",
+    "tvlLabel": "TVL (HIVE/HBD)",
+    "amountLabel": "Amount ({{coin}})",
+    "inflows": "{{coin}} Inflows",
+    "outflows": "{{coin}} Outflows",
+    "netFlowLabel": "{{coin}} Net Flow"
   },
   "tokens": {
     "title": "Token",

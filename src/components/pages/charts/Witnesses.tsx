@@ -8,6 +8,7 @@ import { roundFloat, thousandSeperator } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
 
 const DailyActiveWitnesses = () => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats() || []
@@ -25,19 +26,19 @@ const DailyActiveWitnesses = () => {
         <XAxis dataKey="date" minTickGap={40} />
         <YAxis
           tickFormatter={(val) => thousandSeperator(val)}
-          label={{ value: `Witnesses`, angle: -90, position: 'insideLeft' }}
+          label={{ value: t('charts.titles.witnesses'), angle: -90, position: 'insideLeft' }}
           width={80}
         />
         <Tooltip
           formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
-          labelFormatter={(date: Date) => `Date: ${date}`}
+          labelFormatter={(date: Date) => t('charts.dateLabel', { date })}
           contentStyle={{
             backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',
             border: '1px solid #333'
           }}
         />
-        <Line type={'monotone'} dataKey={`witnesses`} name={`Witnesses`} stroke="#8884d8" dot={false} />
+        <Line type={'monotone'} dataKey={`witnesses`} name={t('charts.titles.witnesses')} stroke="#8884d8" dot={false} />
         <Brush dataKey={'date'} height={30} stroke="#8884d8" fill="transparent" />
       </ComposedChart>
     </ResponsiveContainer>
@@ -45,6 +46,7 @@ const DailyActiveWitnesses = () => {
 }
 
 const ActiveStake = () => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats() || []
@@ -62,12 +64,12 @@ const ActiveStake = () => {
         <XAxis dataKey="date" minTickGap={40} />
         <YAxis
           tickFormatter={(val) => thousandSeperator(roundFloat(val / 1000, 3))}
-          label={{ value: `Staked HIVE`, angle: -90, position: 'insideLeft' }}
+          label={{ value: t('charts.stakedHive'), angle: -90, position: 'insideLeft' }}
           width={80}
         />
         <Tooltip
           formatter={(value, name) => [`${roundFloat(Number(value) / 1000, 3).toLocaleString()} ${name}`]}
-          labelFormatter={(date: Date) => `Date: ${date}`}
+          labelFormatter={(date: Date) => t('charts.dateLabel', { date })}
           contentStyle={{
             backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',

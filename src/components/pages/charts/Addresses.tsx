@@ -8,6 +8,7 @@ import { thousandSeperator } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
 
 const DailyActiveUsers = () => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats() || []
@@ -25,20 +26,20 @@ const DailyActiveUsers = () => {
         <XAxis dataKey="date" minTickGap={40} />
         <YAxis
           tickFormatter={(val) => thousandSeperator(val)}
-          label={{ value: `Transactions`, angle: -90, position: 'insideLeft' }}
+          label={{ value: t('charts.activeAddressesLabel'), angle: -90, position: 'insideLeft' }}
           width={80}
         />
         <Tooltip
           formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
-          labelFormatter={(date: Date) => `Date: ${date}`}
+          labelFormatter={(date: Date) => t('charts.dateLabel', { date })}
           contentStyle={{
             backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',
             border: '1px solid #333'
           }}
         />
-        <Bar stackId={'a'} dataKey={`active_l1_addresses`} name={`Hive Accounts`} fill="#8884d8" />
-        <Bar stackId={'a'} dataKey={`active_l2_addresses`} name={`Offchain Accounts`} fill="#82ca9d" />
+        <Bar stackId={'a'} dataKey={`active_l1_addresses`} name={t('charts.hiveAccounts')} fill="#8884d8" />
+        <Bar stackId={'a'} dataKey={`active_l2_addresses`} name={t('charts.offchainAccounts')} fill="#82ca9d" />
         <Brush dataKey={'date'} height={30} stroke="#8884d8" fill="transparent" />
       </ComposedChart>
     </ResponsiveContainer>

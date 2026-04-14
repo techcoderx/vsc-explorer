@@ -18,6 +18,7 @@ type TotalTVL = {
 }
 
 export const HiveBridgeTVL = () => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [hiddenLines, setHiddenLines] = useState<{ hiveTotal: boolean; hbdTotal: boolean }>({
     hiveTotal: false,
@@ -77,12 +78,12 @@ export const HiveBridgeTVL = () => {
           <XAxis dataKey="date" minTickGap={40} />
           <YAxis
             tickFormatter={(val) => thousandSeperator(val)}
-            label={{ value: 'TVL (HIVE/HBD)', angle: -90, position: 'insideLeft' }}
+            label={{ value: t('charts.tvlLabel'), angle: -90, position: 'insideLeft' }}
             width={80}
           />
           <Tooltip
             formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
-            labelFormatter={(date: string) => `Date: ${date}`}
+            labelFormatter={(date: string) => t('charts.dateLabel', { date })}
             contentStyle={{
               backgroundColor: 'var(--magi-tooltip)',
               color: colorMode === 'dark' ? '#fff' : '#000',
@@ -121,6 +122,7 @@ type NetFlow = {
 }
 
 export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats()
@@ -156,12 +158,12 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
         <XAxis dataKey="date" minTickGap={40} />
         <YAxis
           tickFormatter={(val) => thousandSeperator(val)}
-          label={{ value: `Amount (${coin})`, angle: -90, position: 'insideLeft' }}
+          label={{ value: t('charts.amountLabel', { coin }), angle: -90, position: 'insideLeft' }}
           width={80}
         />
         <Tooltip
           formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
-          labelFormatter={(date: Date) => `Date: ${date}`}
+          labelFormatter={(date: Date) => t('charts.dateLabel', { date })}
           contentStyle={{
             backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',
@@ -185,21 +187,21 @@ export const BridgeNetFlow = ({ coin }: { coin: Coin }) => {
         <Bar
           stackId={'a'}
           dataKey={`${coin.toLowerCase()}Deposits`}
-          name={`${coin} Inflows`}
+          name={t('charts.inflows', { coin })}
           fill="#8884d8"
           hide={hiddenLines.deposits}
         />
         <Bar
           stackId={'a'}
           dataKey={`${coin.toLowerCase()}Withdrawals`}
-          name={`${coin} Outflows`}
+          name={t('charts.outflows', { coin })}
           fill="#82ca9d"
           hide={hiddenLines.withdrawals}
         />
         <Line
           type="monotone"
           dataKey={`${coin.toLowerCase()}Net`}
-          name={`${coin} Net Flow`}
+          name={t('charts.netFlowLabel', { coin })}
           dot={false}
           stroke="#fbb6ce"
           hide={hiddenLines.net}

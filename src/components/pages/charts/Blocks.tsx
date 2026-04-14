@@ -8,6 +8,7 @@ import { thousandSeperator } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
 
 const DailyBlocks = () => {
+  const { t } = useTranslation('pages')
   const { colorMode } = useColorMode()
   const [recharts, setRecharts] = useState<typeof Recharts>()
   const networkStats = useNetworkStats() || []
@@ -25,19 +26,19 @@ const DailyBlocks = () => {
         <XAxis dataKey="date" minTickGap={40} />
         <YAxis
           tickFormatter={(val) => thousandSeperator(val)}
-          label={{ value: `Blocks Produced`, angle: -90, position: 'insideLeft' }}
+          label={{ value: t('charts.blocksProduced'), angle: -90, position: 'insideLeft' }}
           width={80}
         />
         <Tooltip
           formatter={(value, name) => [`${Number(value).toLocaleString()} ${name}`]}
-          labelFormatter={(date: Date) => `Date: ${date}`}
+          labelFormatter={(date: Date) => t('charts.dateLabel', { date })}
           contentStyle={{
             backgroundColor: 'var(--magi-tooltip)',
             color: colorMode === 'dark' ? '#fff' : '#000',
             border: '1px solid #333'
           }}
         />
-        <Bar stackId={'a'} dataKey={`blocks`} name={`Blocks`} fill="#8884d8" />
+        <Bar stackId={'a'} dataKey={`blocks`} name={t('charts.titles.blocks')} fill="#8884d8" />
         <Brush dataKey={'date'} height={30} stroke="#8884d8" fill="transparent" />
       </ComposedChart>
     </ResponsiveContainer>

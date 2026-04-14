@@ -203,7 +203,18 @@
     "hiveNetFlow": "HIVE Net Flow",
     "hiveNetFlowDesc": "History of HIVE net flows over time",
     "hbdNetFlow": "HBD Net Flow",
-    "hbdNetFlowDesc": "History of HBD net flows over time"
+    "hbdNetFlowDesc": "History of HBD net flows over time",
+    "dateLabel": "Date: {{date}}",
+    "blocksProduced": "Blocks Produced",
+    "hiveAccounts": "Hive Accounts",
+    "offchainAccounts": "Offchain Accounts",
+    "activeAddressesLabel": "Active Addresses",
+    "stakedHive": "Staked HIVE",
+    "tvlLabel": "TVL (HIVE/HBD)",
+    "amountLabel": "Amount ({{coin}})",
+    "inflows": "{{coin}} Inflows",
+    "outflows": "{{coin}} Outflows",
+    "netFlowLabel": "{{coin}} Net Flow"
   },
   "tokens": {
     "title": "Tokens",
