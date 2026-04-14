@@ -11,11 +11,10 @@ import {
 } from '../../../hasuraRequests'
 import { formatTokenAmount, getNextTabRoute, timeAgo } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
-import { AccountLink, ContractLink, TxLink } from '../../TableLink'
-import { ToIcon } from '../../CheckXIcon'
-import { Tooltip } from '../../ui/tooltip'
+import { AccountLink, ContractLink } from '../../TableLink'
 import { ProgressBarPct } from '../../ProgressPercent'
 import Pagination from '../../Pagination'
+import TransfersTable from '../../tables/Transfers'
 import PageNotFound from '../404'
 import { themeColorScheme } from '../../../settings'
 import { TokenOverview } from '../../../types/HasuraResult'
@@ -51,7 +50,6 @@ export const TokenInfoTab = () => {
 export const TokenTransfersTab = () => {
   const { contractId, decimals, symbol } = useOutletContext<{ contractId: string; decimals: number; symbol: string }>()
   const { page } = useParams()
-  const { t } = useTranslation('tables')
   const pageNum = parseInt(page || '1')
   const offset = (pageNum - 1) * count
   const { data: transfers } = useQuery({
@@ -65,49 +63,20 @@ export const TokenTransfersTab = () => {
     staleTime: 60000
   })
   return (
-    <Box>
-      <Table.ScrollArea>
-        <Table.Root variant="line">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>{t('tokens.txId')}</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('tokens.age')}</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('tokens.from')}</Table.ColumnHeader>
-              <Table.ColumnHeader></Table.ColumnHeader>
-              <Table.ColumnHeader>{t('tokens.to')}</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('tokens.amount')}</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {transfers?.map((tx, i) => (
-              <Table.Row key={i}>
-                <Table.Cell>
-                  <TxLink val={tx.indexer_tx_hash} />
-                </Table.Cell>
-                <Table.Cell css={{ whiteSpace: 'nowrap' }}>
-                  <Tooltip content={tx.indexer_ts} positioning={{ placement: 'top' }}>
-                    {timeAgo(tx.indexer_ts)}
-                  </Tooltip>
-                </Table.Cell>
-                <Table.Cell>
-                  <AccountLink val={tx.from} truncate={16} />
-                </Table.Cell>
-                <Table.Cell>
-                  <ToIcon />
-                </Table.Cell>
-                <Table.Cell>
-                  <AccountLink val={tx.to} truncate={16} />
-                </Table.Cell>
-                <Table.Cell>{formatTokenAmount(tx.amount, decimals)} {symbol}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Table.ScrollArea>
-      <Box mt="4">
-        <Pagination path={`/token/${contractId}/transfers`} currentPageNum={pageNum} maxPageNum={Math.ceil((totalCount || 0) / count)} />
-      </Box>
-    </Box>
+    <TransfersTable
+      transfers={transfers?.map((tx) => ({
+        txId: tx.indexer_tx_hash,
+        ts: tx.indexer_ts,
+        from: tx.from,
+        to: tx.to,
+        formattedAmount: formatTokenAmount(tx.amount, decimals) + ' ' + symbol
+      }))}
+      pagination={{
+        path: `/token/${contractId}/transfers`,
+        currentPageNum: pageNum,
+        maxPageNum: Math.ceil((totalCount || 0) / count)
+      }}
+    />
   )
 }
 
@@ -184,7 +153,7 @@ const TokenDetail = () => {
 
   return (
     <>
-      <PageTitle title={`${token.name} (${token.symbol})`} />
+      <PageTitle title={token.symbol} />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between" alignItems="start">
         <Box>
           <Heading as="h1" size="5xl" fontWeight="normal">

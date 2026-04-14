@@ -1,13 +1,12 @@
-import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box, Icon } from '@chakra-ui/react'
+import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { FaCircleArrowRight } from 'react-icons/fa6'
 import { useTranslation } from 'react-i18next'
 import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcVolume24h } from '../../../hasuraRequests'
 import { thousandSeperator, timeAgo } from '../../../helpers'
-import { themeColorScheme } from '../../../settings'
 import { PageTitle } from '../../PageTitle'
-import { AccountLink, TxLink } from '../../TableLink'
+import { AccountLink } from '../../TableLink'
 import { Tooltip } from '../../ui/tooltip'
+import TransfersTable from '../../tables/Transfers'
 
 const formatSats = (sats: string): string => {
   const num = parseInt(sats, 10)
@@ -135,44 +134,16 @@ const BtcMapping = () => {
 
       <Box mt="6">
         <Text fontSize="xl" fontWeight="bold" mb="3">{t('btc.recentTransfers', { ns: 'pages' })}</Text>
-        <Table.ScrollArea>
-          <Table.Root variant="line">
-            <Table.Header>
-              <Table.Row>
-                <Table.ColumnHeader>{t('btc.txId', { ns: 'tables' })}</Table.ColumnHeader>
-                <Table.ColumnHeader>{t('btc.age', { ns: 'tables' })}</Table.ColumnHeader>
-                <Table.ColumnHeader>{t('btc.from', { ns: 'tables' })}</Table.ColumnHeader>
-                <Table.ColumnHeader></Table.ColumnHeader>
-                <Table.ColumnHeader>{t('btc.to', { ns: 'tables' })}</Table.ColumnHeader>
-                <Table.ColumnHeader>{t('btc.amount', { ns: 'tables' })}</Table.ColumnHeader>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {transfersLoading ? (
-                <Table.Row>
-                  {[...Array(6)].map((_, i) => (
-                    <Table.Cell key={i}><Skeleton height="20px" /></Table.Cell>
-                  ))}
-                </Table.Row>
-              ) : transfers?.map((tx, i) => (
-                <Table.Row key={i}>
-                  <Table.Cell><TxLink val={tx.indexer_tx_hash.split('-')[0]} /></Table.Cell>
-                  <Table.Cell css={{ whiteSpace: 'nowrap' }}>
-                    <Tooltip content={tx.indexer_ts} positioning={{ placement: 'top' }}>
-                      {timeAgo(tx.indexer_ts)}
-                    </Tooltip>
-                  </Table.Cell>
-                  <Table.Cell><AccountLink val={tx.from_addr} truncate={16} /></Table.Cell>
-                  <Table.Cell>
-                    <Icon fontSize={'lg'} as={FaCircleArrowRight} color={themeColorScheme} aria-label="To" />
-                  </Table.Cell>
-                  <Table.Cell><AccountLink val={tx.to_addr} truncate={16} /></Table.Cell>
-                  <Table.Cell>{formatSats(tx.amount)}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
-        </Table.ScrollArea>
+        <TransfersTable
+          transfers={transfers?.map((tx) => ({
+            txId: tx.indexer_tx_hash.split('-')[0],
+            ts: tx.indexer_ts,
+            from: tx.from_addr,
+            to: tx.to_addr,
+            formattedAmount: formatSats(tx.amount)
+          }))}
+          isLoading={transfersLoading}
+        />
       </Box>
     </>
   )

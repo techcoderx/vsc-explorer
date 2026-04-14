@@ -187,7 +187,7 @@ const NftDetail = () => {
 
   return (
     <>
-      <PageTitle title={`${nft.name} (${nft.symbol})`} />
+      <PageTitle title={nft.symbol} />
       <Box>
         <Heading as="h1" size="5xl" fontWeight="normal">
           NFT

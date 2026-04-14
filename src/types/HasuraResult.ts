@@ -103,3 +103,11 @@ export interface BtcMappingVolume {
   deposit_count: number
   total_sats: string
 }
+
+export interface NormalizedTransfer {
+  txId: string
+  ts: string
+  from: string
+  to: string
+  formattedAmount: string
+}
