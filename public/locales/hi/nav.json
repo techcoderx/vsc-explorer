@@ -43,5 +43,12 @@
       "Epoch": "युग",
       "Contract": "अनुबंध"
     }
-  }
+  },
+  "btcMapping": "BTC मैपिंग",
+  "btcMappingSub": "BTC से Magi ब्रिज",
+  "dapps": "DApps",
+  "nftCollections": "NFT संग्रह",
+  "nftCollectionsSub": "Magi NFT संग्रह",
+  "tokens": "टोकन",
+  "tokensSub": "Magi फंजिबल टोकन"
 }

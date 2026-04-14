@@ -72,7 +72,9 @@
       "actions": "アクション",
       "maps": "マップ",
       "unmaps": "アンマップ",
-      "witness": "ウィットネス"
+      "witness": "ウィットネス",
+      "tokens": "トークン",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "HIVE ネットフローの推移",
     "hbdNetFlow": "HBD ネットフロー",
     "hbdNetFlowDesc": "HBD ネットフローの推移"
+  },
+  "tokens": {
+    "title": "トークン",
+    "noTokens": "トークンが見つかりません",
+    "currentSupply": "現在の供給量",
+    "maxSupply": "最大供給量",
+    "decimals": "小数点",
+    "owner": "オーナー",
+    "created": "作成日",
+    "tabs": {
+      "info": "情報",
+      "transfers": "転送",
+      "holders": "保有者"
+    }
+  },
+  "nfts": {
+    "title": "NFTコレクション",
+    "noNfts": "NFTコレクションが見つかりません",
+    "name": "名前",
+    "symbol": "シンボル",
+    "contractId": "コントラクト ID",
+    "owner": "オーナー",
+    "baseUri": "ベース URI",
+    "created": "作成日",
+    "tabs": {
+      "info": "情報",
+      "tokens": "トークン",
+      "transfers": "転送"
+    }
+  },
+  "btc": {
+    "title": "BTCマッピング",
+    "volume24h": "24時間取引量",
+    "maps24h": "24時間マッピング",
+    "topBalances": "上位残高",
+    "recentMaps": "最近のマッピング",
+    "recentTransfers": "最近の転送"
   }
 }

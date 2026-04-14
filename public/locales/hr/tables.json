@@ -86,5 +86,48 @@
     "username": "Korisničko ime",
     "l1Block": "L1 blok",
     "magiBlock": "Magi blok"
+  },
+  "tokens": {
+    "name": "Naziv",
+    "symbol": "Simbol",
+    "contractId": "ID ugovora",
+    "decimals": "Decimale",
+    "maxSupply": "Maksimalna ponuda",
+    "owner": "Vlasnik",
+    "age": "Starost",
+    "account": "Račun",
+    "balance": "Stanje",
+    "noBalances": "Nema stanja tokena",
+    "supplyPct": "% Ponude"
+  },
+  "nfts": {
+    "name": "Naziv",
+    "symbol": "Simbol",
+    "contractId": "ID ugovora",
+    "owner": "Vlasnik",
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "from": "Od",
+    "to": "Do",
+    "tokenId": "ID tokena",
+    "value": "Količina",
+    "maxSupply": "Maksimalna ponuda",
+    "soulbound": "Soulbound",
+    "created": "Kreirano",
+    "noHoldings": "Nema NFT posjeda"
+  },
+  "btc": {
+    "account": "Račun",
+    "balance": "Stanje",
+    "age": "Starost",
+    "recipient": "Primatelj",
+    "amount": "Iznos"
+  },
+  "transfers": {
+    "txId": "ID transakcije",
+    "age": "Starost",
+    "from": "Od",
+    "to": "Do",
+    "amount": "Iznos"
   }
 }

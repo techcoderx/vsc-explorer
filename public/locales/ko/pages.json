@@ -72,7 +72,9 @@
       "actions": "액션",
       "maps": "매핑",
       "unmaps": "언매핑",
-      "witness": "위트니스"
+      "witness": "위트니스",
+      "tokens": "토큰",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "시간 경과에 따른 HIVE 순 유동 기록",
     "hbdNetFlow": "HBD 순 유동",
     "hbdNetFlowDesc": "시간 경과에 따른 HBD 순 유동 기록"
+  },
+  "tokens": {
+    "title": "토큰",
+    "noTokens": "토큰을 찾을 수 없습니다",
+    "currentSupply": "현재 공급량",
+    "maxSupply": "최대 공급량",
+    "decimals": "소수점",
+    "owner": "소유자",
+    "created": "생성일",
+    "tabs": {
+      "info": "정보",
+      "transfers": "전송",
+      "holders": "보유자"
+    }
+  },
+  "nfts": {
+    "title": "NFT 컬렉션",
+    "noNfts": "NFT 컬렉션을 찾을 수 없습니다",
+    "name": "이름",
+    "symbol": "심볼",
+    "contractId": "컨트랙트 ID",
+    "owner": "소유자",
+    "baseUri": "베이스 URI",
+    "created": "생성일",
+    "tabs": {
+      "info": "정보",
+      "tokens": "토큰",
+      "transfers": "전송"
+    }
+  },
+  "btc": {
+    "title": "BTC 매핑",
+    "volume24h": "24시간 거래량",
+    "maps24h": "24시간 매핑",
+    "topBalances": "상위 잔액",
+    "recentMaps": "최근 매핑",
+    "recentTransfers": "최근 전송"
   }
 }

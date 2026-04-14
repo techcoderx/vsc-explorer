@@ -43,5 +43,12 @@
       "Epoch": "Epoka",
       "Contract": "Kontrakt"
     }
-  }
+  },
+  "btcMapping": "Mapowanie BTC",
+  "btcMappingSub": "Most BTC-Magi",
+  "dapps": "DApps",
+  "nftCollections": "Kolekcje NFT",
+  "nftCollectionsSub": "Kolekcje NFT Magi",
+  "tokens": "Tokeny",
+  "tokensSub": "Zamienne tokeny Magi"
 }

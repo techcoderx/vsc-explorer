@@ -72,7 +72,9 @@
       "actions": "操作",
       "maps": "映射",
       "unmaps": "取消映射",
-      "witness": "見證人"
+      "witness": "見證人",
+      "tokens": "代幣",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "HIVE 淨流量的歷史記錄",
     "hbdNetFlow": "HBD 淨流量",
     "hbdNetFlowDesc": "HBD 淨流量的歷史記錄"
+  },
+  "tokens": {
+    "title": "代幣",
+    "noTokens": "未找到代幣",
+    "currentSupply": "當前供應量",
+    "maxSupply": "最大供應量",
+    "decimals": "小數位",
+    "owner": "擁有者",
+    "created": "建立時間",
+    "tabs": {
+      "info": "資訊",
+      "transfers": "轉帳",
+      "holders": "持有者"
+    }
+  },
+  "nfts": {
+    "title": "NFT 合集",
+    "noNfts": "未找到 NFT 合集",
+    "name": "名稱",
+    "symbol": "符號",
+    "contractId": "合約 ID",
+    "owner": "擁有者",
+    "baseUri": "基礎 URI",
+    "created": "建立時間",
+    "tabs": {
+      "info": "資訊",
+      "tokens": "代幣",
+      "transfers": "轉帳"
+    }
+  },
+  "btc": {
+    "title": "BTC 映射",
+    "volume24h": "24小時交易量",
+    "maps24h": "24小時映射",
+    "topBalances": "最高餘額",
+    "recentMaps": "最近映射",
+    "recentTransfers": "最近轉帳"
   }
 }

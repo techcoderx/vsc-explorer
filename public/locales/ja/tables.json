@@ -86,5 +86,48 @@
     "username": "ユーザー名",
     "l1Block": "L1 ブロック",
     "magiBlock": "Magi ブロック"
+  },
+  "tokens": {
+    "name": "名前",
+    "symbol": "シンボル",
+    "contractId": "コントラクト ID",
+    "decimals": "小数点",
+    "maxSupply": "最大供給量",
+    "owner": "オーナー",
+    "age": "経過時間",
+    "account": "アカウント",
+    "balance": "残高",
+    "noBalances": "トークン残高なし",
+    "supplyPct": "供給率 %"
+  },
+  "nfts": {
+    "name": "名前",
+    "symbol": "シンボル",
+    "contractId": "コントラクト ID",
+    "owner": "オーナー",
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "from": "送信元",
+    "to": "送信先",
+    "tokenId": "トークン ID",
+    "value": "数量",
+    "maxSupply": "最大供給量",
+    "soulbound": "ソウルバウンド",
+    "created": "作成日",
+    "noHoldings": "NFT保有なし"
+  },
+  "btc": {
+    "account": "アカウント",
+    "balance": "残高",
+    "age": "経過時間",
+    "recipient": "受取人",
+    "amount": "金額"
+  },
+  "transfers": {
+    "txId": "トランザクション ID",
+    "age": "経過時間",
+    "from": "送信元",
+    "to": "送信先",
+    "amount": "金額"
   }
 }

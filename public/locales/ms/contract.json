@@ -65,5 +65,7 @@
     "notExist": "Kontrak tidak wujud"
   },
   "storageProofLoading": "Memuatkan tx penggunaan...",
-  "storageProofError": "Gagal memuatkan tx penggunaan"
+  "storageProofError": "Gagal memuatkan tx penggunaan",
+  "viewToken": "Token",
+  "viewNftCollection": "Koleksi NFT"
 }

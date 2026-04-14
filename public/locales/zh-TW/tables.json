@@ -86,5 +86,48 @@
     "username": "使用者名稱",
     "l1Block": "L1 區塊",
     "magiBlock": "Magi 區塊"
+  },
+  "tokens": {
+    "name": "名稱",
+    "symbol": "符號",
+    "contractId": "合約 ID",
+    "decimals": "小數位",
+    "maxSupply": "最大供應量",
+    "owner": "擁有者",
+    "age": "時間",
+    "account": "帳戶",
+    "balance": "餘額",
+    "noBalances": "無代幣餘額",
+    "supplyPct": "供應占比"
+  },
+  "nfts": {
+    "name": "名稱",
+    "symbol": "符號",
+    "contractId": "合約 ID",
+    "owner": "擁有者",
+    "txId": "交易 ID",
+    "age": "時間",
+    "from": "發送方",
+    "to": "接收方",
+    "tokenId": "代幣 ID",
+    "value": "數量",
+    "maxSupply": "最大供應量",
+    "soulbound": "靈魂綁定",
+    "created": "建立時間",
+    "noHoldings": "無 NFT 持有"
+  },
+  "btc": {
+    "account": "帳戶",
+    "balance": "餘額",
+    "age": "時間",
+    "recipient": "接收者",
+    "amount": "金額"
+  },
+  "transfers": {
+    "txId": "交易 ID",
+    "age": "時間",
+    "from": "發送方",
+    "to": "接收方",
+    "amount": "金額"
   }
 }

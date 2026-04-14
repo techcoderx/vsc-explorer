@@ -50,5 +50,12 @@
     "transfer_from_savings": "Trasferimento da risparmi",
     "interest": "Interessi",
     "fill_transfer_from_savings": "Completa trasferimento da risparmi"
+  },
+  "assetLabel": "Asset",
+  "asset": {
+    "": "Tutti",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

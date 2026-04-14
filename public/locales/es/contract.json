@@ -65,5 +65,7 @@
     "notExist": "El contrato no existe"
   },
   "storageProofLoading": "Cargando tx de despliegue...",
-  "storageProofError": "Error al cargar la tx de despliegue"
+  "storageProofError": "Error al cargar la tx de despliegue",
+  "viewToken": "Token",
+  "viewNftCollection": "Colección NFT"
 }

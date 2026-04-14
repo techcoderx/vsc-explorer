@@ -43,5 +43,12 @@
       "Epoch": "Epoche",
       "Contract": "Contract"
     }
-  }
+  },
+  "btcMapping": "BTC-Zuordnung",
+  "btcMappingSub": "BTC-zu-Magi-Brücke",
+  "dapps": "DApps",
+  "nftCollections": "NFT-Sammlungen",
+  "nftCollectionsSub": "Magi NFT-Sammlungen",
+  "tokens": "Token",
+  "tokensSub": "Fungible Magi-Token"
 }

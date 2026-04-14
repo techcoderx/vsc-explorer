@@ -43,5 +43,12 @@
       "Epoch": "エポック",
       "Contract": "コントラクト"
     }
-  }
+  },
+  "btcMapping": "BTCマッピング",
+  "btcMappingSub": "BTC-Magiブリッジ",
+  "dapps": "DApps",
+  "nftCollections": "NFTコレクション",
+  "nftCollectionsSub": "Magi NFTコレクション",
+  "tokens": "トークン",
+  "tokensSub": "Magi代替性トークン"
 }

@@ -50,5 +50,12 @@
     "transfer_from_savings": "Pindah dari Simpanan",
     "interest": "Faedah",
     "fill_transfer_from_savings": "Lengkapkan Pindahan dari Simpanan"
+  },
+  "assetLabel": "Aset",
+  "asset": {
+    "": "Semua",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

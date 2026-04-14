@@ -50,5 +50,12 @@
     "transfer_from_savings": "Перевод из сбережений",
     "interest": "Проценты",
     "fill_transfer_from_savings": "Выполнить перевод из сбережений"
+  },
+  "assetLabel": "Актив",
+  "asset": {
+    "": "Все",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

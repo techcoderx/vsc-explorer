@@ -50,5 +50,12 @@
     "transfer_from_savings": "貯蓄からの振込",
     "interest": "利息",
     "fill_transfer_from_savings": "貯蓄振込の充当"
+  },
+  "assetLabel": "資産",
+  "asset": {
+    "": "すべて",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

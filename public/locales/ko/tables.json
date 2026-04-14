@@ -86,5 +86,48 @@
     "username": "사용자 이름",
     "l1Block": "L1 블록",
     "magiBlock": "Magi 블록"
+  },
+  "tokens": {
+    "name": "이름",
+    "symbol": "심볼",
+    "contractId": "컨트랙트 ID",
+    "decimals": "소수점",
+    "maxSupply": "최대 공급량",
+    "owner": "소유자",
+    "age": "경과 시간",
+    "account": "계정",
+    "balance": "잔액",
+    "noBalances": "토큰 잔액 없음",
+    "supplyPct": "공급량 %"
+  },
+  "nfts": {
+    "name": "이름",
+    "symbol": "심볼",
+    "contractId": "컨트랙트 ID",
+    "owner": "소유자",
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "from": "발신",
+    "to": "수신",
+    "tokenId": "토큰 ID",
+    "value": "수량",
+    "maxSupply": "최대 공급량",
+    "soulbound": "소울바운드",
+    "created": "생성일",
+    "noHoldings": "NFT 보유 없음"
+  },
+  "btc": {
+    "account": "계정",
+    "balance": "잔액",
+    "age": "경과 시간",
+    "recipient": "수신자",
+    "amount": "금액"
+  },
+  "transfers": {
+    "txId": "트랜잭션 ID",
+    "age": "경과 시간",
+    "from": "발신",
+    "to": "수신",
+    "amount": "금액"
   }
 }

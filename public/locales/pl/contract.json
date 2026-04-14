@@ -65,5 +65,7 @@
     "notExist": "Kontrakt nie istnieje"
   },
   "storageProofLoading": "Ładowanie transakcji wdrożenia...",
-  "storageProofError": "Nie udało się załadować transakcji wdrożenia"
+  "storageProofError": "Nie udało się załadować transakcji wdrożenia",
+  "viewToken": "Token",
+  "viewNftCollection": "Kolekcja NFT"
 }

@@ -72,7 +72,9 @@
       "actions": "Действия",
       "maps": "Отображения",
       "unmaps": "Отмены отображений",
-      "witness": "Свидетель"
+      "witness": "Свидетель",
+      "tokens": "Токены",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "История чистых потоков HIVE с течением времени",
     "hbdNetFlow": "Чистый поток HBD",
     "hbdNetFlowDesc": "История чистых потоков HBD с течением времени"
+  },
+  "tokens": {
+    "title": "Токены",
+    "noTokens": "Токены не найдены",
+    "currentSupply": "Текущая эмиссия",
+    "maxSupply": "Макс. эмиссия",
+    "decimals": "Десятичные",
+    "owner": "Владелец",
+    "created": "Создано",
+    "tabs": {
+      "info": "Инфо",
+      "transfers": "Переводы",
+      "holders": "Держатели"
+    }
+  },
+  "nfts": {
+    "title": "NFT коллекции",
+    "noNfts": "NFT коллекции не найдены",
+    "name": "Название",
+    "symbol": "Символ",
+    "contractId": "ID контракта",
+    "owner": "Владелец",
+    "baseUri": "Базовый URI",
+    "created": "Создано",
+    "tabs": {
+      "info": "Инфо",
+      "tokens": "Токены",
+      "transfers": "Переводы"
+    }
+  },
+  "btc": {
+    "title": "Сопоставление BTC",
+    "volume24h": "Объём 24ч",
+    "maps24h": "Сопоставления 24ч",
+    "topBalances": "Наибольшие балансы",
+    "recentMaps": "Последние сопоставления",
+    "recentTransfers": "Последние переводы"
   }
 }

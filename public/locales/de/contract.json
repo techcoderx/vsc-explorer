@@ -65,5 +65,7 @@
     "notExist": "Contract existiert nicht"
   },
   "storageProofLoading": "Bereitstellungs-Tx wird geladen...",
-  "storageProofError": "Fehler beim Laden der Bereitstellungs-Tx"
+  "storageProofError": "Fehler beim Laden der Bereitstellungs-Tx",
+  "viewToken": "Token",
+  "viewNftCollection": "NFT-Sammlung"
 }

@@ -72,7 +72,9 @@
       "actions": "क्रियाएं",
       "maps": "मैप्स",
       "unmaps": "अनमैप्स",
-      "witness": "साक्षी"
+      "witness": "साक्षी",
+      "tokens": "टोकन",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "समय के साथ HIVE नेट फ्लो का इतिहास",
     "hbdNetFlow": "HBD नेट फ्लो",
     "hbdNetFlowDesc": "समय के साथ HBD नेट फ्लो का इतिहास"
+  },
+  "tokens": {
+    "title": "टोकन",
+    "noTokens": "कोई टोकन नहीं मिला",
+    "currentSupply": "वर्तमान आपूर्ति",
+    "maxSupply": "अधिकतम आपूर्ति",
+    "decimals": "दशमलव",
+    "owner": "मालिक",
+    "created": "बनाया गया",
+    "tabs": {
+      "info": "जानकारी",
+      "transfers": "स्थानांतरण",
+      "holders": "धारक"
+    }
+  },
+  "nfts": {
+    "title": "NFT संग्रह",
+    "noNfts": "कोई NFT संग्रह नहीं मिला",
+    "name": "नाम",
+    "symbol": "प्रतीक",
+    "contractId": "अनुबंध आईडी",
+    "owner": "मालिक",
+    "baseUri": "बेस URI",
+    "created": "बनाया गया",
+    "tabs": {
+      "info": "जानकारी",
+      "tokens": "टोकन",
+      "transfers": "स्थानांतरण"
+    }
+  },
+  "btc": {
+    "title": "BTC मैपिंग",
+    "volume24h": "24 घंटे का वॉल्यूम",
+    "maps24h": "24 घंटे के मैप",
+    "topBalances": "शीर्ष शेष",
+    "recentMaps": "हाल के मैप",
+    "recentTransfers": "हाल के स्थानांतरण"
   }
 }

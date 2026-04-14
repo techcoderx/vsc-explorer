@@ -65,5 +65,7 @@
     "notExist": "العقد غير موجود"
   },
   "storageProofLoading": "جارٍ تحميل معاملة النشر...",
-  "storageProofError": "فشل في تحميل معاملة النشر"
+  "storageProofError": "فشل في تحميل معاملة النشر",
+  "viewToken": "الرمز",
+  "viewNftCollection": "مجموعة NFT"
 }

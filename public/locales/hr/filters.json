@@ -50,5 +50,12 @@
     "transfer_from_savings": "Prijenos iz štednje",
     "interest": "Kamata",
     "fill_transfer_from_savings": "Izvrši prijenos iz štednje"
+  },
+  "assetLabel": "Imovina",
+  "asset": {
+    "": "Sve",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

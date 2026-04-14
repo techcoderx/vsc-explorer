@@ -86,5 +86,48 @@
     "username": "اسم المستخدم",
     "l1Block": "كتلة L1",
     "magiBlock": "كتلة Magi"
+  },
+  "tokens": {
+    "name": "الاسم",
+    "symbol": "الرمز",
+    "contractId": "معرف العقد",
+    "decimals": "الكسور العشرية",
+    "maxSupply": "الإمداد الأقصى",
+    "owner": "المالك",
+    "age": "العمر",
+    "account": "الحساب",
+    "balance": "الرصيد",
+    "noBalances": "لا توجد أرصدة رموز",
+    "supplyPct": "% الإمداد"
+  },
+  "nfts": {
+    "name": "الاسم",
+    "symbol": "الرمز",
+    "contractId": "معرف العقد",
+    "owner": "المالك",
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "from": "من",
+    "to": "إلى",
+    "tokenId": "معرف الرمز",
+    "value": "الكمية",
+    "maxSupply": "الإمداد الأقصى",
+    "soulbound": "مرتبط بالروح",
+    "created": "تم الإنشاء",
+    "noHoldings": "لا توجد مقتنيات NFT"
+  },
+  "btc": {
+    "account": "الحساب",
+    "balance": "الرصيد",
+    "age": "العمر",
+    "recipient": "المستلم",
+    "amount": "المبلغ"
+  },
+  "transfers": {
+    "txId": "معرف المعاملة",
+    "age": "العمر",
+    "from": "من",
+    "to": "إلى",
+    "amount": "المبلغ"
   }
 }

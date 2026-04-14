@@ -43,5 +43,12 @@
       "Epoch": "Epok",
       "Contract": "Kontrak"
     }
-  }
+  },
+  "btcMapping": "Pemetaan BTC",
+  "btcMappingSub": "Jambatan BTC ke Magi",
+  "dapps": "DApps",
+  "nftCollections": "Koleksi NFT",
+  "nftCollectionsSub": "Koleksi NFT Magi",
+  "tokens": "Token",
+  "tokensSub": "Token boleh tukar ganti Magi"
 }

@@ -65,5 +65,7 @@
     "notExist": "컨트랙트가 존재하지 않습니다"
   },
   "storageProofLoading": "배포 트랜잭션 로딩 중...",
-  "storageProofError": "배포 트랜잭션 로드 실패"
+  "storageProofError": "배포 트랜잭션 로드 실패",
+  "viewToken": "토큰",
+  "viewNftCollection": "NFT 컬렉션"
 }

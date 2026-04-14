@@ -65,5 +65,7 @@
     "notExist": "Ugovor ne postoji"
   },
   "storageProofLoading": "Učitavanje transakcije postavljanja...",
-  "storageProofError": "Nije uspjelo učitavanje transakcije postavljanja"
+  "storageProofError": "Nije uspjelo učitavanje transakcije postavljanja",
+  "viewToken": "Token",
+  "viewNftCollection": "NFT kolekcija"
 }

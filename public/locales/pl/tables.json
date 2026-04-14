@@ -86,5 +86,48 @@
     "username": "Nazwa użytkownika",
     "l1Block": "Blok L1",
     "magiBlock": "Blok Magi"
+  },
+  "tokens": {
+    "name": "Nazwa",
+    "symbol": "Symbol",
+    "contractId": "ID kontraktu",
+    "decimals": "Miejsca dziesiętne",
+    "maxSupply": "Maksymalna podaż",
+    "owner": "Właściciel",
+    "age": "Wiek",
+    "account": "Konto",
+    "balance": "Saldo",
+    "noBalances": "Brak salda tokenów",
+    "supplyPct": "% Podaży"
+  },
+  "nfts": {
+    "name": "Nazwa",
+    "symbol": "Symbol",
+    "contractId": "ID kontraktu",
+    "owner": "Właściciel",
+    "txId": "ID transakcji",
+    "age": "Wiek",
+    "from": "Od",
+    "to": "Do",
+    "tokenId": "ID tokenu",
+    "value": "Ilość",
+    "maxSupply": "Maksymalna podaż",
+    "soulbound": "Soulbound",
+    "created": "Utworzono",
+    "noHoldings": "Brak posiadanych NFT"
+  },
+  "btc": {
+    "account": "Konto",
+    "balance": "Saldo",
+    "age": "Wiek",
+    "recipient": "Odbiorca",
+    "amount": "Kwota"
+  },
+  "transfers": {
+    "txId": "ID transakcji",
+    "age": "Wiek",
+    "from": "Od",
+    "to": "Do",
+    "amount": "Kwota"
   }
 }

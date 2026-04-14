@@ -43,5 +43,12 @@
       "Epoch": "Epoha",
       "Contract": "Ugovor"
     }
-  }
+  },
+  "btcMapping": "BTC mapiranje",
+  "btcMappingSub": "BTC-Magi most",
+  "dapps": "DApps",
+  "nftCollections": "NFT kolekcije",
+  "nftCollectionsSub": "Magi NFT kolekcije",
+  "tokens": "Tokeni",
+  "tokensSub": "Zamjenjivi Magi tokeni"
 }

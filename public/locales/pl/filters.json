@@ -50,5 +50,12 @@
     "transfer_from_savings": "Przelew z oszczędności",
     "interest": "Odsetki",
     "fill_transfer_from_savings": "Realizuj przelew z oszczędności"
+  },
+  "assetLabel": "Aktywo",
+  "asset": {
+    "": "Wszystkie",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

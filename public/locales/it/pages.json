@@ -72,7 +72,9 @@
       "actions": "Azioni",
       "maps": "Mappature",
       "unmaps": "Demappature",
-      "witness": "Testimone"
+      "witness": "Testimone",
+      "tokens": "Token",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "Storico dei flussi netti HIVE nel tempo",
     "hbdNetFlow": "Flusso netto HBD",
     "hbdNetFlowDesc": "Storico dei flussi netti HBD nel tempo"
+  },
+  "tokens": {
+    "title": "Token",
+    "noTokens": "Nessun token trovato",
+    "currentSupply": "Offerta attuale",
+    "maxSupply": "Offerta massima",
+    "decimals": "Decimali",
+    "owner": "Proprietario",
+    "created": "Creato",
+    "tabs": {
+      "info": "Info",
+      "transfers": "Trasferimenti",
+      "holders": "Titolari"
+    }
+  },
+  "nfts": {
+    "title": "Collezioni NFT",
+    "noNfts": "Nessuna collezione NFT trovata",
+    "name": "Nome",
+    "symbol": "Simbolo",
+    "contractId": "ID contratto",
+    "owner": "Proprietario",
+    "baseUri": "URI di base",
+    "created": "Creato",
+    "tabs": {
+      "info": "Info",
+      "tokens": "Token",
+      "transfers": "Trasferimenti"
+    }
+  },
+  "btc": {
+    "title": "Mappatura BTC",
+    "volume24h": "Volume 24h",
+    "maps24h": "Mappature 24h",
+    "topBalances": "Saldi principali",
+    "recentMaps": "Mappature recenti",
+    "recentTransfers": "Trasferimenti recenti"
   }
 }

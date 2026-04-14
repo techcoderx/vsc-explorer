@@ -237,9 +237,9 @@
   "btc": {
     "title": "BTC Mapping",
     "volume24h": "24h Volume",
-    "deposits24h": "24h Deposits",
+    "maps24h": "24h Maps",
     "topBalances": "Top Balances",
-    "recentDeposits": "Recent Deposits",
+    "recentMaps": "Recent Maps",
     "recentTransfers": "Recent Transfers"
   }
 }

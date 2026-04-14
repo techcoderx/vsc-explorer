@@ -65,5 +65,7 @@
     "notExist": "Il contratto non esiste"
   },
   "storageProofLoading": "Caricamento tx di distribuzione...",
-  "storageProofError": "Impossibile caricare la tx di distribuzione"
+  "storageProofError": "Impossibile caricare la tx di distribuzione",
+  "viewToken": "Token",
+  "viewNftCollection": "Collezione NFT"
 }

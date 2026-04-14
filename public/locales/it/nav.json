@@ -43,5 +43,12 @@
       "Epoch": "Epoca",
       "Contract": "Contratto"
     }
-  }
+  },
+  "btcMapping": "Mappatura BTC",
+  "btcMappingSub": "Ponte BTC-Magi",
+  "dapps": "DApps",
+  "nftCollections": "Collezioni NFT",
+  "nftCollectionsSub": "Collezioni NFT di Magi",
+  "tokens": "Token",
+  "tokensSub": "Token fungibili di Magi"
 }

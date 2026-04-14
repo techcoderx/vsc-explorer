@@ -72,7 +72,9 @@
       "actions": "Akcije",
       "maps": "Mapiranja",
       "unmaps": "Odmapiranja",
-      "witness": "Svjedok"
+      "witness": "Svjedok",
+      "tokens": "Tokeni",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "Povijest HIVE neto tokova kroz vrijeme",
     "hbdNetFlow": "HBD neto tok",
     "hbdNetFlowDesc": "Povijest HBD neto tokova kroz vrijeme"
+  },
+  "tokens": {
+    "title": "Tokeni",
+    "noTokens": "Nema pronađenih tokena",
+    "currentSupply": "Trenutna ponuda",
+    "maxSupply": "Maksimalna ponuda",
+    "decimals": "Decimale",
+    "owner": "Vlasnik",
+    "created": "Kreirano",
+    "tabs": {
+      "info": "Info",
+      "transfers": "Prijenosi",
+      "holders": "Vlasnici"
+    }
+  },
+  "nfts": {
+    "title": "NFT kolekcije",
+    "noNfts": "Nema pronađenih NFT kolekcija",
+    "name": "Naziv",
+    "symbol": "Simbol",
+    "contractId": "ID ugovora",
+    "owner": "Vlasnik",
+    "baseUri": "Bazni URI",
+    "created": "Kreirano",
+    "tabs": {
+      "info": "Info",
+      "tokens": "Tokeni",
+      "transfers": "Prijenosi"
+    }
+  },
+  "btc": {
+    "title": "BTC mapiranje",
+    "volume24h": "24h volumen",
+    "maps24h": "24h mapiranja",
+    "topBalances": "Najveća stanja",
+    "recentMaps": "Nedavna mapiranja",
+    "recentTransfers": "Nedavni prijenosi"
   }
 }

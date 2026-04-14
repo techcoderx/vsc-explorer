@@ -94,11 +94,7 @@
     "decimals": "Decimals",
     "maxSupply": "Max Supply",
     "owner": "Owner",
-    "txId": "Tx ID",
     "age": "Age",
-    "from": "From",
-    "to": "To",
-    "amount": "Amount",
     "account": "Account",
     "balance": "Balance",
     "noBalances": "No token balances",
@@ -125,8 +121,13 @@
     "balance": "Balance",
     "age": "Age",
     "recipient": "Recipient",
-    "amount": "Amount",
+    "amount": "Amount"
+  },
+  "transfers": {
+    "txId": "Tx ID",
+    "age": "Age",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "amount": "Amount"
   }
 }

@@ -65,5 +65,7 @@
     "notExist": "Контракт не существует"
   },
   "storageProofLoading": "Загрузка транзакции развёртывания...",
-  "storageProofError": "Не удалось загрузить транзакцию развёртывания"
+  "storageProofError": "Не удалось загрузить транзакцию развёртывания",
+  "viewToken": "Токен",
+  "viewNftCollection": "NFT коллекция"
 }

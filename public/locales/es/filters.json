@@ -50,5 +50,12 @@
     "transfer_from_savings": "Transferencia desde ahorros",
     "interest": "Interés",
     "fill_transfer_from_savings": "Completar transferencia desde ahorros"
+  },
+  "assetLabel": "Activo",
+  "asset": {
+    "": "Todos",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

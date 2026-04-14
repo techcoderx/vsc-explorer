@@ -43,5 +43,12 @@
       "Epoch": "週期",
       "Contract": "合約"
     }
-  }
+  },
+  "btcMapping": "BTC 映射",
+  "btcMappingSub": "BTC 到 Magi 橋接",
+  "dapps": "DApps",
+  "nftCollections": "NFT 合集",
+  "nftCollectionsSub": "Magi NFT 合集",
+  "tokens": "代幣",
+  "tokensSub": "Magi 同質化代幣"
 }

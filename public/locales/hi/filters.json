@@ -50,5 +50,12 @@
     "transfer_from_savings": "बचत से ट्रांसफर",
     "interest": "ब्याज",
     "fill_transfer_from_savings": "बचत से ट्रांसफर पूरा करें"
+  },
+  "assetLabel": "संपत्ति",
+  "asset": {
+    "": "सभी",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

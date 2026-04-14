@@ -65,5 +65,7 @@
     "notExist": "अनुबंध मौजूद नहीं है"
   },
   "storageProofLoading": "तैनाती लेनदेन लोड हो रहा है...",
-  "storageProofError": "तैनाती लेनदेन लोड करने में विफल"
+  "storageProofError": "तैनाती लेनदेन लोड करने में विफल",
+  "viewToken": "टोकन",
+  "viewNftCollection": "NFT संग्रह"
 }

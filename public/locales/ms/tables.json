@@ -86,5 +86,48 @@
     "username": "Nama Pengguna",
     "l1Block": "Blok L1",
     "magiBlock": "Blok Magi"
+  },
+  "tokens": {
+    "name": "Nama",
+    "symbol": "Simbol",
+    "contractId": "ID Kontrak",
+    "decimals": "Perpuluhan",
+    "maxSupply": "Bekalan Maksimum",
+    "owner": "Pemilik",
+    "age": "Usia",
+    "account": "Akaun",
+    "balance": "Baki",
+    "noBalances": "Tiada baki token",
+    "supplyPct": "% Bekalan"
+  },
+  "nfts": {
+    "name": "Nama",
+    "symbol": "Simbol",
+    "contractId": "ID Kontrak",
+    "owner": "Pemilik",
+    "txId": "ID Tx",
+    "age": "Usia",
+    "from": "Dari",
+    "to": "Kepada",
+    "tokenId": "ID Token",
+    "value": "Kuantiti",
+    "maxSupply": "Bekalan Maksimum",
+    "soulbound": "Soulbound",
+    "created": "Dicipta",
+    "noHoldings": "Tiada pegangan NFT"
+  },
+  "btc": {
+    "account": "Akaun",
+    "balance": "Baki",
+    "age": "Usia",
+    "recipient": "Penerima",
+    "amount": "Jumlah"
+  },
+  "transfers": {
+    "txId": "ID Tx",
+    "age": "Usia",
+    "from": "Dari",
+    "to": "Kepada",
+    "amount": "Jumlah"
   }
 }

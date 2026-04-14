@@ -50,5 +50,12 @@
     "transfer_from_savings": "저축에서 전송",
     "interest": "이자",
     "fill_transfer_from_savings": "저축 전송 처리"
+  },
+  "assetLabel": "자산",
+  "asset": {
+    "": "전체",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

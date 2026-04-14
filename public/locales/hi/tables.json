@@ -86,5 +86,48 @@
     "username": "उपयोगकर्ता नाम",
     "l1Block": "L1 ब्लॉक",
     "magiBlock": "Magi ब्लॉक"
+  },
+  "tokens": {
+    "name": "नाम",
+    "symbol": "प्रतीक",
+    "contractId": "अनुबंध आईडी",
+    "decimals": "दशमलव",
+    "maxSupply": "अधिकतम आपूर्ति",
+    "owner": "मालिक",
+    "age": "आयु",
+    "account": "खाता",
+    "balance": "शेष",
+    "noBalances": "कोई टोकन शेष नहीं",
+    "supplyPct": "% आपूर्ति"
+  },
+  "nfts": {
+    "name": "नाम",
+    "symbol": "प्रतीक",
+    "contractId": "अनुबंध आईडी",
+    "owner": "मालिक",
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "from": "से",
+    "to": "को",
+    "tokenId": "टोकन आईडी",
+    "value": "मात्रा",
+    "maxSupply": "अधिकतम आपूर्ति",
+    "soulbound": "सोलबाउंड",
+    "created": "बनाया गया",
+    "noHoldings": "कोई NFT होल्डिंग नहीं"
+  },
+  "btc": {
+    "account": "खाता",
+    "balance": "शेष",
+    "age": "आयु",
+    "recipient": "प्राप्तकर्ता",
+    "amount": "राशि"
+  },
+  "transfers": {
+    "txId": "लेनदेन आईडी",
+    "age": "आयु",
+    "from": "से",
+    "to": "को",
+    "amount": "राशि"
   }
 }

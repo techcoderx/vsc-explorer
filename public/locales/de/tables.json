@@ -86,5 +86,48 @@
     "username": "Benutzername",
     "l1Block": "L1-Block",
     "magiBlock": "Magi-Block"
+  },
+  "tokens": {
+    "name": "Name",
+    "symbol": "Symbol",
+    "contractId": "Contract-ID",
+    "decimals": "Dezimalstellen",
+    "maxSupply": "Maximales Angebot",
+    "owner": "Eigentümer",
+    "age": "Alter",
+    "account": "Konto",
+    "balance": "Guthaben",
+    "noBalances": "Keine Token-Guthaben",
+    "supplyPct": "% Angebot"
+  },
+  "nfts": {
+    "name": "Name",
+    "symbol": "Symbol",
+    "contractId": "Contract-ID",
+    "owner": "Eigentümer",
+    "txId": "Tx-ID",
+    "age": "Alter",
+    "from": "Von",
+    "to": "An",
+    "tokenId": "Token-ID",
+    "value": "Anzahl",
+    "maxSupply": "Maximales Angebot",
+    "soulbound": "Soulbound",
+    "created": "Erstellt",
+    "noHoldings": "Keine NFT-Bestände"
+  },
+  "btc": {
+    "account": "Konto",
+    "balance": "Guthaben",
+    "age": "Alter",
+    "recipient": "Empfänger",
+    "amount": "Betrag"
+  },
+  "transfers": {
+    "txId": "Tx-ID",
+    "age": "Alter",
+    "from": "Von",
+    "to": "An",
+    "amount": "Betrag"
   }
 }

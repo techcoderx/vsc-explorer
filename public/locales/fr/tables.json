@@ -86,5 +86,48 @@
     "username": "Nom d'utilisateur",
     "l1Block": "Bloc L1",
     "magiBlock": "Bloc Magi"
+  },
+  "tokens": {
+    "name": "Nom",
+    "symbol": "Symbole",
+    "contractId": "ID du contrat",
+    "decimals": "Décimales",
+    "maxSupply": "Offre maximale",
+    "owner": "Propriétaire",
+    "age": "Âge",
+    "account": "Compte",
+    "balance": "Solde",
+    "noBalances": "Aucun solde de jetons",
+    "supplyPct": "% de l'offre"
+  },
+  "nfts": {
+    "name": "Nom",
+    "symbol": "Symbole",
+    "contractId": "ID du contrat",
+    "owner": "Propriétaire",
+    "txId": "ID de Tx",
+    "age": "Âge",
+    "from": "De",
+    "to": "À",
+    "tokenId": "ID du jeton",
+    "value": "Quantité",
+    "maxSupply": "Offre maximale",
+    "soulbound": "Soulbound",
+    "created": "Créé",
+    "noHoldings": "Aucune détention NFT"
+  },
+  "btc": {
+    "account": "Compte",
+    "balance": "Solde",
+    "age": "Âge",
+    "recipient": "Destinataire",
+    "amount": "Montant"
+  },
+  "transfers": {
+    "txId": "ID de Tx",
+    "age": "Âge",
+    "from": "De",
+    "to": "À",
+    "amount": "Montant"
   }
 }

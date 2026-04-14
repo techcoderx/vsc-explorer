@@ -65,5 +65,7 @@
     "notExist": "コントラクトが存在しません"
   },
   "storageProofLoading": "デプロイトランザクションを読み込み中...",
-  "storageProofError": "デプロイトランザクションの読み込みに失敗"
+  "storageProofError": "デプロイトランザクションの読み込みに失敗",
+  "viewToken": "トークン",
+  "viewNftCollection": "NFTコレクション"
 }

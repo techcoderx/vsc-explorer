@@ -65,5 +65,7 @@
     "notExist": "Le contrat n'existe pas"
   },
   "storageProofLoading": "Chargement de la tx de déploiement...",
-  "storageProofError": "Échec du chargement de la tx de déploiement"
+  "storageProofError": "Échec du chargement de la tx de déploiement",
+  "viewToken": "Jeton",
+  "viewNftCollection": "Collection NFT"
 }

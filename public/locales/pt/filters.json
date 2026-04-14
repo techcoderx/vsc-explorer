@@ -50,5 +50,12 @@
     "transfer_from_savings": "Transferência da poupança",
     "interest": "Juros",
     "fill_transfer_from_savings": "Completar transferência da poupança"
+  },
+  "assetLabel": "Ativo",
+  "asset": {
+    "": "Todos",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

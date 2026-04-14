@@ -50,5 +50,12 @@
     "transfer_from_savings": "تحويل من المدخرات",
     "interest": "فائدة",
     "fill_transfer_from_savings": "تنفيذ التحويل من المدخرات"
+  },
+  "assetLabel": "الأصل",
+  "asset": {
+    "": "الكل",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

@@ -50,5 +50,12 @@
     "transfer_from_savings": "Transfer von Ersparnissen",
     "interest": "Zinsen",
     "fill_transfer_from_savings": "Transfer von Ersparnissen auffüllen"
+  },
+  "assetLabel": "Vermögenswert",
+  "asset": {
+    "": "Alle",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

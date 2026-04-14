@@ -65,5 +65,7 @@
     "notExist": "O contrato não existe"
   },
   "storageProofLoading": "Carregando tx de implantação...",
-  "storageProofError": "Falha ao carregar a tx de implantação"
+  "storageProofError": "Falha ao carregar a tx de implantação",
+  "viewToken": "Token",
+  "viewNftCollection": "Coleção NFT"
 }

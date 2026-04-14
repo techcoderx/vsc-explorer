@@ -65,5 +65,7 @@
     "notExist": "合约不存在"
   },
   "storageProofLoading": "正在加载部署交易...",
-  "storageProofError": "加载部署交易失败"
+  "storageProofError": "加载部署交易失败",
+  "viewToken": "代币",
+  "viewNftCollection": "NFT 合集"
 }

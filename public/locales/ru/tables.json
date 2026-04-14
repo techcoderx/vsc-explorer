@@ -86,5 +86,48 @@
     "username": "Имя пользователя",
     "l1Block": "Блок L1",
     "magiBlock": "Блок Magi"
+  },
+  "tokens": {
+    "name": "Название",
+    "symbol": "Символ",
+    "contractId": "ID контракта",
+    "decimals": "Десятичные",
+    "maxSupply": "Макс. эмиссия",
+    "owner": "Владелец",
+    "age": "Возраст",
+    "account": "Счёт",
+    "balance": "Баланс",
+    "noBalances": "Нет балансов токенов",
+    "supplyPct": "% эмиссии"
+  },
+  "nfts": {
+    "name": "Название",
+    "symbol": "Символ",
+    "contractId": "ID контракта",
+    "owner": "Владелец",
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "from": "От",
+    "to": "Кому",
+    "tokenId": "ID токена",
+    "value": "Количество",
+    "maxSupply": "Макс. эмиссия",
+    "soulbound": "Соулбаунд",
+    "created": "Создано",
+    "noHoldings": "Нет NFT"
+  },
+  "btc": {
+    "account": "Счёт",
+    "balance": "Баланс",
+    "age": "Возраст",
+    "recipient": "Получатель",
+    "amount": "Сумма"
+  },
+  "transfers": {
+    "txId": "ID транзакции",
+    "age": "Возраст",
+    "from": "От",
+    "to": "Кому",
+    "amount": "Сумма"
   }
 }

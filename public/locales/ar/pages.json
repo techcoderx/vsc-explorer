@@ -72,7 +72,9 @@
       "actions": "الإجراءات",
       "maps": "الربط",
       "unmaps": "فك الربط",
-      "witness": "الشاهد"
+      "witness": "الشاهد",
+      "tokens": "الرموز",
+      "nfts": "NFTs"
     }
   },
   "balances": {
@@ -202,5 +204,42 @@
     "hiveNetFlowDesc": "سجل صافي تدفقات HIVE عبر الزمن",
     "hbdNetFlow": "صافي تدفق HBD",
     "hbdNetFlowDesc": "سجل صافي تدفقات HBD عبر الزمن"
+  },
+  "tokens": {
+    "title": "الرموز",
+    "noTokens": "لم يتم العثور على رموز",
+    "currentSupply": "الإمداد الحالي",
+    "maxSupply": "الإمداد الأقصى",
+    "decimals": "الكسور العشرية",
+    "owner": "المالك",
+    "created": "تم الإنشاء",
+    "tabs": {
+      "info": "معلومات",
+      "transfers": "التحويلات",
+      "holders": "الحاملون"
+    }
+  },
+  "nfts": {
+    "title": "مجموعات NFT",
+    "noNfts": "لم يتم العثور على مجموعات NFT",
+    "name": "الاسم",
+    "symbol": "الرمز",
+    "contractId": "معرف العقد",
+    "owner": "المالك",
+    "baseUri": "عنوان URI الأساسي",
+    "created": "تم الإنشاء",
+    "tabs": {
+      "info": "معلومات",
+      "tokens": "الرموز",
+      "transfers": "التحويلات"
+    }
+  },
+  "btc": {
+    "title": "ربط BTC",
+    "volume24h": "الحجم خلال 24 ساعة",
+    "maps24h": "التعيينات خلال 24 ساعة",
+    "topBalances": "أعلى الأرصدة",
+    "recentMaps": "أحدث التعيينات",
+    "recentTransfers": "أحدث التحويلات"
   }
 }

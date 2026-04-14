@@ -43,5 +43,12 @@
       "Epoch": "Эпоха",
       "Contract": "Контракт"
     }
-  }
+  },
+  "btcMapping": "Сопоставление BTC",
+  "btcMappingSub": "Мост BTC-Magi",
+  "dapps": "DApps",
+  "nftCollections": "NFT коллекции",
+  "nftCollectionsSub": "NFT коллекции Magi",
+  "tokens": "Токены",
+  "tokensSub": "Взаимозаменяемые токены Magi"
 }

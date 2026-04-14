@@ -50,5 +50,12 @@
     "transfer_from_savings": "從儲蓄轉出",
     "interest": "利息",
     "fill_transfer_from_savings": "填充儲蓄轉帳"
+  },
+  "assetLabel": "資產",
+  "asset": {
+    "": "全部",
+    "hive": "HIVE",
+    "hbd": "HBD",
+    "hbd_savings": "sHBD"
   }
 }

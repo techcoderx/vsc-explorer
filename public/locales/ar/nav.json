@@ -43,5 +43,12 @@
       "Epoch": "الحقبة",
       "Contract": "العقد"
     }
-  }
+  },
+  "btcMapping": "ربط BTC",
+  "btcMappingSub": "جسر BTC إلى Magi",
+  "dapps": "DApps",
+  "nftCollections": "مجموعات NFT",
+  "nftCollectionsSub": "مجموعات NFT على Magi",
+  "tokens": "الرموز",
+  "tokensSub": "رموز Magi القابلة للاستبدال"
 }

@@ -43,5 +43,12 @@
       "Epoch": "Époque",
       "Contract": "Contrat"
     }
-  }
+  },
+  "btcMapping": "Mappage BTC",
+  "btcMappingSub": "Pont BTC vers Magi",
+  "dapps": "DApps",
+  "nftCollections": "Collections NFT",
+  "nftCollectionsSub": "Collections NFT Magi",
+  "tokens": "Jetons",
+  "tokensSub": "Jetons fongibles Magi"
 }
