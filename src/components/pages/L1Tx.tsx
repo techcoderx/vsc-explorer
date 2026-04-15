@@ -34,8 +34,10 @@ import { Contract, ContractOutputDag, TssKeyStatus, TssOp, TssReqStatus, Txn } f
 import { StatusBadge } from '../tables/Ledgers'
 import { AccountLink, ContractLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
-import { LuCheck, LuX } from 'react-icons/lu'
+import { LuCheck, LuX, LuZap } from 'react-icons/lu'
 import { PageTitle } from '../PageTitle'
+import { fetchLogActionMetadata } from '../../hasuraRequests'
+import { resolveContractType, getStaticContractTypes, parseLog, describeAction } from '../../logActions'
 
 const cardBorder = '1px solid rgb(255,255,255,0.16)'
 const cardBorderLight = '1px solid #e2e8f0'
@@ -242,6 +244,65 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
           </Table.Root>
         </Table.ScrollArea>
         {(txn.ledger.length > 0 || txn.ledger_actions.length > 0 || !!txn.output) && <TxOut txn={txn} />}
+      </Card.Body>
+    </Card.Root>
+  )
+}
+
+const TxActions = ({ txn }: { txn: Txn }) => {
+  const { t } = useTranslation('pages')
+  const { data: outContents } = useQuery({
+    queryKey: ['vsc-tx-outputs', txn.id],
+    queryFn: () => getDagByCIDBatch<ContractOutputDag>(txn.output!.map((o) => o.id)),
+    enabled: txn.status === 'CONFIRMED' && !!txn.output && txn.output.length > 0
+  })
+  const contractIds = useMemo(() => {
+    if (!outContents) return []
+    const staticTypes = getStaticContractTypes()
+    return [...new Set(outContents.map((o) => o.contract_id))].filter((id) => !staticTypes[id])
+  }, [outContents])
+  const { data: actionMeta } = useQuery({
+    queryKey: ['log-action-metadata', ...contractIds],
+    queryFn: () => fetchLogActionMetadata(contractIds),
+    enabled: contractIds.length > 0,
+    staleTime: 300000
+  })
+  const parsedActions = useMemo(() => {
+    if (!outContents || !txn.output || txn.status !== 'CONFIRMED') return []
+    const meta = actionMeta ?? { contractTypes: {}, tokenInfo: {}, nftInfo: {} }
+    const actions: ReactNode[] = []
+    txn.output.forEach((out, i) =>
+      out.index.forEach((o) =>
+        outContents[i].results[o].logs?.forEach((log) => {
+          const cid = outContents[i].contract_id
+          const ctype = resolveContractType(cid, meta.contractTypes)
+          const parsed = parseLog(ctype, log)
+          const node = describeAction(cid, ctype, parsed.eventType, parsed.fields, meta)
+          if (node) actions.push(node)
+        })
+      )
+    )
+    return actions
+  }, [outContents, txn, actionMeta])
+
+  if (parsedActions.length === 0) return null
+
+  return (
+    <Card.Root>
+      <Card.Header pb={'4'}>
+        <Flex gap={'1.5'} direction={'row'} alignItems={'center'}>
+          <Icon fontSize={'xl'} as={LuZap} />
+          <Heading fontSize={'2xl'}>{t('l1Tx.actions', { count: parsedActions.length })}</Heading>
+        </Flex>
+      </Card.Header>
+      <Card.Body pt={'0'}>
+        <Flex direction={'column'} gap={'2'}>
+          {parsedActions.map((action, i) => (
+            <Box key={i} fontSize={'md'}>
+              {action}
+            </Box>
+          ))}
+        </Flex>
       </Card.Body>
     </Card.Root>
   )
@@ -641,6 +702,7 @@ const L1Tx = () => {
         ))}
       </HStack>
       <Flex gap="6" direction="column">
+        {Array.isArray(vscTx) && vscTx.length > 0 && <TxActions txn={vscTx[0]} />}
         {Array.isArray(vscTx) && vscTx.length > 0 && <TxOverview txn={vscTx[0]} type="hive" />}
         {isLoading ? (
           <Card.Root w="100%">
@@ -743,6 +805,7 @@ const L2Tx = () => {
       </Button>
       {!!tx && (
         <Flex gap="6" direction="column">
+          <TxActions txn={tx} />
           <TxOverview txn={tx} type="vsc" />
           {tx.ops.map((op, i) => (
             <Card.Root key={i}>

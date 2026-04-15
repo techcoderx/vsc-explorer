@@ -119,3 +119,9 @@ export interface NormalizedTransfer {
   to: string
   formattedAmount: string
 }
+
+export interface LogActionMetadata {
+  contractTypes: Record<string, string>
+  tokenInfo: Record<string, { symbol: string; decimals: number }>
+  nftInfo: Record<string, { name: string; symbol: string }>
+}

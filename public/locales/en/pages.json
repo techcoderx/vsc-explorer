@@ -137,6 +137,7 @@
     "ledgerOps": "Ledger Operations ({{count}})",
     "ledgerActions": "Ledger Actions ({{count}})",
     "callOutputs": "Call Outputs",
+    "actions": "Actions ({{count}})",
     "logs": "Logs ({{count}})",
     "tssRequests": "TSS Requests ({{count}})",
     "opLogHeaders": {
@@ -153,6 +154,7 @@
       "errorMessage": "Error Message",
       "output": "Output",
       "log": "Log",
+      "action": "Action",
       "keyId": "Key ID",
       "arguments": "Arguments"
     },
