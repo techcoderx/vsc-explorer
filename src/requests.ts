@@ -29,6 +29,7 @@ import {
   TssReqStatus,
   SimulateCallResult,
   SimulateCallsInput,
+  LedgerClaimRecord,
   Status,
   TxnTypes
 } from './types/L2ApiResult'
@@ -365,6 +366,50 @@ export const getWithdrawals = async (offset = 0, limit = 100, options?: object):
         ...options,
         offset,
         limit
+      }
+    }
+  )
+  return result.data
+}
+
+export const getLedgerClaims = async (
+  offset = 0,
+  limit = 100,
+  options?: object
+): Promise<{ claims: LedgerClaimRecord[] }> => {
+  const result = await gql<GqlResponse<{ claims: LedgerClaimRecord[] }>>(
+    `
+    query LedgerClaims($claimFilter: LedgerClaimFilter) {
+      claims: findLedgerClaims(filterOptions: $claimFilter) { block_height amount tx_id received_n observed_apr timestamp }
+    }`,
+    {
+      claimFilter: {
+        ...options,
+        offset,
+        limit
+      }
+    }
+  )
+  return result.data
+}
+
+export const getInterestPayments = async (
+  offset = 0,
+  limit = 100,
+  claimBlockHeight: number
+): Promise<{ interests: LedgerTx<'interest'>[] }> => {
+  const result = await gql<GqlResponse<{ interests: LedgerTx<'interest'>[] }>>(
+    `
+    query InterestPayments($filter: LedgerTxFilter) {
+      interests: findLedgerTXs(filterOptions: $filter) { id amount block_height timestamp from to: owner type asset tx_id }
+    }`,
+    {
+      filter: {
+        offset,
+        limit,
+        byTypes: ['interest'],
+        fromBlock: claimBlockHeight + 1,
+        toBlock: claimBlockHeight + 1
       }
     }
   )

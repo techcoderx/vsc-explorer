@@ -253,6 +253,17 @@
       "transfers": "Transfers"
     }
   },
+  "staking": {
+    "title": "Liquid Staked HBD Overview",
+    "latestApr": "Latest APR",
+    "totalInterest": "Total Interest Distributed",
+    "recipients": "Recipients",
+    "viewAllClaims": "View All Claims",
+    "claimsTitle": "HBD Interest Claims",
+    "totalClaimsCount": "Total {{count}} claims",
+    "claimDetailTitle": "Claim at Block #{{block}}",
+    "interestPayments": "Interest Payments ({{count}})"
+  },
   "btc": {
     "title": "BTC Mapping",
     "volume24h": "24h Volume",

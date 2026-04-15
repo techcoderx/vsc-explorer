@@ -126,6 +126,16 @@
     "btcAddress": "BTC Address",
     "fee": "Fee"
   },
+  "claims": {
+    "blockHeight": "Block Height",
+    "age": "Age",
+    "totalInterest": "Total Interest",
+    "recipients": "Recipients",
+    "observedApr": "Observed APR",
+    "txId": "Tx ID",
+    "recipient": "Recipient",
+    "amount": "Amount"
+  },
   "transfers": {
     "txId": "Tx ID",
     "age": "Age",

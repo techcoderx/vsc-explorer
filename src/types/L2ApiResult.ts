@@ -319,6 +319,15 @@ export interface SimulateCallsInput {
   calls: SimulateCallInput[]
 }
 
+export interface LedgerClaimRecord {
+  block_height: number
+  amount: number
+  tx_id: string
+  received_n: number
+  observed_apr: number
+  timestamp: string
+}
+
 export interface SimulateCallResult {
   success: boolean
   err?: string

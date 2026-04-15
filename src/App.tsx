@@ -45,6 +45,8 @@ import { AddressCharts } from './components/pages/charts/Addresses'
 import { ContractsCharts } from './components/pages/charts/Contracts'
 import { WitnessCharts } from './components/pages/charts/Witnesses'
 import { Broadcast } from './components/pages/tools/Broadcast'
+import StakingOverview from './components/pages/staking/Overview'
+import { StakingClaims, ClaimDetail } from './components/pages/staking/Claims'
 import Settings from './components/pages/Settings'
 
 const router = createBrowserRouter([
@@ -227,6 +229,18 @@ const router = createBrowserRouter([
       {
         path: '/nam/hive/unmaps/:page?',
         element: <HiveBridgeLatestTxs kind="w" />
+      },
+      {
+        path: '/staking/hbd',
+        element: <StakingOverview />
+      },
+      {
+        path: '/staking/hbd/claims/:page?',
+        element: <StakingClaims />
+      },
+      {
+        path: '/staking/hbd/claim/:blockHeight/:page?',
+        element: <ClaimDetail />
       },
       {
         path: '/charts',

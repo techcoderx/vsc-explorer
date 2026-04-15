@@ -130,7 +130,13 @@ const getNavItems = (t: TFunction): NavItem[] => [
       { label: t('contracts'), subLabel: t('contractsSub'), href: '/contracts' }
     ]
   },
-  { label: t('nam'), href: '/nam/hive' },
+  {
+    label: t('nam'),
+    children: [
+      { label: t('hiveBridge'), href: '/nam/hive' },
+      { label: t('bitcoin'), href: '/nam/btc' }
+    ]
+  },
   { label: t('charts'), href: '/charts' },
   {
     label: t('tools'),
