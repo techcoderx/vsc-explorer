@@ -119,12 +119,17 @@
   "btc": {
     "account": "खाता",
     "balance": "शेष",
+    "fee": "शुल्क"
+  },
+  "claims": {
+    "blockHeight": "ब्लॉक ऊँचाई",
     "age": "आयु",
+    "totalInterest": "कुल ब्याज",
+    "recipients": "प्राप्तकर्ता",
+    "observedApr": "देखा गया APR",
+    "txId": "लेनदेन आईडी",
     "recipient": "प्राप्तकर्ता",
-    "amount": "राशि",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "राशि"
   },
   "transfers": {
     "txId": "लेनदेन आईडी",

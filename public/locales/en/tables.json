@@ -119,11 +119,6 @@
   "btc": {
     "account": "Account",
     "balance": "Balance",
-    "age": "Age",
-    "recipient": "Recipient",
-    "amount": "Amount",
-    "from": "From",
-    "btcAddress": "BTC Address",
     "fee": "Fee"
   },
   "claims": {

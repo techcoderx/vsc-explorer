@@ -119,12 +119,17 @@
   "btc": {
     "account": "계정",
     "balance": "잔액",
+    "fee": "수수료"
+  },
+  "claims": {
+    "blockHeight": "블록 높이",
     "age": "경과 시간",
-    "recipient": "수신자",
-    "amount": "금액",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "totalInterest": "총 이자",
+    "recipients": "수령인 수",
+    "observedApr": "관측 APR",
+    "txId": "트랜잭션 ID",
+    "recipient": "수령인",
+    "amount": "금액"
   },
   "transfers": {
     "txId": "트랜잭션 ID",

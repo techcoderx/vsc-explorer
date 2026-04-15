@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "मूल संपत्तियां",
+    "tokens": "टोकन",
+    "asset": "संपत्ति",
+    "balance": "शेष",
+    "noNativeBalances": "कोई मूल शेष नहीं",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "समय के साथ HIVE नेट फ्लो का इतिहास",
     "hbdNetFlow": "HBD नेट फ्लो",
     "hbdNetFlowDesc": "समय के साथ HBD नेट फ्लो का इतिहास",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "तिथि: {{date}}",
+    "blocksProduced": "उत्पादित ब्लॉक",
+    "hiveAccounts": "Hive खाते",
+    "offchainAccounts": "ऑफ-चेन खाते",
+    "activeAddressesLabel": "सक्रिय पते",
+    "stakedHive": "स्टेक किया गया HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "राशि ({{coin}})",
+    "inflows": "{{coin}} आवक",
+    "outflows": "{{coin}} जावक",
+    "netFlowLabel": "{{coin}} शुद्ध प्रवाह"
   },
   "tokens": {
     "title": "टोकन",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTC मैपिंग",
+    "title": "बिटकॉइन एसेट मैपिंग",
+    "tvl": "TVL",
     "volume24h": "24 घंटे का वॉल्यूम",
+    "unmaps24h": "24 घंटे के अनमैप",
     "maps24h": "24 घंटे के मैप",
     "topBalances": "शीर्ष शेष",
     "recentMaps": "हाल के मैप",
     "recentTransfers": "हाल के स्थानांतरण",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "हाल के अनमैप",
+    "tabs": {
+      "transfers": "स्थानांतरण",
+      "maps": "मैप",
+      "unmaps": "अनमैप",
+      "topHolders": "शीर्ष धारक"
+    }
+  },
+  "staking": {
+    "title": "लिक्विड स्टेक्ड HBD अवलोकन",
+    "latestApr": "नवीनतम APR",
+    "totalInterest": "कुल वितरित ब्याज",
+    "recipients": "प्राप्तकर्ता",
+    "viewAllClaims": "सभी दावे देखें",
+    "claimsTitle": "HBD ब्याज दावे",
+    "totalClaimsCount": "कुल {{count}} दावे",
+    "claimDetailTitle": "ब्लॉक #{{block}} पर दावा",
+    "interestPayments": "ब्याज भुगतान ({{count}})"
   }
 }

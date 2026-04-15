@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "الأصول الأصلية",
+    "tokens": "الرموز",
+    "asset": "الأصل",
+    "balance": "الرصيد",
+    "noNativeBalances": "لا توجد أرصدة أصلية",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "سجل صافي تدفقات HIVE عبر الزمن",
     "hbdNetFlow": "صافي تدفق HBD",
     "hbdNetFlowDesc": "سجل صافي تدفقات HBD عبر الزمن",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "التاريخ: {{date}}",
+    "blocksProduced": "الكتل المنتجة",
+    "hiveAccounts": "حسابات Hive",
+    "offchainAccounts": "حسابات خارج السلسلة",
+    "activeAddressesLabel": "العناوين النشطة",
+    "stakedHive": "HIVE المرهون",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "المبلغ ({{coin}})",
+    "inflows": "تدفقات {{coin}} الواردة",
+    "outflows": "تدفقات {{coin}} الصادرة",
+    "netFlowLabel": "صافي تدفق {{coin}}"
   },
   "tokens": {
     "title": "الرموز",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "ربط BTC",
+    "title": "تعيين أصول البيتكوين",
+    "tvl": "TVL",
     "volume24h": "الحجم خلال 24 ساعة",
+    "unmaps24h": "فك التعيينات خلال 24 ساعة",
     "maps24h": "التعيينات خلال 24 ساعة",
     "topBalances": "أعلى الأرصدة",
     "recentMaps": "أحدث التعيينات",
     "recentTransfers": "أحدث التحويلات",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "أحدث فك التعيينات",
+    "tabs": {
+      "transfers": "التحويلات",
+      "maps": "التعيينات",
+      "unmaps": "فك التعيينات",
+      "topHolders": "أكبر الحاملين"
+    }
+  },
+  "staking": {
+    "title": "نظرة عامة على HBD المرهون السائل",
+    "latestApr": "أحدث APR",
+    "totalInterest": "إجمالي الفوائد الموزعة",
+    "recipients": "المستلمون",
+    "viewAllClaims": "عرض جميع المطالبات",
+    "claimsTitle": "مطالبات فوائد HBD",
+    "totalClaimsCount": "إجمالي {{count}} مطالبة",
+    "claimDetailTitle": "مطالبة عند الكتلة #{{block}}",
+    "interestPayments": "مدفوعات الفوائد ({{count}})"
   }
 }

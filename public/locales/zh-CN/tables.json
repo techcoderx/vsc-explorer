@@ -119,12 +119,17 @@
   "btc": {
     "account": "账户",
     "balance": "余额",
+    "fee": "手续费"
+  },
+  "claims": {
+    "blockHeight": "区块高度",
     "age": "时间",
-    "recipient": "接收者",
-    "amount": "金额",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "totalInterest": "总利息",
+    "recipients": "接收人数",
+    "observedApr": "观测 APR",
+    "txId": "交易 ID",
+    "recipient": "接收人",
+    "amount": "金额"
   },
   "transfers": {
     "txId": "交易 ID",

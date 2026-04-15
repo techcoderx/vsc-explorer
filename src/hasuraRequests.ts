@@ -291,6 +291,26 @@ export const fetchBtcRecentUnmaps = async (limit: number): Promise<BtcMappingUnm
   return result.data.btc_mapping_unmap_events
 }
 
+export const fetchBtcTvl = async (): Promise<string | null> => {
+  const result = await hasuraGql<{ btc_mapping_balances_aggregate: { aggregate: { sum: { balance_sats: string | null } } } }>(
+    `query { btc_mapping_balances_aggregate { aggregate { sum { balance_sats } } } }`
+  )
+  return result.data.btc_mapping_balances_aggregate.aggregate.sum.balance_sats
+}
+
+export const fetchBtcUnmaps24h = async (): Promise<number> => {
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+  const result = await hasuraGql<{ btc_mapping_unmap_events_aggregate: { aggregate: { count: number } } }>(
+    `query BtcUnmaps24h($since: timestamp!) {
+      btc_mapping_unmap_events_aggregate(where: { indexer_ts: { _gte: $since } }) {
+        aggregate { count }
+      }
+    }`,
+    { since }
+  )
+  return result.data.btc_mapping_unmap_events_aggregate.aggregate.count
+}
+
 export const fetchBtcVolume24h = async (): Promise<BtcMappingVolume | null> => {
   const result = await hasuraGql<{ btc_mapping_volume_24h: BtcMappingVolume[] }>(
     `query { btc_mapping_volume_24h { deposit_count total_sats } }`

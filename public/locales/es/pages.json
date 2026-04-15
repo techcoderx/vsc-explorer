@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
+    "nativeAssets": "Activos nativos",
     "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "asset": "Activo",
+    "balance": "Saldo",
+    "noNativeBalances": "Sin saldos nativos",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Historial de flujos netos de HIVE a lo largo del tiempo",
     "hbdNetFlow": "Flujo neto de HBD",
     "hbdNetFlowDesc": "Historial de flujos netos de HBD a lo largo del tiempo",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Fecha: {{date}}",
+    "blocksProduced": "Bloques producidos",
+    "hiveAccounts": "Cuentas Hive",
+    "offchainAccounts": "Cuentas fuera de cadena",
+    "activeAddressesLabel": "Direcciones activas",
+    "stakedHive": "HIVE en staking",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Cantidad ({{coin}})",
+    "inflows": "Entradas de {{coin}}",
+    "outflows": "Salidas de {{coin}}",
+    "netFlowLabel": "Flujo neto de {{coin}}"
   },
   "tokens": {
     "title": "Tokens",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "Mapeo BTC",
+    "title": "Mapeo de activos de Bitcoin",
+    "tvl": "TVL",
     "volume24h": "Volumen 24h",
+    "unmaps24h": "Desmapeos 24h",
     "maps24h": "Mapeos 24h",
     "topBalances": "Mayores saldos",
     "recentMaps": "Mapeos recientes",
     "recentTransfers": "Transferencias recientes",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Desmapeos recientes",
+    "tabs": {
+      "transfers": "Transferencias",
+      "maps": "Mapeos",
+      "unmaps": "Desmapeos",
+      "topHolders": "Mayores poseedores"
+    }
+  },
+  "staking": {
+    "title": "Resumen de HBD en staking líquido",
+    "latestApr": "Último APR",
+    "totalInterest": "Intereses totales distribuidos",
+    "recipients": "Destinatarios",
+    "viewAllClaims": "Ver todos los reclamos",
+    "claimsTitle": "Reclamos de intereses HBD",
+    "totalClaimsCount": "Total {{count}} reclamos",
+    "claimDetailTitle": "Reclamo en el bloque #{{block}}",
+    "interestPayments": "Pagos de intereses ({{count}})"
   }
 }

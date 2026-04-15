@@ -119,12 +119,17 @@
   "btc": {
     "account": "Счёт",
     "balance": "Баланс",
+    "fee": "Комиссия"
+  },
+  "claims": {
+    "blockHeight": "Высота блока",
     "age": "Возраст",
+    "totalInterest": "Общие проценты",
+    "recipients": "Получатели",
+    "observedApr": "Наблюдаемая APR",
+    "txId": "ID транзакции",
     "recipient": "Получатель",
-    "amount": "Сумма",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "Сумма"
   },
   "transfers": {
     "txId": "ID транзакции",

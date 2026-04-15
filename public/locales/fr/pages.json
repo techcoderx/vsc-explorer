@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "Actifs natifs",
+    "tokens": "Jetons",
+    "asset": "Actif",
+    "balance": "Solde",
+    "noNativeBalances": "Aucun solde natif",
     "btc": "BTC"
   },
   "balances": {
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "Mappage BTC",
+    "title": "Mappage d'actifs Bitcoin",
+    "tvl": "TVL",
     "volume24h": "Volume 24h",
+    "unmaps24h": "Démappages 24h",
     "maps24h": "Mappages 24h",
     "topBalances": "Meilleurs soldes",
     "recentMaps": "Mappages récents",
     "recentTransfers": "Transferts récents",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Démappages récents",
+    "tabs": {
+      "transfers": "Transferts",
+      "maps": "Mappages",
+      "unmaps": "Démappages",
+      "topHolders": "Plus grands détenteurs"
+    }
+  },
+  "staking": {
+    "title": "Aperçu du HBD mis en jeu liquide",
+    "latestApr": "Dernier APR",
+    "totalInterest": "Total des intérêts distribués",
+    "recipients": "Bénéficiaires",
+    "viewAllClaims": "Voir toutes les réclamations",
+    "claimsTitle": "Réclamations d'intérêts HBD",
+    "totalClaimsCount": "Total de {{count}} réclamations",
+    "claimDetailTitle": "Réclamation au bloc #{{block}}",
+    "interestPayments": "Paiements d'intérêts ({{count}})"
   }
 }

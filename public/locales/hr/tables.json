@@ -119,12 +119,17 @@
   "btc": {
     "account": "Račun",
     "balance": "Stanje",
+    "fee": "Naknada"
+  },
+  "claims": {
+    "blockHeight": "Visina bloka",
     "age": "Starost",
+    "totalInterest": "Ukupna kamata",
+    "recipients": "Primatelji",
+    "observedApr": "Opaženi APR",
+    "txId": "ID transakcije",
     "recipient": "Primatelj",
-    "amount": "Iznos",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "Iznos"
   },
   "transfers": {
     "txId": "ID transakcije",

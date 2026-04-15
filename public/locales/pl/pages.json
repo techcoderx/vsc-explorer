@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "Zasoby natywne",
+    "tokens": "Tokeny",
+    "asset": "Zasób",
+    "balance": "Saldo",
+    "noNativeBalances": "Brak natywnych sald",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Historia przepływów netto HIVE w czasie",
     "hbdNetFlow": "Przepływ netto HBD",
     "hbdNetFlowDesc": "Historia przepływów netto HBD w czasie",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Data: {{date}}",
+    "blocksProduced": "Wyprodukowane bloki",
+    "hiveAccounts": "Konta Hive",
+    "offchainAccounts": "Konta offchain",
+    "activeAddressesLabel": "Aktywne adresy",
+    "stakedHive": "Stakowane HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Kwota ({{coin}})",
+    "inflows": "Napływy {{coin}}",
+    "outflows": "Odpływy {{coin}}",
+    "netFlowLabel": "Przepływ netto {{coin}}"
   },
   "tokens": {
     "title": "Tokeny",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "Mapowanie BTC",
+    "title": "Mapowanie aktywów Bitcoin",
+    "tvl": "TVL",
     "volume24h": "Wolumen 24h",
+    "unmaps24h": "Odmapowania 24h",
     "maps24h": "Mapowania 24h",
     "topBalances": "Najwyższe salda",
     "recentMaps": "Ostatnie mapowania",
     "recentTransfers": "Ostatnie przelewy",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Ostatnie odmapowania",
+    "tabs": {
+      "transfers": "Transfery",
+      "maps": "Mapowania",
+      "unmaps": "Odmapowania",
+      "topHolders": "Najwięksi posiadacze"
+    }
+  },
+  "staking": {
+    "title": "Przegląd płynnie stakowanego HBD",
+    "latestApr": "Najnowszy APR",
+    "totalInterest": "Łącznie wypłacone odsetki",
+    "recipients": "Odbiorcy",
+    "viewAllClaims": "Zobacz wszystkie roszczenia",
+    "claimsTitle": "Roszczenia odsetek HBD",
+    "totalClaimsCount": "Łącznie {{count}} roszczeń",
+    "claimDetailTitle": "Roszczenie w bloku #{{block}}",
+    "interestPayments": "Wypłaty odsetek ({{count}})"
   }
 }

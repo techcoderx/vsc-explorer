@@ -119,12 +119,17 @@
   "btc": {
     "account": "Akaun",
     "balance": "Baki",
+    "fee": "Yuran"
+  },
+  "claims": {
+    "blockHeight": "Ketinggian Blok",
     "age": "Usia",
+    "totalInterest": "Jumlah Faedah",
+    "recipients": "Penerima",
+    "observedApr": "APR Diperhatikan",
+    "txId": "ID Tx",
     "recipient": "Penerima",
-    "amount": "Jumlah",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "Jumlah"
   },
   "transfers": {
     "txId": "ID Tx",

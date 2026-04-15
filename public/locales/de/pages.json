@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "Native Vermögenswerte",
+    "tokens": "Token",
+    "asset": "Vermögenswert",
+    "balance": "Guthaben",
+    "noNativeBalances": "Keine nativen Guthaben",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Verlauf der HIVE-Nettoflüsse über die Zeit",
     "hbdNetFlow": "HBD-Nettofluss",
     "hbdNetFlowDesc": "Verlauf der HBD-Nettoflüsse über die Zeit",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Datum: {{date}}",
+    "blocksProduced": "Produzierte Blöcke",
+    "hiveAccounts": "Hive-Konten",
+    "offchainAccounts": "Offchain-Konten",
+    "activeAddressesLabel": "Aktive Adressen",
+    "stakedHive": "Gestaktes HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Betrag ({{coin}})",
+    "inflows": "{{coin}}-Zuflüsse",
+    "outflows": "{{coin}}-Abflüsse",
+    "netFlowLabel": "{{coin}}-Nettofluss"
   },
   "tokens": {
     "title": "Token",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTC-Zuordnung",
+    "title": "Bitcoin-Asset-Zuordnung",
+    "tvl": "TVL",
     "volume24h": "24h-Volumen",
+    "unmaps24h": "24h-Entmappings",
     "maps24h": "24h-Zuordnungen",
     "topBalances": "Top-Guthaben",
     "recentMaps": "Letzte Zuordnungen",
     "recentTransfers": "Letzte Überweisungen",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Letzte Entmappings",
+    "tabs": {
+      "transfers": "Überweisungen",
+      "maps": "Zuordnungen",
+      "unmaps": "Entmappings",
+      "topHolders": "Top-Inhaber"
+    }
+  },
+  "staking": {
+    "title": "Übersicht Liquid Staked HBD",
+    "latestApr": "Neuester APR",
+    "totalInterest": "Verteilte Gesamtzinsen",
+    "recipients": "Empfänger",
+    "viewAllClaims": "Alle Ansprüche anzeigen",
+    "claimsTitle": "HBD-Zinsansprüche",
+    "totalClaimsCount": "Insgesamt {{count}} Ansprüche",
+    "claimDetailTitle": "Anspruch bei Block #{{block}}",
+    "interestPayments": "Zinszahlungen ({{count}})"
   }
 }

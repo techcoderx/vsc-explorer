@@ -119,12 +119,17 @@
   "btc": {
     "account": "الحساب",
     "balance": "الرصيد",
+    "fee": "الرسوم"
+  },
+  "claims": {
+    "blockHeight": "ارتفاع الكتلة",
     "age": "العمر",
+    "totalInterest": "إجمالي الفائدة",
+    "recipients": "المستلمون",
+    "observedApr": "APR المرصود",
+    "txId": "معرف المعاملة",
     "recipient": "المستلم",
-    "amount": "المبلغ",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "المبلغ"
   },
   "transfers": {
     "txId": "معرف المعاملة",

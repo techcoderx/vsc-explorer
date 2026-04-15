@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "ネイティブ資産",
+    "tokens": "トークン",
+    "asset": "資産",
+    "balance": "残高",
+    "noNativeBalances": "ネイティブ残高なし",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "HIVE ネットフローの推移",
     "hbdNetFlow": "HBD ネットフロー",
     "hbdNetFlowDesc": "HBD ネットフローの推移",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "日付: {{date}}",
+    "blocksProduced": "生成ブロック",
+    "hiveAccounts": "Hive アカウント",
+    "offchainAccounts": "オフチェーンアカウント",
+    "activeAddressesLabel": "アクティブアドレス",
+    "stakedHive": "ステーキング HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "金額 ({{coin}})",
+    "inflows": "{{coin}} 流入",
+    "outflows": "{{coin}} 流出",
+    "netFlowLabel": "{{coin}} ネットフロー"
   },
   "tokens": {
     "title": "トークン",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTCマッピング",
+    "title": "ビットコインアセットマッピング",
+    "tvl": "TVL",
     "volume24h": "24時間取引量",
+    "unmaps24h": "24時間アンマッピング",
     "maps24h": "24時間マッピング",
     "topBalances": "上位残高",
     "recentMaps": "最近のマッピング",
     "recentTransfers": "最近の転送",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "最近のアンマッピング",
+    "tabs": {
+      "transfers": "転送",
+      "maps": "マッピング",
+      "unmaps": "アンマッピング",
+      "topHolders": "上位保有者"
+    }
+  },
+  "staking": {
+    "title": "リキッドステーキング HBD 概要",
+    "latestApr": "最新 APR",
+    "totalInterest": "分配済み合計利息",
+    "recipients": "受取人数",
+    "viewAllClaims": "すべての請求を表示",
+    "claimsTitle": "HBD 利息請求",
+    "totalClaimsCount": "合計 {{count}} 件の請求",
+    "claimDetailTitle": "ブロック #{{block}} の請求",
+    "interestPayments": "利息支払い ({{count}})"
   }
 }

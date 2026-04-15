@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "原生資產",
+    "tokens": "代幣",
+    "asset": "資產",
+    "balance": "餘額",
+    "noNativeBalances": "無原生餘額",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "HIVE 淨流量的歷史記錄",
     "hbdNetFlow": "HBD 淨流量",
     "hbdNetFlowDesc": "HBD 淨流量的歷史記錄",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "日期：{{date}}",
+    "blocksProduced": "產出區塊",
+    "hiveAccounts": "Hive 帳戶",
+    "offchainAccounts": "鏈下帳戶",
+    "activeAddressesLabel": "活躍地址",
+    "stakedHive": "質押 HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "金額 ({{coin}})",
+    "inflows": "{{coin}} 流入",
+    "outflows": "{{coin}} 流出",
+    "netFlowLabel": "{{coin}} 淨流量"
   },
   "tokens": {
     "title": "代幣",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTC 映射",
+    "title": "比特幣資產映射",
+    "tvl": "TVL",
     "volume24h": "24小時交易量",
+    "unmaps24h": "24小時取消映射",
     "maps24h": "24小時映射",
     "topBalances": "最高餘額",
     "recentMaps": "最近映射",
     "recentTransfers": "最近轉帳",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "最近取消映射",
+    "tabs": {
+      "transfers": "轉帳",
+      "maps": "映射",
+      "unmaps": "取消映射",
+      "topHolders": "持有量排行"
+    }
+  },
+  "staking": {
+    "title": "流動性質押 HBD 概覽",
+    "latestApr": "最新 APR",
+    "totalInterest": "已分配總利息",
+    "recipients": "接收人數",
+    "viewAllClaims": "查看所有索賠",
+    "claimsTitle": "HBD 利息索賠",
+    "totalClaimsCount": "共 {{count}} 筆索賠",
+    "claimDetailTitle": "區塊 #{{block}} 的索賠",
+    "interestPayments": "利息支付 ({{count}})"
   }
 }

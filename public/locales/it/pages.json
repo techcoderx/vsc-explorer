@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
+    "nativeAssets": "Asset nativi",
+    "tokens": "Token",
     "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "balance": "Saldo",
+    "noNativeBalances": "Nessun saldo nativo",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Storico dei flussi netti HIVE nel tempo",
     "hbdNetFlow": "Flusso netto HBD",
     "hbdNetFlowDesc": "Storico dei flussi netti HBD nel tempo",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Data: {{date}}",
+    "blocksProduced": "Blocchi prodotti",
+    "hiveAccounts": "Account Hive",
+    "offchainAccounts": "Account offchain",
+    "activeAddressesLabel": "Indirizzi attivi",
+    "stakedHive": "HIVE in staking",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Importo ({{coin}})",
+    "inflows": "Afflussi {{coin}}",
+    "outflows": "Deflussi {{coin}}",
+    "netFlowLabel": "Flusso netto {{coin}}"
   },
   "tokens": {
     "title": "Token",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "Mappatura BTC",
+    "title": "Mappatura asset Bitcoin",
+    "tvl": "TVL",
     "volume24h": "Volume 24h",
+    "unmaps24h": "Rimappature 24h",
     "maps24h": "Mappature 24h",
     "topBalances": "Saldi principali",
     "recentMaps": "Mappature recenti",
     "recentTransfers": "Trasferimenti recenti",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Rimappature recenti",
+    "tabs": {
+      "transfers": "Trasferimenti",
+      "maps": "Mappature",
+      "unmaps": "Rimappature",
+      "topHolders": "Maggiori possessori"
+    }
+  },
+  "staking": {
+    "title": "Panoramica HBD in staking liquido",
+    "latestApr": "Ultimo APR",
+    "totalInterest": "Interessi totali distribuiti",
+    "recipients": "Destinatari",
+    "viewAllClaims": "Visualizza tutte le richieste",
+    "claimsTitle": "Richieste interessi HBD",
+    "totalClaimsCount": "Totale {{count}} richieste",
+    "claimDetailTitle": "Richiesta al blocco #{{block}}",
+    "interestPayments": "Pagamenti interessi ({{count}})"
   }
 }

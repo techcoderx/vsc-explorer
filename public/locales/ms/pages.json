@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "Aset Asli",
+    "tokens": "Token",
+    "asset": "Aset",
+    "balance": "Baki",
+    "noNativeBalances": "Tiada baki asli",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Sejarah aliran bersih HIVE dari masa ke masa",
     "hbdNetFlow": "Aliran Bersih HBD",
     "hbdNetFlowDesc": "Sejarah aliran bersih HBD dari masa ke masa",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Tarikh: {{date}}",
+    "blocksProduced": "Blok Dihasilkan",
+    "hiveAccounts": "Akaun Hive",
+    "offchainAccounts": "Akaun Offchain",
+    "activeAddressesLabel": "Alamat Aktif",
+    "stakedHive": "HIVE Dipertaruhkan",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Jumlah ({{coin}})",
+    "inflows": "Aliran Masuk {{coin}}",
+    "outflows": "Aliran Keluar {{coin}}",
+    "netFlowLabel": "Aliran Bersih {{coin}}"
   },
   "tokens": {
     "title": "Token",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "Pemetaan BTC",
-    "volume24h": "Volum 24j",
+    "title": "Pemetaan Aset Bitcoin",
+    "tvl": "TVL",
+    "volume24h": "Jumlah dagangan 24j",
+    "unmaps24h": "Nyahpetaan 24j",
     "maps24h": "Pemetaan 24j",
     "topBalances": "Baki Tertinggi",
     "recentMaps": "Pemetaan Terkini",
     "recentTransfers": "Pemindahan Terkini",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Nyahpetaan Terkini",
+    "tabs": {
+      "transfers": "Pemindahan",
+      "maps": "Petaan",
+      "unmaps": "Nyahpetaan",
+      "topHolders": "Pemegang Teratas"
+    }
+  },
+  "staking": {
+    "title": "Gambaran Keseluruhan HBD Pertaruhan Cecair",
+    "latestApr": "APR Terkini",
+    "totalInterest": "Jumlah Faedah Diagihkan",
+    "recipients": "Penerima",
+    "viewAllClaims": "Lihat Semua Tuntutan",
+    "claimsTitle": "Tuntutan Faedah HBD",
+    "totalClaimsCount": "Jumlah {{count}} tuntutan",
+    "claimDetailTitle": "Tuntutan pada Blok #{{block}}",
+    "interestPayments": "Pembayaran Faedah ({{count}})"
   }
 }

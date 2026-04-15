@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "네이티브 자산",
+    "tokens": "토큰",
+    "asset": "자산",
+    "balance": "잔액",
+    "noNativeBalances": "네이티브 잔액 없음",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "시간 경과에 따른 HIVE 순 유동 기록",
     "hbdNetFlow": "HBD 순 유동",
     "hbdNetFlowDesc": "시간 경과에 따른 HBD 순 유동 기록",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "날짜: {{date}}",
+    "blocksProduced": "생성된 블록",
+    "hiveAccounts": "Hive 계정",
+    "offchainAccounts": "오프체인 계정",
+    "activeAddressesLabel": "활성 주소",
+    "stakedHive": "스테이킹된 HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "금액 ({{coin}})",
+    "inflows": "{{coin}} 유입",
+    "outflows": "{{coin}} 유출",
+    "netFlowLabel": "{{coin}} 순 흐름"
   },
   "tokens": {
     "title": "토큰",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTC 매핑",
+    "title": "비트코인 자산 매핑",
+    "tvl": "TVL",
     "volume24h": "24시간 거래량",
+    "unmaps24h": "24시간 언맵",
     "maps24h": "24시간 매핑",
     "topBalances": "상위 잔액",
     "recentMaps": "최근 매핑",
     "recentTransfers": "최근 전송",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "최근 언맵",
+    "tabs": {
+      "transfers": "전송",
+      "maps": "맵",
+      "unmaps": "언맵",
+      "topHolders": "상위 보유자"
+    }
+  },
+  "staking": {
+    "title": "리퀴드 스테이킹 HBD 개요",
+    "latestApr": "최신 APR",
+    "totalInterest": "총 분배 이자",
+    "recipients": "수령인 수",
+    "viewAllClaims": "모든 청구 보기",
+    "claimsTitle": "HBD 이자 청구",
+    "totalClaimsCount": "총 {{count}}건의 청구",
+    "claimDetailTitle": "블록 #{{block}}의 청구",
+    "interestPayments": "이자 지급 ({{count}})"
   }
 }

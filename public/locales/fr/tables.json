@@ -119,12 +119,17 @@
   "btc": {
     "account": "Compte",
     "balance": "Solde",
+    "fee": "Frais"
+  },
+  "claims": {
+    "blockHeight": "Hauteur du bloc",
     "age": "Âge",
-    "recipient": "Destinataire",
-    "amount": "Montant",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "totalInterest": "Intérêts totaux",
+    "recipients": "Bénéficiaires",
+    "observedApr": "APR observé",
+    "txId": "ID de Tx",
+    "recipient": "Bénéficiaire",
+    "amount": "Montant"
   },
   "transfers": {
     "txId": "ID de Tx",

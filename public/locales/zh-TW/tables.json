@@ -119,12 +119,17 @@
   "btc": {
     "account": "帳戶",
     "balance": "餘額",
+    "fee": "手續費"
+  },
+  "claims": {
+    "blockHeight": "區塊高度",
     "age": "時間",
-    "recipient": "接收者",
-    "amount": "金額",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "totalInterest": "總利息",
+    "recipients": "接收人數",
+    "observedApr": "觀測 APR",
+    "txId": "交易 ID",
+    "recipient": "接收人",
+    "amount": "金額"
   },
   "transfers": {
     "txId": "交易 ID",

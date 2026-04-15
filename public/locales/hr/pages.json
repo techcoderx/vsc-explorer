@@ -78,11 +78,11 @@
     }
   },
   "balancesTab": {
-    "nativeAssets": "Native Assets",
-    "tokens": "Tokens",
-    "asset": "Asset",
-    "balance": "Balance",
-    "noNativeBalances": "No native balances",
+    "nativeAssets": "Izvorna sredstva",
+    "tokens": "Tokeni",
+    "asset": "Sredstvo",
+    "balance": "Stanje",
+    "noNativeBalances": "Nema izvornih stanja",
     "btc": "BTC"
   },
   "balances": {
@@ -212,17 +212,17 @@
     "hiveNetFlowDesc": "Povijest HIVE neto tokova kroz vrijeme",
     "hbdNetFlow": "HBD neto tok",
     "hbdNetFlowDesc": "Povijest HBD neto tokova kroz vrijeme",
-    "dateLabel": "Date: {{date}}",
-    "blocksProduced": "Blocks Produced",
-    "hiveAccounts": "Hive Accounts",
-    "offchainAccounts": "Offchain Accounts",
-    "activeAddressesLabel": "Active Addresses",
-    "stakedHive": "Staked HIVE",
+    "dateLabel": "Datum: {{date}}",
+    "blocksProduced": "Produciranih blokova",
+    "hiveAccounts": "Hive računi",
+    "offchainAccounts": "Offchain računi",
+    "activeAddressesLabel": "Aktivne adrese",
+    "stakedHive": "Uloženi HIVE",
     "tvlLabel": "TVL (HIVE/HBD)",
-    "amountLabel": "Amount ({{coin}})",
-    "inflows": "{{coin}} Inflows",
-    "outflows": "{{coin}} Outflows",
-    "netFlowLabel": "{{coin}} Net Flow"
+    "amountLabel": "Iznos ({{coin}})",
+    "inflows": "{{coin}} priljev",
+    "outflows": "{{coin}} odljev",
+    "netFlowLabel": "{{coin}} neto tok"
   },
   "tokens": {
     "title": "Tokeni",
@@ -254,12 +254,31 @@
     }
   },
   "btc": {
-    "title": "BTC mapiranje",
+    "title": "Mapiranje Bitcoin imovine",
+    "tvl": "TVL",
     "volume24h": "24h volumen",
+    "unmaps24h": "24h odmapiranja",
     "maps24h": "24h mapiranja",
     "topBalances": "Najveća stanja",
     "recentMaps": "Nedavna mapiranja",
     "recentTransfers": "Nedavni prijenosi",
-    "recentUnmaps": "Recent Unmaps"
+    "recentUnmaps": "Nedavna odmapiranja",
+    "tabs": {
+      "transfers": "Prijenosi",
+      "maps": "Mapiranja",
+      "unmaps": "Odmapiranja",
+      "topHolders": "Najveći vlasnici"
+    }
+  },
+  "staking": {
+    "title": "Pregled likvidno uloženog HBD-a",
+    "latestApr": "Najnoviji APR",
+    "totalInterest": "Ukupno raspodijeljene kamate",
+    "recipients": "Primatelji",
+    "viewAllClaims": "Pogledaj sve zahtjeve",
+    "claimsTitle": "Zahtjevi za kamate HBD-a",
+    "totalClaimsCount": "Ukupno {{count}} zahtjeva",
+    "claimDetailTitle": "Zahtjev na bloku #{{block}}",
+    "interestPayments": "Isplate kamata ({{count}})"
   }
 }

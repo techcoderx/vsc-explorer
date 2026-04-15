@@ -119,12 +119,17 @@
   "btc": {
     "account": "アカウント",
     "balance": "残高",
+    "fee": "手数料"
+  },
+  "claims": {
+    "blockHeight": "ブロック高",
     "age": "経過時間",
+    "totalInterest": "合計利息",
+    "recipients": "受取人数",
+    "observedApr": "観測 APR",
+    "txId": "トランザクション ID",
     "recipient": "受取人",
-    "amount": "金額",
-    "from": "From",
-    "btcAddress": "BTC Address",
-    "fee": "Fee"
+    "amount": "金額"
   },
   "transfers": {
     "txId": "トランザクション ID",
