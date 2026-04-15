@@ -71,7 +71,7 @@ export const Txns = ({ txs, pov }: { txs: Txn[]; pov?: string }) => {
         </Table.Header>
         <Table.Body>
           {txs.map((tx) =>
-            tx.ops
+            tx.ops.slice().reverse()
               .filter((o) => !pov || pov === resolveFrom(tx, o) || pov === resolveTo(o))
               .map((o, j) => (
                 <Table.Row key={`${tx.id}-${j}`}>
