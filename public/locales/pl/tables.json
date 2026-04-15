@@ -121,7 +121,10 @@
     "balance": "Saldo",
     "age": "Wiek",
     "recipient": "Odbiorca",
-    "amount": "Kwota"
+    "amount": "Kwota",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "ID transakcji",

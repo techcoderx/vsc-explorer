@@ -259,6 +259,7 @@
     "maps24h": "Сопоставления 24ч",
     "topBalances": "Наибольшие балансы",
     "recentMaps": "Последние сопоставления",
-    "recentTransfers": "Последние переводы"
+    "recentTransfers": "Последние переводы",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

@@ -259,6 +259,7 @@
     "maps24h": "24小时映射",
     "topBalances": "最高余额",
     "recentMaps": "最近映射",
-    "recentTransfers": "最近转账"
+    "recentTransfers": "最近转账",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

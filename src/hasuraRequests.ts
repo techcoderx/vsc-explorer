@@ -13,6 +13,7 @@ import {
   BtcMappingBalance,
   BtcMappingDeposit,
   BtcMappingTransfer,
+  BtcMappingUnmap,
   BtcMappingVolume
 } from './types/HasuraResult'
 
@@ -276,6 +277,18 @@ export const fetchBtcRecentTransfers = async (limit: number): Promise<BtcMapping
     { limit }
   )
   return result.data.btc_mapping_transfer_events
+}
+
+export const fetchBtcRecentUnmaps = async (limit: number): Promise<BtcMappingUnmap[]> => {
+  const result = await hasuraGql<{ btc_mapping_unmap_events: BtcMappingUnmap[] }>(
+    `query BtcUnmaps($limit: Int!) {
+      btc_mapping_unmap_events(order_by: { indexer_id: desc }, limit: $limit) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id tx_id from_addr to_addr deducted sent
+      }
+    }`,
+    { limit }
+  )
+  return result.data.btc_mapping_unmap_events
 }
 
 export const fetchBtcVolume24h = async (): Promise<BtcMappingVolume | null> => {

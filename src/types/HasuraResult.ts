@@ -99,6 +99,14 @@ export interface BtcMappingTransfer extends IndexerEvent {
   amount: string
 }
 
+export interface BtcMappingUnmap extends IndexerEvent {
+  tx_id: string
+  from_addr: string
+  to_addr: string
+  deducted: string
+  sent: string
+}
+
 export interface BtcMappingVolume {
   deposit_count: number
   total_sats: string

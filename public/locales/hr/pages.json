@@ -259,6 +259,7 @@
     "maps24h": "24h mapiranja",
     "topBalances": "Najveća stanja",
     "recentMaps": "Nedavna mapiranja",
-    "recentTransfers": "Nedavni prijenosi"
+    "recentTransfers": "Nedavni prijenosi",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

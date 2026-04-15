@@ -121,7 +121,10 @@
     "balance": "Баланс",
     "age": "Возраст",
     "recipient": "Получатель",
-    "amount": "Сумма"
+    "amount": "Сумма",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "ID транзакции",

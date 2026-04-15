@@ -259,6 +259,7 @@
     "maps24h": "Mappages 24h",
     "topBalances": "Meilleurs soldes",
     "recentMaps": "Mappages récents",
-    "recentTransfers": "Transferts récents"
+    "recentTransfers": "Transferts récents",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

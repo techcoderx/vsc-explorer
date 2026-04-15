@@ -121,7 +121,10 @@
     "balance": "残高",
     "age": "経過時間",
     "recipient": "受取人",
-    "amount": "金額"
+    "amount": "金額",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "トランザクション ID",

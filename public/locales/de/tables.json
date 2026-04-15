@@ -121,7 +121,10 @@
     "balance": "Guthaben",
     "age": "Alter",
     "recipient": "Empfänger",
-    "amount": "Betrag"
+    "amount": "Betrag",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "Tx-ID",

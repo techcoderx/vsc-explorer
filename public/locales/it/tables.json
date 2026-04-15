@@ -121,7 +121,10 @@
     "balance": "Saldo",
     "age": "Età",
     "recipient": "Destinatario",
-    "amount": "Importo"
+    "amount": "Importo",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "ID Tx",

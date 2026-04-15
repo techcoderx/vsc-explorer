@@ -121,7 +121,10 @@
     "balance": "Balance",
     "age": "Age",
     "recipient": "Recipient",
-    "amount": "Amount"
+    "amount": "Amount",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "Tx ID",

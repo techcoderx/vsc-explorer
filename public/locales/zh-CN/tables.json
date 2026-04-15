@@ -121,7 +121,10 @@
     "balance": "余额",
     "age": "时间",
     "recipient": "接收者",
-    "amount": "金额"
+    "amount": "金额",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "交易 ID",

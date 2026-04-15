@@ -121,7 +121,10 @@
     "balance": "Baki",
     "age": "Usia",
     "recipient": "Penerima",
-    "amount": "Jumlah"
+    "amount": "Jumlah",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "ID Tx",

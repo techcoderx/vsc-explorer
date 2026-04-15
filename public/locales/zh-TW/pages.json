@@ -259,6 +259,7 @@
     "maps24h": "24小時映射",
     "topBalances": "最高餘額",
     "recentMaps": "最近映射",
-    "recentTransfers": "最近轉帳"
+    "recentTransfers": "最近轉帳",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

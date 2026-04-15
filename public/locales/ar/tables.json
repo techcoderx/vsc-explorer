@@ -121,7 +121,10 @@
     "balance": "الرصيد",
     "age": "العمر",
     "recipient": "المستلم",
-    "amount": "المبلغ"
+    "amount": "المبلغ",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "معرف المعاملة",

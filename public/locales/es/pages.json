@@ -259,6 +259,7 @@
     "maps24h": "Mapeos 24h",
     "topBalances": "Mayores saldos",
     "recentMaps": "Mapeos recientes",
-    "recentTransfers": "Transferencias recientes"
+    "recentTransfers": "Transferencias recientes",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

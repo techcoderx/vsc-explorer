@@ -1,10 +1,10 @@
 import { Heading, Card, Stat, Stack, Table, Skeleton, Text, Box } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcVolume24h } from '../../../hasuraRequests'
-import { thousandSeperator, timeAgo, formatSats } from '../../../helpers'
+import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcRecentUnmaps, fetchBtcVolume24h } from '../../../hasuraRequests'
+import { thousandSeperator, timeAgo, formatSats, abbreviateHash } from '../../../helpers'
 import { PageTitle } from '../../PageTitle'
-import { AccountLink } from '../../TableLink'
+import { AccountLink, TxLink } from '../../TableLink'
 import { Tooltip } from '../../ui/tooltip'
 import TransfersTable from '../../tables/Transfers'
 
@@ -30,6 +30,11 @@ const BtcMapping = () => {
   const { data: transfers, isLoading: transfersLoading } = useQuery({
     queryKey: ['hasura-btc-recent-transfers'],
     queryFn: () => fetchBtcRecentTransfers(20),
+    staleTime: 60000
+  })
+  const { data: unmaps, isLoading: unmapsLoading } = useQuery({
+    queryKey: ['hasura-btc-recent-unmaps'],
+    queryFn: () => fetchBtcRecentUnmaps(20),
     staleTime: 60000
   })
 
@@ -139,6 +144,52 @@ const BtcMapping = () => {
           }))}
           isLoading={transfersLoading}
         />
+      </Box>
+
+      <Box mt="6">
+        <Text fontSize="xl" fontWeight="bold" mb="3">{t('btc.recentUnmaps', { ns: 'pages' })}</Text>
+        <Table.ScrollArea>
+          <Table.Root variant="line">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader>{t('transfers.txId', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('btc.age', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('btc.from', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('btc.btcAddress', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('btc.amount', { ns: 'tables' })}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('btc.fee', { ns: 'tables' })}</Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {unmapsLoading ? (
+                <Table.Row>
+                  {[...Array(6)].map((_, i) => (
+                    <Table.Cell key={i}><Skeleton height="20px" /></Table.Cell>
+                  ))}
+                </Table.Row>
+              ) : unmaps?.map((unmap, i) => (
+                <Table.Row key={i}>
+                  <Table.Cell><TxLink val={unmap.indexer_tx_hash.split('-')[0]} /></Table.Cell>
+                  <Table.Cell css={{ whiteSpace: 'nowrap' }}>
+                    <Tooltip content={unmap.indexer_ts} positioning={{ placement: 'top' }}>
+                      {timeAgo(unmap.indexer_ts)}
+                    </Tooltip>
+                  </Table.Cell>
+                  <Table.Cell><AccountLink val={unmap.from_addr} truncate={16} /></Table.Cell>
+                  <Table.Cell>
+                    {unmap.to_addr ? (
+                      <Tooltip content={unmap.to_addr} positioning={{ placement: 'top' }}>
+                        {abbreviateHash(unmap.to_addr, 10, 10)}
+                      </Tooltip>
+                    ) : 'N/A'}
+                  </Table.Cell>
+                  <Table.Cell>{formatSats(unmap.deducted)}</Table.Cell>
+                  <Table.Cell>{formatSats((BigInt(unmap.deducted) - BigInt(unmap.sent)).toString())}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Table.ScrollArea>
       </Box>
     </>
   )

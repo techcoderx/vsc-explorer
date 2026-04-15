@@ -259,6 +259,7 @@
     "maps24h": "Mapowania 24h",
     "topBalances": "Najwyższe salda",
     "recentMaps": "Ostatnie mapowania",
-    "recentTransfers": "Ostatnie przelewy"
+    "recentTransfers": "Ostatnie przelewy",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

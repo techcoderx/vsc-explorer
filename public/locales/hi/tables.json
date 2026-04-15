@@ -121,7 +121,10 @@
     "balance": "शेष",
     "age": "आयु",
     "recipient": "प्राप्तकर्ता",
-    "amount": "राशि"
+    "amount": "राशि",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "लेनदेन आईडी",

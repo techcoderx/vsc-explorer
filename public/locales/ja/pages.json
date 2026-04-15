@@ -259,6 +259,7 @@
     "maps24h": "24時間マッピング",
     "topBalances": "上位残高",
     "recentMaps": "最近のマッピング",
-    "recentTransfers": "最近の転送"
+    "recentTransfers": "最近の転送",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

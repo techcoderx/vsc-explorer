@@ -259,6 +259,7 @@
     "maps24h": "24h Maps",
     "topBalances": "Top Balances",
     "recentMaps": "Recent Maps",
-    "recentTransfers": "Recent Transfers"
+    "recentTransfers": "Recent Transfers",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

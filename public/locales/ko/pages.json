@@ -259,6 +259,7 @@
     "maps24h": "24시간 매핑",
     "topBalances": "상위 잔액",
     "recentMaps": "최근 매핑",
-    "recentTransfers": "최근 전송"
+    "recentTransfers": "최근 전송",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

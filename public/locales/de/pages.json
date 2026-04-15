@@ -259,6 +259,7 @@
     "maps24h": "24h-Zuordnungen",
     "topBalances": "Top-Guthaben",
     "recentMaps": "Letzte Zuordnungen",
-    "recentTransfers": "Letzte Überweisungen"
+    "recentTransfers": "Letzte Überweisungen",
+    "recentUnmaps": "Recent Unmaps"
   }
 }

@@ -121,7 +121,10 @@
     "balance": "Stanje",
     "age": "Starost",
     "recipient": "Primatelj",
-    "amount": "Iznos"
+    "amount": "Iznos",
+    "from": "From",
+    "btcAddress": "BTC Address",
+    "fee": "Fee"
   },
   "transfers": {
     "txId": "ID transakcije",
