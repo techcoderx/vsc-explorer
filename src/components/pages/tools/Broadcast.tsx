@@ -31,12 +31,12 @@ import { TFunction } from 'i18next'
 
 const getTxTypes = (t: TFunction): [TxnTypes, string][] => [
   ['transfer', t('broadcast.txTypes.transfer')],
-  ['deposit', t('broadcast.txTypes.map')],
-  ['withdraw', t('broadcast.txTypes.unmap')],
-  ['consensus_stake', t('broadcast.txTypes.consensusStake')],
-  ['consensus_unstake', t('broadcast.txTypes.consensusUnstake')],
-  ['stake_hbd', t('broadcast.txTypes.stakeHbd')],
-  ['unstake_hbd', t('broadcast.txTypes.unstakeHbd')]
+  ['deposit', t('broadcast.txTypes.deposit')],
+  ['withdraw', t('broadcast.txTypes.withdraw')],
+  ['consensus_stake', t('broadcast.txTypes.consensus_stake')],
+  ['consensus_unstake', t('broadcast.txTypes.consensus_unstake')],
+  ['stake_hbd', t('broadcast.txTypes.stake_hbd')],
+  ['unstake_hbd', t('broadcast.txTypes.unstake_hbd')]
 ]
 
 const assetToEnum: Record<string, Asset> = {
@@ -73,7 +73,7 @@ export const Broadcast = () => {
     switch (txType) {
       case 'deposit':
         if (wallet !== Wallet.Hive) {
-          return toaster.error({ title: t('broadcast.errors.mapHiveOnly') })
+          return toaster.error({ title: t('broadcast.errors.hiveWalletOnly') })
         }
         result = await aioha.transfer(
           getConf().msAccount,
@@ -103,7 +103,7 @@ export const Broadcast = () => {
         break
       default:
         setIsSpinning(false)
-        return toaster.error({ title: t('broadcast.errors.unknownTxType') })
+        return toaster.error({ title: t('broadcast.errors.unknownType') })
     }
     setIsSpinning(false)
     if (!result.success) {
