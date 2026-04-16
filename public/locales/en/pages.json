@@ -82,6 +82,7 @@
     "tokens": "Tokens",
     "asset": "Asset",
     "balance": "Balance",
+    "value": "Value",
     "noNativeBalances": "No native balances",
     "btc": "BTC"
   },

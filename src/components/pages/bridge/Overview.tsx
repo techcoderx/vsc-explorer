@@ -7,6 +7,7 @@ import { fetchL1Rest, fetchLatestBridgeTxs, getBridgeTxCounts } from '../../../r
 import { getConf, themeColorScheme } from '../../../settings'
 import { L1Balance } from '../../../types/L1ApiResult'
 import { fmtmAmount, thousandSeperator, timeAgo } from '../../../helpers'
+import { useMarketPrices, formatCurrencyValue } from '../../../marketData'
 import { LedgerActions, LedgerTx } from '../../../types/L2ApiResult'
 import { AccountLink, TxLink } from '../../TableLink'
 import { PageTitle } from '../../PageTitle'
@@ -59,6 +60,7 @@ const BridgeTxRow = ({ tx }: { tx: LedgerTx<'deposit'> | LedgerActions<'withdraw
 const HiveBridgeOverview = () => {
   const { t } = useTranslation('pages')
   const conf = getConf()
+  const { prices, currency } = useMarketPrices()
   const { data: l1Acc } = useQuery({
     queryKey: ['hive-account', conf.msAccount],
     queryFn: async () => fetchL1Rest<L1Balance>(`/balance-api/accounts/${conf.msAccount}/balances`)
@@ -86,12 +88,22 @@ const HiveBridgeOverview = () => {
                   <Skeleton height={'20px'} maxW={'40px'} />
                 )}
               </Stat.ValueText>
+              {l1Acc && prices.hive !== undefined && (
+                <Text fontSize="sm" opacity={0.7}>
+                  ≈ {formatCurrencyValue((l1Acc.hive_balance + l1Acc.hive_savings + parseInt(l1Acc.vesting_balance_hive)) / 1000 * prices.hive, currency)}
+                </Text>
+              )}
             </Stat.Root>
             <Stat.Root>
               <Stat.Label>{t('bridge.hbdTvl')}</Stat.Label>
               <Stat.ValueText>
                 {!!l1Acc ? fmtmAmount(l1Acc.hbd_balance + l1Acc.hbd_savings, 'HBD') : <Skeleton height={'20px'} maxW={'40px'} />}
               </Stat.ValueText>
+              {l1Acc && prices.hbd !== undefined && (
+                <Text fontSize="sm" opacity={0.7}>
+                  ≈ {formatCurrencyValue((l1Acc.hbd_balance + l1Acc.hbd_savings) / 1000 * prices.hbd, currency)}
+                </Text>
+              )}
             </Stat.Root>
             <Stat.Root>
               <Stat.Label>{t('bridge.mapTxs')}</Stat.Label>

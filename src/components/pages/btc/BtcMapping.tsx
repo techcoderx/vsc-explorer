@@ -1,8 +1,9 @@
-import { Heading, Card, Stat, Stack, Table, Skeleton, Tabs } from '@chakra-ui/react'
+import { Heading, Card, Stat, Stack, Table, Skeleton, Tabs, Text } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { fetchBtcBalances, fetchBtcRecentDeposits, fetchBtcRecentTransfers, fetchBtcRecentUnmaps, fetchBtcTvl, fetchBtcUnmaps24h, fetchBtcVolume24h } from '../../../hasuraRequests'
 import { thousandSeperator, timeAgo, formatSats, abbreviateHash } from '../../../helpers'
+import { useMarketPrices, formatCurrencyValue } from '../../../marketData'
 import { themeColorScheme } from '../../../settings'
 import { PageTitle } from '../../PageTitle'
 import { AccountLink, TxLink } from '../../TableLink'
@@ -14,6 +15,7 @@ import TransfersTable from '../../tables/Transfers'
 
 const BtcMapping = () => {
   const { t } = useTranslation(['pages', 'tables'])
+  const { prices, currency } = useMarketPrices()
   const { data: tvl } = useQuery({
     queryKey: ['hasura-btc-tvl'],
     queryFn: fetchBtcTvl,
@@ -63,6 +65,11 @@ const BtcMapping = () => {
               <Stat.ValueText>
                 {tvl ? formatSats(tvl) : <Skeleton height="24px" width="120px" />}
               </Stat.ValueText>
+              {tvl && prices.btc !== undefined && (
+                <Text fontSize="sm" opacity={0.7}>
+                  ≈ {formatCurrencyValue(parseInt(tvl) / 1e8 * prices.btc, currency)}
+                </Text>
+              )}
             </Stat.Root>
           </Card.Body>
         </Card.Root>
@@ -73,6 +80,11 @@ const BtcMapping = () => {
               <Stat.ValueText>
                 {volume24h ? formatSats(volume24h.total_sats) : <Skeleton height="24px" width="120px" />}
               </Stat.ValueText>
+              {volume24h && prices.btc !== undefined && (
+                <Text fontSize="sm" opacity={0.7}>
+                  ≈ {formatCurrencyValue(parseInt(volume24h.total_sats) / 1e8 * prices.btc, currency)}
+                </Text>
+              )}
             </Stat.Root>
           </Card.Body>
         </Card.Root>

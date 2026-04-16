@@ -5,6 +5,8 @@ import { useColorMode, useColorModeValue } from '../ui/color-mode'
 import { Switch } from '../ui/switch'
 import { useBgTheme, BgTheme } from '../../hooks/useBgTheme'
 import { useRawJson } from '../../hooks/useRawJson'
+import { useCurrency } from '../../hooks/useCurrency'
+import { SUPPORTED_CURRENCIES, CURRENCY_LABELS, SupportedCurrency } from '../../marketData'
 import { themeColorScheme } from '../../settings'
 
 const LANGUAGES = [
@@ -31,6 +33,7 @@ const Settings = () => {
   const { colorMode, setColorMode } = useColorMode()
   const { bgTheme, setBgTheme } = useBgTheme()
   const { rawJson, setRawJson } = useRawJson()
+  const { currency, setCurrency } = useCurrency()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const selectedBorder = useColorModeValue('pink.400', 'pink.400')
 
@@ -119,6 +122,27 @@ const Settings = () => {
               {LANGUAGES.map((lang) => (
                 <option key={lang.value} value={lang.value}>
                   {lang.label}
+                </option>
+              ))}
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
+        </Card.Body>
+      </Card.Root>
+
+      <Card.Root>
+        <Card.Header>
+          <Heading size="md">{t('currency')}</Heading>
+        </Card.Header>
+        <Card.Body>
+          <NativeSelect.Root maxW="xs">
+            <NativeSelect.Field
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value as SupportedCurrency)}
+            >
+              {SUPPORTED_CURRENCIES.map((c) => (
+                <option key={c} value={c}>
+                  {CURRENCY_LABELS[c]}
                 </option>
               ))}
             </NativeSelect.Field>
