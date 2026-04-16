@@ -1,9 +1,11 @@
-import { Box, Card, Heading, HStack, NativeSelect, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Card, Heading, HStack, NativeSelect, Stack, Text } from '@chakra-ui/react'
 import { LuMoon, LuSun } from 'react-icons/lu'
 import { useTranslation } from 'react-i18next'
 import { useColorMode, useColorModeValue } from '../ui/color-mode'
 import { Switch } from '../ui/switch'
 import { useBgTheme, BgTheme } from '../../hooks/useBgTheme'
+import { useRawJson } from '../../hooks/useRawJson'
+import { themeColorScheme } from '../../settings'
 
 const LANGUAGES = [
   { value: 'en', label: 'English' },
@@ -28,6 +30,7 @@ const Settings = () => {
   const { t, i18n } = useTranslation('settings')
   const { colorMode, setColorMode } = useColorMode()
   const { bgTheme, setBgTheme } = useBgTheme()
+  const { rawJson, setRawJson } = useRawJson()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const selectedBorder = useColorModeValue('pink.400', 'pink.400')
 
@@ -121,6 +124,30 @@ const Settings = () => {
             </NativeSelect.Field>
             <NativeSelect.Indicator />
           </NativeSelect.Root>
+        </Card.Body>
+      </Card.Root>
+
+      <Card.Root>
+        <Card.Header>
+          <Heading size="md">{t('jsonDisplay')}</Heading>
+        </Card.Header>
+        <Card.Body>
+          <ButtonGroup variant="outline" attached>
+            <Button
+              colorPalette={!rawJson ? themeColorScheme : 'gray'}
+              zIndex={!rawJson ? 2 : undefined}
+              onClick={() => setRawJson(false)}
+            >
+              {t('formatted')}
+            </Button>
+            <Button
+              colorPalette={rawJson ? themeColorScheme : 'gray'}
+              zIndex={rawJson ? 2 : undefined}
+              onClick={() => setRawJson(true)}
+            >
+              {t('rawJson')}
+            </Button>
+          </ButtonGroup>
         </Card.Body>
       </Card.Root>
     </Stack>

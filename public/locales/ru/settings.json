@@ -9,5 +9,8 @@
     "green": "Зелёный",
     "blue": "Синий"
   },
-  "language": "Язык"
+  "language": "Язык",
+  "jsonDisplay": "Отображение транзакций",
+  "formatted": "Форматированный",
+  "rawJson": "Необработанный JSON"
 }

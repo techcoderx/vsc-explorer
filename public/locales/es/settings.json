@@ -9,5 +9,8 @@
     "green": "Verde",
     "blue": "Azul"
   },
-  "language": "Idioma"
+  "language": "Idioma",
+  "jsonDisplay": "Visualización de transacciones",
+  "formatted": "Formateado",
+  "rawJson": "JSON sin formato"
 }

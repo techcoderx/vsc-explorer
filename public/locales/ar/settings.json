@@ -9,5 +9,8 @@
     "green": "أخضر",
     "blue": "أزرق"
   },
-  "language": "اللغة"
+  "language": "اللغة",
+  "jsonDisplay": "عرض المعاملات",
+  "formatted": "منسق",
+  "rawJson": "JSON الخام"
 }

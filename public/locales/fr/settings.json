@@ -9,5 +9,8 @@
     "green": "Vert",
     "blue": "Bleu"
   },
-  "language": "Langue"
+  "language": "Langue",
+  "jsonDisplay": "Affichage des transactions",
+  "formatted": "Formaté",
+  "rawJson": "JSON brut"
 }

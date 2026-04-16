@@ -9,5 +9,8 @@
     "green": "グリーン",
     "blue": "ブルー"
   },
-  "language": "言語"
+  "language": "言語",
+  "jsonDisplay": "トランザクション表示",
+  "formatted": "整形済み",
+  "rawJson": "生の JSON"
 }

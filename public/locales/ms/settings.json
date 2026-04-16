@@ -9,5 +9,8 @@
     "green": "Hijau",
     "blue": "Biru"
   },
-  "language": "Bahasa"
+  "language": "Bahasa",
+  "jsonDisplay": "Paparan Transaksi",
+  "formatted": "Berformat",
+  "rawJson": "JSON Mentah"
 }

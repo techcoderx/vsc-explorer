@@ -9,5 +9,8 @@
     "green": "Zelena",
     "blue": "Plava"
   },
-  "language": "Jezik"
+  "language": "Jezik",
+  "jsonDisplay": "Prikaz transakcija",
+  "formatted": "Formatirano",
+  "rawJson": "Sirovi JSON"
 }

@@ -9,5 +9,8 @@
     "green": "हरा",
     "blue": "नीला"
   },
-  "language": "भाषा"
+  "language": "भाषा",
+  "jsonDisplay": "लेनदेन प्रदर्शन",
+  "formatted": "स्वरूपित",
+  "rawJson": "रॉ JSON"
 }

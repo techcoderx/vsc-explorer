@@ -24,6 +24,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import TableRow from '../TableRow'
 import JsonToTableRecursive from '../JsonTableRecursive'
+import { SourceFile } from '../SourceFile'
 import { fetchL1TxOutput, fetchL1Rest, fetchL2TxnsDetailed, getDagByCIDBatch, fetchTssReqStatuses } from '../../requests'
 import { abbreviateHash, beL1BlockUrl, fmtmAmount, parseOperation, thousandSeperator, timeAgo } from '../../helpers'
 import { getConf, themeColorScheme } from '../../settings'
@@ -36,6 +37,7 @@ import { AccountLink, ContractLink } from '../TableLink'
 import { FaCircleArrowRight } from 'react-icons/fa6'
 import { LuCheck, LuX, LuZap } from 'react-icons/lu'
 import { PageTitle } from '../PageTitle'
+import { useRawJson } from '../../hooks/useRawJson'
 import { fetchLogActionMetadata } from '../../hasuraRequests'
 import { resolveContractType, getStaticContractTypes, parseLog, describeAction } from '../../logActions'
 
@@ -629,6 +631,7 @@ export const Tx = () => {
 const L1Tx = () => {
   const { t } = useTranslation('pages')
   const { txid } = useParams()
+  const { rawJson } = useRawJson()
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['vsc-l1-tx', txid],
     queryFn: async () => fetchL1Rest<L1TxHeader>(`/hafah-api/transactions/${txid!}?include-virtual=true`)
@@ -724,7 +727,11 @@ const L1Tx = () => {
               {trx.valid ? (
                 <>
                   <Card.Body pt={'0'}>
-                    <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
+                    {rawJson ? (
+                      <SourceFile content={JSON.stringify(trx.payload, null, 2)} />
+                    ) : (
+                      <JsonToTableRecursive isInCard minimalSpace json={trx.payload} />
+                    )}
                   </Card.Body>
                   {outData && outData[i] ? (
                     trx.type === 'create_contract' ? (
@@ -752,6 +759,7 @@ const L1Tx = () => {
 const L2Tx = () => {
   const { t } = useTranslation('pages')
   const { txid } = useParams()
+  const { rawJson } = useRawJson()
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['vsc-tx', txid],
     queryFn: async () => fetchL2TxnsDetailed(txid!)
@@ -818,7 +826,11 @@ const L2Tx = () => {
                 </Flex>
               </Card.Header>
               <Card.Body pt={'0'}>
-                <JsonToTableRecursive isInCard minimalSpace json={op.data} />
+                {rawJson ? (
+                  <SourceFile content={JSON.stringify(op.data, null, 2)} />
+                ) : (
+                  <JsonToTableRecursive isInCard minimalSpace json={op.data} />
+                )}
               </Card.Body>
             </Card.Root>
           ))}

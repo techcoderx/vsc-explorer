@@ -9,5 +9,8 @@
     "green": "초록색",
     "blue": "파란색"
   },
-  "language": "언어"
+  "language": "언어",
+  "jsonDisplay": "트랜잭션 표시",
+  "formatted": "서식 있음",
+  "rawJson": "원시 JSON"
 }

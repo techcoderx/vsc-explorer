@@ -9,5 +9,8 @@
     "green": "绿色",
     "blue": "蓝色"
   },
-  "language": "语言"
+  "language": "语言",
+  "jsonDisplay": "交易显示",
+  "formatted": "格式化",
+  "rawJson": "原始 JSON"
 }
