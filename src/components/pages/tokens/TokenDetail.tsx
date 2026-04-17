@@ -153,7 +153,11 @@ const TokenDetail = () => {
 
   return (
     <>
-      <PageTitle title={token.symbol} />
+      <PageTitle
+        title={`${token.symbol}: ${token.name}`}
+        description={`${token.symbol} (${token.name}) on Magi — transfers, holders, and token info. Contract ${token.contract_id}.`}
+        ogType="article"
+      />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between" alignItems="start">
         <Box>
           <Heading as="h1" size="5xl" fontWeight="normal">

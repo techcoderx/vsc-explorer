@@ -78,7 +78,15 @@ export const Address = () => {
   if (!addr || !validAddr) return <PageNotFound />
   return (
     <>
-      <PageTitle title={`${abbreviateHash(addr, 26, 0)}`} />
+      <PageTitle
+        title={isL1 ? addr.replace('hive:', '@') : (ensName ?? abbreviateHash(addr, 26, 0))}
+        description={
+          isL1
+            ? `Hive account ${addr.replace('hive:', '@')} on Magi — balances, transactions, ledger ops, bridge deposits/withdrawals, and witness info.`
+            : `Address ${addr} on Magi — balances, transactions, ledger ops, and NFT holdings.`
+        }
+        ogType="profile"
+      />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         {isL1 ? (
           <Heading as="h1" size="5xl" fontWeight="normal" mb={'4'}>

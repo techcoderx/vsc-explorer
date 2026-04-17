@@ -483,7 +483,16 @@ export const Contract = () => {
 
   return (
     <>
-      <PageTitle title={`Contract ${abbreviateHash(contractId || '', 18, 0)}`} />
+      <PageTitle
+        title={`Contract ${abbreviateHash(contractId || '', 18, 0)}`}
+        description={
+          contract
+            ? `Magi smart contract ${contractId} deployed by ${contract.creator} at ${contract.creation_ts}. View transactions, outputs, source code, storage proof, and call the contract.`
+            : `Magi smart contract ${contractId} on Magi Blocks Explorer.`
+        }
+        noindex={invalidContractId}
+        ogType="article"
+      />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Box mb={'4'}>
           <Heading as="h1" size="5xl" fontWeight="normal">{t('title')}</Heading>

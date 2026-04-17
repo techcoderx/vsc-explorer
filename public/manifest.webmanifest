@@ -1,0 +1,17 @@
+{
+  "name": "Magi Blocks Explorer",
+  "short_name": "Magi Blocks",
+  "description": "Block explorer for the Magi network — a Hive L2 smart contract platform.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ED64A6",
+  "icons": [
+    {
+      "src": "/img/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

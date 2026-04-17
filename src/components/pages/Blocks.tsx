@@ -32,7 +32,11 @@ const Blocks = () => {
 
   return (
     <>
-      <PageTitle title={t('blocks.title')} />
+      <PageTitle
+        title={t('blocks.title')}
+        description="Browse the latest Magi L2 blocks — block height, proposer, timestamp, transactions, and participation."
+        canonical={(typeof window !== 'undefined' ? window.location.origin : '') + '/blocks'}
+      />
       <Heading as="h1" size="5xl" fontWeight="normal">{t('blocks.title')}</Heading>
       <hr />
       <br />

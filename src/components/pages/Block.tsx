@@ -84,7 +84,15 @@ const Block = (
   if (invalidBlkId) return <PageNotFound />
   return (
     <>
-      <PageTitle title={t('block.title', { num: thousandSeperator(blkNum) })} />
+      <PageTitle
+        title={t('block.title', { num: thousandSeperator(blkNum) })}
+        description={
+          block && !block.error
+            ? `Magi L2 block #${thousandSeperator(blkNum)} proposed by ${block.proposer} at ${block.ts}. View transactions, op logs, contract outputs, and participation.`
+            : `Magi L2 block #${thousandSeperator(blkNum)} details on Magi Blocks Explorer.`
+        }
+        ogType="article"
+      />
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <Heading as="h1" size="5xl" fontWeight="normal">{t('block.title', { num: thousandSeperator(blkNum) })}</Heading>
         <PrevNextBtns toPrev={blkNum > 1 ? '/block/' + (blkNum! - 1) : undefined} toNext={'/block/' + (blkNum! + 1)} />

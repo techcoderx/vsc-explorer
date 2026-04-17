@@ -686,7 +686,11 @@ const L1Tx = () => {
   }, [vscTx, refetch])
   return (
     <>
-      <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
+      <PageTitle
+        title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`}
+        description={`Hive L1 transaction ${txid} on Magi. View operations, ledger ops, actions, contract calls, and outputs.`}
+        ogType="article"
+      />
       <Box mb={'3'}>
         <Heading as="h1" size="5xl" fontWeight="normal">{t('l1Tx.hiveTransaction')}</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>
@@ -804,7 +808,15 @@ const L2Tx = () => {
   }, [tx, refetch])
   return (
     <>
-      <PageTitle title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`} />
+      <PageTitle
+        title={`Tx: ${abbreviateHash(txid || '', 20, 0)}`}
+        description={
+          tx
+            ? `Magi L2 transaction ${txid} — status ${tx.status}. ${tx.ops.length} operation${tx.ops.length === 1 ? '' : 's'}.`
+            : `Magi L2 transaction ${txid} on Magi Blocks Explorer.`
+        }
+        ogType="article"
+      />
       <Box mb={'3'}>
         <Heading as="h1" size="5xl" fontWeight="normal">{t('l1Tx.transaction')}</Heading>
         <Text fontSize={'2xl'} opacity={'0.7'}>

@@ -187,7 +187,11 @@ const NftDetail = () => {
 
   return (
     <>
-      <PageTitle title={nft.symbol} />
+      <PageTitle
+        title={`${nft.symbol}: ${nft.name}`}
+        description={`NFT collection ${nft.symbol} (${nft.name}) on Magi — tokens, transfers, and collection info. Contract ${nft.contract_id}.`}
+        ogType="article"
+      />
       <Box>
         <Heading as="h1" size="5xl" fontWeight="normal">
           NFT

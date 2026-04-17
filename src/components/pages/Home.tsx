@@ -15,6 +15,7 @@ import {
   LuArrowRight
 } from 'react-icons/lu'
 import type Recharts from 'recharts'
+import { Helmet } from 'react-helmet-async'
 import { fetchProps, fetchBlocks, fetchL2TxnsBy, fetchEpoch, useNetworkStats, useContracts } from '../../requests'
 import { thousandSeperator, timeAgo, fmtmAmount } from '../../helpers'
 import { getConf, themeColor } from '../../settings'
@@ -25,6 +26,7 @@ import { Txns } from '../tables/Transactions'
 import { AccountLink, ContractLink } from '../TableLink'
 import { Tooltip } from '../ui/tooltip'
 import SearchBar from '../SearchBar'
+import { PageTitle } from '../PageTitle'
 import i18n from '../../i18n'
 
 const AnimatedStat = ({ title, value, isLoading }: { title: string; value?: number; isLoading: boolean }) => {
@@ -273,8 +275,42 @@ const Home = () => {
 
   const epochCountdown = useEpochCountdown(epoch?.block_height, prop?.last_processed_block)
 
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        name: 'Magi Blocks',
+        url: origin + '/',
+        description: 'Block explorer for the Magi network — a Hive L2 smart contract platform.',
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: origin + '/{search_term_string}'
+          },
+          'query-input': 'required name=search_term_string'
+        }
+      },
+      {
+        '@type': 'Organization',
+        name: 'Magi Network',
+        url: origin + '/',
+        logo: origin + '/img/logo.svg'
+      }
+    ]
+  }
+
   return (
     <VStack gap="6" align="stretch">
+      <PageTitle
+        title={t('heroTitle')}
+        description="Browse blocks, transactions, addresses, smart contracts, tokens, NFTs, witnesses, and charts on the Magi network — a Hive L2 smart contract platform."
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
       {/* Hero Search */}
       <Box bg="var(--magi-surface)" borderRadius="xl" py={{ base: 8, md: 12 }} px="4" textAlign="center">
         <Heading size={{ base: '2xl', md: '4xl' }} mb="2">

@@ -2,6 +2,7 @@ import './i18n'
 import React, { Suspense } from 'react'
 import { createSystem, defaultConfig } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HelmetProvider } from 'react-helmet-async'
 import { WagmiProvider } from 'wagmi'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -22,15 +23,17 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider system={system} defaultTheme="dark" enableSystem>
-      <WagmiProvider config={wagmiAdapter.wagmiConfig} reconnectOnMount={false}>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={null}>
-            <App />
-            <Toaster />
-          </Suspense>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </Provider>
+    <HelmetProvider>
+      <Provider system={system} defaultTheme="dark" enableSystem>
+        <WagmiProvider config={wagmiAdapter.wagmiConfig} reconnectOnMount={false}>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={null}>
+              <App />
+              <Toaster />
+            </Suspense>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 )
