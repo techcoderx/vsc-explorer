@@ -49,6 +49,9 @@ export const globalCss = {
   '.dark[data-bg-theme="blue"] .chakra-card__root .chakra-accordion__item': {
     borderColor: '#4a5568 !important'
   },
+  '.dark[data-bg-theme="blue"] a.chakra-card__root:not(:hover):not([data-hover])': {
+    borderColor: '#4a5568 !important'
+  },
   '[data-bg-theme="red"] .chakra-card__root': {
     backgroundColor: 'var(--magi-card) !important'
   },
@@ -90,6 +93,9 @@ export const globalCss = {
   '.dark[data-bg-theme="red"] .chakra-card__root .chakra-accordion__item': {
     borderColor: '#4a3538 !important'
   },
+  '.dark[data-bg-theme="red"] a.chakra-card__root:not(:hover):not([data-hover])': {
+    borderColor: '#4a3538 !important'
+  },
   '[data-bg-theme="green"] .chakra-card__root': {
     backgroundColor: 'var(--magi-card) !important'
   },
@@ -129,6 +135,9 @@ export const globalCss = {
     borderColor: '#354a3a !important'
   },
   '.dark[data-bg-theme="green"] .chakra-card__root .chakra-accordion__item': {
+    borderColor: '#354a3a !important'
+  },
+  '.dark[data-bg-theme="green"] a.chakra-card__root:not(:hover):not([data-hover])': {
     borderColor: '#354a3a !important'
   }
 }
