@@ -129,21 +129,21 @@ const CallOutputs = ({
   )
 }
 
-const CallLog = ({ contractId, idx, log }: { contractId: string; idx: number; log: string }) => (
+const CallLog = ({ contractId, showContract, log }: { contractId: string; showContract: boolean; log: string }) => (
   <Table.Row>
-    <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
+    <MinTd>{showContract ? <ContractLink val={contractId} /> : ''}</MinTd>
     <MinTd>{log}</MinTd>
   </Table.Row>
 )
 
 const TssRequest = ({
   contractId,
-  idx,
+  showContract,
   req,
   status
 }: {
   contractId: string
-  idx: number
+  showContract: boolean
   req: TssOp
   status?: TssKeyStatus | TssReqStatus[]
 }) => {
@@ -152,7 +152,7 @@ const TssRequest = ({
   const out = (s as TssKeyStatus | undefined)?.public_key || (s as TssReqStatus | undefined)?.sig
   return (
     <Table.Row>
-      <MinTd>{idx === 0 ? <ContractLink val={contractId} /> : ''}</MinTd>
+      <MinTd>{showContract ? <ContractLink val={contractId} /> : ''}</MinTd>
       <MinTd>{req.type}</MinTd>
       <MinTd>{req.key_id.replace(`${contractId}-`, '')}</MinTd>
       <MinTd>{req.args}</MinTd>
@@ -271,18 +271,28 @@ const TxActions = ({ txn }: { txn: Txn }) => {
   })
   const parsedActions = useMemo(() => {
     if (!outContents || !txn.output || txn.status !== 'CONFIRMED') return []
-    const meta = actionMeta ?? { contractTypes: {}, tokenInfo: {}, nftInfo: {} }
+    const meta = actionMeta ?? { contractTypes: {}, tokenInfo: {}, nftInfo: {}, poolInfo: {} }
     const actions: ReactNode[] = []
     txn.output.forEach((out, i) =>
-      out.index.forEach((o) =>
-        outContents[i].results[o].logs?.forEach((log) => {
-          const cid = outContents[i].contract_id
-          const ctype = resolveContractType(cid, meta.contractTypes)
-          const parsed = parseLog(ctype, log)
-          const node = describeAction(cid, ctype, parsed.eventType, parsed.fields, meta)
+      out.index.forEach((o) => {
+        const logs = outContents[i].results[o].logs
+        if (!logs) return
+        const cid = outContents[i].contract_id
+        const ctype = resolveContractType(cid, meta.contractTypes)
+        const parsedLogs = logs.map((log) => parseLog(ctype, log))
+        parsedLogs.forEach((parsed, idx) => {
+          let fields = parsed.fields
+          // dex_pool fee logs don't carry an asset; borrow it from the nearest swap in this result
+          if (ctype === 'dex_pool' && parsed.eventType === 'fee') {
+            const swap =
+              parsedLogs.slice(idx + 1).find((p) => p.eventType === 'swap') ??
+              parsedLogs.slice(0, idx).reverse().find((p) => p.eventType === 'swap')
+            if (swap?.fields.in) fields = { ...fields, __asset: swap.fields.in }
+          }
+          const node = describeAction(cid, ctype, parsed.eventType, fields, meta)
           if (node) actions.push(node)
         })
-      )
+      })
     )
     return actions
   }, [outContents, txn, actionMeta])
@@ -474,13 +484,24 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {txn.output.map((out, i) =>
-                      out.index.map((o, j) =>
-                        outContents[i].results[o].logs?.map((log, k) => (
-                          <CallLog key={`${i}-${j}-${k}`} contractId={outContents[i].contract_id} idx={j} log={log} />
-                        ))
+                    {txn.output.map((out, i) => {
+                      let firstShown = true
+                      const rows: ReactNode[] = []
+                      out.index.forEach((o, j) =>
+                        outContents[i].results[o].logs?.forEach((log, k) => {
+                          rows.push(
+                            <CallLog
+                              key={`${i}-${j}-${k}`}
+                              contractId={outContents[i].contract_id}
+                              showContract={firstShown}
+                              log={log}
+                            />
+                          )
+                          firstShown = false
+                        })
                       )
-                    )}
+                      return rows
+                    })}
                   </Table.Body>
                 </Table.Root>
               </Table.ScrollArea>
@@ -511,19 +532,25 @@ const TxOut = ({ txn }: { txn: Txn }) => {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {txn.output.map((out, i) =>
-                      out.index.map((o, j) =>
-                        outContents[i].results[o].tss_ops?.map((req, k) => (
-                          <TssRequest
-                            key={`${i}-${j}-${k}`}
-                            contractId={outContents[i].contract_id}
-                            idx={j}
-                            req={req}
-                            status={tssReqStatus ? tssReqStatus[`t${i}_${j}_${k}`] : undefined}
-                          />
-                        ))
+                    {txn.output.map((out, i) => {
+                      let firstShown = true
+                      const rows: ReactNode[] = []
+                      out.index.forEach((o, j) =>
+                        outContents[i].results[o].tss_ops?.forEach((req, k) => {
+                          rows.push(
+                            <TssRequest
+                              key={`${i}-${j}-${k}`}
+                              contractId={outContents[i].contract_id}
+                              showContract={firstShown}
+                              req={req}
+                              status={tssReqStatus ? tssReqStatus[`t${i}_${j}_${k}`] : undefined}
+                            />
+                          )
+                          firstShown = false
+                        })
                       )
-                    )}
+                      return rows
+                    })}
                   </Table.Body>
                 </Table.Root>
               </Table.ScrollArea>

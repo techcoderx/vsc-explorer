@@ -60,17 +60,18 @@ export const useContractType = (contractId: string, enabled = true) => {
 
 // Batch contract metadata for log action descriptions
 export const fetchLogActionMetadata = async (contractIds: string[]): Promise<LogActionMetadata> => {
-  if (contractIds.length === 0)
-    return { contractTypes: {}, tokenInfo: {}, nftInfo: {} }
+  if (contractIds.length === 0) return { contractTypes: {}, tokenInfo: {}, nftInfo: {}, poolInfo: {} }
   const result = await hasuraGql<{
     contract_type_lookup: ContractTypeLookup[]
     magi_token_registry: { contract_id: string; symbol: string; decimals: number }[]
     magi_nft_registry: { contract_id: string; name: string; symbol: string }[]
+    dex_pool_registry: { pool_contract: string; asset0: string; asset1: string }[]
   }>(
     `query LogActionMeta($ids: [String!]!) {
       contract_type_lookup(where: { contract_id: { _in: $ids } }) { contract_id contract_type }
       magi_token_registry(where: { contract_id: { _in: $ids } }) { contract_id symbol decimals }
       magi_nft_registry(where: { contract_id: { _in: $ids } }) { contract_id name symbol }
+      dex_pool_registry(where: { pool_contract: { _in: $ids } }) { pool_contract asset0 asset1 }
     }`,
     { ids: contractIds }
   )
@@ -80,7 +81,9 @@ export const fetchLogActionMetadata = async (contractIds: string[]): Promise<Log
   for (const t of result.data.magi_token_registry) tokenInfo[t.contract_id] = { symbol: t.symbol, decimals: t.decimals }
   const nftInfo: Record<string, { name: string; symbol: string }> = {}
   for (const n of result.data.magi_nft_registry) nftInfo[n.contract_id] = { name: n.name, symbol: n.symbol }
-  return { contractTypes, tokenInfo, nftInfo }
+  const poolInfo: Record<string, { asset0: string; asset1: string }> = {}
+  for (const p of result.data.dex_pool_registry) poolInfo[p.pool_contract] = { asset0: p.asset0, asset1: p.asset1 }
+  return { contractTypes, tokenInfo, nftInfo, poolInfo }
 }
 
 // Token queries

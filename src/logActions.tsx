@@ -24,8 +24,18 @@ export interface ParsedLog {
   fields: Record<string, string>
 }
 
+// Hasura's contract_type_lookup view exposes the discover_event name; translate to the logical type used by describeAction.
+const HASURA_TYPE_MAP: Record<string, string> = {
+  init_magi_token: 'magi_token',
+  init_magi_nft: 'magi_nft',
+  pool_init: 'dex_pool'
+}
+
 export const resolveContractType = (contractId: string, hasuraTypes: Record<string, string>): string | null => {
-  return STATIC_CONTRACT_TYPES[contractId] ?? hasuraTypes[contractId] ?? null
+  if (STATIC_CONTRACT_TYPES[contractId]) return STATIC_CONTRACT_TYPES[contractId]
+  const hasuraType = hasuraTypes[contractId]
+  if (!hasuraType) return null
+  return HASURA_TYPE_MAP[hasuraType] ?? hasuraType
 }
 
 export const getStaticContractTypes = () => STATIC_CONTRACT_TYPES
@@ -327,7 +337,15 @@ const describeNft = (
   }
 }
 
-const describeDexPool = (eventType: string, f: Record<string, string>): ReactNode | null => {
+const describeDexPool = (
+  contractId: string,
+  eventType: string,
+  f: Record<string, string>,
+  meta: LogActionMetadata
+): ReactNode | null => {
+  const pool = meta.poolInfo[contractId]
+  const fmtA0 = (v: string) => (pool ? fmtDexAmount(v, pool.asset0) : thousandSeperator(v))
+  const fmtA1 = (v: string) => (pool ? fmtDexAmount(v, pool.asset1) : thousandSeperator(v))
   switch (eventType) {
     case 'swap':
       return (
@@ -348,8 +366,7 @@ const describeDexPool = (eventType: string, f: Record<string, string>): ReactNod
         <HStack gap={'1.5'} flexWrap={'wrap'}>
           <AccountLink val={f.p ?? ''} />
           <Text>
-            added liquidity: {thousandSeperator(f.a0 ?? '0')} + {thousandSeperator(f.a1 ?? '0')}, minted{' '}
-            {thousandSeperator(f.lp ?? '0')} LP
+            added liquidity: {fmtA0(f.a0 ?? '0')} + {fmtA1(f.a1 ?? '0')}, minted {thousandSeperator(f.lp ?? '0')} LP
           </Text>
         </HStack>
       )
@@ -358,17 +375,19 @@ const describeDexPool = (eventType: string, f: Record<string, string>): ReactNod
         <HStack gap={'1.5'} flexWrap={'wrap'}>
           <AccountLink val={f.p ?? ''} />
           <Text>
-            removed liquidity: {thousandSeperator(f.a0 ?? '0')} + {thousandSeperator(f.a1 ?? '0')}, burned{' '}
-            {thousandSeperator(f.lp ?? '0')} LP
+            removed liquidity: {fmtA0(f.a0 ?? '0')} + {fmtA1(f.a1 ?? '0')}, burned {thousandSeperator(f.lp ?? '0')} LP
           </Text>
         </HStack>
       )
-    case 'fee':
+    case 'fee': {
+      const asset = f.__asset ?? ''
+      const fmt = (v: string) => (asset ? fmtDexAmount(v, asset) : thousandSeperator(v))
       return (
         <Text>
-          Fee: total {thousandSeperator(f.t ?? '0')}, LP {thousandSeperator(f.lp ?? '0')}, Magi {thousandSeperator(f.m ?? '0')}
+          Fee: total {fmt(f.t ?? '0')}, LP {fmt(f.lp ?? '0')}, Magi {fmt(f.m ?? '0')}
         </Text>
       )
+    }
     case 'pool_init':
       return (
         <Text>
@@ -717,7 +736,7 @@ export const describeAction = (
       result = describeNft(contractId, eventType, fields, metadata)
       break
     case 'dex_pool':
-      result = describeDexPool(eventType, fields)
+      result = describeDexPool(contractId, eventType, fields, metadata)
       break
     case 'dex_router':
       result = describeDexRouter(eventType, fields)

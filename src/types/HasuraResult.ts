@@ -124,4 +124,5 @@ export interface LogActionMetadata {
   contractTypes: Record<string, string>
   tokenInfo: Record<string, { symbol: string; decimals: number }>
   nftInfo: Record<string, { name: string; symbol: string }>
+  poolInfo: Record<string, { asset0: string; asset1: string }>
 }
