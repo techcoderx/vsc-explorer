@@ -106,3 +106,5 @@ export const getConf = (): Conf => {
 }
 
 export const hafBaseUrl = import.meta.env.VITE_HAF_BASE_URL || getConf().beApi
+
+export const ethRpcUrl = import.meta.env.VITE_ETH_RPC || 'https://eth.llamarpc.com'

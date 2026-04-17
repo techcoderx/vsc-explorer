@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import PageNotFound from '../404'
 import { Flairs } from '../../../flairs'
 import { fetchL2TxnsBy, getWitness, useHistoryStats } from '../../../requests'
+import { useEnsName } from '../../../ensRequests'
 import { abbreviateHash, getNextTabRoute, validateHiveUsername } from '../../../helpers'
 import { AddressBalanceCard } from './Balances'
 import { AddressRcInfo } from './RcInfo'
@@ -73,6 +74,7 @@ export const Address = () => {
     queryFn: async () => getWitness(addr!.replace('hive:', '')),
     enabled: isL1
   })
+  const { data: ensName } = useEnsName(addr)
   if (!addr || !validAddr) return <PageNotFound />
   return (
     <>
@@ -84,7 +86,7 @@ export const Address = () => {
           </Heading>
         ) : (
           <Box>
-            <Heading as="h1" size="5xl" fontWeight="normal">{t('address.title')}</Heading>
+            <Heading as="h1" size="5xl" fontWeight="normal">{ensName ?? t('address.title')}</Heading>
             <Text fontSize={'2xl'} opacity={'0.7'} mb={'4'}>
               {addr}
             </Text>

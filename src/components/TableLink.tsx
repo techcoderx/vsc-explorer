@@ -4,6 +4,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, validateHiveUsername } from '../helpers'
 import { FaBitcoin, FaEthereum, FaHive, FaFileContract, FaNetworkWired } from 'react-icons/fa6'
 import { Flairs } from '../flairs'
+import { useEnsName } from '../ensRequests'
 import { Tooltip } from './ui/tooltip'
 
 type TableLinkParams = { val: string; ttVal?: string; truncate?: number; icon?: ReactNode }
@@ -42,6 +43,7 @@ export const TxLink = ({ val, truncate = 15 }: TableLinkParams) => {
 }
 
 export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
+  const { data: ensName } = useEnsName(val)
   if (val === '')
     return (
       <HStack gap={'1.5'}>
@@ -52,7 +54,8 @@ export const AccountLink = ({ val, truncate = 16 }: TableLinkParams) => {
   if (val.startsWith('contract:') || (val.startsWith('vsc') && validateHiveUsername(val) !== null))
     return <ContractLink val={val} truncate={truncate} />
   const href = `/address/${val}`
-  return <TheLink val={val} ttVal={Flairs[val]} truncate={truncate} href={href} icon={iconByAddr(val)} />
+  const displayName = Flairs[val] ?? ensName ?? undefined
+  return <TheLink val={val} ttVal={displayName} truncate={truncate} href={href} icon={iconByAddr(val)} />
 }
 
 export const ContractLink = ({ val, truncate = 16 }: TableLinkParams) => {
