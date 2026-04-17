@@ -2,7 +2,7 @@ import { useAioha } from '@aioha/providers/react'
 import { useMagi } from '@aioha/providers/magi/react'
 import { Wallet } from '@aioha/magi'
 import { KeyTypes, Providers } from '@aioha/aioha'
-import { useAppKit } from '@reown/appkit/react'
+import { useAppKit, useDisconnect as useAppKitDisconnect } from '@reown/appkit/react'
 import { useDisconnect } from 'wagmi'
 import {
   Alert,
@@ -20,8 +20,9 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { themeColorScheme } from '../settings'
-import { FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
+import { FaBitcoin, FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
 import { useColorMode } from './ui/color-mode'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -86,6 +87,18 @@ const ProvidersSeq: Providers[] = [
 
 const abbreviateAddr = (addr: string) => (addr.length > 12 ? addr.slice(0, 6) + '...' + addr.slice(-4) : addr)
 
+export const ConnectWalletButton = ({ onClick }: { onClick: () => void }) => {
+  const { t } = useTranslation('common')
+  const { user, wallet } = useMagi()
+  const walletIcon = wallet === Wallet.Ethereum ? FaEthereum : wallet === Wallet.Bitcoin ? FaBitcoin : FaHive
+  return (
+    <Button variant={'outline'} colorPalette={'gray'} _focus={{ boxShadow: 'none' }} onClick={onClick}>
+      {user ? <Box as={walletIcon} fontSize={'lg'} /> : null}
+      {user ?? t('connectWallet')}
+    </Button>
+  )
+}
+
 export const AiohaModal = ({
   displayed,
   onClose,
@@ -101,6 +114,7 @@ export const AiohaModal = ({
   const { user: magiUser, wallet } = useMagi()
   const { open: openAppKit } = useAppKit()
   const { disconnect: disconnectEvm } = useDisconnect()
+  const { disconnect: disconnectAppKit } = useAppKitDisconnect()
   const { colorMode } = useColorMode()
   const [page, setPage] = useState(initPage)
   const [selectedProv, setSelectedProv] = useState<Providers | null>(null)
@@ -163,12 +177,25 @@ export const AiohaModal = ({
                     colorPalette={'gray'}
                     onClick={() => {
                       onClose()
-                      openAppKit()
+                      openAppKit({ namespace: 'eip155' })
                     }}
                   >
                     <Box as={FaEthereum} fontSize={'2xl'} />
                     <Text textAlign={'left'} w={'full'}>
                       Ethereum
+                    </Text>
+                  </Button>
+                  <Button
+                    variant={'outline'}
+                    colorPalette={'gray'}
+                    onClick={() => {
+                      onClose()
+                      openAppKit({ namespace: 'bip122' })
+                    }}
+                  >
+                    <Box as={FaBitcoin} fontSize={'2xl'} />
+                    <Text textAlign={'left'} w={'full'}>
+                      Bitcoin
                     </Text>
                   </Button>
                 </Stack>
@@ -259,6 +286,22 @@ export const AiohaModal = ({
                   colorPalette={'gray'}
                   onClick={() => {
                     disconnectEvm()
+                    onClose()
+                    setPage(initPage)
+                  }}
+                >
+                  Disconnect
+                </Button>
+              </Flex>
+            ) : wallet === Wallet.Bitcoin ? (
+              <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
+                <Box as={FaBitcoin} fontSize={'5xl'} />
+                <Heading fontSize={'lg'}>{abbreviateAddr(magiUser!)}</Heading>
+                <Button
+                  variant={'outline'}
+                  colorPalette={'gray'}
+                  onClick={() => {
+                    disconnectAppKit()
                     onClose()
                     setPage(initPage)
                   }}

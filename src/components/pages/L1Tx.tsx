@@ -216,9 +216,7 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
                     {txn.required_auths.map((a, i) => {
                       return (
                         <GridItem key={i}>
-                          <Link asChild>
-                            <ReactRouterLink to={'/address/' + a}>{a}</ReactRouterLink>
-                          </Link>
+                          <AccountLink val={a} />
                         </GridItem>
                       )
                     })}

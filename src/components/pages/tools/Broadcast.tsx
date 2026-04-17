@@ -5,7 +5,6 @@ import {
   Center,
   Flex,
   Field,
-  Box,
   Input,
   Link,
   NativeSelect,
@@ -19,8 +18,7 @@ import { PageTitle } from '../../PageTitle'
 import { useMagi } from '@aioha/providers/magi/react'
 import { Asset, Wallet } from '@aioha/magi'
 import { VscStakeType } from '@aioha/aioha'
-import { AiohaModal } from '../../Aioha'
-import { FaEthereum, FaHive } from 'react-icons/fa6'
+import { AiohaModal, ConnectWalletButton } from '../../Aioha'
 import { useState } from 'react'
 import { getConf, themeColorScheme } from '../../../settings'
 import { TxnTypes } from '../../../types/L2ApiResult'
@@ -53,7 +51,7 @@ export const Broadcast = () => {
   const [walletOpen, setWalletOpen] = useState(false)
   const [txType, setTxType] = useState<TxnTypes>('transfer')
   const [dest, setDest] = useState<string>('')
-  const [amt, setAmt] = useState<string>()
+  const [amt, setAmt] = useState<string>('')
   const [asset, setAsset] = useState<string>('hive')
   const [memo, setMemo] = useState<string>('')
   const [isSpinning, setIsSpinning] = useState(false)
@@ -84,22 +82,22 @@ export const Broadcast = () => {
         )
         break
       case 'transfer':
-        result = await magi.transfer(to, amount, currency, memo || undefined)
+        result = await magi.transfer(to, amount, currency, memo)
         break
       case 'withdraw':
-        result = await magi.unmap(to, amount, currency, memo || undefined)
+        result = await magi.unmap(to, amount, currency, memo)
         break
       case 'consensus_stake':
-        result = await magi.stake(VscStakeType.Consensus, amount, to, memo || undefined)
+        result = await magi.stake(VscStakeType.Consensus, amount, to, memo)
         break
       case 'consensus_unstake':
-        result = await magi.unstake(VscStakeType.Consensus, amount, to, memo || undefined)
+        result = await magi.unstake(VscStakeType.Consensus, amount, to, memo)
         break
       case 'stake_hbd':
-        result = await magi.stake(VscStakeType.HBD, amount, to, memo || undefined)
+        result = await magi.stake(VscStakeType.HBD, amount, to, memo)
         break
       case 'unstake_hbd':
-        result = await magi.unstake(VscStakeType.HBD, amount, to, memo || undefined)
+        result = await magi.unstake(VscStakeType.HBD, amount, to, memo)
         break
       default:
         setIsSpinning(false)
@@ -124,7 +122,6 @@ export const Broadcast = () => {
       })
     }
   }
-  const walletIcon = wallet === Wallet.Ethereum ? FaEthereum : FaHive
   return (
     <>
       <PageTitle title="Broadcast Transaction" />
@@ -137,15 +134,7 @@ export const Broadcast = () => {
               <Stack direction={'column'} gap={'3'} mb={'5'}>
                 <Field.Root>
                   <Field.Label>{t('form.username', { ns: 'common' })}</Field.Label>
-                  <Button
-                    variant={'outline'}
-                    colorPalette={'gray'}
-                    _focus={{ boxShadow: 'none' }}
-                    onClick={() => setWalletOpen(true)}
-                  >
-                    {user ? <Box as={walletIcon} fontSize={'lg'} /> : null}
-                    {user ?? t('connectWallet', { ns: 'common' })}
-                  </Button>
+                  <ConnectWalletButton onClick={() => setWalletOpen(true)} />
                 </Field.Root>
                 <Field.Root>
                   <Field.Label>{t('form.type', { ns: 'common' })}</Field.Label>

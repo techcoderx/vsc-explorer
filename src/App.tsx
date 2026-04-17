@@ -1,13 +1,13 @@
-import { useEffect } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { Aioha } from '@aioha/aioha'
-import { Magi } from '@aioha/magi'
+import { Magi, BtcClient } from '@aioha/magi'
 import { AiohaProvider } from '@aioha/providers/react'
 import { MagiProvider } from '@aioha/providers/magi/react'
-import { createAppKit } from '@reown/appkit/react'
+import { createAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Navbar from './components/Navbar'
 import { getConf } from './settings'
-import { wagmiAdapter, networks } from './wagmiConfig'
+import { wagmiAdapter, bitcoinAdapter, networks } from './wagmiConfig'
 import Home from './components/pages/Home'
 import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
@@ -300,7 +300,7 @@ const magi = new Magi()
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || ''
 
 createAppKit({
-  adapters: [wagmiAdapter],
+  adapters: [wagmiAdapter, bitcoinAdapter],
   networks,
   projectId,
   metadata: {
@@ -310,6 +310,29 @@ createAppKit({
     icons: []
   }
 })
+
+const MagiProviderWithBtc = ({ children }: { children: ReactNode }) => {
+  const { address: btcAddress, isConnected: btcConnected } = useAppKitAccount({ namespace: 'bip122' })
+  const { walletProvider: btcProvider } = useAppKitProvider('bip122')
+  const btcClient = useMemo<BtcClient | undefined>(() => {
+    if (btcConnected && btcAddress && btcProvider) {
+      return {
+        address: btcAddress,
+        signMessage: (msg: string) =>
+          (btcProvider as { signMessage(p: { message: string; address: string }): Promise<string> }).signMessage({
+            message: msg,
+            address: btcAddress
+          })
+      }
+    }
+    return undefined
+  }, [btcConnected, btcAddress, btcProvider])
+  return (
+    <MagiProvider magi={magi} btcClient={btcClient}>
+      {children}
+    </MagiProvider>
+  )
+}
 
 const App = () => {
   useEffect(() => {
@@ -328,9 +351,9 @@ const App = () => {
   }, [])
   return (
     <AiohaProvider aioha={aioha}>
-      <MagiProvider magi={magi}>
+      <MagiProviderWithBtc>
         <RouterProvider router={router} />
-      </MagiProvider>
+      </MagiProviderWithBtc>
     </AiohaProvider>
   )
 }

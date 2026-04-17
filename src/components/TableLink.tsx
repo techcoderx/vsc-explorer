@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { HStack, Link } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router'
 import { abbreviateHash, validateHiveUsername } from '../helpers'
-import { FaEthereum, FaHive, FaFileContract, FaNetworkWired } from 'react-icons/fa6'
+import { FaBitcoin, FaEthereum, FaHive, FaFileContract, FaNetworkWired } from 'react-icons/fa6'
 import { Flairs } from '../flairs'
 import { Tooltip } from './ui/tooltip'
 
@@ -11,6 +11,7 @@ type TableLinkParams = { val: string; ttVal?: string; truncate?: number; icon?: 
 const iconByAddr = (addr: string) => {
   if (addr.startsWith('hive:')) return <FaHive />
   else if (addr.startsWith('did:pkh:eip155:1:0x')) return <FaEthereum />
+  else if (addr.startsWith('did:pkh:bip122:')) return <FaBitcoin />
   else if (addr.startsWith('did:vsc:') || addr.startsWith('system:')) return <FaNetworkWired />
 }
 

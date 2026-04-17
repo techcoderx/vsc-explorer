@@ -58,8 +58,7 @@ import { PageTitle } from '../PageTitle'
 import { AccountLink } from '../TableLink'
 import { useMagi } from '@aioha/providers/magi/react'
 import { Wallet, KeyTypes } from '@aioha/magi'
-import { AiohaModal } from '../Aioha'
-import { FaEthereum, FaHive } from 'react-icons/fa6'
+import { AiohaModal, ConnectWalletButton } from '../Aioha'
 import { ContractHistoryTbl } from '../tables/ContractHistory'
 import { LedgerTxsTbl, LedgerActionsTbl } from '../tables/Ledgers'
 import { LedgerFilterBar, LedgerFilterToggle } from '../LedgerFilterBar'
@@ -296,15 +295,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
           <Stack direction={'column'} gap={'3'}>
             <Field.Root>
               <Field.Label>{t('form.username', { ns: 'common' })}</Field.Label>
-              <Button
-                variant={'outline'}
-                colorPalette={'gray'}
-                _focus={{ boxShadow: 'none' }}
-                onClick={() => setWalletOpen(true)}
-              >
-                {user ? <Box as={wallet === Wallet.Ethereum ? FaEthereum : FaHive} fontSize={'lg'} /> : null}
-                {user ?? t('connectWallet', { ns: 'common' })}
-              </Button>
+              <ConnectWalletButton onClick={() => setWalletOpen(true)} />
             </Field.Root>
             <Field.Root>
               <Field.Label>{t('form.method', { ns: 'common' })}</Field.Label>
