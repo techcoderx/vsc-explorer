@@ -250,6 +250,13 @@ const CallContract = ({ contractId }: { contractId: string }) => {
           }
         }
       })
+    if (!balance || !balance.rc) {
+      return toaster.error({ title: t('callContract.walletNotConnected') })
+    }
+    const simRcLimit = balance.rc.amount - Math.ceil(intents.current.hbd * 1000)
+    if (simRcLimit <= 0) {
+      return toaster.error({ title: t('callContract.insufficientBalance') })
+    }
     const simResult = await simulateContractCalls({
       tx_id: '',
       ...(effectiveKeyType === KeyTypes.Active
@@ -260,7 +267,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
           contract_id: contractId,
           action: methodName,
           payload: payload,
-          rc_limit: 100000,
+          rc_limit: simRcLimit,
           intents: intentsArr.length > 0 ? intentsArr : undefined
         }
       ]
@@ -269,7 +276,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     if (!sim.success) {
       return toaster.error({ title: t('callContract.simulationFailed'), description: sim.err_msg || sim.err })
     }
-    const rcLimitInt = Math.ceil(parseInt(sim.rc_used) * 1.25)
+    const rcLimitInt = Math.min(Math.ceil(parseInt(sim.rc_used) * 1.25), simRcLimit)
     const callResult = await magi.call(contractId, methodName, payload, rcLimitInt, intentsArr, effectiveKeyType)
     if (!callResult.success) {
       return toaster.error({ title: callResult.error })
