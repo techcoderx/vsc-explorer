@@ -22,8 +22,24 @@ import {
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { themeColorScheme } from '../settings'
-import { FaBitcoin, FaChevronLeft, FaChevronRight, FaEthereum, FaHive } from 'react-icons/fa6'
+import { FaBitcoin, FaChevronLeft, FaChevronRight, FaEthereum, FaEye, FaHive } from 'react-icons/fa6'
 import { useColorMode } from './ui/color-mode'
+import { validateHiveUsername } from '../helpers'
+
+const BTC_GENESIS = '000000000019d6689c085ae165831e93'
+const HIVE_PREFIX = 'hive:'
+const EVM_PREFIX = 'did:pkh:eip155:1:'
+const BTC_PREFIX = `did:pkh:bip122:${BTC_GENESIS}:`
+
+type ViewOnlyKind = 'hive' | 'evm' | 'btc'
+
+const viewOnlyKindFromPrefixed = (prefixed: string): ViewOnlyKind => {
+  if (prefixed.startsWith(EVM_PREFIX)) return 'evm'
+  if (prefixed.startsWith(BTC_PREFIX)) return 'btc'
+  return 'hive'
+}
+
+const viewOnlyIcon = (kind: ViewOnlyKind) => (kind === 'evm' ? FaEthereum : kind === 'btc' ? FaBitcoin : FaHive)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -89,12 +105,21 @@ const abbreviateAddr = (addr: string) => (addr.length > 12 ? addr.slice(0, 6) + 
 
 export const ConnectWalletButton = ({ onClick }: { onClick: () => void }) => {
   const { t } = useTranslation('common')
-  const { user, wallet } = useMagi()
-  const walletIcon = wallet === Wallet.Ethereum ? FaEthereum : wallet === Wallet.Bitcoin ? FaBitcoin : FaHive
+  const { magi, user, wallet } = useMagi()
+  const voKind = wallet === Wallet.ViewOnly ? viewOnlyKindFromPrefixed(magi.getUser(true) ?? '') : undefined
+  const walletIcon =
+    wallet === Wallet.Ethereum
+      ? FaEthereum
+      : wallet === Wallet.Bitcoin
+        ? FaBitcoin
+        : wallet === Wallet.ViewOnly
+          ? viewOnlyIcon(voKind!)
+          : FaHive
+  const displayUser = user && wallet === Wallet.ViewOnly && voKind !== 'hive' ? abbreviateAddr(user) : user
   return (
     <Button variant={'outline'} colorPalette={'gray'} _focus={{ boxShadow: 'none' }} onClick={onClick}>
       {user ? <Box as={walletIcon} fontSize={'lg'} /> : null}
-      {user ?? t('connectWallet')}
+      {displayUser ?? t('connectWallet')}
     </Button>
   )
 }
@@ -110,8 +135,9 @@ export const AiohaModal = ({
   initPage?: number
   disabledProviders?: Providers[]
 }) => {
+  const { t } = useTranslation('common')
   const { aioha, user: hiveUser } = useAioha()
-  const { user: magiUser, wallet } = useMagi()
+  const { magi, user: magiUser, wallet } = useMagi()
   const { open: openAppKit } = useAppKit()
   const { disconnect: disconnectEvm } = useDisconnect()
   const { disconnect: disconnectAppKit } = useAppKitDisconnect()
@@ -122,6 +148,7 @@ export const AiohaModal = ({
   const [inProgress, setInProgress] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [hiveAuthPl, setHiveAuthPl] = useState<{ payload: string; cancel: () => void }>()
+  const [voKind, setVoKind] = useState<ViewOnlyKind>('hive')
   useEffect(() => {
     const handler = (payload: string, _: unknown, cancel: () => void) => {
       setError('')
@@ -153,6 +180,40 @@ export const AiohaModal = ({
       setSelectedProv(null)
       onClose()
     }
+  }
+  const proceedViewOnly = () => {
+    setError('')
+    const trimmed = usernameInput.trim()
+    if (!trimmed) {
+      setError(t('viewOnly.addressRequired'))
+      return
+    }
+    let did: string
+    if (voKind === 'hive') {
+      const err = validateHiveUsername(trimmed, t)
+      if (err) {
+        setError(err)
+        return
+      }
+      did = HIVE_PREFIX + trimmed
+    } else if (voKind === 'evm') {
+      if (!/^0x[a-fA-F0-9]{40}$/.test(trimmed)) {
+        setError(t('viewOnly.invalidEvm'))
+        return
+      }
+      did = EVM_PREFIX + trimmed
+    } else {
+      if (!/^(bc1|1|3)/.test(trimmed)) {
+        setError(t('viewOnly.invalidBtc'))
+        return
+      }
+      did = BTC_PREFIX + trimmed
+    }
+    magi.setViewOnly(did)
+    magi.setWallet(Wallet.ViewOnly)
+    setUsernameInput('')
+    setSelectedProv(null)
+    onClose()
   }
   const isConnected = !!magiUser || !!hiveUser
   return (
@@ -198,6 +259,21 @@ export const AiohaModal = ({
                       Bitcoin
                     </Text>
                   </Button>
+                  <Button
+                    variant={'outline'}
+                    colorPalette={'gray'}
+                    onClick={() => {
+                      setError('')
+                      setUsernameInput('')
+                      setVoKind('hive')
+                      setPage(4)
+                    }}
+                  >
+                    <Box as={FaEye} fontSize={'2xl'} />
+                    <Text textAlign={'left'} w={'full'}>
+                      {t('viewOnly.title')}
+                    </Text>
+                  </Button>
                 </Stack>
               ) : page === 1 ? (
                 <VStack gap={'3'} alignItems={'flex-start'}>
@@ -232,6 +308,27 @@ export const AiohaModal = ({
                         </Button>
                       )
                   )}
+                  <Button
+                    variant={'outline'}
+                    colorPalette={'gray'}
+                    w={'full'}
+                    h={'12'}
+                    justifyContent={'flex-start'}
+                    onClick={() => {
+                      setError('')
+                      setUsernameInput('')
+                      setVoKind('hive')
+                      setPage(4)
+                    }}
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    <Flex direction={'row'} align={'center'} gap={'4'}>
+                      <Flex w={'8'} h={'8'} align={'center'} justify={'center'}>
+                        <Box as={FaEye} fontSize={'xl'} />
+                      </Flex>
+                      <Text>{t('viewOnly.title')}</Text>
+                    </Flex>
+                  </Button>
                 </VStack>
               ) : page === 2 ? (
                 <Box>
@@ -276,6 +373,76 @@ export const AiohaModal = ({
                     <Button variant={'outline'} colorPalette={'gray'} onClick={hiveAuthPl!.cancel}>Cancel</Button>
                   </Flex>
                 </Box>
+              ) : page === 4 ? (
+                <Box>
+                  {error && (
+                    <Alert.Root status="error" mb={'3'}>
+                      <Alert.Indicator />
+                      <Alert.Description>{error}</Alert.Description>
+                    </Alert.Root>
+                  )}
+                  <Button variant={'outline'} onClick={() => setPage(initPage)}>
+                    <FaChevronLeft />
+                    Back
+                  </Button>
+                  <Stack direction={'row'} mt={'3'} gap={'2'}>
+                    <Button
+                      variant={voKind === 'hive' ? 'solid' : 'outline'}
+                      colorPalette={voKind === 'hive' ? themeColorScheme : 'gray'}
+                      onClick={() => {
+                        setVoKind('hive')
+                        setError('')
+                      }}
+                    >
+                      <Box as={FaHive} />
+                      Hive
+                    </Button>
+                    <Button
+                      variant={voKind === 'evm' ? 'solid' : 'outline'}
+                      colorPalette={voKind === 'evm' ? themeColorScheme : 'gray'}
+                      onClick={() => {
+                        setVoKind('evm')
+                        setError('')
+                      }}
+                    >
+                      <Box as={FaEthereum} />
+                      Ethereum
+                    </Button>
+                    <Button
+                      variant={voKind === 'btc' ? 'solid' : 'outline'}
+                      colorPalette={voKind === 'btc' ? themeColorScheme : 'gray'}
+                      onClick={() => {
+                        setVoKind('btc')
+                        setError('')
+                      }}
+                    >
+                      <Box as={FaBitcoin} />
+                      Bitcoin
+                    </Button>
+                  </Stack>
+                  <Flex direction={'row'} mt={'3'} gap={'2'}>
+                    <Input
+                      placeholder={
+                        voKind === 'hive'
+                          ? t('viewOnly.placeholderHive')
+                          : voKind === 'evm'
+                            ? t('viewOnly.placeholderEvm')
+                            : t('viewOnly.placeholderBtc')
+                      }
+                      value={usernameInput}
+                      onKeyDown={(evt) => (evt.key === 'Enter' ? proceedViewOnly() : null)}
+                      onChange={(evt) => setUsernameInput(evt.target.value)}
+                    />
+                    <IconButton
+                      colorPalette={themeColorScheme}
+                      onClick={proceedViewOnly}
+                      aria-label="Proceed"
+                      disabled={usernameInput.length === 0}
+                    >
+                      <FaChevronRight />
+                    </IconButton>
+                  </Flex>
+                </Box>
               ) : null
             ) : wallet === Wallet.Ethereum ? (
               <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
@@ -309,6 +476,31 @@ export const AiohaModal = ({
                   Disconnect
                 </Button>
               </Flex>
+            ) : wallet === Wallet.ViewOnly ? (
+              (() => {
+                const kind = viewOnlyKindFromPrefixed(magi.getUser(true) ?? '')
+                const Icon = viewOnlyIcon(kind)
+                return (
+                  <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
+                    <Box as={Icon} fontSize={'5xl'} />
+                    <Text fontSize={'sm'} color={'gray.500'}>
+                      {t('viewOnly.badge')}
+                    </Text>
+                    <Heading fontSize={'lg'}>{kind === 'hive' ? magiUser! : abbreviateAddr(magiUser!)}</Heading>
+                    <Button
+                      variant={'outline'}
+                      colorPalette={'gray'}
+                      onClick={() => {
+                        magi.setWallet(undefined)
+                        onClose()
+                        setPage(initPage)
+                      }}
+                    >
+                      Disconnect
+                    </Button>
+                  </Flex>
+                )
+              })()
             ) : (
               <Flex direction={'column'} gap={'3'} alignItems={'center'} mt={'8'}>
                 <Image

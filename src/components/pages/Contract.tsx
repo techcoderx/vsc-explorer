@@ -2,6 +2,7 @@ import {
   Text,
   Heading,
   Box,
+  Code,
   Skeleton,
   Table,
   Tabs,
@@ -14,6 +15,7 @@ import {
   HStack,
   Button,
   ButtonGroup,
+  CloseButton,
   VStack,
   RadioGroup,
   Alert,
@@ -54,7 +56,7 @@ import { useTranslation } from 'react-i18next'
 import { useMemo, useRef, useState } from 'react'
 import { BLSSig, CoinLower } from '../../types/Payloads'
 import { ParticipatedMembers } from '../BlsAggMembers'
-import { Contract as ContractType } from '../../types/L2ApiResult'
+import { Contract as ContractType, SimulateCallResult } from '../../types/L2ApiResult'
 import { PageTitle } from '../PageTitle'
 import { AccountLink } from '../TableLink'
 import { useMagi } from '@aioha/providers/magi/react'
@@ -215,6 +217,9 @@ const CallContract = ({ contractId }: { contractId: string }) => {
   const [newIntentToken, setNewIntentToken] = useState<CoinLower>('hive')
   const intents = useRef({ hive: 0, hbd: 0, hbd_savings: 0 })
   const [, setIntentCleared] = useState(false)
+  const [simResult, setSimResult] = useState<SimulateCallResult | null>(null)
+  const isViewOnly = wallet === Wallet.ViewOnly
+  const keyTypeSelectable = wallet === Wallet.Hive || isViewOnly
   const addIntent = () => {
     const amt = parseFloat(newIntentAmt)
     if (!user || !balance || !balance.bal) {
@@ -231,14 +236,21 @@ const CallContract = ({ contractId }: { contractId: string }) => {
     intents.current = { hive: 0, hbd: 0, hbd_savings: 0 }
     setIntentCleared((p) => !p)
   }
-  const call = async () => {
+  const runSimulation = async (): Promise<{
+    sim: SimulateCallResult
+    effectiveKeyType: KeyTypes
+    intentsArr: { type: string; args: { limit: string; token: string } }[]
+    simRcLimit: number
+  } | null> => {
     if (!user) {
-      return toaster.error({ title: t('callContract.pleaseConnectWallet') })
+      toaster.error({ title: t('callContract.pleaseConnectWallet') })
+      return null
     }
     if (!methodName) {
-      return toaster.error({ title: t('callContract.methodRequired') })
+      toaster.error({ title: t('callContract.methodRequired') })
+      return null
     }
-    const effectiveKeyType = wallet === Wallet.Hive ? keyType : KeyTypes.Active
+    const effectiveKeyType = keyTypeSelectable ? keyType : KeyTypes.Active
     const intentsArr = Object.keys(intents.current)
       .filter((a) => intents.current[a as CoinLower] > 0)
       .map((a) => {
@@ -251,13 +263,15 @@ const CallContract = ({ contractId }: { contractId: string }) => {
         }
       })
     if (!balance || !balance.rc) {
-      return toaster.error({ title: t('callContract.walletNotConnected') })
+      toaster.error({ title: t('callContract.walletNotConnected') })
+      return null
     }
     const simRcLimit = balance.rc.amount - Math.ceil(intents.current.hbd * 1000)
     if (simRcLimit <= 0) {
-      return toaster.error({ title: t('callContract.insufficientBalance') })
+      toaster.error({ title: t('callContract.insufficientBalance') })
+      return null
     }
-    const simResult = await simulateContractCalls({
+    const response = await simulateContractCalls({
       tx_id: '',
       ...(effectiveKeyType === KeyTypes.Active
         ? { required_auths: [userPrefixed!] }
@@ -272,8 +286,23 @@ const CallContract = ({ contractId }: { contractId: string }) => {
         }
       ]
     })
-    const sim = simResult.data.simulateContractCalls[0]
+    const sim = response.data.simulateContractCalls[0]
+    return { sim, effectiveKeyType, intentsArr, simRcLimit }
+  }
+  const simulate = async () => {
+    const res = await runSimulation()
+    if (!res) return
+    setSimResult(res.sim)
+    if (res.sim.success) {
+      toaster.success({ title: t('callContract.simulationSucceeded') })
+    }
+  }
+  const call = async () => {
+    const res = await runSimulation()
+    if (!res) return
+    const { sim, effectiveKeyType, intentsArr, simRcLimit } = res
     if (!sim.success) {
+      setSimResult(sim)
       return toaster.error({ title: t('callContract.simulationFailed'), description: sim.err_msg || sim.err })
     }
     const rcLimitInt = Math.min(Math.ceil(parseInt(sim.rc_used) * 1.25), simRcLimit)
@@ -361,7 +390,7 @@ const CallContract = ({ contractId }: { contractId: string }) => {
                 {t('callContract.currentAllowance')}: {intents.current[newIntentToken].toFixed(3)} {magiAssetDisplay(newIntentToken)}
               </Field.HelperText>
             </Field.Root>
-            {wallet === Wallet.Hive && (
+            {keyTypeSelectable && (
               <Field.Root>
                 <Field.Label>{t('form.keyType', { ns: 'common' })}</Field.Label>
                 <ButtonGroup variant="outline" attached>
@@ -383,9 +412,57 @@ const CallContract = ({ contractId }: { contractId: string }) => {
               </Field.Root>
             )}
           </Stack>
-          <Button colorPalette={themeColorScheme} mt={'5'} onClick={call} w={'fit-content'}>
-            {t('tabs.callContract')}
-          </Button>
+          <HStack mt={'5'} gap={'3'}>
+            <Button variant={'outline'} colorPalette={themeColorScheme} onClick={simulate} w={'fit-content'}>
+              {t('callContract.simulate')}
+            </Button>
+            {!isViewOnly && (
+              <Button colorPalette={themeColorScheme} onClick={call} w={'fit-content'}>
+                {t('tabs.callContract')}
+              </Button>
+            )}
+          </HStack>
+          {simResult && (
+            <Alert.Root status={simResult.success ? 'success' : 'error'} mt={'4'}>
+              <Alert.Indicator />
+              <Box flex={'1'}>
+                <Alert.Title>
+                  {simResult.success ? t('callContract.simulationSucceeded') : t('callContract.simulationFailed')}
+                </Alert.Title>
+                <Alert.Description>
+                  {simResult.success ? (
+                    <VStack alignItems={'flex-start'} gap={'1'} mt={'1'}>
+                      <Text fontSize={'sm'}>
+                        {t('callContract.rcUsed')}: {simResult.rc_used}
+                      </Text>
+                      <Text fontSize={'sm'}>
+                        {t('callContract.gasUsed')}: {simResult.gas_used}
+                      </Text>
+                      {simResult.ret !== undefined && simResult.ret !== '' && (
+                        <Box w={'full'}>
+                          <Text fontSize={'sm'}>{t('callContract.returnValue')}:</Text>
+                          <Code
+                            display={'block'}
+                            whiteSpace={'pre-wrap'}
+                            wordBreak={'break-all'}
+                            maxH={'40'}
+                            overflowY={'auto'}
+                            p={'2'}
+                            mt={'1'}
+                          >
+                            {simResult.ret}
+                          </Code>
+                        </Box>
+                      )}
+                    </VStack>
+                  ) : (
+                    <Text fontSize={'sm'}>{simResult.err_msg || simResult.err}</Text>
+                  )}
+                </Alert.Description>
+              </Box>
+              <CloseButton size={'sm'} onClick={() => setSimResult(null)} />
+            </Alert.Root>
+          )}
         </Card.Body>
       </Card.Root>
       <AiohaModal displayed={walletOpen} onClose={() => setWalletOpen(false)} initPage={0} />

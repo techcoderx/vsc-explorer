@@ -12,11 +12,11 @@ importers:
         specifier: ^1.8.2
         version: 1.8.2(webextension-polyfill@0.12.0)
       '@aioha/magi':
-        specifier: ^0.0.5
-        version: 0.0.5(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+        specifier: ^0.0.7
+        version: 0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       '@aioha/providers':
         specifier: ^1.9.0-beta.3
-        version: 1.9.0-beta.3(aa00345dd7b4dcadbe35d2f4e005137c)
+        version: 1.9.0-beta.3(52159bb53a1f6d95f7eb023892aa5422)
       '@chakra-ui/react':
         specifier: ^3
         version: 3.34.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -151,8 +151,8 @@ packages:
     resolution: {integrity: sha512-+ZUe9Iyv00WA5TDfi7TsCHKl5b22prR06JAG9u/9m9jePbGB83dtUMS65e/q3oXiMX78M4/YaDI8DYdIJmnk1A==}
     engines: {node: '>=18.0.0'}
 
-  '@aioha/magi@0.0.5':
-    resolution: {integrity: sha512-EGpw3+hSMpZ02U5vjNNe9u4XbUPf+LE0s3nx1uN/z+sWDYq/I96afBYUV5jxRrLhfBj1rKk5JPTMMX/g4POmQg==}
+  '@aioha/magi@0.0.7':
+    resolution: {integrity: sha512-NOh5oyWsFokYTqGh1tJnEd6xQg+RT0N46pSGwmXNOxAwQRLv2oENEXzFvjLB65q49ov5LL+FSqyUHsMcrrgI9w==}
     peerDependencies:
       '@aioha/aioha': ^1.8.2
       viem: 2.x
@@ -4356,17 +4356,17 @@ snapshots:
       inherits: 2.0.4
       varint: 6.0.0
 
-  '@aioha/magi@0.0.5(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
+  '@aioha/magi@0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
     dependencies:
       '@aioha/aioha': 1.8.2(webextension-polyfill@0.12.0)
       multiformats: 13.4.2
       viem: 2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
 
-  '@aioha/providers@1.9.0-beta.3(aa00345dd7b4dcadbe35d2f4e005137c)':
+  '@aioha/providers@1.9.0-beta.3(52159bb53a1f6d95f7eb023892aa5422)':
     dependencies:
       '@aioha/aioha': 1.8.2(webextension-polyfill@0.12.0)
     optionalDependencies:
-      '@aioha/magi': 0.0.5(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+      '@aioha/magi': 0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       '@wagmi/core': 3.4.1(@tanstack/query-core@5.90.11)(@types/react@19.2.14)(ox@0.14.7(typescript@5.9.3)(zod@3.25.76))(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       lit: 3.3.0
       react: 19.2.4

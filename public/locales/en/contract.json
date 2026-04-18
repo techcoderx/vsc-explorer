@@ -36,8 +36,14 @@
     "amountMustBePositive": "Amount must be greater than 0",
     "insufficientBalance": "Insufficient balance",
     "connectFirst": "Please connect your wallet first",
+    "pleaseConnectWallet": "Please connect your wallet first",
     "methodRequired": "Call method is required",
-    "simulationFailed": "Contract Call Simulation Failed"
+    "simulate": "Simulate",
+    "simulationFailed": "Contract Call Simulation Failed",
+    "simulationSucceeded": "Contract Call Simulation Succeeded",
+    "rcUsed": "RC used",
+    "gasUsed": "Gas used",
+    "returnValue": "Return value"
   },
   "verification": {
     "verified": "Contract source code verified",
