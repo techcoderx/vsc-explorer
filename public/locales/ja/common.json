@@ -69,5 +69,15 @@
     "collectInterest": "{{amount}} の利息を受取",
     "call": "コントラクト {{contract}} で {{action}} を呼び出し",
     "toSuffix": " {{to}} へ"
+  },
+  "viewOnly": {
+    "title": "閲覧のみ",
+    "badge": "閲覧のみ",
+    "addressRequired": "アドレスは必須です",
+    "invalidEvm": "無効なEthereumアドレス（0x...が必要）",
+    "invalidBtc": "無効なBitcoinアドレス（bc1/1/3...が必要）",
+    "placeholderHive": "Hiveユーザー名を入力",
+    "placeholderEvm": "Ethereumアドレスを入力 (0x...)",
+    "placeholderBtc": "Bitcoinアドレスを入力 (bc1...)"
   }
 }

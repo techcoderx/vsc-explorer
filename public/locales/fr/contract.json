@@ -11,7 +11,7 @@
     "history": "Historique",
     "ledgerOps": "Opérations du registre",
     "actions": "Actions",
-    "balances": "Jetons"
+    "balances": "Soldes"
   },
   "info": {
     "createdAt": "Créé le",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Solde insuffisant",
     "connectFirst": "Veuillez d'abord connecter votre portefeuille",
     "methodRequired": "La méthode d'appel est requise",
-    "simulationFailed": "Échec de la simulation d'appel de contrat"
+    "simulationFailed": "Échec de la simulation d'appel de contrat",
+    "pleaseConnectWallet": "Veuillez d'abord connecter votre portefeuille",
+    "simulate": "Simuler",
+    "simulationSucceeded": "Simulation d'appel de contrat réussie",
+    "rcUsed": "RC utilisé",
+    "gasUsed": "Gaz utilisé",
+    "returnValue": "Valeur de retour"
   },
   "verification": {
     "verified": "Code source du contrat vérifié",

@@ -69,5 +69,15 @@
     "collectInterest": "coletar {{amount}} de juros",
     "call": "chamar {{action}} no contrato {{contract}}",
     "toSuffix": " para {{to}}"
+  },
+  "viewOnly": {
+    "title": "Somente Leitura",
+    "badge": "Somente Leitura",
+    "addressRequired": "O endereço é obrigatório",
+    "invalidEvm": "Endereço Ethereum inválido (esperado 0x...)",
+    "invalidBtc": "Endereço Bitcoin inválido (esperado bc1/1/3...)",
+    "placeholderHive": "Digite um nome de usuário Hive",
+    "placeholderEvm": "Digite um endereço Ethereum (0x...)",
+    "placeholderBtc": "Digite um endereço Bitcoin (bc1...)"
   }
 }

@@ -11,7 +11,7 @@
     "history": "歷史",
     "ledgerOps": "帳本操作",
     "actions": "操作",
-    "balances": "代幣"
+    "balances": "餘額"
   },
   "info": {
     "createdAt": "建立時間",
@@ -37,7 +37,13 @@
     "insufficientBalance": "餘額不足",
     "connectFirst": "請先連接您的錢包",
     "methodRequired": "呼叫方法為必填項",
-    "simulationFailed": "合約呼叫模擬失敗"
+    "simulationFailed": "合約呼叫模擬失敗",
+    "pleaseConnectWallet": "請先連接您的錢包",
+    "simulate": "模擬",
+    "simulationSucceeded": "合約呼叫模擬成功",
+    "rcUsed": "已使用 RC",
+    "gasUsed": "已使用 Gas",
+    "returnValue": "回傳值"
   },
   "verification": {
     "verified": "合約原始碼已驗證",

@@ -11,7 +11,7 @@
     "history": "기록",
     "ledgerOps": "원장 작업",
     "actions": "액션",
-    "balances": "토큰"
+    "balances": "잔액"
   },
   "info": {
     "createdAt": "생성 시간",
@@ -37,7 +37,13 @@
     "insufficientBalance": "잔액 부족",
     "connectFirst": "먼저 지갑을 연결해 주세요",
     "methodRequired": "호출 메서드는 필수입니다",
-    "simulationFailed": "컨트랙트 호출 시뮬레이션 실패"
+    "simulationFailed": "컨트랙트 호출 시뮬레이션 실패",
+    "pleaseConnectWallet": "먼저 지갑을 연결해 주세요",
+    "simulate": "시뮬레이션",
+    "simulationSucceeded": "컨트랙트 호출 시뮬레이션 성공",
+    "rcUsed": "사용된 RC",
+    "gasUsed": "사용된 Gas",
+    "returnValue": "반환 값"
   },
   "verification": {
     "verified": "컨트랙트 소스 코드가 검증되었습니다",

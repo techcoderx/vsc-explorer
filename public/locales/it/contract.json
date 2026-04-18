@@ -11,7 +11,7 @@
     "history": "Cronologia",
     "ledgerOps": "Operazioni del registro",
     "actions": "Azioni",
-    "balances": "Token"
+    "balances": "Saldi"
   },
   "info": {
     "createdAt": "Creato il",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Saldo insufficiente",
     "connectFirst": "Per favore connetti prima il tuo portafoglio",
     "methodRequired": "Il metodo di chiamata è obbligatorio",
-    "simulationFailed": "Simulazione della chiamata al contratto fallita"
+    "simulationFailed": "Simulazione della chiamata al contratto fallita",
+    "pleaseConnectWallet": "Per favore connetti prima il tuo wallet",
+    "simulate": "Simula",
+    "simulationSucceeded": "Simulazione chiamata contratto riuscita",
+    "rcUsed": "RC utilizzato",
+    "gasUsed": "Gas utilizzato",
+    "returnValue": "Valore di ritorno"
   },
   "verification": {
     "verified": "Codice sorgente del contratto verificato",

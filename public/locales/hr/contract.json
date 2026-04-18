@@ -11,7 +11,7 @@
     "history": "Povijest",
     "ledgerOps": "Operacije knjige",
     "actions": "Akcije",
-    "balances": "Tokeni"
+    "balances": "Stanja"
   },
   "info": {
     "createdAt": "Kreirano",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Nedovoljno stanje",
     "connectFirst": "Molimo prvo povežite novčanik",
     "methodRequired": "Metoda poziva je obavezna",
-    "simulationFailed": "Simulacija poziva ugovora nije uspjela"
+    "simulationFailed": "Simulacija poziva ugovora nije uspjela",
+    "pleaseConnectWallet": "Molimo najprije povežite novčanik",
+    "simulate": "Simuliraj",
+    "simulationSucceeded": "Simulacija poziva ugovora uspjela",
+    "rcUsed": "Korišteni RC",
+    "gasUsed": "Korišteni Gas",
+    "returnValue": "Povratna vrijednost"
   },
   "verification": {
     "verified": "Izvorni kod ugovora je verificiran",

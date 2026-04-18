@@ -11,7 +11,7 @@
     "history": "इतिहास",
     "ledgerOps": "लेजर ऑप्स",
     "actions": "क्रियाएं",
-    "balances": "टोकन"
+    "balances": "शेष राशि"
   },
   "info": {
     "createdAt": "निर्माण तिथि",
@@ -37,7 +37,13 @@
     "insufficientBalance": "अपर्याप्त शेष",
     "connectFirst": "कृपया पहले अपना वॉलेट कनेक्ट करें",
     "methodRequired": "कॉल विधि आवश्यक है",
-    "simulationFailed": "अनुबंध कॉल सिमुलेशन विफल"
+    "simulationFailed": "अनुबंध कॉल सिमुलेशन विफल",
+    "pleaseConnectWallet": "कृपया पहले अपना वॉलेट कनेक्ट करें",
+    "simulate": "सिमुलेट करें",
+    "simulationSucceeded": "अनुबंध कॉल सिमुलेशन सफल",
+    "rcUsed": "उपयोग किया गया RC",
+    "gasUsed": "उपयोग किया गया Gas",
+    "returnValue": "वापसी मान"
   },
   "verification": {
     "verified": "अनुबंध स्रोत कोड सत्यापित",

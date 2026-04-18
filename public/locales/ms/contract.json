@@ -11,7 +11,7 @@
     "history": "Sejarah",
     "ledgerOps": "Op Lejar",
     "actions": "Tindakan",
-    "balances": "Token"
+    "balances": "Baki"
   },
   "info": {
     "createdAt": "Dicipta Pada",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Baki tidak mencukupi",
     "connectFirst": "Sila sambungkan dompet anda terlebih dahulu",
     "methodRequired": "Kaedah panggilan diperlukan",
-    "simulationFailed": "Simulasi Panggilan Kontrak Gagal"
+    "simulationFailed": "Simulasi Panggilan Kontrak Gagal",
+    "pleaseConnectWallet": "Sila sambungkan dompet anda dahulu",
+    "simulate": "Simulasi",
+    "simulationSucceeded": "Simulasi Panggilan Kontrak Berjaya",
+    "rcUsed": "RC digunakan",
+    "gasUsed": "Gas digunakan",
+    "returnValue": "Nilai pulangan"
   },
   "verification": {
     "verified": "Kod sumber kontrak telah disahkan",

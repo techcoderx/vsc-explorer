@@ -11,7 +11,7 @@
     "history": "Historia",
     "ledgerOps": "Operacje księgi",
     "actions": "Akcje",
-    "balances": "Tokeny"
+    "balances": "Salda"
   },
   "info": {
     "createdAt": "Utworzono",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Niewystarczające saldo",
     "connectFirst": "Najpierw połącz swój portfel",
     "methodRequired": "Wymagana jest metoda wywołania",
-    "simulationFailed": "Symulacja wywołania kontraktu nie powiodła się"
+    "simulationFailed": "Symulacja wywołania kontraktu nie powiodła się",
+    "pleaseConnectWallet": "Najpierw podłącz swój portfel",
+    "simulate": "Symuluj",
+    "simulationSucceeded": "Symulacja wywołania kontraktu udana",
+    "rcUsed": "Użyty RC",
+    "gasUsed": "Użyty Gas",
+    "returnValue": "Wartość zwracana"
   },
   "verification": {
     "verified": "Kod źródłowy kontraktu zweryfikowany",

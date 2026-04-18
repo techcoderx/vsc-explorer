@@ -69,5 +69,15 @@
     "collectInterest": "raccogliere {{amount}} di interessi",
     "call": "chiamare {{action}} nel contratto {{contract}}",
     "toSuffix": " a {{to}}"
+  },
+  "viewOnly": {
+    "title": "Solo Visualizzazione",
+    "badge": "Solo Visualizzazione",
+    "addressRequired": "L'indirizzo è obbligatorio",
+    "invalidEvm": "Indirizzo Ethereum non valido (atteso 0x...)",
+    "invalidBtc": "Indirizzo Bitcoin non valido (atteso bc1/1/3...)",
+    "placeholderHive": "Inserisci un nome utente Hive",
+    "placeholderEvm": "Inserisci un indirizzo Ethereum (0x...)",
+    "placeholderBtc": "Inserisci un indirizzo Bitcoin (bc1...)"
   }
 }

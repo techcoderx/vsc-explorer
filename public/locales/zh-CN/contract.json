@@ -11,7 +11,7 @@
     "history": "历史",
     "ledgerOps": "账本操作",
     "actions": "操作",
-    "balances": "代币"
+    "balances": "余额"
   },
   "info": {
     "createdAt": "创建时间",
@@ -37,7 +37,13 @@
     "insufficientBalance": "余额不足",
     "connectFirst": "请先连接您的钱包",
     "methodRequired": "调用方法为必填项",
-    "simulationFailed": "合约调用模拟失败"
+    "simulationFailed": "合约调用模拟失败",
+    "pleaseConnectWallet": "请先连接您的钱包",
+    "simulate": "模拟",
+    "simulationSucceeded": "合约调用模拟成功",
+    "rcUsed": "已使用 RC",
+    "gasUsed": "已使用 Gas",
+    "returnValue": "返回值"
   },
   "verification": {
     "verified": "合约源代码已验证",

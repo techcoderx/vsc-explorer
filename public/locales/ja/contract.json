@@ -11,7 +11,7 @@
     "history": "履歴",
     "ledgerOps": "台帳オペレーション",
     "actions": "アクション",
-    "balances": "トークン"
+    "balances": "残高"
   },
   "info": {
     "createdAt": "作成日時",
@@ -37,7 +37,13 @@
     "insufficientBalance": "残高不足",
     "connectFirst": "先にウォレットを接続してください",
     "methodRequired": "呼び出しメソッドは必須です",
-    "simulationFailed": "コントラクト呼び出しシミュレーション失敗"
+    "simulationFailed": "コントラクト呼び出しシミュレーション失敗",
+    "pleaseConnectWallet": "まずウォレットを接続してください",
+    "simulate": "シミュレート",
+    "simulationSucceeded": "コントラクト呼び出しのシミュレーションに成功",
+    "rcUsed": "使用RC",
+    "gasUsed": "使用Gas",
+    "returnValue": "戻り値"
   },
   "verification": {
     "verified": "コントラクトのソースコードが検証済み",

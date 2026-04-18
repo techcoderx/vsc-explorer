@@ -69,5 +69,15 @@
     "collectInterest": "naplati {{amount}} kamata",
     "call": "pozovi {{action}} u ugovoru {{contract}}",
     "toSuffix": " na {{to}}"
+  },
+  "viewOnly": {
+    "title": "Samo Pregled",
+    "badge": "Samo Pregled",
+    "addressRequired": "Adresa je obavezna",
+    "invalidEvm": "Nevažeća Ethereum adresa (očekivano 0x...)",
+    "invalidBtc": "Nevažeća Bitcoin adresa (očekivano bc1/1/3...)",
+    "placeholderHive": "Unesite Hive korisničko ime",
+    "placeholderEvm": "Unesite Ethereum adresu (0x...)",
+    "placeholderBtc": "Unesite Bitcoin adresu (bc1...)"
   }
 }

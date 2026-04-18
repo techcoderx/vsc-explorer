@@ -11,7 +11,7 @@
     "history": "Historial",
     "ledgerOps": "Operaciones del libro mayor",
     "actions": "Acciones",
-    "balances": "Tokens"
+    "balances": "Saldos"
   },
   "info": {
     "createdAt": "Creado en",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Saldo insuficiente",
     "connectFirst": "Por favor conecta tu billetera primero",
     "methodRequired": "El método de llamada es obligatorio",
-    "simulationFailed": "Fallo en la simulación de llamada al contrato"
+    "simulationFailed": "Fallo en la simulación de llamada al contrato",
+    "pleaseConnectWallet": "Por favor conecte su billetera primero",
+    "simulate": "Simular",
+    "simulationSucceeded": "Simulación de llamada al contrato exitosa",
+    "rcUsed": "RC usado",
+    "gasUsed": "Gas usado",
+    "returnValue": "Valor de retorno"
   },
   "verification": {
     "verified": "Código fuente del contrato verificado",

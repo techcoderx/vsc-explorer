@@ -11,7 +11,7 @@
     "history": "История",
     "ledgerOps": "Операции реестра",
     "actions": "Действия",
-    "balances": "Токены"
+    "balances": "Балансы"
   },
   "info": {
     "createdAt": "Создан",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Недостаточно средств",
     "connectFirst": "Пожалуйста, сначала подключите кошелёк",
     "methodRequired": "Требуется метод вызова",
-    "simulationFailed": "Симуляция вызова контракта не удалась"
+    "simulationFailed": "Симуляция вызова контракта не удалась",
+    "pleaseConnectWallet": "Сначала подключите ваш кошелёк",
+    "simulate": "Симулировать",
+    "simulationSucceeded": "Симуляция вызова контракта успешна",
+    "rcUsed": "Использовано RC",
+    "gasUsed": "Использовано Gas",
+    "returnValue": "Возвращаемое значение"
   },
   "verification": {
     "verified": "Исходный код контракта верифицирован",

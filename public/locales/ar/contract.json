@@ -11,7 +11,7 @@
     "history": "السجل",
     "ledgerOps": "عمليات دفتر الأستاذ",
     "actions": "الإجراءات",
-    "balances": "الرموز"
+    "balances": "الأرصدة"
   },
   "info": {
     "createdAt": "تاريخ الإنشاء",
@@ -37,7 +37,13 @@
     "insufficientBalance": "رصيد غير كافٍ",
     "connectFirst": "يرجى ربط محفظتك أولاً",
     "methodRequired": "طريقة الاستدعاء مطلوبة",
-    "simulationFailed": "فشل محاكاة استدعاء العقد"
+    "simulationFailed": "فشل محاكاة استدعاء العقد",
+    "pleaseConnectWallet": "يرجى توصيل محفظتك أولاً",
+    "simulate": "محاكاة",
+    "simulationSucceeded": "نجحت محاكاة استدعاء العقد",
+    "rcUsed": "RC المستخدم",
+    "gasUsed": "Gas المستخدم",
+    "returnValue": "القيمة المُرجعة"
   },
   "verification": {
     "verified": "تم التحقق من الكود المصدري للعقد",

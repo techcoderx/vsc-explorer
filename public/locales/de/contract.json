@@ -11,7 +11,7 @@
     "history": "Historie",
     "ledgerOps": "Ledger-Operationen",
     "actions": "Aktionen",
-    "balances": "Token"
+    "balances": "Guthaben"
   },
   "info": {
     "createdAt": "Erstellt am",
@@ -37,7 +37,13 @@
     "insufficientBalance": "Unzureichendes Guthaben",
     "connectFirst": "Bitte verbinde zuerst dein Wallet",
     "methodRequired": "Aufrufmethode ist erforderlich",
-    "simulationFailed": "Contractaufruf-Simulation fehlgeschlagen"
+    "simulationFailed": "Contractaufruf-Simulation fehlgeschlagen",
+    "pleaseConnectWallet": "Bitte verbinde zuerst deine Wallet",
+    "simulate": "Simulieren",
+    "simulationSucceeded": "Vertragsaufruf-Simulation erfolgreich",
+    "rcUsed": "Verwendete RC",
+    "gasUsed": "Verbrauchtes Gas",
+    "returnValue": "Rückgabewert"
   },
   "verification": {
     "verified": "Contract-Quellcode verifiziert",
