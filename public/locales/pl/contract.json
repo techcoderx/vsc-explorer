@@ -10,7 +10,8 @@
     "sourceCode": "Kod źródłowy",
     "history": "Historia",
     "ledgerOps": "Operacje księgi",
-    "actions": "Akcje"
+    "actions": "Akcje",
+    "balances": "Tokeny"
   },
   "info": {
     "createdAt": "Utworzono",

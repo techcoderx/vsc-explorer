@@ -10,7 +10,8 @@
     "sourceCode": "स्रोत कोड",
     "history": "इतिहास",
     "ledgerOps": "लेजर ऑप्स",
-    "actions": "क्रियाएं"
+    "actions": "क्रियाएं",
+    "balances": "टोकन"
   },
   "info": {
     "createdAt": "निर्माण तिथि",

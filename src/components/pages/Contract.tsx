@@ -44,6 +44,7 @@ import { Flairs } from '../../flairs'
 import { cvInfo } from '../../cvRequests'
 import { Txns } from '../tables/Transactions'
 import { AddressBalanceCard } from './address/Balances'
+import { BalancesTabs } from './address/AddressBalances'
 import { ContractOutputTbl } from '../tables/ContractOutput'
 import Pagination from '../Pagination'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
@@ -519,6 +520,7 @@ export const Contract = () => {
               <Tabs.Trigger value="1">{t('tabs.outputs')}</Tabs.Trigger>
               <Tabs.Trigger value="8">{t('tabs.ledgerOps')}</Tabs.Trigger>
               <Tabs.Trigger value="9">{t('tabs.actions')}</Tabs.Trigger>
+              <Tabs.Trigger value="10">{t('tabs.balances')}</Tabs.Trigger>
               <Tabs.Trigger value="2">{t('tabs.info')}</Tabs.Trigger>
               <Tabs.Trigger value="3">{t('tabs.storageProof')}</Tabs.Trigger>
               <Tabs.Trigger value="4">{t('tabs.readState')}</Tabs.Trigger>
@@ -583,6 +585,9 @@ export const Contract = () => {
                 maxPageNum={Math.min(100, Math.ceil((actionsStats?.count || 0) / txCount))}
                 buildLink={buildActionsPageLink}
               />
+            </Tabs.Content>
+            <Tabs.Content value="10" pt={'2'} px={'0'}>
+              <BalancesTabs addr={contractAddr} />
             </Tabs.Content>
             <Tabs.Content value="2" px={'0'} pb={'4'}>
               <Table.ScrollArea>

@@ -10,7 +10,8 @@
     "sourceCode": "Codice sorgente",
     "history": "Cronologia",
     "ledgerOps": "Operazioni del registro",
-    "actions": "Azioni"
+    "actions": "Azioni",
+    "balances": "Token"
   },
   "info": {
     "createdAt": "Creato il",

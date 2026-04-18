@@ -10,7 +10,8 @@
     "sourceCode": "原始碼",
     "history": "歷史",
     "ledgerOps": "帳本操作",
-    "actions": "操作"
+    "actions": "操作",
+    "balances": "代幣"
   },
   "info": {
     "createdAt": "建立時間",

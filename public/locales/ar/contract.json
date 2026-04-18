@@ -10,7 +10,8 @@
     "sourceCode": "الكود المصدري",
     "history": "السجل",
     "ledgerOps": "عمليات دفتر الأستاذ",
-    "actions": "الإجراءات"
+    "actions": "الإجراءات",
+    "balances": "الرموز"
   },
   "info": {
     "createdAt": "تاريخ الإنشاء",

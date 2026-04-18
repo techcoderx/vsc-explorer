@@ -10,7 +10,8 @@
     "sourceCode": "소스 코드",
     "history": "기록",
     "ledgerOps": "원장 작업",
-    "actions": "액션"
+    "actions": "액션",
+    "balances": "토큰"
   },
   "info": {
     "createdAt": "생성 시간",

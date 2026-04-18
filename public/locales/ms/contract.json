@@ -10,7 +10,8 @@
     "sourceCode": "Kod Sumber",
     "history": "Sejarah",
     "ledgerOps": "Op Lejar",
-    "actions": "Tindakan"
+    "actions": "Tindakan",
+    "balances": "Token"
   },
   "info": {
     "createdAt": "Dicipta Pada",

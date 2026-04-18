@@ -10,7 +10,8 @@
     "sourceCode": "ソースコード",
     "history": "履歴",
     "ledgerOps": "台帳オペレーション",
-    "actions": "アクション"
+    "actions": "アクション",
+    "balances": "トークン"
   },
   "info": {
     "createdAt": "作成日時",

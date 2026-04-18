@@ -10,7 +10,8 @@
     "sourceCode": "Izvorni kod",
     "history": "Povijest",
     "ledgerOps": "Operacije knjige",
-    "actions": "Akcije"
+    "actions": "Akcije",
+    "balances": "Tokeni"
   },
   "info": {
     "createdAt": "Kreirano",

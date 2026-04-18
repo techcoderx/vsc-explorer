@@ -10,7 +10,8 @@
     "sourceCode": "Código fuente",
     "history": "Historial",
     "ledgerOps": "Operaciones del libro mayor",
-    "actions": "Acciones"
+    "actions": "Acciones",
+    "balances": "Tokens"
   },
   "info": {
     "createdAt": "Creado en",

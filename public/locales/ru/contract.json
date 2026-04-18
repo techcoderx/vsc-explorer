@@ -10,7 +10,8 @@
     "sourceCode": "Исходный код",
     "history": "История",
     "ledgerOps": "Операции реестра",
-    "actions": "Действия"
+    "actions": "Действия",
+    "balances": "Токены"
   },
   "info": {
     "createdAt": "Создан",

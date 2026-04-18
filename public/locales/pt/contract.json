@@ -10,7 +10,8 @@
     "sourceCode": "Código-fonte",
     "history": "Histórico",
     "ledgerOps": "Operações do razão",
-    "actions": "Ações"
+    "actions": "Ações",
+    "balances": "Tokens"
   },
   "info": {
     "createdAt": "Criado em",

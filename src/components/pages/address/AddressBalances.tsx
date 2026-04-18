@@ -104,8 +104,7 @@ const NativeAssetsTable = ({ addr }: { addr: string }) => {
   )
 }
 
-export const AddressBalances = () => {
-  const { addr } = useOutletContext<{ addr: string }>()
+export const BalancesTabs = ({ addr }: { addr: string }) => {
   const { t } = useTranslation('pages')
 
   return (
@@ -122,4 +121,9 @@ export const AddressBalances = () => {
       </Tabs.Content>
     </Tabs.Root>
   )
+}
+
+export const AddressBalances = () => {
+  const { addr } = useOutletContext<{ addr: string }>()
+  return <BalancesTabs addr={addr} />
 }

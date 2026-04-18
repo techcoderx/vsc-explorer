@@ -10,7 +10,8 @@
     "sourceCode": "Source Code",
     "history": "History",
     "ledgerOps": "Ledger Ops",
-    "actions": "Actions"
+    "actions": "Actions",
+    "balances": "Balances"
   },
   "info": {
     "createdAt": "Created At",

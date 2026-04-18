@@ -10,7 +10,8 @@
     "sourceCode": "Code source",
     "history": "Historique",
     "ledgerOps": "Opérations du registre",
-    "actions": "Actions"
+    "actions": "Actions",
+    "balances": "Jetons"
   },
   "info": {
     "createdAt": "Créé le",
