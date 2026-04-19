@@ -380,7 +380,7 @@ const describeDexPool = (
         </HStack>
       )
     case 'fee': {
-      const asset = f.__asset ?? ''
+      const asset = f.a ?? f.__asset ?? ''
       const fmt = (v: string) => (asset ? fmtDexAmount(v, asset) : thousandSeperator(v))
       return (
         <Text>

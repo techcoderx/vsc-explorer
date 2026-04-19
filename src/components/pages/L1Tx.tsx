@@ -280,8 +280,8 @@ const TxActions = ({ txn }: { txn: Txn }) => {
         const parsedLogs = logs.map((log) => parseLog(ctype, log))
         parsedLogs.forEach((parsed, idx) => {
           let fields = parsed.fields
-          // dex_pool fee logs don't carry an asset; borrow it from the nearest swap in this result
-          if (ctype === 'dex_pool' && parsed.eventType === 'fee') {
+          // dex_pool fee logs gained an `a` (asset) field; fall back to the nearest swap for legacy logs that lack it.
+          if (ctype === 'dex_pool' && parsed.eventType === 'fee' && !parsed.fields.a) {
             const swap =
               parsedLogs.slice(idx + 1).find((p) => p.eventType === 'swap') ??
               parsedLogs.slice(0, idx).reverse().find((p) => p.eventType === 'swap')
