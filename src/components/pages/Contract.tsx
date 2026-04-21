@@ -748,7 +748,7 @@ export const Contract = () => {
                       <Heading fontSize={'md'}>{t('verification.verified')}</Heading>
                     </Flex>
                     <Text m={'5px 0'}>
-                      {t('verification.verifiedDescription')}
+                      {t('verification.verifiedDesc')}
                     </Text>
                     <Card.Root mt={'5'} mb={'5'}>
                       <Card.Body>
@@ -773,13 +773,13 @@ export const Contract = () => {
                                 minimalSpace
                               />
                               {verifInfo.contract_dir ? (
-                                <TableRow label={t('verification.contractDirectory')} value={verifInfo.contract_dir} isInCard minimalSpace />
+                                <TableRow label={t('verification.contractDir')} value={verifInfo.contract_dir} isInCard minimalSpace />
                               ) : null}
                               {verifInfo.go_mod_dir ? (
-                                <TableRow label={t('verification.goModuleDirectory')} value={verifInfo.go_mod_dir} isInCard minimalSpace />
+                                <TableRow label={t('verification.goModDir')} value={verifInfo.go_mod_dir} isInCard minimalSpace />
                               ) : null}
                               <TableRow
-                                label={t('verification.tinyGoVersion')}
+                                label={t('verification.tinygoVersion')}
                                 value={`v${verifInfo.tinygo_version} (Go: v${verifInfo.go_version})`}
                                 link={`https://hub.docker.com/layers/tinygo/tinygo/${verifInfo.tinygo_version}`}
                                 isInCard
@@ -831,7 +831,7 @@ export const Contract = () => {
               ) : verifLoading ? (
                 <Flex align={'center'} gap={'2'}>
                   <Spinner size={'sm'} />
-                  <Text fontSize={'md'}>{t('verification.loading')}</Text>
+                  <Text fontSize={'md'}>{t('verification.loadingStatus')}</Text>
                 </Flex>
               ) : (
                 <>

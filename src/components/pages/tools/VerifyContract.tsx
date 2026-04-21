@@ -84,13 +84,7 @@ const getNotice = (t: TFunction) => [
   },
   {
     title: t('verifyContract.notice.entrypoint'),
-    body: (
-      <Text>
-        {t('verifyContract.notice.entrypointBody1')} <Code>contract/</Code> {t('verifyContract.notice.entrypointBody2')}{' '}
-        <Code>contracts/dex</Code>{t('verifyContract.notice.entrypointBody3')}{' '}
-        <Code>main.go</Code> {t('verifyContract.notice.entrypointBody4')}
-      </Text>
-    )
+    body: <Text>{t('verifyContract.notice.entrypointBody')}</Text>
   },
   {
     title: t('verifyContract.notice.dependencies'),
@@ -98,11 +92,7 @@ const getNotice = (t: TFunction) => [
   },
   {
     title: t('verifyContract.notice.experimental'),
-    body: (
-      <Text>
-        {t('verifyContract.notice.experimentalBody1')} <b>{t('verifyContract.notice.experimentalBold')}</b> {t('verifyContract.notice.experimentalBody2')}
-      </Text>
-    )
+    body: <Text>{t('verifyContract.notice.experimentalBody')}</Text>
   }
 ]
 
@@ -136,7 +126,7 @@ export const VerifyContract = () => {
     } else if (repoIdParts[0].length > 39 || !/^[A-Za-z0-9-]+$/.test(repoIdParts[0])) {
       e = t('verifyContract.errors.invalidGithubUser')
     } else if (repoIdParts[1].length > 100 || !/^[A-Za-z0-9._-]+$/.test(repoIdParts[1])) {
-      e = t('verifyContract.errors.invalidRepoName')
+      e = t('verifyContract.errors.invalidGithubRepo')
     }
     if (
       contractDir.length > 0 &&
@@ -170,22 +160,22 @@ export const VerifyContract = () => {
       }
     } catch {
       setIsSpinning(false)
-      return toaster.error({ title: t('verifyContract.errors.backendFailed') })
+      return toaster.error({ title: t('verifyContract.errors.backendError') })
     }
     try {
       const fetchedRepo = await fetch(`https://api.github.com/repos/${repoId}`)
       if (fetchedRepo.status !== 200) {
-        return toaster.error({ title: t('verifyContract.errors.fetchRepoFailed', { status: fetchedRepo.status }) })
+        return toaster.error({ title: t('verifyContract.errors.repoFetchError', { statusCode: fetchedRepo.status }) })
       }
       if (gitBranch.length > 0) {
         const fetchedBranch = await fetch(`https://api.github.com/repos/${repoId}/branches/${gitBranch}`)
         if (fetchedBranch.status !== 200) {
-          return toaster.error({ title: t('verifyContract.errors.fetchBranchFailed', { status: fetchedBranch.status }) })
+          return toaster.error({ title: t('verifyContract.errors.branchFetchError', { statusCode: fetchedBranch.status }) })
         }
       }
     } catch {
       setIsSpinning(false)
-      return toaster.error({ title: t('verifyContract.errors.validateRepoFailed') })
+      return toaster.error({ title: t('verifyContract.errors.repoValidateError') })
     }
     toastIdRef.current = toaster.create({
       title: t('verifyContract.submitting'),
@@ -262,7 +252,7 @@ export const VerifyContract = () => {
   }
   return (
     <>
-      <PageTitle title="Verify Contract" />
+      <PageTitle title={t('verifyContract.title')} />
       <Heading as="h1" size="5xl" fontWeight="normal">{t('verifyContract.title')}</Heading>
       <Text mb={'6'}>
         {t('verifyContract.description')}
@@ -316,7 +306,7 @@ export const VerifyContract = () => {
                       <Input type="text" placeholder="vsc1..." value={addr} onChange={(e) => setAddr(e.target.value)} />
                     </Field.Root>
                     <Field.Root>
-                      <Field.Label>{t('verifyContract.form.repoUrl')}</Field.Label>
+                      <Field.Label>{t('verifyContract.form.githubRepoUrl')}</Field.Label>
                       <Input
                         type="text"
                         placeholder="https://github.com/..."
@@ -328,31 +318,31 @@ export const VerifyContract = () => {
                       <Field.Label>{t('verifyContract.form.gitBranch')}</Field.Label>
                       <Input
                         type="text"
-                        placeholder={'default branch'}
+                        placeholder={t('verifyContract.form.defaultBranch')}
                         value={gitBranch}
                         onChange={(e) => setGitBranch(e.target.value)}
                       />
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>
-                        {t('verifyContract.form.contractDirectory')}
-                        <InfoTip>{t('verifyContract.form.contractDirectoryTip')}</InfoTip>
+                        {t('verifyContract.form.contractDir')}
+                        <InfoTip>{t('verifyContract.form.contractDirTip')}</InfoTip>
                       </Field.Label>
                       <Input
                         type="text"
-                        placeholder={'contract'}
+                        placeholder={t('verifyContract.form.contractDirPlaceholder')}
                         value={contractDir}
                         onChange={(e) => setContractDir(e.target.value)}
                       />
                     </Field.Root>
                     <Field.Root>
                       <Field.Label>
-                        {t('verifyContract.form.goModDirectory')}
-                        <InfoTip>{t('verifyContract.form.goModDirectoryTip')}</InfoTip>
+                        {t('verifyContract.form.goModDir')}
+                        <InfoTip>{t('verifyContract.form.goModDirTip')}</InfoTip>
                       </Field.Label>
                       <Input
                         type="text"
-                        placeholder={'repository root'}
+                        placeholder={t('verifyContract.form.goModDirPlaceholder')}
                         value={goModDir}
                         onChange={(e) => setGoModDir(e.target.value)}
                       />
@@ -408,7 +398,7 @@ export const VerifyContract = () => {
             <Flex direction="column" gap={'5'} align={'center'}>
               <Text fontSize={'9xl'}>🎉</Text>
               <Text>
-                {t('verifyContract.submittedDescription')}
+                {t('verifyContract.completionMsg')}
               </Text>
               <Button asChild colorPalette={themeColorScheme}>
                 <ReactRouterLink to={`/contract/${addr}`}>{t('verifyContract.viewContract')}</ReactRouterLink>
