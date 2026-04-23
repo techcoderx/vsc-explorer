@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@aioha/aioha':
-        specifier: ^1.8.2
-        version: 1.8.2(webextension-polyfill@0.12.0)
+        specifier: ^1.8.4
+        version: 1.8.4(webextension-polyfill@0.12.0)
       '@aioha/magi':
         specifier: ^0.0.7
-        version: 0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+        version: 0.0.7(@aioha/aioha@1.8.4(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       '@aioha/providers':
         specifier: ^1.9.0-beta.3
-        version: 1.9.0-beta.3(52159bb53a1f6d95f7eb023892aa5422)
+        version: 1.9.0-beta.3(5b9abfd267499e8476bafd6c2c95c550)
       '@chakra-ui/react':
         specifier: ^3
         version: 3.34.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -144,11 +144,11 @@ packages:
   '@adraffy/ens-normalize@1.11.1':
     resolution: {integrity: sha512-nhCBV3quEgesuf7c7KYfperqSS14T8bYuvJ8PcLJp6znkZpFc0AuW4qBtr8eKVyPPe/8RSr7sglCWPU5eaxwKQ==}
 
-  '@aioha/aioha@1.8.2':
-    resolution: {integrity: sha512-Q+WK7/u4oi7kMSrPLnJ6LMjTCVMv8dVAlB1/06s097mjPINmidBqDmLc5VgXnCfj/qQ0bWFE0eDOL3O7Vm7OCg==}
+  '@aioha/aioha@1.8.4':
+    resolution: {integrity: sha512-qfGQ5bPgbVD72WJ4ENka8Y55TSiTePaRCFVPPhsKCN7XlsiD0WaMB04GXohhjvAvNe6OoPXnom0c9mRc1apVDA==}
 
-  '@aioha/ledger-app-hive@0.0.2':
-    resolution: {integrity: sha512-+ZUe9Iyv00WA5TDfi7TsCHKl5b22prR06JAG9u/9m9jePbGB83dtUMS65e/q3oXiMX78M4/YaDI8DYdIJmnk1A==}
+  '@aioha/ledger-app-hive@0.0.3':
+    resolution: {integrity: sha512-4OohtL0SCM8gDdYBOyEYEBSz1v0Ke3EKTBOKRDLmdJFN9X3bKohSlFIwGWjie7wIa4DVrmMaL5lIV1AvMQVYSA==}
     engines: {node: '>=18.0.0'}
 
   '@aioha/magi@0.0.7':
@@ -687,30 +687,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@ledgerhq/devices@8.4.7':
-    resolution: {integrity: sha512-CljHIaPmtv93H2If1Zs1xW0pgg+M37bAoJkm6+V6Yw5S0MgFWFpLnTTNgCvHXyD8pG0+uq8TuOXUiG1oAV5AyA==}
-
-  '@ledgerhq/devices@8.7.0':
-    resolution: {integrity: sha512-3pSOULPUhClk2oOxa6UnoyXW8+05FK7r6cpq2WiTey4kyIUjmIraO7AX9lhz9IU73dGVtBMdU+NCPPO2RYJaTQ==}
-
-  '@ledgerhq/errors@6.22.0':
-    resolution: {integrity: sha512-rXtpIOfHL62jWB7o77PNFD4EDYdcqyMeVgt7TZcmTkWT78cK+YYSUTMrNuGLhnZZZTMLWH023Wgt65OfKIdGBQ==}
-
-  '@ledgerhq/errors@6.27.0':
-    resolution: {integrity: sha512-EE2hATONHdNP3YWFe3rZwwpSEzI5oN+q/xTjOulnjHZo84TLjungegEJ54A/Pzld0woulkkeVA27FbW5SAO1aA==}
-
-  '@ledgerhq/hw-transport-webusb@6.29.13':
-    resolution: {integrity: sha512-RhQMCX2kjpI5N+4EvepDtIH9opTJxmCAEWIip4Im+ScjoSvBI1wveE5aDFhjDsHJUcKIQzIbB5jSuv0DZaajFA==}
-
-  '@ledgerhq/hw-transport@6.31.13':
-    resolution: {integrity: sha512-MrJRDk74wY980ofiFPRpTHQBbRw1wDuKbdag1zqlO1xtJglymwwY03K2kvBNvkm1RTSCPUp/nAoNG+WThZuuew==}
-
-  '@ledgerhq/hw-transport@6.31.7':
-    resolution: {integrity: sha512-R+QMlqoLJDPeCiqwWv85PbZ3m0hel5PwQzWwSIbyEwialqjXnG7LFQgytkgXlgMcayT0chvvLeYjuY5ZfMPY7w==}
-
-  '@ledgerhq/logs@6.13.0':
-    resolution: {integrity: sha512-4+qRW2Pc8V+btL0QEmdB2X+uyx0kOWMWE1/LWsq5sZy3Q5tpi4eItJS6mB0XL3wGW59RQ+8bchNQQ1OW/va8Og==}
-
   '@lit-labs/ssr-dom-shim@1.5.1':
     resolution: {integrity: sha512-Aou5UdlSpr5whQe8AA/bZG0jMj96CoJIWbGfZ91qieWu5AWUMKw8VR/pAkQkJYvBNhmCcWnZlyyk5oze8JIqYA==}
 
@@ -790,6 +766,10 @@ packages:
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
+
+  '@noble/hashes@2.2.0':
+    resolution: {integrity: sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==}
+    engines: {node: '>= 20.19.0'}
 
   '@noble/secp256k1@1.7.2':
     resolution: {integrity: sha512-/qzwYl5eFLH8OWIecQWM31qld2g1NfjgylK+TNhqtaUKP37Nm+Y+z30Fjhw0Ct8p9yCQEm2N3W/AckdIb3SMcQ==}
@@ -3020,9 +3000,6 @@ packages:
   jose@6.2.2:
     resolution: {integrity: sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ==}
 
-  js-md5@0.8.3:
-    resolution: {integrity: sha512-qR0HB5uP6wCuRMrWPTrkMaev7MJZwJuuw4fnwAzRgP4J4/F8RwtodOKpGp4XpqsLBFzzgqIO42efFAyz2Et6KQ==}
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -3623,9 +3600,6 @@ packages:
 
   rrweb-cssom@0.8.0:
     resolution: {integrity: sha512-guoltQEx+9aMf2gDZ0s62EcV8lsXR+0w8915TC3ITdn2YueuNjdAYh/levpU9nFaoChh9RUS5ZdQMrKfVEN9tw==}
-
-  rxjs@7.8.2:
-    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
 
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
@@ -4332,41 +4306,36 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.1': {}
 
-  '@aioha/aioha@1.8.2(webextension-polyfill@0.12.0)':
+  '@aioha/aioha@1.8.4(webextension-polyfill@0.12.0)':
     dependencies:
-      '@aioha/ledger-app-hive': 0.0.2
+      '@aioha/ledger-app-hive': 0.0.3
       '@aioha/tx-digest': 2.0.2
       '@hiveio/dhive': 1.3.2
       '@hiveio/wax': 2.0.2
-      '@ledgerhq/hw-transport-webusb': 6.29.13
       '@metamask/providers': 22.1.1(webextension-polyfill@0.12.0)
-      js-md5: 0.8.3
+      '@noble/hashes': 2.2.0
     transitivePeerDependencies:
       - encoding
       - supports-color
       - webextension-polyfill
 
-  '@aioha/ledger-app-hive@0.0.2':
+  '@aioha/ledger-app-hive@0.0.3':
     dependencies:
-      '@ledgerhq/errors': 6.22.0
-      '@ledgerhq/hw-transport': 6.31.7
-      '@noble/hashes': 1.8.0
       bip32-path: 0.4.2
       bs58: 5.0.0
-      inherits: 2.0.4
       varint: 6.0.0
 
-  '@aioha/magi@0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
+  '@aioha/magi@0.0.7(@aioha/aioha@1.8.4(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
     dependencies:
-      '@aioha/aioha': 1.8.2(webextension-polyfill@0.12.0)
+      '@aioha/aioha': 1.8.4(webextension-polyfill@0.12.0)
       multiformats: 13.4.2
       viem: 2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
 
-  '@aioha/providers@1.9.0-beta.3(52159bb53a1f6d95f7eb023892aa5422)':
+  '@aioha/providers@1.9.0-beta.3(5b9abfd267499e8476bafd6c2c95c550)':
     dependencies:
-      '@aioha/aioha': 1.8.2(webextension-polyfill@0.12.0)
+      '@aioha/aioha': 1.8.4(webextension-polyfill@0.12.0)
     optionalDependencies:
-      '@aioha/magi': 0.0.7(@aioha/aioha@1.8.2(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+      '@aioha/magi': 0.0.7(@aioha/aioha@1.8.4(webextension-polyfill@0.12.0))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       '@wagmi/core': 3.4.1(@tanstack/query-core@5.90.11)(@types/react@19.2.14)(ox@0.14.7(typescript@5.9.3)(zod@3.25.76))(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(viem@2.47.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
       lit: 3.3.0
       react: 19.2.4
@@ -4983,47 +4952,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@ledgerhq/devices@8.4.7':
-    dependencies:
-      '@ledgerhq/errors': 6.27.0
-      '@ledgerhq/logs': 6.13.0
-      rxjs: 7.8.2
-      semver: 7.7.3
-
-  '@ledgerhq/devices@8.7.0':
-    dependencies:
-      '@ledgerhq/errors': 6.27.0
-      '@ledgerhq/logs': 6.13.0
-      rxjs: 7.8.2
-      semver: 7.7.3
-
-  '@ledgerhq/errors@6.22.0': {}
-
-  '@ledgerhq/errors@6.27.0': {}
-
-  '@ledgerhq/hw-transport-webusb@6.29.13':
-    dependencies:
-      '@ledgerhq/devices': 8.7.0
-      '@ledgerhq/errors': 6.27.0
-      '@ledgerhq/hw-transport': 6.31.13
-      '@ledgerhq/logs': 6.13.0
-
-  '@ledgerhq/hw-transport@6.31.13':
-    dependencies:
-      '@ledgerhq/devices': 8.7.0
-      '@ledgerhq/errors': 6.27.0
-      '@ledgerhq/logs': 6.13.0
-      events: 3.3.0
-
-  '@ledgerhq/hw-transport@6.31.7':
-    dependencies:
-      '@ledgerhq/devices': 8.4.7
-      '@ledgerhq/errors': 6.27.0
-      '@ledgerhq/logs': 6.13.0
-      events: 3.3.0
-
-  '@ledgerhq/logs@6.13.0': {}
-
   '@lit-labs/ssr-dom-shim@1.5.1': {}
 
   '@lit/react@1.0.8(@types/react@19.2.14)':
@@ -5129,6 +5057,8 @@ snapshots:
   '@noble/hashes@1.7.0': {}
 
   '@noble/hashes@1.8.0': {}
+
+  '@noble/hashes@2.2.0': {}
 
   '@noble/secp256k1@1.7.2': {}
 
@@ -8508,8 +8438,6 @@ snapshots:
   jose@6.2.2:
     optional: true
 
-  js-md5@0.8.3: {}
-
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.1:
@@ -9196,10 +9124,6 @@ snapshots:
     optional: true
 
   rrweb-cssom@0.8.0: {}
-
-  rxjs@7.8.2:
-    dependencies:
-      tslib: 2.8.1
 
   safe-buffer@5.1.2: {}
 
