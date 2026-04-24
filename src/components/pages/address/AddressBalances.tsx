@@ -108,7 +108,7 @@ export const BalancesTabs = ({ addr }: { addr: string }) => {
   const { t } = useTranslation('pages')
 
   return (
-    <Tabs.Root defaultValue="native" colorPalette={themeColorScheme} variant="line" mt="3">
+    <Tabs.Root lazyMount defaultValue="native" colorPalette={themeColorScheme} variant="line" mt="3">
       <Tabs.List>
         <Tabs.Trigger value="native">{t('balancesTab.nativeAssets')}</Tabs.Trigger>
         <Tabs.Trigger value="tokens">{t('balancesTab.tokens')}</Tabs.Trigger>

@@ -141,7 +141,7 @@ const Block = (
             </Table.Body>
           </Table.Root>
 
-          <Tabs.Root mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
+          <Tabs.Root lazyMount mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'} defaultValue="0">
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
               <Tabs.Trigger value="0">{t('block.tabs.transactions')}</Tabs.Trigger>
               <Tabs.Trigger value="1">{t('block.tabs.opLogs')}</Tabs.Trigger>

@@ -110,7 +110,7 @@ const BtcMapping = () => {
         </Card.Root>
       </Stack>
 
-      <Tabs.Root mt="4" colorPalette={themeColorScheme} variant="enclosed" defaultValue="0">
+      <Tabs.Root lazyMount mt="4" colorPalette={themeColorScheme} variant="enclosed" defaultValue="0">
         <Tabs.List overflowX="auto" whiteSpace="nowrap" maxW="100%" display="flex" css={{ '& > button': { flexShrink: 0 } }}>
           <Tabs.Trigger value="0">{t('btc.tabs.transfers', { ns: 'pages' })}</Tabs.Trigger>
           <Tabs.Trigger value="1">{t('btc.tabs.maps', { ns: 'pages' })}</Tabs.Trigger>

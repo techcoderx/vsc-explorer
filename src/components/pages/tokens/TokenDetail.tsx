@@ -171,6 +171,7 @@ const TokenDetail = () => {
       </Stack>
       <hr />
       <Tabs.Root
+        lazyMount
         mt="4"
         colorPalette={themeColorScheme}
         variant="enclosed"

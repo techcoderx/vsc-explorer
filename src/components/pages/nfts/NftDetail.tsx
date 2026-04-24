@@ -202,6 +202,7 @@ const NftDetail = () => {
       </Box>
       <hr />
       <Tabs.Root
+        lazyMount
         mt="4"
         colorPalette={themeColorScheme}
         variant="enclosed"

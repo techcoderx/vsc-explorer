@@ -477,7 +477,6 @@ export const Contract = () => {
   const { contractId } = useParams()
   const [searchParams] = useSearchParams()
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('0')
   const [txFilters, setTxFilters] = useState<TxFilterState>(emptyTxFilters)
   const [ledgerFilters, setLedgerFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
   const [actionFilters, setActionFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
@@ -598,7 +597,7 @@ export const Contract = () => {
       {!!contract ? (
         <Box mt={'4'}>
           <AddressBalanceCard addr={'contract:' + contract.id} />
-          <Tabs.Root value={activeTab} onValueChange={(d) => setActiveTab(d.value)} mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'}>
+          <Tabs.Root lazyMount defaultValue="0" mt={'7'} colorPalette={themeColorScheme} variant={'enclosed'}>
             <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
               <Tabs.Trigger value="0">{t('tabs.transactions')}</Tabs.Trigger>
               <Tabs.Trigger value="1">{t('tabs.outputs')}</Tabs.Trigger>
@@ -611,21 +610,23 @@ export const Contract = () => {
               <Tabs.Trigger value="5">{t('tabs.callContract')}</Tabs.Trigger>
               <Tabs.Trigger value="6">{t('tabs.sourceCode')}</Tabs.Trigger>
               <Tabs.Trigger value="7">{t('tabs.history')}</Tabs.Trigger>
-              {activeTab === '0' && (
-                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-                  <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
-                </Box>
-              )}
-              {activeTab === '8' && (
-                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-                  <LedgerFilterToggle activeCount={countActiveFilters(ledgerFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
-                </Box>
-              )}
-              {activeTab === '9' && (
-                <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
-                  <LedgerFilterToggle activeCount={countActiveFilters(actionFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
-                </Box>
-              )}
+              <Tabs.Context>
+                {(api) =>
+                  api.value === '0' ? (
+                    <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                      <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                    </Box>
+                  ) : api.value === '8' ? (
+                    <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                      <LedgerFilterToggle activeCount={countActiveFilters(ledgerFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                    </Box>
+                  ) : api.value === '9' ? (
+                    <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
+                      <LedgerFilterToggle activeCount={countActiveFilters(actionFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
+                    </Box>
+                  ) : null
+                }
+              </Tabs.Context>
             </Tabs.List>
             <Tabs.Content value="0" pt={'2'} px={'0'}>
               <TxFilterBar open={filtersOpen} onApply={setTxFilters} onReset={() => setTxFilters(emptyTxFilters)} />
