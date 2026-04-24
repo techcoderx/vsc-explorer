@@ -151,6 +151,12 @@ export const AiohaModal = ({
   const [voKind, setVoKind] = useState<ViewOnlyKind>('hive')
   useEffect(() => {
     const handler = (payload: string, _: unknown, cancel: () => void) => {
+      if (typeof payload !== 'string' || !payload.startsWith('has://')) {
+        cancel()
+        setError('Invalid HiveAuth payload received')
+        setPage(2)
+        return
+      }
       setError('')
       setHiveAuthPl({ payload, cancel })
       setPage(3)
