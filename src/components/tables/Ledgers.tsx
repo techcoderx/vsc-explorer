@@ -40,7 +40,7 @@ export const LedgerTxsTbl = ({ txs }: { txs?: LedgerTx[] }) => {
         <Table.Body>
           {!!txs &&
             txs.map((item, i) => {
-              const [id] = item.id.split('#')[0].split('-')
+              const [id] = item.id.split('#')[0].split('-')[0].split(':')
               return (
                 <Table.Row key={i}>
                   <Table.Cell>
