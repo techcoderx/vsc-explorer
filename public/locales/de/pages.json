@@ -263,6 +263,12 @@
     "recentMaps": "Letzte Zuordnungen",
     "recentTransfers": "Letzte Überweisungen",
     "recentUnmaps": "Letzte Entmappings",
+    "activityFor": "BTC-NAM-Aktivität für {{addr}}",
+    "balance": "Guthaben",
+    "totalMaps": "Zuordnungen gesamt",
+    "totalTransfers": "Überweisungen gesamt",
+    "totalUnmaps": "Entmappings gesamt",
+    "noActivity": "Keine BTC-NAM-Aktivität für diese Adresse.",
     "tabs": {
       "transfers": "Überweisungen",
       "maps": "Zuordnungen",

@@ -263,6 +263,12 @@
     "recentMaps": "हाल के मैप",
     "recentTransfers": "हाल के स्थानांतरण",
     "recentUnmaps": "हाल के अनमैप",
+    "activityFor": "{{addr}} के लिए BTC NAM गतिविधि",
+    "balance": "शेष",
+    "totalMaps": "कुल मैप",
+    "totalTransfers": "कुल स्थानांतरण",
+    "totalUnmaps": "कुल अनमैप",
+    "noActivity": "इस पते के लिए कोई BTC NAM गतिविधि नहीं है।",
     "tabs": {
       "transfers": "स्थानांतरण",
       "maps": "मैप",

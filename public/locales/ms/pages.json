@@ -263,6 +263,12 @@
     "recentMaps": "Pemetaan Terkini",
     "recentTransfers": "Pemindahan Terkini",
     "recentUnmaps": "Nyahpetaan Terkini",
+    "activityFor": "Aktiviti BTC NAM untuk {{addr}}",
+    "balance": "Baki",
+    "totalMaps": "Jumlah Pemetaan",
+    "totalTransfers": "Jumlah Pemindahan",
+    "totalUnmaps": "Jumlah Nyahpetaan",
+    "noActivity": "Tiada aktiviti BTC NAM untuk alamat ini.",
     "tabs": {
       "transfers": "Pemindahan",
       "maps": "Petaan",

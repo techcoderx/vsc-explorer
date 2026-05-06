@@ -263,6 +263,12 @@
     "recentMaps": "Последние сопоставления",
     "recentTransfers": "Последние переводы",
     "recentUnmaps": "Последние размапирования",
+    "activityFor": "Активность BTC NAM для {{addr}}",
+    "balance": "Баланс",
+    "totalMaps": "Всего сопоставлений",
+    "totalTransfers": "Всего переводов",
+    "totalUnmaps": "Всего размапирований",
+    "noActivity": "Нет активности BTC NAM для этого адреса.",
     "tabs": {
       "transfers": "Переводы",
       "maps": "Мапирования",

@@ -263,6 +263,12 @@
     "recentMaps": "최근 매핑",
     "recentTransfers": "최근 전송",
     "recentUnmaps": "최근 언맵",
+    "activityFor": "{{addr}}의 BTC NAM 활동",
+    "balance": "잔액",
+    "totalMaps": "전체 매핑",
+    "totalTransfers": "전체 전송",
+    "totalUnmaps": "전체 언맵",
+    "noActivity": "이 주소에 대한 BTC NAM 활동이 없습니다.",
     "tabs": {
       "transfers": "전송",
       "maps": "맵",

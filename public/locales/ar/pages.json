@@ -263,6 +263,12 @@
     "recentMaps": "أحدث التعيينات",
     "recentTransfers": "أحدث التحويلات",
     "recentUnmaps": "أحدث فك التعيينات",
+    "activityFor": "نشاط BTC NAM لـ {{addr}}",
+    "balance": "الرصيد",
+    "totalMaps": "إجمالي التعيينات",
+    "totalTransfers": "إجمالي التحويلات",
+    "totalUnmaps": "إجمالي فك التعيينات",
+    "noActivity": "لا يوجد نشاط BTC NAM لهذا العنوان.",
     "tabs": {
       "transfers": "التحويلات",
       "maps": "التعيينات",

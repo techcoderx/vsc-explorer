@@ -263,6 +263,12 @@
     "recentMaps": "Mapeos recientes",
     "recentTransfers": "Transferencias recientes",
     "recentUnmaps": "Desmapeos recientes",
+    "activityFor": "Actividad BTC NAM de {{addr}}",
+    "balance": "Saldo",
+    "totalMaps": "Mapeos totales",
+    "totalTransfers": "Transferencias totales",
+    "totalUnmaps": "Desmapeos totales",
+    "noActivity": "No hay actividad BTC NAM para esta dirección.",
     "tabs": {
       "transfers": "Transferencias",
       "maps": "Mapeos",

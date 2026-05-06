@@ -263,6 +263,12 @@
     "recentMaps": "Nedavna mapiranja",
     "recentTransfers": "Nedavni prijenosi",
     "recentUnmaps": "Nedavna odmapiranja",
+    "activityFor": "BTC NAM aktivnost za {{addr}}",
+    "balance": "Stanje",
+    "totalMaps": "Ukupno mapiranja",
+    "totalTransfers": "Ukupno prijenosa",
+    "totalUnmaps": "Ukupno odmapiranja",
+    "noActivity": "Nema BTC NAM aktivnosti za ovu adresu.",
     "tabs": {
       "transfers": "Prijenosi",
       "maps": "Mapiranja",

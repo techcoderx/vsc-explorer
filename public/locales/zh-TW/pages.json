@@ -263,6 +263,12 @@
     "recentMaps": "最近映射",
     "recentTransfers": "最近轉帳",
     "recentUnmaps": "最近取消映射",
+    "activityFor": "{{addr}} 的 BTC NAM 活動",
+    "balance": "餘額",
+    "totalMaps": "映射總數",
+    "totalTransfers": "轉帳總數",
+    "totalUnmaps": "取消映射總數",
+    "noActivity": "此地址沒有 BTC NAM 活動。",
     "tabs": {
       "transfers": "轉帳",
       "maps": "映射",

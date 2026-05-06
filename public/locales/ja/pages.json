@@ -263,6 +263,12 @@
     "recentMaps": "最近のマッピング",
     "recentTransfers": "最近の転送",
     "recentUnmaps": "最近のアンマッピング",
+    "activityFor": "{{addr}} の BTC NAM アクティビティ",
+    "balance": "残高",
+    "totalMaps": "マッピング合計",
+    "totalTransfers": "転送合計",
+    "totalUnmaps": "アンマッピング合計",
+    "noActivity": "このアドレスには BTC NAM アクティビティがありません。",
     "tabs": {
       "transfers": "転送",
       "maps": "マッピング",
