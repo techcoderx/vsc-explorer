@@ -1,5 +1,5 @@
-import { Box, Tabs, Table, Text } from '@chakra-ui/react'
-import { useOutletContext } from 'react-router'
+import { Box, Tabs, Table, Text, Link } from '@chakra-ui/react'
+import { Link as ReactRouterLink, useOutletContext } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useAddrBalance } from '../../../requests'
 import { useBtcBalanceByAccount } from '../../../hasuraRequests'
@@ -15,7 +15,7 @@ const NativeAssetsTable = ({ addr }: { addr: string }) => {
   const { prices, currency, isLoading: pricesLoading } = useMarketPrices()
   const isLoading = nativeLoading || btcLoading
 
-  const rows: { label: string; value: string; fiatValue: number }[] = []
+  const rows: { label: string; value: string; fiatValue: number; href?: string }[] = []
   if (balance?.bal) {
     rows.push({
       label: t('balances.hive'),
@@ -58,7 +58,8 @@ const NativeAssetsTable = ({ addr }: { addr: string }) => {
     rows.push({
       label: t('balancesTab.btc'),
       value: formatSats(btcBalance.balance_sats),
-      fiatValue: parseInt(btcBalance.balance_sats) / 1e8 * (prices.btc ?? 0)
+      fiatValue: parseInt(btcBalance.balance_sats) / 1e8 * (prices.btc ?? 0),
+      href: `/nam/btc/${addr}`
     })
   }
 
@@ -81,7 +82,15 @@ const NativeAssetsTable = ({ addr }: { addr: string }) => {
             {isLoading ? null : rows.length ? (
               rows.map((row, i) => (
                 <Table.Row key={i}>
-                  <Table.Cell>{row.label}</Table.Cell>
+                  <Table.Cell>
+                    {row.href ? (
+                      <Link asChild colorPalette={themeColorScheme}>
+                        <ReactRouterLink to={row.href}>{row.label}</ReactRouterLink>
+                      </Link>
+                    ) : (
+                      row.label
+                    )}
+                  </Table.Cell>
                   <Table.Cell>{row.value}</Table.Cell>
                   {showValueColumn && (
                     <Table.Cell>

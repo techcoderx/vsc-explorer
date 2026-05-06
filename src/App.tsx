@@ -207,6 +207,10 @@ const router = createBrowserRouter([
         element: <BtcMapping />
       },
       {
+        path: '/nam/btc/:addr/:tab?/:page?',
+        element: <BtcMapping />
+      },
+      {
         path: '/contract/:contractId',
         element: <Contract />
       },

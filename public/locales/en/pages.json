@@ -277,6 +277,12 @@
     "recentMaps": "Recent Maps",
     "recentTransfers": "Recent Transfers",
     "recentUnmaps": "Recent Unmaps",
+    "activityFor": "BTC NAM activity for {{addr}}",
+    "balance": "Balance",
+    "totalMaps": "Total Maps",
+    "totalTransfers": "Total Transfers",
+    "totalUnmaps": "Total Unmaps",
+    "noActivity": "No BTC NAM activity for this address.",
     "tabs": {
       "transfers": "Transfers",
       "maps": "Maps",

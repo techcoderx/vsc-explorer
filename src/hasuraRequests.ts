@@ -361,6 +361,72 @@ export const fetchBtcVolume30d = async (): Promise<BtcMappingVolume | null> => {
   return result.data.btc_mapping_volume_30d[0] ?? null
 }
 
+export const fetchBtcDepositsByAccount = async (account: string, limit: number, offset: number): Promise<BtcMappingDeposit[]> => {
+  const result = await hasuraGql<{ btc_mapping_deposit_events: BtcMappingDeposit[] }>(
+    `query BtcDepositsByAccount($account: String!, $limit: Int!, $offset: Int!) {
+      btc_mapping_deposit_events(where: { recipient: { _eq: $account } }, order_by: { indexer_id: desc }, limit: $limit, offset: $offset) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id recipient sender amount
+      }
+    }`,
+    { account, limit, offset }
+  )
+  return result.data.btc_mapping_deposit_events
+}
+
+export const fetchBtcDepositsCountByAccount = async (account: string): Promise<number> => {
+  const result = await hasuraGql<{ btc_mapping_deposit_events_aggregate: { aggregate: { count: number } } }>(
+    `query BtcDepositsCountByAccount($account: String!) {
+      btc_mapping_deposit_events_aggregate(where: { recipient: { _eq: $account } }) { aggregate { count } }
+    }`,
+    { account }
+  )
+  return result.data.btc_mapping_deposit_events_aggregate.aggregate.count
+}
+
+export const fetchBtcTransfersByAccount = async (account: string, limit: number, offset: number): Promise<BtcMappingTransfer[]> => {
+  const result = await hasuraGql<{ btc_mapping_transfer_events: BtcMappingTransfer[] }>(
+    `query BtcTransfersByAccount($account: String!, $limit: Int!, $offset: Int!) {
+      btc_mapping_transfer_events(where: { _or: [{ from_addr: { _eq: $account } }, { to_addr: { _eq: $account } }] }, order_by: { indexer_id: desc }, limit: $limit, offset: $offset) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id from_addr to_addr amount
+      }
+    }`,
+    { account, limit, offset }
+  )
+  return result.data.btc_mapping_transfer_events
+}
+
+export const fetchBtcTransfersCountByAccount = async (account: string): Promise<number> => {
+  const result = await hasuraGql<{ btc_mapping_transfer_events_aggregate: { aggregate: { count: number } } }>(
+    `query BtcTransfersCountByAccount($account: String!) {
+      btc_mapping_transfer_events_aggregate(where: { _or: [{ from_addr: { _eq: $account } }, { to_addr: { _eq: $account } }] }) { aggregate { count } }
+    }`,
+    { account }
+  )
+  return result.data.btc_mapping_transfer_events_aggregate.aggregate.count
+}
+
+export const fetchBtcUnmapsByAccount = async (account: string, limit: number, offset: number): Promise<BtcMappingUnmap[]> => {
+  const result = await hasuraGql<{ btc_mapping_unmap_events: BtcMappingUnmap[] }>(
+    `query BtcUnmapsByAccount($account: String!, $limit: Int!, $offset: Int!) {
+      btc_mapping_unmap_events(where: { from_addr: { _eq: $account } }, order_by: { indexer_id: desc }, limit: $limit, offset: $offset) {
+        indexer_id indexer_block_height indexer_tx_hash indexer_ts indexer_contract_id tx_id from_addr to_addr deducted sent
+      }
+    }`,
+    { account, limit, offset }
+  )
+  return result.data.btc_mapping_unmap_events
+}
+
+export const fetchBtcUnmapsCountByAccount = async (account: string): Promise<number> => {
+  const result = await hasuraGql<{ btc_mapping_unmap_events_aggregate: { aggregate: { count: number } } }>(
+    `query BtcUnmapsCountByAccount($account: String!) {
+      btc_mapping_unmap_events_aggregate(where: { from_addr: { _eq: $account } }) { aggregate { count } }
+    }`,
+    { account }
+  )
+  return result.data.btc_mapping_unmap_events_aggregate.aggregate.count
+}
+
 // Address token/NFT balance hooks
 export const useTokenBalancesByAccount = (account: string) => {
   return useQuery({
