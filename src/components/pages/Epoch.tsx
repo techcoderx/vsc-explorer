@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, Link as ReactRouterLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import PageNotFound from './404'
-import { fetchBlocksInEpoch, fetchEpoch, fetchTssCommitments } from '../../requests'
+import { fetchBlocksInEpoch, fetchEpoch, fetchElectionSettlement, fetchTssCommitments } from '../../requests'
 import Pagination, { PrevNextBtns } from '../Pagination'
 import { beL1BlockUrl, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
@@ -14,6 +14,7 @@ import { LuInfo } from 'react-icons/lu'
 import { Blocks as BlocksTbl } from '../tables/Blocks'
 import { TssCommitments as TssCommitmentsTbl } from '../tables/TssCommitments'
 import { PageTitle } from '../PageTitle'
+import { AccountLink } from '../TableLink'
 
 const blockBatch = 100
 
@@ -46,6 +47,15 @@ const Epoch = () => {
   const { data: tssCommitments, isLoading: isTssLoading } = useQuery({
     queryKey: ['vsc-tss-commitments-epoch', epchNum],
     queryFn: async () => fetchTssCommitments(epchNum),
+    enabled: !invalidEpochNum
+  })
+  const {
+    data: settlement,
+    isLoading: isSettlementLoading,
+    isError: isSettlementError
+  } = useQuery({
+    queryKey: ['vsc-epoch-settlement', epchNum],
+    queryFn: async () => fetchElectionSettlement(epchNum),
     enabled: !invalidEpochNum
   })
   const hasVotes = !!epoch && !!epoch.be_info && !!epoch.be_info.signature && !!prevEpoch
@@ -135,6 +145,7 @@ const Epoch = () => {
               <Tabs.Trigger value="0">{t('epoch.blocksTab', { count: epoch?.blocks_info?.count || 0 })}</Tabs.Trigger>
               <Tabs.Trigger value="1">{t('epoch.participationTab')}</Tabs.Trigger>
               <Tabs.Trigger value="2">{t('epoch.tssCommitmentsTab', { count: tssCommitments?.length || 0 })}</Tabs.Trigger>
+              {settlement ? <Tabs.Trigger value="3">{t('epoch.settlementTab')}</Tabs.Trigger> : null}
             </Tabs.List>
             <Tabs.Content value="0">
               <BlocksTbl blocks={blocks} />
@@ -161,6 +172,105 @@ const Epoch = () => {
             </Tabs.Content>
             <Tabs.Content value="2">
               <TssCommitmentsTbl commitments={tssCommitments} isLoading={isTssLoading} />
+            </Tabs.Content>
+            <Tabs.Content value="3">
+              {isSettlementLoading ? (
+                <Table.Root mt={'20px'}>
+                  <Table.Body>
+                    <TableRow label={t('epoch.settlementBucketBalance')} isLoading />
+                    <TableRow label={t('epoch.settlementTotalDistributed')} isLoading />
+                    <TableRow label={t('epoch.settlementResidualHbd')} isLoading />
+                    <TableRow label={t('epoch.settlementSnapshotRange')} isLoading />
+                    <TableRow label={t('epoch.settlementPrevEpoch')} isLoading />
+                  </Table.Body>
+                </Table.Root>
+              ) : isSettlementError ? (
+                <Text>{t('epoch.settlementLoadingError')}</Text>
+              ) : settlement ? (
+                <>
+                  <Table.Root mt={'20px'}>
+                    <Table.Body>
+                      <TableRow
+                        label={t('epoch.settlementBucketBalance')}
+                        value={fmtmAmount(settlement.bucket_balance_hbd, 'HBD')}
+                      />
+                      <TableRow
+                        label={t('epoch.settlementTotalDistributed')}
+                        value={fmtmAmount(settlement.total_distributed_hbd, 'HBD')}
+                      />
+                      <TableRow
+                        label={t('epoch.settlementResidualHbd')}
+                        value={fmtmAmount(settlement.residual_hbd, 'HBD')}
+                      />
+                      <TableRow
+                        label={t('epoch.settlementSnapshotRange')}
+                        value={`${thousandSeperator(settlement.snapshot_range_from)} - ${thousandSeperator(settlement.snapshot_range_to)}`}
+                      />
+                      <TableRow
+                        label={t('epoch.settlementPrevEpoch')}
+                        value={thousandSeperator(settlement.prev_epoch)}
+                        link={'/epoch/' + settlement.prev_epoch}
+                      />
+                    </Table.Body>
+                  </Table.Root>
+
+                  <Heading size="lg" mt={'5'}>{t('epoch.settlementDetails')}</Heading>
+                  <Table.ScrollArea my={'3'} w={'full'}>
+                    <Table.Root>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.ColumnHeader>{t('epoch.settlementAccount')}</Table.ColumnHeader>
+                          <Table.ColumnHeader>{t('epoch.settlementReductionBps')}</Table.ColumnHeader>
+                          <Table.ColumnHeader>{t('epoch.settlementHbdAmount')}</Table.ColumnHeader>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {(() => {
+                          const hivePrefixed = (a: string) => (a.startsWith('hive:') ? a : 'hive:' + a)
+                          const merged = new Map<string, { bps?: number; hbd?: number }>()
+                          for (const rr of settlement.reward_reductions) {
+                            const key = hivePrefixed(rr.account)
+                            const entry = merged.get(key) || {}
+                            entry.bps = rr.bps
+                            merged.set(key, entry)
+                          }
+                          for (const dist of settlement.distributions) {
+                            const key = hivePrefixed(dist.account)
+                            const entry = merged.get(key) || {}
+                            entry.hbd = dist.hbd_amount
+                            merged.set(key, entry)
+                          }
+                          const rows = Array.from(merged.entries()).sort((a, b) => a[0].localeCompare(b[0]))
+                          if (rows.length === 0) {
+                            return (
+                              <Table.Row>
+                                <Table.Cell colSpan={3}>
+                                  <Text>No settlement details</Text>
+                                </Table.Cell>
+                              </Table.Row>
+                            )
+                          }
+                          return rows.map(([account, entry]) => (
+                            <Table.Row key={account}>
+                              <Table.Cell>
+                                <AccountLink val={account} truncate={16} />
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Text>
+                                  {entry.bps !== undefined ? `${entry.bps} bps (${(entry.bps / 100).toFixed(2)}%)` : '-'}
+                                </Text>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Text>{entry.hbd !== undefined ? fmtmAmount(entry.hbd, 'HBD') : '-'}</Text>
+                              </Table.Cell>
+                            </Table.Row>
+                          ))
+                        })()}
+                      </Table.Body>
+                    </Table.Root>
+                  </Table.ScrollArea>
+                </>
+              ) : null}
             </Tabs.Content>
           </Tabs.Root>
         </Box>

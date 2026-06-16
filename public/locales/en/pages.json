@@ -44,7 +44,20 @@
     "blocksTab": "Blocks ({{count}})",
     "participationTab": "Participation",
     "tssCommitmentsTab": "TSS Commitments ({{count}})",
-    "blsNotRequired": "BLS signature was not required for the first election."
+    "blsNotRequired": "BLS signature was not required for the first election.",
+    "settlementTab": "Settlement",
+    "settlementBucketBalance": "Bucket Balance",
+    "settlementTotalDistributed": "Total Distributed",
+    "settlementResidualHbd": "Residual HBD",
+    "settlementSnapshotRange": "Snapshot Range",
+    "settlementPrevEpoch": "Previous Epoch",
+    "settlementRewardReductions": "Reward Reductions",
+    "settlementDistributions": "Distributions",
+    "settlementDetails": "Settlement Details",
+    "settlementAccount": "Account",
+    "settlementReductionBps": "Reduction (BPS)",
+    "settlementHbdAmount": "HBD Amount",
+    "settlementLoadingError": "Failed to load settlement data."
   },
   "witnesses": {
     "title": "Witnesses",

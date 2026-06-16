@@ -31,7 +31,8 @@ import {
   SimulateCallsInput,
   LedgerClaimRecord,
   Status,
-  TxnTypes
+  TxnTypes,
+  SettlementRecord
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 import { CoinLower } from './types/Payloads'
@@ -85,6 +86,28 @@ export const fetchElections = async (last_epoch: number, count: number = 100): P
 
 export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
   return await (await fetch(`${conf.beApi}/epoch/${epoch_num}`)).json()
+}
+
+export const fetchElectionSettlement = async (epoch: number): Promise<SettlementRecord | null> => {
+  const result = await gql<GqlResponse<{ election: { settlement: SettlementRecord | null } }>>(
+    `query GetElection($epoch: Uint64!) {
+      election: getElection(epoch: $epoch) {
+        settlement {
+          epoch
+          prev_epoch
+          snapshot_range_from
+          snapshot_range_to
+          bucket_balance_hbd
+          total_distributed_hbd
+          residual_hbd
+          reward_reductions { account bps }
+          distributions { account hbd_amount }
+        }
+      }
+    }`,
+    { epoch }
+  )
+  return result.data.election?.settlement ?? null
 }
 
 export const fetchBlocksInEpoch = async (epoch_num: number, count: number = 100, offset: number = 0): Promise<Block[]> => {

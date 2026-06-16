@@ -336,3 +336,25 @@ export interface SimulateCallResult {
   rc_used: string
   gas_used: string
 }
+
+export interface RewardReductionEntry {
+  account: string
+  bps: number
+}
+
+export interface DistributionEntry {
+  account: string
+  hbd_amount: number
+}
+
+export interface SettlementRecord {
+  epoch: number
+  prev_epoch: number
+  snapshot_range_from: number
+  snapshot_range_to: number
+  bucket_balance_hbd: number
+  total_distributed_hbd: number
+  residual_hbd: number
+  reward_reductions: RewardReductionEntry[]
+  distributions: DistributionEntry[]
+}
