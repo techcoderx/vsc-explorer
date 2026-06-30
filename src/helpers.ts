@@ -163,7 +163,10 @@ export const parseOperation = (op: Ops): { valid: false } | { valid: true; type:
               payload.net_id === conf.netId ||
               user === conf.msAccount ||
               op.value.id === 'vsc.tss_commitment' ||
-              op.value.id === 'vsc.tss_sign')
+              op.value.id === 'vsc.tss_sign' ||
+              op.value.id === 'vsc.slash_restore' ||
+              op.value.id === 'vsc.reserve_payout' ||
+              op.value.id === 'vsc.reserve_vote')
           ) {
             return {
               valid: true,

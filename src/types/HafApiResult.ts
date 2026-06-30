@@ -6,7 +6,10 @@ import {
   ElectionPayload,
   TransferPayload,
   BLSSig,
-  InterestPayload
+  InterestPayload,
+  SlashRestorePayload,
+  ReservePayoutPayload,
+  ReserveVotePayload
 } from './Payloads'
 
 export interface Props {
@@ -102,6 +105,9 @@ export type TxTypes =
   | 'stake'
   | 'unstake'
   | 'deposit'
+  | 'slash_restore'
+  | 'reserve_payout'
+  | 'reserve_vote'
 
 export interface L1Transaction {
   id: number
@@ -119,6 +125,9 @@ export interface L1Transaction {
     | TransferPayload
     | InterestPayload
     | CallContractPayload
+    | SlashRestorePayload
+    | ReservePayoutPayload
+    | ReserveVotePayload
 }
 
 export interface AccInfo {

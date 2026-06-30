@@ -59,6 +59,21 @@ export type NAI = {
   precision: number
 }
 
+export type SlashRestorePayload = {
+  id: string
+  account: string
+}
+
+export type ReservePayoutPayload = {
+  recipient: string
+  amount: number
+  reason: string
+}
+
+export type ReserveVotePayload = {
+  id: string
+}
+
 export type BLSSig = {
   sig: string
   bv: string
