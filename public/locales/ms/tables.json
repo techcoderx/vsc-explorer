@@ -131,6 +131,14 @@
     "recipient": "Penerima",
     "amount": "Jumlah"
   },
+  "governance": {
+    "proposalId": "ID cadangan",
+    "type": "Jenis",
+    "status": "Status",
+    "creationBlock": "Blok ciptaan",
+    "beneficiary": "Penerima",
+    "amount": "Jumlah"
+  },
   "transfers": {
     "txId": "ID Tx",
     "age": "Usia",

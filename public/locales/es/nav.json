@@ -9,6 +9,8 @@
   "overviewSub": "Lista de testigos activos",
   "elections": "Elecciones",
   "electionsSub": "Selección de testigos en cada época",
+  "governance": "Gobernanza",
+  "governanceSub": "Propuestas de recorte y pago",
   "multisigAccount": "Cuenta multisig",
   "multisigAccountSub": "Actividades de la cuenta multisig",
   "schedule": "Calendario",

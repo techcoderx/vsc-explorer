@@ -253,6 +253,40 @@
       "transfers": "Переводы"
     }
   },
+  "governance": {
+    "title": "Предложения управления",
+    "empty": "Предложения управления не найдены.",
+    "typeSlashRestore": "Восстановление слэша",
+    "typeReservePayout": "Выплата резерва",
+    "status": {
+      "open": "Открыто",
+      "applied": "Применено",
+      "expired": "Истекло"
+    }
+  },
+  "governanceDetail": {
+    "title": "Предложение управления",
+    "titleFallback": "Предложение управления",
+    "loadError": "Не удалось загрузить детали предложения.",
+    "notFound": "Предложение не найдено.",
+    "proposalId": "ID предложения",
+    "type": "Тип",
+    "status": "Статус",
+    "creationBlock": "Блок создания",
+    "beneficiary": "Получатель",
+    "amount": "Сумма",
+    "appliedBlock": "Примененный блок",
+    "appliedTxId": "Примененная Tx",
+    "slashTxId": "Tx слэша",
+    "evidenceKind": "Тип доказательства",
+    "slashedAccount": "Слэшнутый аккаунт",
+    "recipient": "Получатель",
+    "reason": "Причина",
+    "votes": "Голоса ({{count}})",
+    "voter": "Голосующий",
+    "txId": "ID Tx",
+    "blockHeight": "Высота блока"
+  },
   "btc": {
     "title": "Маппинг активов Bitcoin",
     "tvl": "TVL",

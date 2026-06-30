@@ -131,6 +131,14 @@
     "recipient": "المستلم",
     "amount": "المبلغ"
   },
+  "governance": {
+    "proposalId": "معرف المقترح",
+    "type": "النوع",
+    "status": "الحالة",
+    "creationBlock": "كتلة الإنشاء",
+    "beneficiary": "المستفيد",
+    "amount": "المبلغ"
+  },
   "transfers": {
     "txId": "معرف المعاملة",
     "age": "العمر",

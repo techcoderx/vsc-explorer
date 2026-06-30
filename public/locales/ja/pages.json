@@ -253,6 +253,40 @@
       "transfers": "転送"
     }
   },
+  "governance": {
+    "title": "ガバナンス提案",
+    "empty": "ガバナンス提案が見つかりません。",
+    "typeSlashRestore": "スラッシュ復元",
+    "typeReservePayout": "リザーブ支払い",
+    "status": {
+      "open": "オープン",
+      "applied": "適用済み",
+      "expired": "期限切れ"
+    }
+  },
+  "governanceDetail": {
+    "title": "ガバナンス提案",
+    "titleFallback": "ガバナンス提案",
+    "loadError": "提案の詳細の読み込みに失敗しました。",
+    "notFound": "提案が見つかりません。",
+    "proposalId": "提案ID",
+    "type": "タイプ",
+    "status": "ステータス",
+    "creationBlock": "作成ブロック",
+    "beneficiary": "受益者",
+    "amount": "金額",
+    "appliedBlock": "適用ブロック",
+    "appliedTxId": "適用Tx",
+    "slashTxId": "スラッシュTx",
+    "evidenceKind": "証拠種類",
+    "slashedAccount": "スラッシュされたアカウント",
+    "recipient": "受取人",
+    "reason": "理由",
+    "votes": "投票 ({{count}})",
+    "voter": "投票者",
+    "txId": "Tx ID",
+    "blockHeight": "ブロック高"
+  },
   "btc": {
     "title": "ビットコインアセットマッピング",
     "tvl": "TVL",

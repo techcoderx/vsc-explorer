@@ -131,6 +131,14 @@
     "recipient": "Bénéficiaire",
     "amount": "Montant"
   },
+  "governance": {
+    "proposalId": "ID de proposition",
+    "type": "Type",
+    "status": "Statut",
+    "creationBlock": "Bloc de création",
+    "beneficiary": "Bénéficiaire",
+    "amount": "Montant"
+  },
   "transfers": {
     "txId": "ID de Tx",
     "age": "Âge",

@@ -280,6 +280,40 @@
     "claimDetailTitle": "Claim at Block #{{block}}",
     "interestPayments": "Interest Payments ({{count}})"
   },
+  "governance": {
+    "title": "Governance Proposals",
+    "empty": "No governance proposals found.",
+    "typeSlashRestore": "Slash Restore",
+    "typeReservePayout": "Reserve Payout",
+    "status": {
+      "open": "Open",
+      "applied": "Applied",
+      "expired": "Expired"
+    }
+  },
+  "governanceDetail": {
+    "title": "Governance Proposal",
+    "titleFallback": "Governance Proposal",
+    "loadError": "Failed to load proposal details.",
+    "notFound": "Proposal not found.",
+    "proposalId": "Proposal ID",
+    "type": "Type",
+    "status": "Status",
+    "creationBlock": "Creation Block",
+    "beneficiary": "Beneficiary",
+    "amount": "Amount",
+    "appliedBlock": "Applied Block",
+    "appliedTxId": "Applied Tx",
+    "slashTxId": "Slash Tx",
+    "evidenceKind": "Evidence Kind",
+    "slashedAccount": "Slashed Account",
+    "recipient": "Recipient",
+    "reason": "Reason",
+    "votes": "Votes ({{count}})",
+    "voter": "Voter",
+    "txId": "Tx ID",
+    "blockHeight": "Block Height"
+  },
   "btc": {
     "title": "Bitcoin Asset Mapping",
     "tvl": "TVL",

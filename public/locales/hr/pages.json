@@ -253,6 +253,40 @@
       "transfers": "Prijenosi"
     }
   },
+  "governance": {
+    "title": "Prijedlozi upravljanja",
+    "empty": "Nema pronađenih prijedloga upravljanja.",
+    "typeSlashRestore": "Obnavljanje rezanja",
+    "typeReservePayout": "Isplata rezerve",
+    "status": {
+      "open": "Otvoreno",
+      "applied": "Primijenjeno",
+      "expired": "Isteklo"
+    }
+  },
+  "governanceDetail": {
+    "title": "Prijedlog upravljanja",
+    "titleFallback": "Prijedlog upravljanja",
+    "loadError": "Neuspješno učitavanje detalja prijedloga.",
+    "notFound": "Prijedlog nije pronađen.",
+    "proposalId": "ID prijedloga",
+    "type": "Vrsta",
+    "status": "Status",
+    "creationBlock": "Blok stvaranja",
+    "beneficiary": "Korisnik",
+    "amount": "Iznos",
+    "appliedBlock": "Primijenjeni blok",
+    "appliedTxId": "Primijenjeni Tx",
+    "slashTxId": "Rez Tx",
+    "evidenceKind": "Vrsta dokaza",
+    "slashedAccount": "Rezani račun",
+    "recipient": "Primatelj",
+    "reason": "Razlog",
+    "votes": "Glasovi ({{count}})",
+    "voter": "Glasač",
+    "txId": "ID Tx-a",
+    "blockHeight": "Visina bloka"
+  },
   "btc": {
     "title": "Mapiranje Bitcoin imovine",
     "tvl": "TVL",

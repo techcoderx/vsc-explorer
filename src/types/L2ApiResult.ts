@@ -358,3 +358,26 @@ export interface SettlementRecord {
   reward_reductions: RewardReductionEntry[]
   distributions: DistributionEntry[]
 }
+
+export interface GovernanceVote {
+  voter: string
+  blockHeight: number
+  txId: string
+}
+
+export interface GovernanceProposal {
+  proposalId: string
+  type: 'slash_restore' | 'reserve_payout'
+  status: 'open' | 'applied' | 'expired'
+  creationBlock: number
+  beneficiary: string
+  amount: number
+  appliedBlock: number
+  appliedTxId: string
+  slashTxId: string
+  evidenceKind: string
+  slashedAccount: string
+  recipient: string
+  reason: string
+  votes: GovernanceVote[]
+}

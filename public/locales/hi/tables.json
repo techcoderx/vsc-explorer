@@ -131,6 +131,14 @@
     "recipient": "प्राप्तकर्ता",
     "amount": "राशि"
   },
+  "governance": {
+    "proposalId": "प्रस्ताव आईडी",
+    "type": "प्रकार",
+    "status": "स्थिति",
+    "creationBlock": "निर्माण ब्लॉक",
+    "beneficiary": "लाभार्थी",
+    "amount": "राशि"
+  },
   "transfers": {
     "txId": "लेनदेन आईडी",
     "age": "आयु",

@@ -131,6 +131,14 @@
     "recipient": "Получатель",
     "amount": "Сумма"
   },
+  "governance": {
+    "proposalId": "ID предложения",
+    "type": "Тип",
+    "status": "Статус",
+    "creationBlock": "Блок создания",
+    "beneficiary": "Получатель",
+    "amount": "Сумма"
+  },
   "transfers": {
     "txId": "ID транзакции",
     "age": "Возраст",

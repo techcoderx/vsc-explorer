@@ -131,6 +131,14 @@
     "recipient": "受取人",
     "amount": "金額"
   },
+  "governance": {
+    "proposalId": "提案ID",
+    "type": "タイプ",
+    "status": "ステータス",
+    "creationBlock": "作成ブロック",
+    "beneficiary": "受益者",
+    "amount": "金額"
+  },
   "transfers": {
     "txId": "トランザクション ID",
     "age": "経過時間",

@@ -253,6 +253,40 @@
       "transfers": "전송"
     }
   },
+  "governance": {
+    "title": "거버넌스 제안",
+    "empty": "거버넌스 제안을 찾을 수 없습니다.",
+    "typeSlashRestore": "슬래시 복원",
+    "typeReservePayout": "준비금 지급",
+    "status": {
+      "open": "열림",
+      "applied": "적용됨",
+      "expired": "만료됨"
+    }
+  },
+  "governanceDetail": {
+    "title": "거버넌스 제안",
+    "titleFallback": "거버넌스 제안",
+    "loadError": "제안 세부 정보를 불러오지 못했습니다.",
+    "notFound": "제안을 찾을 수 없습니다.",
+    "proposalId": "제안 ID",
+    "type": "유형",
+    "status": "상태",
+    "creationBlock": "생성 블록",
+    "beneficiary": "수혜자",
+    "amount": "금액",
+    "appliedBlock": "적용 블록",
+    "appliedTxId": "적용 Tx",
+    "slashTxId": "슬래시 Tx",
+    "evidenceKind": "증거 유형",
+    "slashedAccount": "슬래시된 계정",
+    "recipient": "수신자",
+    "reason": "이유",
+    "votes": "투표 ({{count}})",
+    "voter": "투표자",
+    "txId": "Tx ID",
+    "blockHeight": "블록 높이"
+  },
   "btc": {
     "title": "비트코인 자산 매핑",
     "tvl": "TVL",

@@ -9,6 +9,8 @@
   "overviewSub": "활성 위트니스 목록",
   "elections": "선거",
   "electionsSub": "각 에포크의 위트니스 선출",
+  "governance": "거버넌스",
+  "governanceSub": "슬래시/복원 및 지급 제안",
   "multisigAccount": "멀티시그 계정",
   "multisigAccountSub": "멀티시그 계정 활동",
   "schedule": "스케줄",

@@ -131,6 +131,14 @@
     "recipient": "Recipient",
     "amount": "Amount"
   },
+  "governance": {
+    "proposalId": "Proposal ID",
+    "type": "Type",
+    "status": "Status",
+    "creationBlock": "Creation Block",
+    "beneficiary": "Beneficiary",
+    "amount": "Amount"
+  },
   "transfers": {
     "txId": "Tx ID",
     "age": "Age",

@@ -253,6 +253,40 @@
       "transfers": "Pemindahan"
     }
   },
+  "governance": {
+    "title": "Cadangan tadbir urus",
+    "empty": "Tiada cadangan tadbir urus ditemui.",
+    "typeSlashRestore": "Pulihkan slash",
+    "typeReservePayout": "Bayaran rizab",
+    "status": {
+      "open": "Buka",
+      "applied": "Digunakan",
+      "expired": "Tamat"
+    }
+  },
+  "governanceDetail": {
+    "title": "Cadangan tadbir urus",
+    "titleFallback": "Cadangan tadbir urus",
+    "loadError": "Gagal memuat butiran cadangan.",
+    "notFound": "Cadangan tidak ditemui.",
+    "proposalId": "ID cadangan",
+    "type": "Jenis",
+    "status": "Status",
+    "creationBlock": "Blok ciptaan",
+    "beneficiary": "Penerima",
+    "amount": "Jumlah",
+    "appliedBlock": "Blok digunakan",
+    "appliedTxId": "Tx digunakan",
+    "slashTxId": "Tx slash",
+    "evidenceKind": "Jenis bukti",
+    "slashedAccount": "Akaun dislash",
+    "recipient": "Penerima",
+    "reason": "Sebab",
+    "votes": "Undian ({{count}})",
+    "voter": "Pengundi",
+    "txId": "ID Tx",
+    "blockHeight": "Ketinggian blok"
+  },
   "btc": {
     "title": "Pemetaan Aset Bitcoin",
     "tvl": "TVL",

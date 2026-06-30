@@ -131,6 +131,14 @@
     "recipient": "Odbiorca",
     "amount": "Kwota"
   },
+  "governance": {
+    "proposalId": "ID propozycji",
+    "type": "Typ",
+    "status": "Status",
+    "creationBlock": "Blok utworzenia",
+    "beneficiary": "Beneficjent",
+    "amount": "Kwota"
+  },
   "transfers": {
     "txId": "ID transakcji",
     "age": "Wiek",

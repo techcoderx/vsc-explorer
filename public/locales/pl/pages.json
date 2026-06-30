@@ -253,6 +253,40 @@
       "transfers": "Przelewy"
     }
   },
+  "governance": {
+    "title": "Propozycje zarządzania",
+    "empty": "Nie znaleziono propozycji zarządzania.",
+    "typeSlashRestore": "Przywrócenie cięcia",
+    "typeReservePayout": "Wypłata rezerwy",
+    "status": {
+      "open": "Otwarte",
+      "applied": "Zastosowane",
+      "expired": "Wygasłe"
+    }
+  },
+  "governanceDetail": {
+    "title": "Propozycja zarządzania",
+    "titleFallback": "Propozycja zarządzania",
+    "loadError": "Nie udało się załadować szczegółów propozycji.",
+    "notFound": "Nie znaleziono propozycji.",
+    "proposalId": "ID propozycji",
+    "type": "Typ",
+    "status": "Status",
+    "creationBlock": "Blok utworzenia",
+    "beneficiary": "Beneficjent",
+    "amount": "Kwota",
+    "appliedBlock": "Zastosowany blok",
+    "appliedTxId": "Zastosowana Tx",
+    "slashTxId": "Tx cięcia",
+    "evidenceKind": "Typ dowodu",
+    "slashedAccount": "Ścięte konto",
+    "recipient": "Odbiorca",
+    "reason": "Powód",
+    "votes": "Głosy ({{count}})",
+    "voter": "Głosujący",
+    "txId": "ID Tx",
+    "blockHeight": "Wysokość bloku"
+  },
   "btc": {
     "title": "Mapowanie aktywów Bitcoin",
     "tvl": "TVL",

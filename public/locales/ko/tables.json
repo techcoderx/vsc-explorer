@@ -131,6 +131,14 @@
     "recipient": "수령인",
     "amount": "금액"
   },
+  "governance": {
+    "proposalId": "제안 ID",
+    "type": "유형",
+    "status": "상태",
+    "creationBlock": "생성 블록",
+    "beneficiary": "수혜자",
+    "amount": "금액"
+  },
   "transfers": {
     "txId": "트랜잭션 ID",
     "age": "경과 시간",

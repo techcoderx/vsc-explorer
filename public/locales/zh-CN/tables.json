@@ -131,6 +131,14 @@
     "recipient": "接收人",
     "amount": "金额"
   },
+  "governance": {
+    "proposalId": "提案ID",
+    "type": "类型",
+    "status": "状态",
+    "creationBlock": "创建区块",
+    "beneficiary": "受益人",
+    "amount": "金额"
+  },
   "transfers": {
     "txId": "交易 ID",
     "age": "时间",

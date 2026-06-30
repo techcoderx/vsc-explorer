@@ -253,6 +253,40 @@
       "transfers": "转账"
     }
   },
+  "governance": {
+    "title": "治理提案",
+    "empty": "未找到治理提案。",
+    "typeSlashRestore": "罚没恢复",
+    "typeReservePayout": "储备金支付",
+    "status": {
+      "open": "开放",
+      "applied": "已应用",
+      "expired": "已过期"
+    }
+  },
+  "governanceDetail": {
+    "title": "治理提案",
+    "titleFallback": "治理提案",
+    "loadError": "加载提案详情失败。",
+    "notFound": "提案未找到。",
+    "proposalId": "提案ID",
+    "type": "类型",
+    "status": "状态",
+    "creationBlock": "创建区块",
+    "beneficiary": "受益人",
+    "amount": "金额",
+    "appliedBlock": "应用区块",
+    "appliedTxId": "应用交易",
+    "slashTxId": "罚没交易",
+    "evidenceKind": "证据类型",
+    "slashedAccount": "被罚没账户",
+    "recipient": "接收人",
+    "reason": "原因",
+    "votes": "投票 ({{count}})",
+    "voter": "投票者",
+    "txId": "交易ID",
+    "blockHeight": "区块高度"
+  },
   "btc": {
     "title": "比特币资产映射",
     "tvl": "TVL",

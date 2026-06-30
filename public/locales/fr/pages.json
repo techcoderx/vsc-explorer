@@ -253,6 +253,40 @@
       "transfers": "Transferts"
     }
   },
+  "governance": {
+    "title": "Propositions de gouvernance",
+    "empty": "Aucune proposition de gouvernance trouvée.",
+    "typeSlashRestore": "Restauration de slash",
+    "typeReservePayout": "Paiement de réserve",
+    "status": {
+      "open": "Ouvert",
+      "applied": "Appliqué",
+      "expired": "Expiré"
+    }
+  },
+  "governanceDetail": {
+    "title": "Proposition de gouvernance",
+    "titleFallback": "Proposition de gouvernance",
+    "loadError": "Échec du chargement des détails de la proposition.",
+    "notFound": "Proposition introuvable.",
+    "proposalId": "ID de proposition",
+    "type": "Type",
+    "status": "Statut",
+    "creationBlock": "Bloc de création",
+    "beneficiary": "Bénéficiaire",
+    "amount": "Montant",
+    "appliedBlock": "Bloc appliqué",
+    "appliedTxId": "Tx appliquée",
+    "slashTxId": "Tx de slash",
+    "evidenceKind": "Type de preuve",
+    "slashedAccount": "Compte slashé",
+    "recipient": "Destinataire",
+    "reason": "Raison",
+    "votes": "Votes ({{count}})",
+    "voter": "Votant",
+    "txId": "ID de Tx",
+    "blockHeight": "Hauteur de bloc"
+  },
   "btc": {
     "title": "Mappage d'actifs Bitcoin",
     "tvl": "TVL",

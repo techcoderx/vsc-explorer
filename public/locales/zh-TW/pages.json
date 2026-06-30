@@ -253,6 +253,40 @@
       "transfers": "轉帳"
     }
   },
+  "governance": {
+    "title": "治理提案",
+    "empty": "未找到治理提案。",
+    "typeSlashRestore": "罰沒恢復",
+    "typeReservePayout": "儲備金支付",
+    "status": {
+      "open": "開放",
+      "applied": "已應用",
+      "expired": "已過期"
+    }
+  },
+  "governanceDetail": {
+    "title": "治理提案",
+    "titleFallback": "治理提案",
+    "loadError": "載入提案詳情失敗。",
+    "notFound": "提案未找到。",
+    "proposalId": "提案ID",
+    "type": "類型",
+    "status": "狀態",
+    "creationBlock": "創建區塊",
+    "beneficiary": "受益人",
+    "amount": "金額",
+    "appliedBlock": "應用區塊",
+    "appliedTxId": "應用交易",
+    "slashTxId": "罰沒交易",
+    "evidenceKind": "證據類型",
+    "slashedAccount": "被罰沒帳戶",
+    "recipient": "接收人",
+    "reason": "原因",
+    "votes": "投票 ({{count}})",
+    "voter": "投票者",
+    "txId": "交易ID",
+    "blockHeight": "區塊高度"
+  },
   "btc": {
     "title": "比特幣資產映射",
     "tvl": "TVL",

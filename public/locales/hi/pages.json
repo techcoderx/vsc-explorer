@@ -253,6 +253,40 @@
       "transfers": "स्थानांतरण"
     }
   },
+  "governance": {
+    "title": "गवर्नेंस प्रस्ताव",
+    "empty": "कोई गवर्नेंस प्रस्ताव नहीं मिला।",
+    "typeSlashRestore": "स्लैश रिस्टोर",
+    "typeReservePayout": "रिज़र्व भुगतान",
+    "status": {
+      "open": "खुला",
+      "applied": "लागू",
+      "expired": "समाप्त"
+    }
+  },
+  "governanceDetail": {
+    "title": "गवर्नेंस प्रस्ताव",
+    "titleFallback": "गवर्नेंस प्रस्ताव",
+    "loadError": "प्रस्ताव विवरण लोड करने में विफल।",
+    "notFound": "प्रस्ताव नहीं मिला।",
+    "proposalId": "प्रस्ताव आईडी",
+    "type": "प्रकार",
+    "status": "स्थिति",
+    "creationBlock": "निर्माण ब्लॉक",
+    "beneficiary": "लाभार्थी",
+    "amount": "राशि",
+    "appliedBlock": "लागू ब्लॉक",
+    "appliedTxId": "लागू Tx",
+    "slashTxId": "स्लैश Tx",
+    "evidenceKind": "साक्ष्य प्रकार",
+    "slashedAccount": "स्लैश किया गया खाता",
+    "recipient": "प्राप्तकर्ता",
+    "reason": "कारण",
+    "votes": "वोट ({{count}})",
+    "voter": "मतदाता",
+    "txId": "Tx आईडी",
+    "blockHeight": "ब्लॉक ऊंचाई"
+  },
   "btc": {
     "title": "बिटकॉइन एसेट मैपिंग",
     "tvl": "TVL",

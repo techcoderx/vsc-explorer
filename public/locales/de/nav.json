@@ -9,6 +9,8 @@
   "overviewSub": "Liste der aktiven Witnesses",
   "elections": "Wahlen",
   "electionsSub": "Witness-Auswahl jeder Epoche",
+  "governance": "Governance",
+  "governanceSub": "Slash/Restore- und Auszahlungsvorschläge",
   "multisigAccount": "Multisig-Konto",
   "multisigAccountSub": "Aktivitäten des Multisig-Kontos",
   "schedule": "Zeitplan",

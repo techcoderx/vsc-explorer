@@ -131,6 +131,14 @@
     "recipient": "Primatelj",
     "amount": "Iznos"
   },
+  "governance": {
+    "proposalId": "ID prijedloga",
+    "type": "Vrsta",
+    "status": "Status",
+    "creationBlock": "Blok stvaranja",
+    "beneficiary": "Korisnik",
+    "amount": "Iznos"
+  },
   "transfers": {
     "txId": "ID transakcije",
     "age": "Starost",

@@ -118,6 +118,7 @@ const getNavItems = (t: TFunction): NavItem[] => [
     children: [
       { label: t('overview'), subLabel: t('overviewSub'), href: '/witnesses' },
       { label: t('elections'), subLabel: t('electionsSub'), href: '/elections' },
+      { label: t('governance'), subLabel: t('governanceSub'), href: '/governance' },
       { label: t('multisigAccount'), subLabel: t('multisigAccountSub'), href: '/address/hive:' + getConf().msAccount + '/hiveops' },
       { label: t('schedule'), subLabel: t('scheduleSub'), href: '/schedule' }
     ]

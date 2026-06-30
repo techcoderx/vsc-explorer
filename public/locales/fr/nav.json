@@ -9,6 +9,8 @@
   "overviewSub": "Liste des témoins actifs",
   "elections": "Élections",
   "electionsSub": "Sélection des témoins pour chaque époque",
+  "governance": "Gouvernance",
+  "governanceSub": "Propositions de slash et paiement",
   "multisigAccount": "Compte multisig",
   "multisigAccountSub": "Activités du compte multisig",
   "schedule": "Planning",

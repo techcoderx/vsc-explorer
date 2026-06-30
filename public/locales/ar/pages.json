@@ -253,6 +253,40 @@
       "transfers": "التحويلات"
     }
   },
+  "governance": {
+    "title": "مقترحات الحوكمة",
+    "empty": "لا توجد مقترحات حوكمة.",
+    "typeSlashRestore": "استعادة القطع",
+    "typeReservePayout": "دفع الاحتياطي",
+    "status": {
+      "open": "مفتوح",
+      "applied": "مُطبق",
+      "expired": "منتهي"
+    }
+  },
+  "governanceDetail": {
+    "title": "مقترح الحوكمة",
+    "titleFallback": "مقترح الحوكمة",
+    "loadError": "فشل في تحميل تفاصيل المقترح.",
+    "notFound": "المقترح غير موجود.",
+    "proposalId": "معرف المقترح",
+    "type": "النوع",
+    "status": "الحالة",
+    "creationBlock": "كتلة الإنشاء",
+    "beneficiary": "المستفيد",
+    "amount": "المبلغ",
+    "appliedBlock": "كتلة التطبيق",
+    "appliedTxId": "معاملة التطبيق",
+    "slashTxId": "معاملة القطع",
+    "evidenceKind": "نوع الدليل",
+    "slashedAccount": "الحساب المقطوع",
+    "recipient": "المستلم",
+    "reason": "السبب",
+    "votes": "الأصوات ({{count}})",
+    "voter": "المصوت",
+    "txId": "معرف المعاملة",
+    "blockHeight": "ارتفاع الكتلة"
+  },
   "btc": {
     "title": "تعيين أصول البيتكوين",
     "tvl": "TVL",

@@ -131,6 +131,14 @@
     "recipient": "Destinatário",
     "amount": "Valor"
   },
+  "governance": {
+    "proposalId": "ID da proposta",
+    "type": "Tipo",
+    "status": "Status",
+    "creationBlock": "Bloco de criação",
+    "beneficiary": "Beneficiário",
+    "amount": "Quantia"
+  },
   "transfers": {
     "txId": "ID da Tx",
     "age": "Idade",

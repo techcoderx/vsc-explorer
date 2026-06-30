@@ -32,7 +32,8 @@ import {
   LedgerClaimRecord,
   Status,
   TxnTypes,
-  SettlementRecord
+  SettlementRecord,
+  GovernanceProposal
 } from './types/L2ApiResult'
 import { useQuery } from '@tanstack/react-query'
 import { CoinLower } from './types/Payloads'
@@ -525,4 +526,37 @@ export const fetchTssCommitments = async (epoch: number): Promise<TssCommitment[
     { opts: { byEpoch: epoch } }
   )
   return result.data.commitments ?? []
+}
+
+export const findGovernanceProposals = async (
+  filterOptions: {
+    byProposalId?: string
+    byType?: string
+    byStatus?: string
+    offset?: number
+    limit?: number
+  } = {}
+): Promise<GovernanceProposal[]> => {
+  const result = await gql<GqlResponse<{ proposals: GovernanceProposal[] }>>(
+    `query GovernanceProposals($filter: GovernanceProposalFilter) {
+      proposals: findGovernanceProposals(filterOptions: $filter) {
+        proposalId
+        type
+        status
+        creationBlock
+        beneficiary
+        amount
+        appliedBlock
+        appliedTxId
+        slashTxId
+        evidenceKind
+        slashedAccount
+        recipient
+        reason
+        votes { voter blockHeight txId }
+      }
+    }`,
+    { filter: filterOptions }
+  )
+  return result.data.proposals
 }

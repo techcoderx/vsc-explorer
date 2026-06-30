@@ -19,6 +19,8 @@ import L1User from './components/pages/L1User'
 import { Tx } from './components/pages/L1Tx'
 import Elections from './components/pages/Elections'
 import Epoch from './components/pages/Epoch'
+import Governance from './components/pages/Governance'
+import GovernanceDetail from './components/pages/GovernanceDetail'
 import { Contract } from './components/pages/Contract'
 import HiveBridgeOverview from './components/pages/bridge/Overview'
 import { HiveBridgeLatestTxs } from './components/pages/bridge/HiveLatestTxs'
@@ -115,6 +117,14 @@ const router = createBrowserRouter([
       {
         path: '/elections/:page?',
         element: <Elections />
+      },
+      {
+        path: '/governance/proposal/:proposalId',
+        element: <GovernanceDetail />
+      },
+      {
+        path: '/governance/:page?',
+        element: <Governance />
       },
       {
         path: '/epoch/:epochNum/:page?',

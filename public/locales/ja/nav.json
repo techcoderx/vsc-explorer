@@ -9,6 +9,8 @@
   "overviewSub": "アクティブウィットネス一覧",
   "elections": "選挙",
   "electionsSub": "各エポックのウィットネス選出",
+  "governance": "ガバナンス",
+  "governanceSub": "スラッシュ/リストアおよび支払い提案",
   "multisigAccount": "マルチシグアカウント",
   "multisigAccountSub": "マルチシグアカウントのアクティビティ",
   "schedule": "スケジュール",
