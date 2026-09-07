@@ -32,21 +32,26 @@ import { toaster } from '../../ui/toaster'
 import { InfoTip } from '../../ui/toggle-tip'
 import { TFunction } from 'i18next'
 
-const tinygoVersions: { [v: string]: { go: string; llvm: string; img_digest: string } } = {
+const tinygoVersions: { [v: string]: { go: string; llvm: string } } = {
+  '0.42.0': {
+    go: '1.27.0',
+    llvm: '22.1.4'
+  },
+  '0.41.1': {
+    go: '1.26.2',
+    llvm: '20.1.1'
+  },
   '0.40.1': {
     go: '1.25.5',
-    llvm: '20.1.1',
-    img_digest: 'sha256:89a77cc87b191399077be51a295d1d29569314931f334b2730427d7ed3a2b18e'
+    llvm: '20.1.1'
   },
   '0.39.0': {
     go: '1.25.0',
-    llvm: '19.1.2',
-    img_digest: 'sha256:0e51d243c1b84ec650f2dcd1cce3a09bb09730e1134771aeace2240ade4b32f5'
+    llvm: '19.1.2'
   },
   '0.38.0': {
     go: '1.24.4',
-    llvm: '19.1.2',
-    img_digest: 'sha256:98447dff0e56426b98f96a1d47ac7c1d82d27e3cd630cba81732cfc13c9a410f'
+    llvm: '19.1.2'
   }
 }
 
