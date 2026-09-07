@@ -22,5 +22,6 @@ export const Flairs: {
   vsc1BdrQ6EtbQ64rq2PkPd21x4MaLnVRcJj85d: 'Bitcoin NAM',
   vsc1Brvi4YZHLkocYNAFd7Gf1JpsPjzNnv4i45: 'DEX Router',
   vsc1BoaniA5HW56GuQy6pVdoZfMcVaaDfnC8kp: 'HIVE/HBD Pool',
-  vsc1BVb95YKRHAEy24XgRSaW4L6d9vB88AdwjM: 'BTC/HBD Pool'
+  vsc1BVb95YKRHAEy24XgRSaW4L6d9vB88AdwjM: 'BTC/HBD Pool',
+  vsc1BdZFXb8HdLptKUamNG4nL74hSb6UUBEiQA: 'Magi Market'
 }
