@@ -20,7 +20,8 @@
     "deployer": "Bereitsteller",
     "owner": "Eigentümer",
     "code": "Code",
-    "latest": "Neueste"
+    "latest": "Neueste",
+    "pending": "Ausstehend"
   },
   "contractOutput": {
     "id": "Id",

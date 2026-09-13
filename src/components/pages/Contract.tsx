@@ -37,7 +37,8 @@ import {
   simulateContractCalls,
   useAddrBalance,
   useContract,
-  useHistoryStats
+  useHistoryStats,
+  usePendingContractUpdates
 } from '../../requests'
 import TableRow from '../TableRow'
 import { abbreviateHash, beL1BlockUrl, magiAssetDisplay, timeAgo, utf8ToHex } from '../../helpers'
@@ -482,6 +483,7 @@ export const Contract = () => {
   const [actionFilters, setActionFilters] = useState<LedgerFilterState>(emptyLedgerFilters)
   const invalidContractId = !contractId?.startsWith('vsc1')
   const { data, isLoading, isError } = useContract(contractId!, !invalidContractId)
+  const { data: pendingData } = usePendingContractUpdates(contractId!, !invalidContractId)
   const { data: contractType } = useContractType(contractId!, !invalidContractId)
   const { tokens } = useTokenRegistry()
   const { nfts } = useNftRegistry()
@@ -555,6 +557,10 @@ export const Contract = () => {
   }
   const contract = ct && ct.length > 0 ? ct[0] : null
   const history = ct && ct.length > 0 ? ct : []
+  const pendingUpdates = pendingData?.data.pending ?? []
+  const activeTxId = pendingData?.data.active?.[0]?.tx_id
+  const pendingTxIds = new Set(pendingUpdates.map((p) => p.tx_id))
+  const historyRows = history.filter((h) => !pendingTxIds.has(h.tx_id))
   const {
     data: verifInfo,
     error: verifError,
@@ -845,7 +851,7 @@ export const Contract = () => {
               )}
             </Tabs.Content>
             <Tabs.Content value="7" pt={'2'} px={'0'}>
-              <ContractHistoryTbl history={history} />
+              <ContractHistoryTbl history={historyRows} pending={pendingUpdates} activeTxId={activeTxId} />
             </Tabs.Content>
           </Tabs.Root>
         </Box>

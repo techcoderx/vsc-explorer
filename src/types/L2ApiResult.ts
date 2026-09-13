@@ -220,6 +220,8 @@ export interface Contract {
   name: string
   description: string
   code: string
+  activation_height?: number
+  activation_ts?: string
 }
 
 interface ContractOutputBase {

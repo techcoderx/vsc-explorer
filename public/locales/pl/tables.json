@@ -20,7 +20,8 @@
     "deployer": "Wdrażający",
     "owner": "Właściciel",
     "code": "Kod",
-    "latest": "Najnowszy"
+    "latest": "Najnowszy",
+    "pending": "Oczekiwanie"
   },
   "contractOutput": {
     "id": "Id",

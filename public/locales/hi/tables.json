@@ -20,7 +20,8 @@
     "deployer": "तैनाती करने वाला",
     "owner": "मालिक",
     "code": "कोड",
-    "latest": "नवीनतम"
+    "latest": "नवीनतम",
+    "pending": "लंबित"
   },
   "contractOutput": {
     "id": "आईडी",

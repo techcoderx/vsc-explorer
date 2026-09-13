@@ -20,7 +20,8 @@
     "deployer": "배포자",
     "owner": "소유자",
     "code": "코드",
-    "latest": "최신"
+    "latest": "최신",
+    "pending": "처리 중"
   },
   "contractOutput": {
     "id": "ID",

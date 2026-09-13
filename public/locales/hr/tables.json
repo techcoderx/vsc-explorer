@@ -20,7 +20,8 @@
     "deployer": "Postavljač",
     "owner": "Vlasnik",
     "code": "Kod",
-    "latest": "Najnoviji"
+    "latest": "Najnoviji",
+    "pending": "Na čekanju"
   },
   "contractOutput": {
     "id": "Id",

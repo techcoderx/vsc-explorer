@@ -20,7 +20,8 @@
     "deployer": "Развернувший",
     "owner": "Владелец",
     "code": "Код",
-    "latest": "Последний"
+    "latest": "Последний",
+    "pending": "Ожидание"
   },
   "contractOutput": {
     "id": "Ид",

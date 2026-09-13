@@ -20,7 +20,8 @@
     "deployer": "Deployer",
     "owner": "Owner",
     "code": "Code",
-    "latest": "Latest"
+    "latest": "Latest",
+    "pending": "Pending"
   },
   "contractOutput": {
     "id": "Id",

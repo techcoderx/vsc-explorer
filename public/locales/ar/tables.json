@@ -20,7 +20,8 @@
     "deployer": "المنشر",
     "owner": "المالك",
     "code": "الكود",
-    "latest": "الأحدث"
+    "latest": "الأحدث",
+    "pending": "قيد الانتظار"
   },
   "contractOutput": {
     "id": "المعرف",

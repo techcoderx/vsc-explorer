@@ -326,6 +326,26 @@ query Contract($opt1: FindContractFilter, $opt3: ContractOutputFilter) {
   })
 }
 
+export const usePendingContractUpdates = (contract_id: string, enabled = true) => {
+  return useQuery({
+    queryKey: ['vsc-pending-contract-updates', contract_id],
+    queryFn: async () => {
+      return await gql<GqlResponse<{ pending: Contract[]; active: Contract[] }>>(
+        `
+query PendingContractUpdates($opt: FindContractFilter, $opt2: FindContractFilter) {
+  pending: findPendingContractUpdates(filterOptions: $opt) { id code creator owner tx_id creation_height creation_ts runtime activation_height activation_ts }
+  active: findContract(filterOptions: $opt2) { tx_id }
+}`,
+        {
+          opt: { byId: contract_id, offset: 0, limit: 100 },
+          opt2: { byId: contract_id, offset: 0 }
+        }
+      )
+    },
+    enabled
+  })
+}
+
 export const useAddrBalance = (acc: string) => {
   const { data: balance, isLoading } = useQuery({
     queryKey: ['vsc-address-balance', acc],

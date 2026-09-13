@@ -20,7 +20,8 @@
     "deployer": "Penggunaan",
     "owner": "Pemilik",
     "code": "Kod",
-    "latest": "Terkini"
+    "latest": "Terkini",
+    "pending": "Menunggu"
   },
   "contractOutput": {
     "id": "Id",

@@ -20,7 +20,8 @@
     "deployer": "Implantador",
     "owner": "Proprietário",
     "code": "Código",
-    "latest": "Mais recente"
+    "latest": "Mais recente",
+    "pending": "Pendente"
   },
   "contractOutput": {
     "id": "Id",
