@@ -17,7 +17,7 @@ import { PageTitle } from '../../PageTitle'
 import { TxFilterBar, TxFilterToggle } from '../../TxFilterBar'
 import { LedgerFilterToggle } from '../../LedgerFilterBar'
 import { buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../../txFilterHelpers'
-import { L1OpTypeFilter } from '../../L1OpTypeFilter'
+// import { L1OpTypeFilter } from '../../L1OpTypeFilter'
 import { LedgerFilterState, emptyLedgerFilters, countActiveFilters } from '../../../ledgerFilterHelpers'
 import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../../types/TxFilters'
 
@@ -126,7 +126,7 @@ export const Address = () => {
       >
         <Tabs.List overflowX={'auto'} whiteSpace={'nowrap'} maxW={'100%'} display={'flex'} css={{ '& > button': { flexShrink: 0 } }}>
           <Tabs.Trigger value="txs">{t('address.tabs.transactions')}</Tabs.Trigger>
-          <Tabs.Trigger value="hiveops" hidden={!isL1}>{t('address.tabs.l1Ops')}</Tabs.Trigger>
+          {/* <Tabs.Trigger value="hiveops" hidden={!isL1}>{t('address.tabs.l1Ops')}</Tabs.Trigger> */}
           <Tabs.Trigger value="ledger">{t('address.tabs.ledgerOps')}</Tabs.Trigger>
           <Tabs.Trigger value="actions">{t('address.tabs.actions')}</Tabs.Trigger>
           <Tabs.Trigger value="deposits">{t('address.tabs.maps')}</Tabs.Trigger>
@@ -139,11 +139,11 @@ export const Address = () => {
               <TxFilterToggle activeCount={countActiveTxFilters(txFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />
             </Box>
           )}
-          {tabValue === 'hiveops' && (
+          {/* {tabValue === 'hiveops' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
               <L1OpTypeFilter filterKey={`/address/${addr}/hiveops`} />
             </Box>
-          )}
+          )} */}
           {tabValue === 'ledger' && (
             <Box marginStart={'auto'} flexShrink={0} my={'auto'}>
               <LedgerFilterToggle activeCount={countActiveFilters(ledgerFilters)} open={filtersOpen} onToggle={() => setFiltersOpen((p) => !p)} />

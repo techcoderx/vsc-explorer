@@ -11,7 +11,7 @@ import { wagmiAdapter, bitcoinAdapter, networks } from './wagmiConfig'
 import Home from './components/pages/Home'
 import Witnesses from './components/pages/Witnesses'
 import Blocks from './components/pages/Blocks'
-import { NewTxs, NewHiveTxs, NewVscTxs } from './components/pages/NewTxs'
+import { NewTxs, NewVscTxs } from './components/pages/NewTxs'
 import NewContracts from './components/pages/NewContracts'
 import PageNotFound from './components/pages/404'
 import { BlockBy } from './components/pages/Block'
@@ -31,7 +31,7 @@ import { AddressActions, AddressWithdrawals } from './components/pages/address/L
 import { VerifyContract } from './components/pages/tools/VerifyContract'
 import { DagInspector } from './components/pages/tools/DagInspector'
 import { AddressWitness } from './components/pages/address/Witness'
-import { AddressL1Ops } from './components/pages/address/L1Ops'
+// import { AddressL1Ops } from './components/pages/address/L1Ops'
 import { AddressBalances } from './components/pages/address/AddressBalances'
 import { AddressNftHoldings } from './components/pages/address/NftHoldings'
 import TokenList from './components/pages/tokens/TokenList'
@@ -72,10 +72,10 @@ const router = createBrowserRouter([
             path: '/address/:addr/txs/:page?',
             element: <AddressTxs />
           },
-          {
-            path: '/address/:addr/hiveops/:page?',
-            element: <AddressL1Ops />
-          },
+          // {
+          //   path: '/address/:addr/hiveops/:page?',
+          //   element: <AddressL1Ops />
+          // },
           {
             path: '/address/:addr/ledger/:page?',
             element: <AddressLedgers />
@@ -150,10 +150,10 @@ const router = createBrowserRouter([
             path: '/transactions/magi/:page?',
             element: <NewVscTxs />
           },
-          {
-            path: '/transactions/hive',
-            element: <NewHiveTxs />
-          }
+          // {
+          //   path: '/transactions/hive',
+          //   element: <NewHiveTxs />
+          // }
         ]
       },
       {

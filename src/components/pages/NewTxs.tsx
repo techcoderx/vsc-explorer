@@ -3,20 +3,21 @@ import { useQuery } from '@tanstack/react-query'
 import { Outlet, useLocation, useOutletContext, useParams } from 'react-router'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TxCard } from '../TxCard'
-import { fetchLatestTxs, fetchL2TxnsBy, useHistoryStats } from '../../requests'
-import { describeL1TxBriefly } from '../../helpers'
+// import { TxCard } from '../TxCard'
+import { fetchL2TxnsBy, useHistoryStats } from '../../requests'
+// import { describeL1TxBriefly } from '../../helpers'
 import { Txns } from '../tables/Transactions'
 import Pagination, { CurrentPageBtn, LinkedBtn } from '../Pagination'
 import { PageTitle } from '../PageTitle'
 import { TxFilterBar, TxFilterToggle } from '../TxFilterBar'
 import { buildTxFilterOptions, buildHistoryStatOpts, useBlockRange } from '../../txFilterHelpers'
 import { TxFilterState, emptyTxFilters, countActiveTxFilters } from '../../types/TxFilters'
-import { useL1OpsFilter } from '../../l1OpTypes'
+// import { useL1OpsFilter } from '../../l1OpTypes'
 import { L1OpTypeFilter } from '../L1OpTypeFilter'
 
 const HIVE_TXS_FILTER_KEY = '/transactions/hive'
 
+/*
 export const NewHiveTxs = () => {
   const bitmask = useL1OpsFilter(HIVE_TXS_FILTER_KEY)
   const { data: txs } = useQuery({
@@ -37,6 +38,7 @@ export const NewHiveTxs = () => {
     </Flex>
   )
 }
+*/
 
 const count = 100
 
@@ -91,9 +93,9 @@ export const NewTxs = () => {
           <ButtonGroup variant="outline" size="md" attached>
             {!isMagi ? <LinkedBtn to={'/transactions'}>{t('transactions.magi')}</LinkedBtn> : <CurrentPageBtn>{t('transactions.magi')}</CurrentPageBtn>}
             {!isHive ? (
-              <LinkedBtn to={'/transactions/hive'}>{t('transactions.hive')}</LinkedBtn>
+              <LinkedBtn to={'/transactions/hive'} disabled>{t('transactions.hive')}</LinkedBtn>
             ) : (
-              <CurrentPageBtn>{t('transactions.hive')}</CurrentPageBtn>
+              <CurrentPageBtn disabled>{t('transactions.hive')}</CurrentPageBtn>
             )}
           </ButtonGroup>
         </Flex>
