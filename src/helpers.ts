@@ -434,6 +434,11 @@ export const makeL1TxIdWifIdx = (trx_id: string, opidx: number) => {
   return `${trx_id}-${opidx}`
 }
 
+export const isPoa = (epoch: number): boolean => {
+  const conf = getConf()
+  return !conf.poaEpoch || (epoch >= conf.poaEpoch)
+}
+
 export const formatTokenAmount = (rawAmount: string | number, decimals: number): string => {
   const str = rawAmount.toString()
   if (decimals === 0) return thousandSeperator(str)

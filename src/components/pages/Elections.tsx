@@ -3,7 +3,7 @@ import { Link as ReactRouterLink, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { fetchElections, fetchProps } from '../../requests'
-import { fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { fmtmAmount, isPoa, thousandSeperator, timeAgo } from '../../helpers'
 import { ProgressBarPct } from '../ProgressPercent'
 import PageNotFound from './404'
 import Pagination from '../Pagination'
@@ -92,7 +92,7 @@ const Elections = () => {
                   </Table.Cell>
                   <Table.Cell>{epoch.blocks_info?.count || 0}</Table.Cell>
                   <Table.Cell>{epoch.members.length}</Table.Cell>
-                  <Table.Cell>{fmtmAmount(epoch.total_weight, 'HIVE')}</Table.Cell>
+                  <Table.Cell>{isPoa(epoch.epoch) ? epoch.total_weight : fmtmAmount(epoch.total_weight, 'HIVE')}</Table.Cell>
                   <Table.Cell maxW={'200px'}>
                     {epoch.epoch === 0 ? (
                       <Text>{t('na', { ns: 'common' })}</Text>

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import PageNotFound from './404'
 import { fetchBlocksInEpoch, fetchEpoch, fetchElectionSettlement, fetchTssCommitments } from '../../requests'
 import Pagination, { PrevNextBtns } from '../Pagination'
-import { beL1BlockUrl, fmtmAmount, thousandSeperator, timeAgo } from '../../helpers'
+import { beL1BlockUrl, fmtmAmount, isPoa, thousandSeperator, timeAgo } from '../../helpers'
 import TableRow from '../TableRow'
 import { ProgressBarPct } from '../ProgressPercent'
 import { themeColorScheme } from '../../settings'
@@ -101,7 +101,7 @@ const Epoch = () => {
                 link={'/tools/dag?cid=' + epoch?.data}
                 isLoading={isEpochLoading}
               />
-              <TableRow label={t('epoch.totalWeight')} value={fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
+              <TableRow label={t('epoch.totalWeight')} value={isPoa(epchNum) ? epoch?.total_weight : fmtmAmount(epoch?.total_weight || 0, 'HIVE')} isLoading={isEpochLoading} />
               {epoch && epoch.be_info && epoch.be_info.eligible_weight > 0 ? (
                 <TableRow label={t('epoch.participation')}>
                   <ProgressBarPct fontSize={'md'} val={(epoch.be_info.voted_weight / epoch.be_info.eligible_weight) * 100} />

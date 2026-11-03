@@ -23,6 +23,7 @@ interface Conf {
   netId: string
   msAccount: string
   electionInterval: number
+  poaEpoch?: number
 }
 
 type Networks = 'mainnet' | 'testnet' | 'devnet'
@@ -45,7 +46,8 @@ const testnetConf: Conf = {
   hiveChainId: '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e',
   netId: 'vsc-testnet',
   msAccount: 'vsc.gateway',
-  electionInterval: 3600
+  electionInterval: 3600,
+  poaEpoch: 1262
 }
 
 const mainnetConf: Conf = {
@@ -68,7 +70,8 @@ const mainnetConf: Conf = {
   hiveChainId: 'beeab0de00000000000000000000000000000000000000000000000000000000',
   netId: 'vsc-mainnet',
   msAccount: 'vsc.gateway',
-  electionInterval: 7200
+  electionInterval: 7200,
+  poaEpoch: 2216
 }
 
 const devnetHiveApi = import.meta.env.VITE_DEVNET_HIVE_API || 'http://localhost:10710'
@@ -91,7 +94,8 @@ const devnetConf: Conf = {
   hiveChainId: '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e',
   netId: 'vsc-devnet',
   msAccount: 'vsc.gateway',
-  electionInterval: 7200
+  electionInterval: 7200,
+  poaEpoch: 0
 }
 
 export const getConf = (): Conf => {
