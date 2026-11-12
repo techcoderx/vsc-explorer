@@ -205,23 +205,60 @@ const TxOverview = ({ txn, type }: { txn: Txn; type: 'hive' | 'vsc' }) => {
           <Table.Root>
             <Table.Body>
               <Table.Row>
-                <MinTd py={'2.5'} fontWeight={'bold'}>
-                  {t('l1Tx.requiredAuths')}
-                </MinTd>
-                <MinTd py={'2.5'}>
-                  <Grid
-                    templateColumns={['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)', 'repeat(6, 1fr)']}
-                    gap={3}
-                  >
-                    {txn.required_auths.map((a, i) => {
-                      return (
-                        <GridItem key={i}>
-                          <AccountLink val={a} />
-                        </GridItem>
-                      )
-                    })}
-                  </Grid>
-                </MinTd>
+                {Array.isArray(txn.required_auths) && txn.required_auths.length > 0 ? (
+                  <>
+                    <MinTd py={'2.5'} fontWeight={'bold'}>
+                      {t('l1Tx.requiredAuths')}
+                    </MinTd>
+                    <MinTd py={'2.5'}>
+                      <Grid
+                        templateColumns={[
+                          'repeat(2, 1fr)',
+                          'repeat(3, 1fr)',
+                          'repeat(4, 1fr)',
+                          'repeat(5, 1fr)',
+                          'repeat(6, 1fr)'
+                        ]}
+                        gap={3}
+                      >
+                        {txn.required_auths.map((a, i) => {
+                          return (
+                            <GridItem key={i}>
+                              <AccountLink val={a} />
+                            </GridItem>
+                          )
+                        })}
+                      </Grid>
+                    </MinTd>
+                  </>
+                ) : null}
+                {Array.isArray(txn.required_posting_auths) && txn.required_posting_auths.length > 0 ? (
+                  <>
+                    <MinTd py={'2.5'} fontWeight={'bold'}>
+                      {t('l1Tx.requiredPostingAuths')}
+                    </MinTd>
+                    <MinTd py={'2.5'}>
+                      <Grid
+                        templateColumns={[
+                          'repeat(2, 1fr)',
+                          'repeat(3, 1fr)',
+                          'repeat(4, 1fr)',
+                          'repeat(5, 1fr)',
+                          'repeat(6, 1fr)'
+                        ]}
+                        gap={3}
+                      >
+                        {txn.required_posting_auths.map((a, i) => {
+                          return (
+                            <GridItem key={i}>
+                              <AccountLink val={a} />
+                            </GridItem>
+                          )
+                        })}
+                      </Grid>
+                    </MinTd>
+                  </>
+                ) : null}
               </Table.Row>
               <Table.Row>
                 <MinTd py={'2.5'} fontWeight={'bold'}>

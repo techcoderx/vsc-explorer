@@ -146,6 +146,7 @@
   "l1Tx": {
     "magiTransaction": "Magi Transaction",
     "requiredAuths": "Required Auths",
+    "requiredPostingAuths": "Required Posting Auths",
     "rcUsed": "RC Used",
     "nonce": "Nonce",
     "ledgerOps": "Ledger Operations ({{count}})",
