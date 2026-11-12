@@ -164,6 +164,8 @@ const DesktopNav = ({ isThemed, t }: { isThemed: boolean; t: TFunction }) => {
             <Popover.Trigger asChild>
               <Box
                 asChild={!!navItem.href}
+                display={'flex'}
+                alignItems={'center'}
                 p={2}
                 fontSize={'md'}
                 fontWeight={500}
