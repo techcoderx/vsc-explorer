@@ -48,7 +48,7 @@ export const AmountIntentAllowance = ({ intents }: { intents: TxIntentAllowance[
 const resolveFrom = (t: Txn, o: Txn['ops'][number]): string =>
   o.type === 'deposit'
     ? o.data.from
-    : (t.required_auths[0] ?? (o.type !== 'call' ? o.data.from : (o.data.caller ?? t.required_posting_auths[0] ?? '')))
+    : (Array.isArray(t.required_auths) && t.required_auths.length > 0 ? t.required_auths[0] : (o.type !== 'call' ? o.data.from : (o.data.caller ?? (Array.isArray(t.required_posting_auths) && t.required_posting_auths.length > 0 ? t.required_posting_auths[0] : ''))))
 
 const resolveTo = (o: Txn['ops'][number]): string => (o.type === 'call' ? o.data.contract_id : o.data.to)
 
