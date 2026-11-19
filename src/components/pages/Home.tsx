@@ -16,7 +16,15 @@ import {
 } from 'react-icons/lu'
 import type Recharts from 'recharts'
 import { Helmet } from 'react-helmet-async'
-import { fetchProps, fetchBlocks, fetchL2TxnsBy, fetchEpoch, useNetworkStats, useContracts } from '../../requests'
+import {
+  fetchProps,
+  fetchBlocks,
+  fetchL2TxnsBy,
+  fetchEpoch,
+  useNetworkStats,
+  useContracts,
+  useWitnessesConsensusStake
+} from '../../requests'
 import { thousandSeperator, timeAgo, fmtmAmount } from '../../helpers'
 import { getConf, themeColor } from '../../settings'
 import { useColorMode } from '../ui/color-mode'
@@ -275,6 +283,13 @@ const Home = () => {
 
   const epochCountdown = useEpochCountdown(epoch?.block_height, prop?.last_processed_block)
 
+  // Total stake of the current committee, tallied from the witnesses' consensus
+  // bonds — election weights themselves are flat seat weights under PoA.
+  const { data: totalConsensusStake } = useWitnessesConsensusStake(
+    epoch?.epoch,
+    epoch?.members?.map((member) => member.account)
+  )
+
   const origin = typeof window !== 'undefined' ? window.location.origin : ''
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -342,8 +357,12 @@ const Home = () => {
               <Link asChild color={themeColor} fontWeight="medium">
                 <ReactRouterLink to={`/epoch/${epoch.epoch}`}>{t('epoch.epoch', { num: epoch.epoch })}</ReactRouterLink>
               </Link>
-              <Text opacity={0.5}>|</Text>
-              <Text>{t('epoch.totalStake', { amount: fmtmAmount(epoch.total_weight, 'HIVE') })}</Text>
+              {totalConsensusStake !== undefined && (
+                <>
+                  <Text opacity={0.5}>|</Text>
+                  <Text>{t('epoch.totalStake', { amount: fmtmAmount(totalConsensusStake, 'HIVE') })}</Text>
+                </>
+              )}
               {epochCountdown !== null && (
                 <>
                   <Text opacity={0.5}>|</Text>

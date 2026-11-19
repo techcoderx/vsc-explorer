@@ -89,6 +89,48 @@ export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
   return await (await fetch(`${conf.beApi}/epoch/${epoch_num}`)).json()
 }
 
+// Election weights are flat seat weights (1 per seat) under PoA, so they no
+// longer express stake. The committee's actual stake has to be tallied from the
+// witnesses' consensus bonds instead, which the node exposes per account.
+const WITNESS_STAKE_BATCH = 50
+
+export const fetchWitnessesConsensusStake = async (accounts: string[]): Promise<number> => {
+  // Election records hold bare usernames; ledger balances are keyed "hive:<name>".
+  const hiveAccounts = [
+    ...new Set(
+      accounts.filter((account) => !!account).map((account) => (account.startsWith('hive:') ? account : `hive:${account}`))
+    )
+  ]
+  let total = 0
+  for (let i = 0; i < hiveAccounts.length; i += WITNESS_STAKE_BATCH) {
+    const batch = hiveAccounts.slice(i, i + WITNESS_STAKE_BATCH)
+    const variables = batch.reduce((acc, account, idx) => ({ ...acc, [`acc${idx}`]: account }), {} as Record<string, string>)
+    const result = await gql<GqlResponse<Record<string, number>> & { errors?: { message: string }[] }>(
+      `query WitnessConsensusStake(${batch.map((_, idx) => `$acc${idx}: String!`).join(', ')}) {
+        ${batch.map((_, idx) => `s${idx}: witnessStake(account: $acc${idx})`).join('\n        ')}
+      }`,
+      variables
+    )
+    if (result.errors?.length || !result.data) {
+      throw new Error(result.errors?.[0]?.message ?? 'failed to fetch witness consensus stake')
+    }
+    total += Object.values(result.data).reduce((sum, stake) => sum + (stake ?? 0), 0)
+  }
+  return total
+}
+
+export const useWitnessesConsensusStake = (epoch?: number, accounts?: string[]) => {
+  return useQuery({
+    queryKey: ['vsc-witnesses-consensus-stake', epoch],
+    queryFn: () => fetchWitnessesConsensusStake(accounts ?? []),
+    enabled: epoch !== undefined && !!accounts?.length,
+    // Bonds move rarely; refresh every 3 minutes instead of following the 6s
+    // homepage cadence.
+    refetchInterval: 180000,
+    staleTime: 180000
+  })
+}
+
 export const fetchElectionSettlement = async (epoch: number): Promise<SettlementRecord | null> => {
   const result = await gql<GqlResponse<{ election: { settlement: SettlementRecord | null } }>>(
     `query GetElection($epoch: Uint64!) {
