@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "序號",
     "username": "使用者名稱",
-    "weight": "權重",
+    "stake": "質押",
     "lastBlock": "最後區塊",
     "blocksProduced": "已產出區塊",
     "lastEpoch": "最後週期",

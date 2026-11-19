@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "Idx",
     "username": "Korisničko ime",
-    "weight": "Težina",
+    "stake": "Ulog",
     "lastBlock": "Zadnji blok",
     "blocksProduced": "Produciranih blokova",
     "lastEpoch": "Zadnja epoha",

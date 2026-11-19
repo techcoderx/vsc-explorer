@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "क्रमांक",
     "username": "उपयोगकर्ता नाम",
-    "weight": "भार",
+    "stake": "स्टेक",
     "lastBlock": "अंतिम ब्लॉक",
     "blocksProduced": "उत्पादित ब्लॉक",
     "lastEpoch": "अंतिम युग",

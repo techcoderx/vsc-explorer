@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "الترتيب",
     "username": "اسم المستخدم",
-    "weight": "الوزن",
+    "stake": "الرهن",
     "lastBlock": "آخر كتلة",
     "blocksProduced": "الكتل المنتجة",
     "lastEpoch": "آخر حقبة",

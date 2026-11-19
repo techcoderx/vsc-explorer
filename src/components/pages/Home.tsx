@@ -23,7 +23,7 @@ import {
   fetchEpoch,
   useNetworkStats,
   useContracts,
-  useWitnessesConsensusStake
+  useWitnessesTotalStake
 } from '../../requests'
 import { thousandSeperator, timeAgo, fmtmAmount } from '../../helpers'
 import { getConf, themeColor } from '../../settings'
@@ -284,11 +284,9 @@ const Home = () => {
   const epochCountdown = useEpochCountdown(epoch?.block_height, prop?.last_processed_block)
 
   // Total stake of the current committee, tallied from the witnesses' consensus
-  // bonds — election weights themselves are flat seat weights under PoA.
-  const { data: totalConsensusStake } = useWitnessesConsensusStake(
-    epoch?.epoch,
-    epoch?.members?.map((member) => member.account)
-  )
+  // bonds returned by the BE witness stats endpoint — election weights
+  // themselves are flat seat weights under PoA.
+  const { data: totalConsensusStake } = useWitnessesTotalStake(epoch?.epoch)
 
   const origin = typeof window !== 'undefined' ? window.location.origin : ''
   const jsonLd = {

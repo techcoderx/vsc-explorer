@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "Индекс",
     "username": "Имя пользователя",
-    "weight": "Вес",
+    "stake": "Стейк",
     "lastBlock": "Последний блок",
     "blocksProduced": "Произведено блоков",
     "lastEpoch": "Последняя эпоха",

@@ -89,46 +89,33 @@ export const fetchEpoch = async (epoch_num: number): Promise<Election> => {
   return await (await fetch(`${conf.beApi}/epoch/${epoch_num}`)).json()
 }
 
-// Election weights are flat seat weights (1 per seat) under PoA, so they no
-// longer express stake. The committee's actual stake has to be tallied from the
-// witnesses' consensus bonds instead, which the node exposes per account.
-const WITNESS_STAKE_BATCH = 50
-
-export const fetchWitnessesConsensusStake = async (accounts: string[]): Promise<number> => {
-  // Election records hold bare usernames; ledger balances are keyed "hive:<name>".
-  const hiveAccounts = [
-    ...new Set(
-      accounts.filter((account) => !!account).map((account) => (account.startsWith('hive:') ? account : `hive:${account}`))
-    )
-  ]
-  let total = 0
-  for (let i = 0; i < hiveAccounts.length; i += WITNESS_STAKE_BATCH) {
-    const batch = hiveAccounts.slice(i, i + WITNESS_STAKE_BATCH)
-    const variables = batch.reduce((acc, account, idx) => ({ ...acc, [`acc${idx}`]: account }), {} as Record<string, string>)
-    const result = await gql<GqlResponse<Record<string, number>> & { errors?: { message: string }[] }>(
-      `query WitnessConsensusStake(${batch.map((_, idx) => `$acc${idx}: String!`).join(', ')}) {
-        ${batch.map((_, idx) => `s${idx}: witnessStake(account: $acc${idx})`).join('\n        ')}
-      }`,
-      variables
-    )
-    if (result.errors?.length || !result.data) {
-      throw new Error(result.errors?.[0]?.message ?? 'failed to fetch witness consensus stake')
-    }
-    total += Object.values(result.data).reduce((sum, stake) => sum + (stake ?? 0), 0)
+// Total consensus stake behind the current committee, tallied from the
+// per-witness `stake` field on the BE witness stats response. Returns undefined
+// rather than a partial total when the field is missing (older backend).
+export const sumWitnessStake = (stats: WitnessStat[]): number | undefined => {
+  if (!stats.length || stats.some((witness) => !Number.isFinite(witness.stake))) {
+    return undefined
   }
-  return total
+  return stats.reduce((total, witness) => total + witness.stake, 0)
 }
 
-export const useWitnessesConsensusStake = (epoch?: number, accounts?: string[]) => {
+// Current committee witness stats. Keyed by epoch so a new committee refetches
+// immediately instead of serving the previous epoch's data from cache.
+export const useWitnessesStats = (epoch?: number) => {
   return useQuery({
-    queryKey: ['vsc-witnesses-consensus-stake', epoch],
-    queryFn: () => fetchWitnessesConsensusStake(accounts ?? []),
-    enabled: epoch !== undefined && !!accounts?.length,
-    // Bonds move rarely; refresh every 3 minutes instead of following the 6s
-    // homepage cadence.
+    queryKey: ['vsc-witnesses-stats', epoch],
+    queryFn: fetchWitnessesStats,
+    enabled: epoch !== undefined,
+    // Bonds move rarely; refresh every 3 minutes instead of following the
+    // homepage's 6s cadence.
     refetchInterval: 180000,
     staleTime: 180000
   })
+}
+
+export const useWitnessesTotalStake = (epoch?: number) => {
+  const { data: stats, isLoading } = useWitnessesStats(epoch)
+  return { data: stats ? sumWitnessStake(stats) : undefined, isLoading }
 }
 
 export const fetchElectionSettlement = async (epoch: number): Promise<SettlementRecord | null> => {

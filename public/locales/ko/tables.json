@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "번호",
     "username": "사용자 이름",
-    "weight": "가중치",
+    "stake": "스테이크",
     "lastBlock": "마지막 블록",
     "blocksProduced": "생성된 블록",
     "lastEpoch": "마지막 에포크",

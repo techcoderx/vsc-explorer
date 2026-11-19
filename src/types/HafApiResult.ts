@@ -54,6 +54,7 @@ export interface WitnessStat {
   last_epoch: number
   weight: number
   did_key: string
+  stake: number
 }
 
 export interface Election {

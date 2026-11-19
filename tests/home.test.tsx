@@ -61,7 +61,7 @@ vi.mock('../src/requests', () => ({
   })),
   useNetworkStats: () => [],
   useContracts: () => ({ contracts: [], isLoading: false }),
-  useWitnessesConsensusStake: vi.fn(() => ({ data: state.stake, isLoading: state.stake === undefined }))
+  useWitnessesTotalStake: vi.fn(() => ({ data: state.stake, isLoading: state.stake === undefined }))
 }))
 
 // Chakra's colour mode provider reads matchMedia, which jsdom does not implement.
@@ -97,7 +97,7 @@ describe('Home epoch card', () => {
     expect(screen.getByText('Epoch 2280')).toBeInTheDocument()
   })
 
-  it('omits the stake segment rather than falling back to the seat weight', async () => {
+  it('omits the stake segment when the tally is unavailable', async () => {
     state.stake = undefined
     renderHome()
     await waitFor(() => expect(screen.getByText('Epoch 2280')).toBeInTheDocument())

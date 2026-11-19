@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "Indeks",
     "username": "Nama Pengguna",
-    "weight": "Berat",
+    "stake": "Taruhan",
     "lastBlock": "Blok Terakhir",
     "blocksProduced": "Blok Dihasilkan",
     "lastEpoch": "Epok Terakhir",

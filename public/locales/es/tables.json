@@ -68,7 +68,7 @@
   "witnesses": {
     "idx": "Idx",
     "username": "Nombre de usuario",
-    "weight": "Peso",
+    "stake": "Apuesta",
     "lastBlock": "Último bloque",
     "blocksProduced": "Bloques producidos",
     "lastEpoch": "Última época",

@@ -3,7 +3,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { FaAngleDown, FaAngleUp, FaArrowsUpDown } from 'react-icons/fa6'
-import { fetchEpoch, fetchWitnessesStats } from '../../requests'
+import { fetchEpoch, useWitnessesStats } from '../../requests'
 import { abbreviateHash, fmtmAmount, thousandSeperator } from '../../helpers'
 import { useMemo, useState } from 'react'
 import { PageTitle } from '../PageTitle'
@@ -18,16 +18,13 @@ const Witnesses = () => {
   })
   const participation =
     (100 * (epoch?.blocks_info?.total_votes || 0)) / ((epoch?.blocks_info?.count || 1) * (epoch?.total_weight || 1))
-  const { data: stats, isLoading } = useQuery({
-    queryKey: ['vsc-witnesses-stats'],
-    queryFn: async () => fetchWitnessesStats()
-  })
+  const { data: stats, isLoading } = useWitnessesStats(epoch?.epoch)
   const statsUnsorted = useMemo(() => stats?.filter(() => true), [stats])
   const statsSorted = useMemo(() => {
-    if (sort === 'weight') {
-      return (stats || []).sort((a, b) => b.weight - a.weight)
-    } else if (sort === 'weight_asc') {
-      return (stats || []).sort((a, b) => a.weight - b.weight)
+    if (sort === 'stake') {
+      return (stats || []).sort((a, b) => b.stake - a.stake)
+    } else if (sort === 'stake_asc') {
+      return (stats || []).sort((a, b) => a.stake - b.stake)
     } else {
       return statsUnsorted
     }
@@ -51,21 +48,21 @@ const Witnesses = () => {
                 cursor={'pointer'}
                 tabIndex={0}
                 role="button"
-                aria-label="Sort by weight"
-                aria-sort={sort === 'weight' ? 'descending' : sort === 'weight_asc' ? 'ascending' : 'none'}
+                aria-label="Sort by stake"
+                aria-sort={sort === 'stake' ? 'descending' : sort === 'stake_asc' ? 'ascending' : 'none'}
                 onClick={() => {
-                  setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
+                  setSort((prev) => (prev === 'stake_asc' ? '' : prev === 'stake' ? 'stake_asc' : 'stake'))
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
-                    setSort((prev) => (prev === 'weight_asc' ? '' : prev === 'weight' ? 'weight_asc' : 'weight'))
+                    setSort((prev) => (prev === 'stake_asc' ? '' : prev === 'stake' ? 'stake_asc' : 'stake'))
                   }
                 }}
               >
                 <HStack>
-                  <Box>{t('witnesses.weight', { ns: 'tables' })}</Box>
-                  {sort === 'weight' ? <FaAngleDown /> : sort === 'weight_asc' ? <FaAngleUp /> : <FaArrowsUpDown />}
+                  <Box>{t('witnesses.stake', { ns: 'tables' })}</Box>
+                  {sort === 'stake' ? <FaAngleDown /> : sort === 'stake_asc' ? <FaAngleUp /> : <FaArrowsUpDown />}
                 </HStack>
               </Table.ColumnHeader>
               <Table.ColumnHeader>{t('witnesses.lastBlock', { ns: 'tables' })}</Table.ColumnHeader>
@@ -93,7 +90,7 @@ const Witnesses = () => {
                       <ReactRouterLink to={'/address/hive:' + m._id}>{m._id}</ReactRouterLink>
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{fmtmAmount(m.weight, 'HIVE')}</Table.Cell>
+                  <Table.Cell>{fmtmAmount(m.stake, 'HIVE')}</Table.Cell>
                   <Table.Cell>
                     {m.last_block ? (
                       <Link asChild>
