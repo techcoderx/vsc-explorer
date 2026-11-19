@@ -25,5 +25,9 @@ export const Flairs: {
   vsc1BVb95YKRHAEy24XgRSaW4L6d9vB88AdwjM: 'BTC/HBD Pool',
   vsc1BirUSGK2jm1zDQgVmuUysJ8UFKnTrnGXQf: 'STARPRO/HBD Pool',
   vsc1BdZFXb8HdLptKUamNG4nL74hSb6UUBEiQA: 'Magi Market',
-  vsc1BisggC1NtviuYN1mSR372HGSU6hUfdZARt: 'Lumen Creator Tokens'
+  vsc1BisggC1NtviuYN1mSR372HGSU6hUfdZARt: 'Lumen Creator Tokens',
+
+  // Other tokens
+  vsc1BUDsVccMPGycTmpc98WsQYSKyTBsZqFq4h: 'LASSECASH Token',
+  vsc1Bfaa2m3GHWL1baZ9AdDjgXQr2MHXMvoTgA: 'STARPRO Token'
 }
