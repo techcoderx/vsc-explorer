@@ -204,3 +204,51 @@ describe('Broadcast custom_json ops', () => {
     expect(mocks.errorToast).toHaveBeenCalledWith({ title: 'broadcast.errors.integerRequired' })
   })
 })
+
+describe('Broadcast asset restrictions', () => {
+  beforeEach(() => {
+    state.wallet = 'hive'
+    mocks.customJSON.mockClear()
+    mocks.errorToast.mockClear()
+    mocks.successToast.mockClear()
+  })
+
+  const assetOption = (value: string) =>
+    Array.from((screen.getAllByRole('combobox')[1] as HTMLSelectElement).options).find((o) => o.value === value)!
+  const assetSelect = () => screen.getAllByRole('combobox')[1] as HTMLSelectElement
+
+  it.each([
+    ['consensus_stake', 'hive'],
+    ['consensus_unstake', 'hive'],
+    ['stake_hbd', 'hbd'],
+    ['unstake_hbd', 'hbd']
+  ])('only allows the required asset for %s', (txType, required) => {
+    renderBroadcast()
+    selectType(txType)
+
+    expect(assetSelect().value).toBe(required)
+    expect(assetOption('hbd_savings').disabled).toBe(true)
+    for (const other of ['hive', 'hbd']) {
+      expect(assetOption(other).disabled).toBe(other !== required)
+    }
+  })
+
+  it('disables the savings option for map because it is an L1 HIVE/HBD transfer', () => {
+    renderBroadcast()
+    selectType('deposit')
+
+    expect(assetOption('hbd_savings').disabled).toBe(true)
+    expect(assetOption('hive').disabled).toBe(false)
+    expect(assetOption('hbd').disabled).toBe(false)
+  })
+
+  it('leaves every asset selectable for transfer and unmap', () => {
+    renderBroadcast()
+    for (const txType of ['transfer', 'withdraw']) {
+      selectType(txType)
+      expect(assetOption('hive').disabled).toBe(false)
+      expect(assetOption('hbd').disabled).toBe(false)
+      expect(assetOption('hbd_savings').disabled).toBe(false)
+    }
+  })
+})

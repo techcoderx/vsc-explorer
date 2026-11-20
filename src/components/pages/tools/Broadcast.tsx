@@ -43,6 +43,31 @@ const assetToEnum: Record<string, Asset> = {
   hbd_savings: Asset.shbd
 }
 
+// Tx types that only accept a single asset; every other asset option is disabled.
+// Consensus stake/unstake are HIVE-only and HBD stake/unstake are HBD-only.
+const requiredAssetByTxType: Partial<Record<TxnTypes, string>> = {
+  consensus_stake: 'hive',
+  consensus_unstake: 'hive',
+  stake_hbd: 'hbd',
+  unstake_hbd: 'hbd'
+}
+
+const assetOptions = [
+  { value: 'hive', label: 'HIVE' },
+  { value: 'hbd', label: 'HBD' },
+  { value: 'hbd_savings', label: 'sHBD' }
+]
+
+// Assets that a tx type does not accept; they are rendered as disabled options
+// rather than validated on submit. Map is an L1 HIVE/HBD transfer, so savings
+// HBD is not a valid deposit asset.
+const getDisabledAssets = (txType: BroadcastTxType): string[] => {
+  if (txType === 'deposit') return ['hbd_savings']
+  const required = requiredAssetByTxType[txType as TxnTypes]
+  if (required) return assetOptions.map((o) => o.value).filter((a) => a !== required)
+  return []
+}
+
 // Witness-vote governance and consensus-upgrade ops implemented by the node.
 // Unlike the ledger ops above, these are plain Hive L1 custom_json ops signed
 // with the active key, so they are broadcast through aioha instead of
@@ -173,9 +198,13 @@ export const Broadcast = () => {
   const amountMaxW = useBreakpointValue({ base: undefined, sm: '56' })
   const customJsonTx = customJsonTxs.find((op) => op.type === txType)
   const customFieldValue = (field: CustomJsonField) => customValues[field.key] ?? field.defaultValue ?? ''
+  const disabledAssets = getDisabledAssets(txType)
   const selectTxType = (type: BroadcastTxType) => {
     setTxType(type)
     setCustomValues({})
+    // Snap the asset selection to the only one the new tx type accepts.
+    const required = requiredAssetByTxType[type as TxnTypes]
+    if (required) setAsset(required)
   }
   const isFormReady = customJsonTx
     ? customJsonTx.fields.every((field) => field.optional || customFieldValue(field).trim() !== '')
@@ -221,9 +250,6 @@ export const Broadcast = () => {
       const amount = parseFloat(amt || '')
       if (isNaN(amount) || amount <= 0) {
         return toaster.error({ title: t('broadcast.errors.amountPositive') })
-      }
-      if (txType === 'deposit' && asset === 'hbd_savings') {
-        return toaster.error({ title: t('broadcast.errors.depositAsset') })
       }
       if (txType === 'deposit' && wallet !== Wallet.Hive) {
         return toaster.error({ title: t('broadcast.errors.hiveWalletOnly') })
@@ -356,9 +382,11 @@ export const Broadcast = () => {
                           />
                           <NativeSelect.Root width="auto" minW={'24'}>
                             <NativeSelect.Field value={asset} onChange={(e) => setAsset(e.target.value)}>
-                              <option value="hive">HIVE</option>
-                              <option value="hbd">HBD</option>
-                              <option value="hbd_savings">sHBD</option>
+                              {assetOptions.map((option) => (
+                                <option key={option.value} value={option.value} disabled={disabledAssets.includes(option.value)}>
+                                  {option.label}
+                                </option>
+                              ))}
                             </NativeSelect.Field>
                             <NativeSelect.Indicator />
                           </NativeSelect.Root>
