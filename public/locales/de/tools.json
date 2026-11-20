@@ -76,13 +76,39 @@
       "consensus_stake": "Konsensus-Stake",
       "consensus_unstake": "Konsensus-Freigabe",
       "stake_hbd": "HBD staken",
-      "unstake_hbd": "HBD freigeben"
+      "unstake_hbd": "HBD freigeben",
+      "slash_restore": "Slash wiederherstellen",
+      "reserve_payout": "Reserve-Auszahlung",
+      "reserve_vote": "Reserve-Abstimmung",
+      "admit_vote": "Aufnahme-Abstimmung",
+      "propose_consensus_version": "Konsensus-Version vorschlagen"
     },
     "errors": {
       "amountPositive": "Der Betrag muss größer als 0 sein.",
       "depositAsset": "Das Einzahlungsgut muss HIVE oder HBD sein.",
       "hiveWalletOnly": "Mapping ist nur von Hive-Wallets aus möglich.",
-      "unknownType": "Unbekannter Transaktionstyp"
+      "unknownType": "Unbekannter Transaktionstyp",
+      "fieldRequired": "{{field}} ist erforderlich.",
+      "customJsonHiveWalletOnly": "Custom-JSON-Operationen können nur von Hive-Wallets gesendet werden.",
+      "integerRequired": "Muss eine ganze Zahl sein."
+    },
+    "fields": {
+      "slashTxId": "Slash-Transaktions-ID",
+      "slashedAccount": "Geslashter Account",
+      "recipient": "Empfänger",
+      "amountHive": "Betrag (HIVE)",
+      "reason": "Grund",
+      "proposalId": "Vorschlags-ID",
+      "candidate": "Kandidat",
+      "uboId": "UBO (wirtschaftlich Berechtigter) ID",
+      "majorVersion": "Hauptversion",
+      "consensusVersion": "Konsensus-Version",
+      "nonConsensusVersion": "Nicht-Konsensus-Version",
+      "activationEpoch": "Aktivierungs-Epoche",
+      "nextEpoch": "Nächste Epoche"
+    },
+    "groups": {
+      "consensusUpgrades": "Konsensus-Upgrades"
     }
   }
 }

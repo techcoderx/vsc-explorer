@@ -76,13 +76,39 @@
       "consensus_stake": "Stake di consenso",
       "consensus_unstake": "Prelievo dal consenso",
       "stake_hbd": "Stake HBD",
-      "unstake_hbd": "Prelievo HBD"
+      "unstake_hbd": "Prelievo HBD",
+      "slash_restore": "Ripristino slash",
+      "reserve_payout": "Pagamento riserva",
+      "reserve_vote": "Voto di riserva",
+      "admit_vote": "Voto di ammissione",
+      "propose_consensus_version": "Proponi versione di consenso"
     },
     "errors": {
       "amountPositive": "L'importo deve essere maggiore di 0.",
       "depositAsset": "L'asset di deposito deve essere HIVE o HBD.",
       "hiveWalletOnly": "È possibile mappare solo da portafogli Hive.",
-      "unknownType": "Tipo di transazione sconosciuto"
+      "unknownType": "Tipo di transazione sconosciuto",
+      "fieldRequired": "{{field}} è obbligatorio.",
+      "customJsonHiveWalletOnly": "Le operazioni Custom JSON possono essere trasmesse solo da wallet Hive.",
+      "integerRequired": "Deve essere un numero intero."
+    },
+    "fields": {
+      "slashTxId": "ID transazione slash",
+      "slashedAccount": "Account slashato",
+      "recipient": "Destinatario",
+      "amountHive": "Importo (HIVE)",
+      "reason": "Motivo",
+      "proposalId": "ID proposta",
+      "candidate": "Candidato",
+      "uboId": "UBO (titolare effettivo) ID",
+      "majorVersion": "Versione principale",
+      "consensusVersion": "Versione del consenso",
+      "nonConsensusVersion": "Versione non di consenso",
+      "activationEpoch": "Epoca di attivazione",
+      "nextEpoch": "Epoca successiva"
+    },
+    "groups": {
+      "consensusUpgrades": "Aggiornamenti del consenso"
     }
   }
 }

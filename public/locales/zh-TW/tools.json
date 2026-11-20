@@ -76,13 +76,39 @@
       "consensus_stake": "共識質押",
       "consensus_unstake": "共識取消質押",
       "stake_hbd": "質押 HBD",
-      "unstake_hbd": "取消質押 HBD"
+      "unstake_hbd": "取消質押 HBD",
+      "slash_restore": "罰沒恢復",
+      "reserve_payout": "儲備金支付",
+      "reserve_vote": "儲備金投票",
+      "admit_vote": "准入投票",
+      "propose_consensus_version": "提議共識版本"
     },
     "errors": {
       "amountPositive": "金額必須大於 0。",
       "depositAsset": "存入資產必須為 HIVE 或 HBD。",
       "hiveWalletOnly": "只能從 Hive 錢包進行映射。",
-      "unknownType": "未知的交易類型"
+      "unknownType": "未知的交易類型",
+      "fieldRequired": "{{field}}為必填項。",
+      "customJsonHiveWalletOnly": "自訂 JSON 操作只能從 Hive 錢包廣播。",
+      "integerRequired": "必須為整數。"
+    },
+    "fields": {
+      "slashTxId": "罰沒交易 ID",
+      "slashedAccount": "被罰沒帳戶",
+      "recipient": "接收人",
+      "amountHive": "金額 (HIVE)",
+      "reason": "原因",
+      "proposalId": "提案ID",
+      "candidate": "候選人",
+      "uboId": "UBO（最終受益所有人）ID",
+      "majorVersion": "主版本",
+      "consensusVersion": "共識版本",
+      "nonConsensusVersion": "非共識版本",
+      "activationEpoch": "啟用週期",
+      "nextEpoch": "下一個週期"
+    },
+    "groups": {
+      "consensusUpgrades": "共識升級"
     }
   }
 }

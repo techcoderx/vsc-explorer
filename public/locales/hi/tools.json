@@ -76,13 +76,39 @@
       "consensus_stake": "सहमति स्टेक",
       "consensus_unstake": "सहमति अनस्टेक",
       "stake_hbd": "HBD स्टेक",
-      "unstake_hbd": "HBD अनस्टेक"
+      "unstake_hbd": "HBD अनस्टेक",
+      "slash_restore": "स्लैश रिस्टोर",
+      "reserve_payout": "रिज़र्व भुगतान",
+      "reserve_vote": "रिज़र्व वोट",
+      "admit_vote": "प्रवेश वोट",
+      "propose_consensus_version": "सहमति संस्करण प्रस्तावित करें"
     },
     "errors": {
       "amountPositive": "राशि 0 से अधिक होनी चाहिए।",
       "depositAsset": "जमा संपत्ति HIVE या HBD होनी चाहिए।",
       "hiveWalletOnly": "केवल Hive वॉलेट से मैप किया जा सकता है।",
-      "unknownType": "अज्ञात लेनदेन प्रकार"
+      "unknownType": "अज्ञात लेनदेन प्रकार",
+      "fieldRequired": "{{field}} आवश्यक है।",
+      "customJsonHiveWalletOnly": "कस्टम JSON ऑपरेशन केवल Hive वॉलेट से प्रसारित किए जा सकते हैं।",
+      "integerRequired": "पूर्ण संख्या होनी चाहिए।"
+    },
+    "fields": {
+      "slashTxId": "स्लैश लेनदेन आईडी",
+      "slashedAccount": "स्लैश किया गया खाता",
+      "recipient": "प्राप्तकर्ता",
+      "amountHive": "राशि (HIVE)",
+      "reason": "कारण",
+      "proposalId": "प्रस्ताव आईडी",
+      "candidate": "उम्मीदवार",
+      "uboId": "UBO (अंतिम लाभार्थी स्वामी) ID",
+      "majorVersion": "प्रमुख संस्करण",
+      "consensusVersion": "कंसेंसस संस्करण",
+      "nonConsensusVersion": "गैर-कंसेंसस संस्करण",
+      "activationEpoch": "सक्रियण युग",
+      "nextEpoch": "अगला युग"
+    },
+    "groups": {
+      "consensusUpgrades": "कंसेंसस अपग्रेड"
     }
   }
 }

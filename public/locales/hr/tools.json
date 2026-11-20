@@ -76,13 +76,39 @@
       "consensus_stake": "Ulog konsenzusa",
       "consensus_unstake": "Povlačenje uloga konsenzusa",
       "stake_hbd": "Ulog HBD",
-      "unstake_hbd": "Povlačenje uloga HBD"
+      "unstake_hbd": "Povlačenje uloga HBD",
+      "slash_restore": "Obnavljanje rezanja",
+      "reserve_payout": "Isplata rezerve",
+      "reserve_vote": "Glasanje o rezervi",
+      "admit_vote": "Glasanje za prijem",
+      "propose_consensus_version": "Predloži verziju konsenzusa"
     },
     "errors": {
       "amountPositive": "Iznos mora biti veći od 0.",
       "depositAsset": "Sredstvo za depozit mora biti HIVE ili HBD.",
       "hiveWalletOnly": "Mapiranje je moguće samo iz Hive novčanika.",
-      "unknownType": "Nepoznata vrsta transakcije"
+      "unknownType": "Nepoznata vrsta transakcije",
+      "fieldRequired": "{{field}} je obavezno.",
+      "customJsonHiveWalletOnly": "Custom JSON operacije mogu se emitirati samo iz Hive novčanika.",
+      "integerRequired": "Mora biti cijeli broj."
+    },
+    "fields": {
+      "slashTxId": "ID transakcije rezanja",
+      "slashedAccount": "Rezani račun",
+      "recipient": "Primatelj",
+      "amountHive": "Iznos (HIVE)",
+      "reason": "Razlog",
+      "proposalId": "ID prijedloga",
+      "candidate": "Kandidat",
+      "uboId": "UBO (krajnji stvarni vlasnik) ID",
+      "majorVersion": "Glavna verzija",
+      "consensusVersion": "Verzija konsenzusa",
+      "nonConsensusVersion": "Nekonsenzusna verzija",
+      "activationEpoch": "Epoha aktivacije",
+      "nextEpoch": "Sljedeća epoha"
+    },
+    "groups": {
+      "consensusUpgrades": "Nadogradnje konsenzusa"
     }
   }
 }

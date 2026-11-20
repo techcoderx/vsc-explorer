@@ -76,13 +76,39 @@
       "consensus_stake": "Aposta de consenso",
       "consensus_unstake": "Retirada do consenso",
       "stake_hbd": "Apostar HBD",
-      "unstake_hbd": "Retirar HBD"
+      "unstake_hbd": "Retirar HBD",
+      "slash_restore": "Restaurar corte",
+      "reserve_payout": "Pagamento de reserva",
+      "reserve_vote": "Voto de reserva",
+      "admit_vote": "Voto de admissão",
+      "propose_consensus_version": "Propor versão de consenso"
     },
     "errors": {
       "amountPositive": "O valor deve ser maior que 0.",
       "depositAsset": "O ativo de depósito deve ser HIVE ou HBD.",
       "hiveWalletOnly": "Só é possível mapear de carteiras Hive.",
-      "unknownType": "Tipo de transação desconhecido"
+      "unknownType": "Tipo de transação desconhecido",
+      "fieldRequired": "{{field}} é obrigatório.",
+      "customJsonHiveWalletOnly": "As operações de JSON personalizado só podem ser transmitidas a partir de carteiras Hive.",
+      "integerRequired": "Deve ser um número inteiro."
+    },
+    "fields": {
+      "slashTxId": "ID da transação do corte",
+      "slashedAccount": "Conta cortada",
+      "recipient": "Destinatário",
+      "amountHive": "Quantia (HIVE)",
+      "reason": "Razão",
+      "proposalId": "ID da proposta",
+      "candidate": "Candidato",
+      "uboId": "UBO (beneficiário final) ID",
+      "majorVersion": "Versão principal",
+      "consensusVersion": "Versão do consenso",
+      "nonConsensusVersion": "Versão não relacionada ao consenso",
+      "activationEpoch": "Época de ativação",
+      "nextEpoch": "Próxima época"
+    },
+    "groups": {
+      "consensusUpgrades": "Atualizações de consenso"
     }
   }
 }

@@ -76,13 +76,39 @@
       "consensus_stake": "コンセンサスステーク",
       "consensus_unstake": "コンセンサスアンステーク",
       "stake_hbd": "HBD ステーク",
-      "unstake_hbd": "HBD アンステーク"
+      "unstake_hbd": "HBD アンステーク",
+      "slash_restore": "スラッシュ復元",
+      "reserve_payout": "リザーブ支払い",
+      "reserve_vote": "リザーブ投票",
+      "admit_vote": "参加承認投票",
+      "propose_consensus_version": "コンセンサスバージョン提案"
     },
     "errors": {
       "amountPositive": "金額は 0 より大きくなければなりません。",
       "depositAsset": "デポジット資産は HIVE または HBD でなければなりません。",
       "hiveWalletOnly": "Hive ウォレットからのみマップできます。",
-      "unknownType": "不明なトランザクションタイプ"
+      "unknownType": "不明なトランザクションタイプ",
+      "fieldRequired": "{{field}}は必須です。",
+      "customJsonHiveWalletOnly": "カスタムJSON操作はHiveウォレットからのみブロードキャストできます。",
+      "integerRequired": "整数で入力してください。"
+    },
+    "fields": {
+      "slashTxId": "スラッシュ取引ID",
+      "slashedAccount": "スラッシュされたアカウント",
+      "recipient": "受取人",
+      "amountHive": "金額 (HIVE)",
+      "reason": "理由",
+      "proposalId": "提案ID",
+      "candidate": "候補者",
+      "uboId": "UBO（最終受益者）ID",
+      "majorVersion": "メジャーバージョン",
+      "consensusVersion": "コンセンサスバージョン",
+      "nonConsensusVersion": "非コンセンサスバージョン",
+      "activationEpoch": "アクティベーションエポック",
+      "nextEpoch": "次のエポック"
+    },
+    "groups": {
+      "consensusUpgrades": "コンセンサスアップグレード"
     }
   }
 }

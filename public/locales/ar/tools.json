@@ -76,13 +76,39 @@
       "consensus_stake": "رهن التوافق",
       "consensus_unstake": "فك رهن التوافق",
       "stake_hbd": "رهن HBD",
-      "unstake_hbd": "فك رهن HBD"
+      "unstake_hbd": "فك رهن HBD",
+      "slash_restore": "استعادة القطع",
+      "reserve_payout": "دفع الاحتياطي",
+      "reserve_vote": "تصويت الاحتياطي",
+      "admit_vote": "تصويت القبول",
+      "propose_consensus_version": "اقتراح نسخة التوافق"
     },
     "errors": {
       "amountPositive": "يجب أن يكون المبلغ أكبر من 0.",
       "depositAsset": "يجب أن يكون أصل الإيداع HIVE أو HBD.",
       "hiveWalletOnly": "يمكن الربط فقط من محافظ Hive.",
-      "unknownType": "نوع المعاملة غير معروف"
+      "unknownType": "نوع المعاملة غير معروف",
+      "fieldRequired": "{{field}} مطلوب.",
+      "customJsonHiveWalletOnly": "لا يمكن بث عمليات JSON المخصصة إلا من محافظ Hive.",
+      "integerRequired": "يجب أن يكون عددًا صحيحًا."
+    },
+    "fields": {
+      "slashTxId": "معرف معاملة القطع",
+      "slashedAccount": "الحساب المقطوع",
+      "recipient": "المستلم",
+      "amountHive": "المبلغ (HIVE)",
+      "reason": "السبب",
+      "proposalId": "معرف المقترح",
+      "candidate": "مرشح",
+      "uboId": "UBO (المالك المستفيد النهائي) ID",
+      "majorVersion": "الإصدار الرئيسي",
+      "consensusVersion": "إصدار التوافق",
+      "nonConsensusVersion": "إصدار غير التوافق",
+      "activationEpoch": "حقبة التنشيط",
+      "nextEpoch": "الحقبة التالية"
+    },
+    "groups": {
+      "consensusUpgrades": "ترقيات التوافق"
     }
   }
 }

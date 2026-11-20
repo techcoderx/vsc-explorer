@@ -76,13 +76,39 @@
       "consensus_stake": "Stake konsensusu",
       "consensus_unstake": "Odblokowanie stake konsensusu",
       "stake_hbd": "Stake HBD",
-      "unstake_hbd": "Odblokowanie stake HBD"
+      "unstake_hbd": "Odblokowanie stake HBD",
+      "slash_restore": "Przywrócenie cięcia",
+      "reserve_payout": "Wypłata rezerwy",
+      "reserve_vote": "Głosowanie nad rezerwą",
+      "admit_vote": "Głosowanie nad przyjęciem",
+      "propose_consensus_version": "Zaproponuj wersję konsensusu"
     },
     "errors": {
       "amountPositive": "Kwota musi być większa od 0.",
       "depositAsset": "Aktywo do depozytu musi być HIVE lub HBD.",
       "hiveWalletOnly": "Mapowanie możliwe tylko z portfeli Hive.",
-      "unknownType": "Nieznany typ transakcji"
+      "unknownType": "Nieznany typ transakcji",
+      "fieldRequired": "{{field}} jest wymagane.",
+      "customJsonHiveWalletOnly": "Operacje Custom JSON można rozgłaszać tylko z portfeli Hive.",
+      "integerRequired": "Musi być liczbą całkowitą."
+    },
+    "fields": {
+      "slashTxId": "ID transakcji cięcia",
+      "slashedAccount": "Ścięte konto",
+      "recipient": "Odbiorca",
+      "amountHive": "Kwota (HIVE)",
+      "reason": "Powód",
+      "proposalId": "ID propozycji",
+      "candidate": "Kandydat",
+      "uboId": "UBO (rzeczywisty beneficjent) ID",
+      "majorVersion": "Wersja główna",
+      "consensusVersion": "Wersja konsensusu",
+      "nonConsensusVersion": "Wersja niekonsensusowa",
+      "activationEpoch": "Epoka aktywacji",
+      "nextEpoch": "Następna epoka"
+    },
+    "groups": {
+      "consensusUpgrades": "Aktualizacje konsensusu"
     }
   }
 }

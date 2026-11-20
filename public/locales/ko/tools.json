@@ -76,13 +76,39 @@
       "consensus_stake": "합의 스테이킹",
       "consensus_unstake": "합의 언스테이킹",
       "stake_hbd": "HBD 스테이킹",
-      "unstake_hbd": "HBD 언스테이킹"
+      "unstake_hbd": "HBD 언스테이킹",
+      "slash_restore": "슬래시 복원",
+      "reserve_payout": "준비금 지급",
+      "reserve_vote": "준비금 투표",
+      "admit_vote": "승인 투표",
+      "propose_consensus_version": "합의 버전 제안"
     },
     "errors": {
       "amountPositive": "금액은 0보다 커야 합니다.",
       "depositAsset": "입금 자산은 HIVE 또는 HBD여야 합니다.",
       "hiveWalletOnly": "Hive 지갑에서만 매핑할 수 있습니다.",
-      "unknownType": "알 수 없는 트랜잭션 유형"
+      "unknownType": "알 수 없는 트랜잭션 유형",
+      "fieldRequired": "{{field}}은(는) 필수입니다.",
+      "customJsonHiveWalletOnly": "사용자 지정 JSON 작업은 Hive 지갑에서만 브로드캐스트할 수 있습니다.",
+      "integerRequired": "정수여야 합니다."
+    },
+    "fields": {
+      "slashTxId": "슬래시 트랜잭션 ID",
+      "slashedAccount": "슬래시된 계정",
+      "recipient": "수신자",
+      "amountHive": "금액 (HIVE)",
+      "reason": "이유",
+      "proposalId": "제안 ID",
+      "candidate": "후보자",
+      "uboId": "UBO(최종 실소유자) ID",
+      "majorVersion": "메이저 버전",
+      "consensusVersion": "합의 버전",
+      "nonConsensusVersion": "비합의 버전",
+      "activationEpoch": "활성화 에포크",
+      "nextEpoch": "다음 에포크"
+    },
+    "groups": {
+      "consensusUpgrades": "합의 업그레이드"
     }
   }
 }

@@ -76,13 +76,39 @@
       "consensus_stake": "Taruhan Konsensus",
       "consensus_unstake": "Nyahtaruh Konsensus",
       "stake_hbd": "Taruh HBD",
-      "unstake_hbd": "Nyahtaruh HBD"
+      "unstake_hbd": "Nyahtaruh HBD",
+      "slash_restore": "Pulihkan slash",
+      "reserve_payout": "Bayaran rizab",
+      "reserve_vote": "Undian Rizab",
+      "admit_vote": "Undian Kemasukan",
+      "propose_consensus_version": "Cadangkan Versi Konsensus"
     },
     "errors": {
       "amountPositive": "Jumlah mestilah lebih daripada 0.",
       "depositAsset": "Aset deposit mestilah HIVE atau HBD.",
       "hiveWalletOnly": "Hanya boleh memetakan dari dompet Hive.",
-      "unknownType": "Jenis transaksi tidak diketahui"
+      "unknownType": "Jenis transaksi tidak diketahui",
+      "fieldRequired": "{{field}} diperlukan.",
+      "customJsonHiveWalletOnly": "Operasi JSON tersuai hanya boleh disiarkan daripada dompet Hive.",
+      "integerRequired": "Mesti nombor bulat."
+    },
+    "fields": {
+      "slashTxId": "ID transaksi slash",
+      "slashedAccount": "Akaun dislash",
+      "recipient": "Penerima",
+      "amountHive": "Jumlah (HIVE)",
+      "reason": "Sebab",
+      "proposalId": "ID cadangan",
+      "candidate": "Calon",
+      "uboId": "UBO (pemilik benefisial muktamad) ID",
+      "majorVersion": "Versi Utama",
+      "consensusVersion": "Versi Konsensus",
+      "nonConsensusVersion": "Versi Bukan Konsensus",
+      "activationEpoch": "Epok Pengaktifan",
+      "nextEpoch": "Epok seterusnya"
+    },
+    "groups": {
+      "consensusUpgrades": "Naik Taraf Konsensus"
     }
   }
 }

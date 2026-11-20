@@ -76,13 +76,39 @@
       "consensus_stake": "Стейк консенсуса",
       "consensus_unstake": "Расстейкивание консенсуса",
       "stake_hbd": "Стейк HBD",
-      "unstake_hbd": "Расстейкивание HBD"
+      "unstake_hbd": "Расстейкивание HBD",
+      "slash_restore": "Восстановление слэша",
+      "reserve_payout": "Выплата резерва",
+      "reserve_vote": "Голосование за резерв",
+      "admit_vote": "Голосование за принятие",
+      "propose_consensus_version": "Предложить версию консенсуса"
     },
     "errors": {
       "amountPositive": "Сумма должна быть больше 0.",
       "depositAsset": "Актив для депозита должен быть HIVE или HBD.",
       "hiveWalletOnly": "Отображение возможно только из кошельков Hive.",
-      "unknownType": "Неизвестный тип транзакции"
+      "unknownType": "Неизвестный тип транзакции",
+      "fieldRequired": "{{field}} обязательно.",
+      "customJsonHiveWalletOnly": "Операции Custom JSON можно транслировать только из кошельков Hive.",
+      "integerRequired": "Должно быть целым числом."
+    },
+    "fields": {
+      "slashTxId": "ID транзакции слэша",
+      "slashedAccount": "Слэшнутый аккаунт",
+      "recipient": "Получатель",
+      "amountHive": "Сумма (HIVE)",
+      "reason": "Причина",
+      "proposalId": "ID предложения",
+      "candidate": "Кандидат",
+      "uboId": "UBO (конечный выгодоприобретатель) ID",
+      "majorVersion": "Основная версия",
+      "consensusVersion": "Версия консенсуса",
+      "nonConsensusVersion": "Версия вне консенсуса",
+      "activationEpoch": "Эпоха активации",
+      "nextEpoch": "Следующая эпоха"
+    },
+    "groups": {
+      "consensusUpgrades": "Обновления консенсуса"
     }
   }
 }

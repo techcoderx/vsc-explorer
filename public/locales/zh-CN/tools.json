@@ -76,13 +76,39 @@
       "consensus_stake": "共识质押",
       "consensus_unstake": "共识取消质押",
       "stake_hbd": "质押 HBD",
-      "unstake_hbd": "取消质押 HBD"
+      "unstake_hbd": "取消质押 HBD",
+      "slash_restore": "罚没恢复",
+      "reserve_payout": "储备金支付",
+      "reserve_vote": "储备金投票",
+      "admit_vote": "准入投票",
+      "propose_consensus_version": "提议共识版本"
     },
     "errors": {
       "amountPositive": "金额必须大于 0。",
       "depositAsset": "存入资产必须为 HIVE 或 HBD。",
       "hiveWalletOnly": "只能从 Hive 钱包进行映射。",
-      "unknownType": "未知的交易类型"
+      "unknownType": "未知的交易类型",
+      "fieldRequired": "{{field}}为必填项。",
+      "customJsonHiveWalletOnly": "自定义 JSON 操作只能从 Hive 钱包广播。",
+      "integerRequired": "必须为整数。"
+    },
+    "fields": {
+      "slashTxId": "罚没交易 ID",
+      "slashedAccount": "被罚没账户",
+      "recipient": "接收人",
+      "amountHive": "金额 (HIVE)",
+      "reason": "原因",
+      "proposalId": "提案ID",
+      "candidate": "候选人",
+      "uboId": "UBO（最终受益所有人）ID",
+      "majorVersion": "主版本",
+      "consensusVersion": "共识版本",
+      "nonConsensusVersion": "非共识版本",
+      "activationEpoch": "激活周期",
+      "nextEpoch": "下一个周期"
+    },
+    "groups": {
+      "consensusUpgrades": "共识升级"
     }
   }
 }
